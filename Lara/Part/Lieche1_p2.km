@@ -38,7 +38,7 @@ DelayRandom 130,132
 KeyUp Up
 DelayRandom 504,510
 KeyDown Right
-DelayRandom 961,971
+DelayRandom 1261,1271
 KeyUp Right
 DelayRandom 175,177
 KeyDown LCtrl
@@ -94,7 +94,7 @@ DelayRandom 114,116
 KeyUp G
 DelayRandom 1351,1365
 KeyDown Right
-DelayRandom 108,110
+DelayRandom 408,414
 KeyUp Right
 DelayRandom 242,245
 KeyDown Space
@@ -162,7 +162,7 @@ DelayRandom 44,45
 KeyUp Down
 DelayRandom 955,965
 KeyDown Right
-DelayRandom 108,110
+DelayRandom 408,414
 KeyUp Right
 DelayRandom 314,318
 KeyDown Space
@@ -242,9 +242,9 @@ DelayRandom 43,44
 KeyDown Space
 DelayRandom 97,98
 KeyUp Space
-DelayRandom 26,27
+DelayRandom 826,833
 KeyUp Right
-DelayRandom 2440,2465
+DelayRandom 2140,2165
 KeyDown A
 DelayRandom 122,124
 KeyUp A
