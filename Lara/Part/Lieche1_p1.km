@@ -230,7 +230,7 @@ DelayRandom 100,102
 KeyUp Left
 DelayRandom 654,661
 KeyDown Left
-DelayRandom 617,624
+DelayRandom 1417,1431
 KeyUp Left
 DelayRandom 505,511
 KeyDown A
