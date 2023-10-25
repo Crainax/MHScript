@@ -4,2059 +4,2088 @@ ScreenY=2560
 Times=0
 
 [Script]
-DelayRandom 111,117
-KeyDown Left
-DelayRandom 562,568
-KeyUp Left
-DelayRandom 118,120
-KeyDown A
-DelayRandom 130,132
-KeyUp A
-DelayRandom 157,159
-KeyDown S
-DelayRandom 120,122
-KeyUp S
-DelayRandom 340,344
-KeyDown Up
-DelayRandom 94,95
-KeyUp Up
-DelayRandom 548,554
-KeyDown LCtrl
-DelayRandom 84,85
-KeyUp LCtrl
-DelayRandom 2220,2243
-KeyDown Left
-DelayRandom 113,115
-KeyUp Left
-DelayRandom 165,167
-KeyDown Down
-DelayRandom 81,82
-KeyDown Space
-DelayRandom 129,131
-KeyUp Space
-DelayRandom 54,55
-KeyUp Down
-DelayRandom 630,637
-KeyDown Right
-DelayRandom 128,130
-KeyUp Right
-DelayRandom 197,199
-KeyDown A
-DelayRandom 110,112
-KeyUp A
-DelayRandom 259,262
-KeyDown S
-DelayRandom 117,119
-KeyUp S
-DelayRandom 231,234
-KeyDown Left
-DelayRandom 121,123
-KeyUp Left
-DelayRandom 491,496
-KeyDown Right
-DelayRandom 101,103
-KeyUp Right
-DelayRandom 277,280
-KeyDown Space
-DelayRandom 52,53
-KeyUp Space
-DelayRandom 60,61
-KeyDown Space
-DelayRandom 76,77
-KeyUp Space
-DelayRandom 1011,1022
-KeyDown Right
-DelayRandom 94,95
-KeyDown LShift
-DelayRandom 166,168
-KeyUp LShift
-DelayRandom 129,131
-KeyUp Right
-DelayRandom 322,326
-KeyDown Right
-DelayRandom 309,313
-KeyUp Right
-DelayRandom 80,81
-KeyDown Down
-DelayRandom 64,65
-KeyDown 1
-DelayRandom 170,172
-KeyUp 1
-DelayRandom 61,62
-KeyUp Down
-DelayRandom 604,611
-KeyDown Down
-DelayRandom 117,119
-KeyDown Space
-DelayRandom 140,142
-KeyUp Space
-DelayRandom 28,29
-KeyUp Down
-DelayRandom 520,526
-KeyDown Down
-DelayRandom 101,103
-KeyDown Space
-DelayRandom 142,144
-KeyUp Space
-DelayRandom 31,32
-KeyUp Down
-DelayRandom 1003,1014
-KeyDown Left
-DelayRandom 230,233
-KeyUp Left
-DelayRandom 180,182
-KeyDown E
-DelayRandom 146,148
-KeyUp E
-DelayRandom 250,253
-KeyDown Right
-DelayRandom 121,123
-KeyUp Right
-DelayRandom 191,193
-KeyDown Left
-DelayRandom 128,130
-KeyUp Left
-DelayRandom 191,193
-KeyDown S
-DelayRandom 108,110
-KeyUp S
-DelayRandom 509,515
-KeyDown Left
-DelayRandom 1051,1062
-KeyDown LShift
-DelayRandom 188,190
-KeyUp LShift
-DelayRandom 96,97
-KeyUp Left
-DelayRandom 723,731
-KeyDown Left
-DelayRandom 639,646
-KeyUp Left
-DelayRandom 335,339
-KeyDown A
-DelayRandom 117,119
-KeyUp A
-DelayRandom 277,280
-KeyDown S
-DelayRandom 101,103
-KeyUp S
-DelayRandom 307,311
-KeyDown Up
-DelayRandom 118,120
-KeyUp Up
-DelayRandom 818,827
-KeyDown LCtrl
-DelayRandom 111,113
-KeyUp LCtrl
-DelayRandom 2061,2082
-KeyDown Right
-DelayRandom 76,77
-KeyUp Right
-DelayRandom 275,278
-KeyDown Down
-DelayRandom 60,61
-KeyDown Space
-DelayRandom 139,141
-KeyUp Space
-DelayRandom 22,23
-KeyUp Down
-DelayRandom 790,798
-KeyDown Right
-DelayRandom 85,86
-KeyUp Right
-DelayRandom 297,300
-KeyDown A
-DelayRandom 126,128
-KeyUp A
-DelayRandom 187,189
-KeyDown S
-DelayRandom 112,114
-KeyUp S
-DelayRandom 226,229
-KeyDown Left
-DelayRandom 129,131
-KeyUp Left
-DelayRandom 670,677
-KeyDown Right
-DelayRandom 80,81
-KeyUp Right
-DelayRandom 234,237
-KeyDown Space
-DelayRandom 76,77
-KeyUp Space
-DelayRandom 25,26
-KeyDown Space
-DelayRandom 91,92
-KeyUp Space
-DelayRandom 985,995
-KeyDown Down
-DelayRandom 106,108
-KeyDown Space
-DelayRandom 132,134
-KeyUp Space
-DelayRandom 16,17
-KeyUp Down
-DelayRandom 794,802
-KeyDown Right
-DelayRandom 1337,1351
-KeyUp Right
-DelayRandom 316,320
-KeyDown Left
-DelayRandom 298,301
-KeyUp Left
-DelayRandom 183,185
-KeyDown E
-DelayRandom 142,144
-KeyUp E
-DelayRandom 313,317
-KeyDown Right
-DelayRandom 149,151
-KeyUp Right
-DelayRandom 201,204
-KeyDown Left
-DelayRandom 123,125
-KeyUp Left
-DelayRandom 202,205
-KeyDown S
-DelayRandom 122,124
-KeyUp S
-DelayRandom 643,650
-KeyDown Left
-DelayRandom 903,913
-KeyDown LShift
-DelayRandom 184,186
-KeyUp LShift
-DelayRandom 100,102
-KeyUp Left
-DelayRandom 654,661
-KeyDown Left
-DelayRandom 1417,1431
-KeyUp Left
-DelayRandom 505,511
-KeyDown A
-DelayRandom 124,126
-KeyUp A
-DelayRandom 185,187
-KeyDown S
-DelayRandom 127,129
-KeyUp S
-DelayRandom 286,289
-KeyDown Up
-DelayRandom 128,130
-KeyUp Up
-DelayRandom 1033,1044
-KeyDown LAlt
-DelayRandom 139,141
-KeyUp LAlt
-DelayRandom 1293,1306
-KeyDown LAlt
-DelayRandom 111,113
-KeyUp LAlt
-DelayRandom 1451,1466
-KeyDown Right
-DelayRandom 85,86
-KeyUp Right
-DelayRandom 252,255
-KeyDown A
-DelayRandom 132,134
-KeyUp A
-DelayRandom 185,187
-KeyDown S
-DelayRandom 130,132
-KeyUp S
-DelayRandom 259,262
-KeyDown Left
-DelayRandom 113,115
-KeyUp Left
-DelayRandom 600,609
-KeyDown Right
-DelayRandom 80,81
-KeyUp Right
-DelayRandom 50,51
-KeyDown Space
-DelayRandom 79,80
-KeyUp Space
-DelayRandom 61,62
-KeyDown Space
-DelayRandom 87,88
-KeyUp Space
-DelayRandom 997,1007
-KeyDown Right
-DelayRandom 275,278
-KeyDown LShift
-DelayRandom 208,211
-KeyUp LShift
-DelayRandom 209,212
-KeyUp Right
-DelayRandom 370,374
-KeyDown Right
-DelayRandom 297,300
-KeyUp Right
-DelayRandom 96,97
-KeyDown Down
-DelayRandom 95,96
-KeyDown Space
-DelayRandom 131,133
-KeyUp Space
-DelayRandom 64,65
-KeyUp Down
-DelayRandom 265,268
-KeyDown H
-DelayRandom 129,131
-KeyUp H
-DelayRandom 741,749
-KeyDown Down
-DelayRandom 146,148
-KeyDown Space
-DelayRandom 149,151
-KeyUp Space
-DelayRandom 63,64
-KeyUp Down
-DelayRandom 1001,1012
-KeyDown Left
-DelayRandom 224,227
-KeyUp Left
-DelayRandom 202,205
-KeyDown E
-DelayRandom 137,139
-KeyUp E
-DelayRandom 280,283
-KeyDown Right
-DelayRandom 129,131
-KeyUp Right
-DelayRandom 231,234
-KeyDown Left
-DelayRandom 133,135
-KeyUp Left
-DelayRandom 236,239
-KeyDown S
-DelayRandom 117,119
-KeyUp S
-DelayRandom 604,611
-KeyDown Left
-DelayRandom 1345,1262
-KeyDown LShift
-DelayRandom 168,170
-KeyUp LShift
-DelayRandom 72,73
-KeyUp Left
-DelayRandom 301,304
-KeyDown Y
-DelayRandom 160,162
-KeyUp Y
-DelayRandom 710,718
-KeyDown Left
-DelayRandom 467,472
-KeyUp Left
-DelayRandom 191,193
-KeyDown A
-DelayRandom 125,127
-KeyUp A
-DelayRandom 290,293
-KeyDown S
-DelayRandom 121,123
-KeyUp S
-DelayRandom 341,345
-KeyDown Up
-DelayRandom 133,135
-KeyUp Up
-DelayRandom 401,406
-KeyDown Left
-DelayRandom 129,131
-KeyUp Left
-DelayRandom 256,259
-KeyDown LCtrl
-DelayRandom 127,129
-KeyUp LCtrl
-DelayRandom 2178,2200
-KeyDown Left
-DelayRandom 95,96
-KeyUp Left
-DelayRandom 241,244
-KeyDown Down
-DelayRandom 80,81
-KeyDown Space
-DelayRandom 135,137
-KeyUp Space
-DelayRandom 24,25
-KeyUp Down
-DelayRandom 836,845
-KeyDown Right
-DelayRandom 163,165
-KeyUp Right
-DelayRandom 266,269
-KeyDown A
-DelayRandom 140,142
-KeyUp A
-DelayRandom 259,262
-KeyDown S
-DelayRandom 131,133
-KeyUp S
-DelayRandom 301,305
-KeyDown Left
-DelayRandom 127,129
-KeyUp Left
-DelayRandom 555,561
-KeyDown Right
-DelayRandom 99,100
-KeyUp Right
-DelayRandom 216,219
-KeyDown Space
-DelayRandom 80,81
-KeyUp Space
-DelayRandom 42,43
-KeyDown Space
-DelayRandom 113,115
-KeyUp Space
-DelayRandom 906,916
-KeyDown Right
-DelayRandom 63,64
-KeyDown Space
-DelayRandom 90,91
-KeyUp Space
-DelayRandom 27,28
-KeyDown Space
-DelayRandom 68,69
-KeyUp Right
-DelayRandom 24,25
-KeyUp Space
-DelayRandom 881,890
-KeyDown Down
-DelayRandom 86,87
-KeyDown Space
-DelayRandom 138,140
-KeyUp Space
-DelayRandom 37,38
-KeyUp Down
-DelayRandom 623,630
-KeyDown Down
-DelayRandom 121,123
-KeyDown Space
-DelayRandom 139,141
-KeyUp Space
-DelayRandom 31,32
-KeyUp Down
-DelayRandom 946,956
-KeyDown Left
-DelayRandom 604,611
-KeyUp Left
-DelayRandom 146,148
-KeyDown E
-DelayRandom 150,152
-KeyUp E
-DelayRandom 290,293
-KeyDown Right
-DelayRandom 155,157
-KeyUp Right
-DelayRandom 256,259
-KeyDown Left
-DelayRandom 150,152
-KeyUp Left
-DelayRandom 212,215
-KeyDown S
-DelayRandom 134,136
-KeyUp S
-DelayRandom 924,934
-KeyDown Left
-DelayRandom 1234,1241
-KeyDown LShift
-DelayRandom 201,204
-KeyUp LShift
-DelayRandom 65,66
-KeyUp Left
-DelayRandom 123,126
+Dim a
+
+Sub Part1()
+    DelayRandom 111,117
+    KeyDown Left
+    DelayRandom 562,568
+    KeyUp Left
+    DelayRandom 118,120
+    KeyDown A
+    DelayRandom 130,132
+    KeyUp A
+    DelayRandom 157,159
+    KeyDown S
+    DelayRandom 120,122
+    KeyUp S
+    DelayRandom 340,344
+    KeyDown Up
+    DelayRandom 94,95
+    KeyUp Up
+    DelayRandom 548,554
+    KeyDown LCtrl
+    DelayRandom 84,85
+    KeyUp LCtrl
+    DelayRandom 2220,2243
+    KeyDown Left
+    DelayRandom 113,115
+    KeyUp Left
+    DelayRandom 165,167
+    KeyDown Down
+    DelayRandom 81,82
+    KeyDown Space
+    DelayRandom 129,131
+    KeyUp Space
+    DelayRandom 54,55
+    KeyUp Down
+    DelayRandom 630,637
+    KeyDown Right
+    DelayRandom 128,130
+    KeyUp Right
+    DelayRandom 197,199
+    KeyDown A
+    DelayRandom 110,112
+    KeyUp A
+    DelayRandom 259,262
+    KeyDown S
+    DelayRandom 117,119
+    KeyUp S
+    DelayRandom 231,234
+    KeyDown Left
+    DelayRandom 121,123
+    KeyUp Left
+    DelayRandom 491,496
+    KeyDown Right
+    DelayRandom 101,103
+    KeyUp Right
+    DelayRandom 277,280
+    KeyDown Space
+    DelayRandom 52,53
+    KeyUp Space
+    DelayRandom 60,61
+    KeyDown Space
+    DelayRandom 76,77
+    KeyUp Space
+    DelayRandom 1011,1022
+    KeyDown Right
+    DelayRandom 94,95
+    KeyDown LShift
+    DelayRandom 166,168
+    KeyUp LShift
+    DelayRandom 129,131
+    KeyUp Right
+    DelayRandom 322,326
+    KeyDown Right
+    DelayRandom 309,313
+    KeyUp Right
+    DelayRandom 80,81
+    KeyDown Down
+    DelayRandom 64,65
+    KeyDown 1
+    DelayRandom 170,172
+    KeyUp 1
+    DelayRandom 61,62
+    KeyUp Down
+    DelayRandom 604,611
+    KeyDown Down
+    DelayRandom 117,119
+    KeyDown Space
+    DelayRandom 140,142
+    KeyUp Space
+    DelayRandom 28,29
+    KeyUp Down
+    DelayRandom 520,526
+    KeyDown Down
+    DelayRandom 101,103
+    KeyDown Space
+    DelayRandom 142,144
+    KeyUp Space
+    DelayRandom 31,32
+    KeyUp Down
+    DelayRandom 1003,1014
+    KeyDown Left
+    DelayRandom 230,233
+    KeyUp Left
+    DelayRandom 180,182
+    KeyDown E
+    DelayRandom 146,148
+    KeyUp E
+    DelayRandom 250,253
+    KeyDown Right
+    DelayRandom 121,123
+    KeyUp Right
+    DelayRandom 191,193
+    KeyDown Left
+    DelayRandom 128,130
+    KeyUp Left
+    DelayRandom 191,193
+    KeyDown S
+    DelayRandom 108,110
+    KeyUp S
+    DelayRandom 509,515
+    KeyDown Left
+    DelayRandom 1051,1062
+    KeyDown LShift
+    DelayRandom 188,190
+    KeyUp LShift
+    DelayRandom 96,97
+    KeyUp Left
+    DelayRandom 723,731
+    KeyDown Left
+    DelayRandom 639,646
+    KeyUp Left
+    DelayRandom 335,339
+    KeyDown A
+    DelayRandom 117,119
+    KeyUp A
+    DelayRandom 277,280
+    KeyDown S
+    DelayRandom 101,103
+    KeyUp S
+    DelayRandom 307,311
+    KeyDown Up
+    DelayRandom 118,120
+    KeyUp Up
+    DelayRandom 818,827
+    KeyDown LCtrl
+    DelayRandom 111,113
+    KeyUp LCtrl
+    DelayRandom 2061,2082
+    KeyDown Right
+    DelayRandom 76,77
+    KeyUp Right
+    DelayRandom 275,278
+    KeyDown Down
+    DelayRandom 60,61
+    KeyDown Space
+    DelayRandom 139,141
+    KeyUp Space
+    DelayRandom 22,23
+    KeyUp Down
+    DelayRandom 790,798
+    KeyDown Right
+    DelayRandom 85,86
+    KeyUp Right
+    DelayRandom 297,300
+    KeyDown A
+    DelayRandom 126,128
+    KeyUp A
+    DelayRandom 187,189
+    KeyDown S
+    DelayRandom 112,114
+    KeyUp S
+    DelayRandom 226,229
+    KeyDown Left
+    DelayRandom 129,131
+    KeyUp Left
+    DelayRandom 670,677
+    KeyDown Right
+    DelayRandom 80,81
+    KeyUp Right
+    DelayRandom 234,237
+    KeyDown Space
+    DelayRandom 76,77
+    KeyUp Space
+    DelayRandom 25,26
+    KeyDown Space
+    DelayRandom 91,92
+    KeyUp Space
+    DelayRandom 985,995
+    KeyDown Down
+    DelayRandom 106,108
+    KeyDown Space
+    DelayRandom 132,134
+    KeyUp Space
+    DelayRandom 16,17
+    KeyUp Down
+    DelayRandom 794,802
+    KeyDown Right
+    DelayRandom 1337,1351
+    KeyUp Right
+    DelayRandom 316,320
+    KeyDown Left
+    DelayRandom 298,301
+    KeyUp Left
+    DelayRandom 183,185
+    KeyDown E
+    DelayRandom 142,144
+    KeyUp E
+    DelayRandom 313,317
+    KeyDown Right
+    DelayRandom 149,151
+    KeyUp Right
+    DelayRandom 201,204
+    KeyDown Left
+    DelayRandom 123,125
+    KeyUp Left
+    DelayRandom 202,205
+    KeyDown S
+    DelayRandom 122,124
+    KeyUp S
+    DelayRandom 643,650
+    KeyDown Left
+    DelayRandom 903,913
+    KeyDown LShift
+    DelayRandom 184,186
+    KeyUp LShift
+    DelayRandom 100,102
+    KeyUp Left
+    DelayRandom 654,661
+    KeyDown Left
+    DelayRandom 1417,1431
+    KeyUp Left
+    DelayRandom 505,511
+    KeyDown A
+    DelayRandom 124,126
+    KeyUp A
+    DelayRandom 185,187
+    KeyDown S
+    DelayRandom 127,129
+    KeyUp S
+    DelayRandom 286,289
+    KeyDown Up
+    DelayRandom 128,130
+    KeyUp Up
+    DelayRandom 1033,1044
+    KeyDown LAlt
+    DelayRandom 139,141
+    KeyUp LAlt
+    DelayRandom 1293,1306
+    KeyDown LAlt
+    DelayRandom 111,113
+    KeyUp LAlt
+    DelayRandom 1451,1466
+    KeyDown Right
+    DelayRandom 85,86
+    KeyUp Right
+    DelayRandom 252,255
+    KeyDown A
+    DelayRandom 132,134
+    KeyUp A
+    DelayRandom 185,187
+    KeyDown S
+    DelayRandom 130,132
+    KeyUp S
+    DelayRandom 259,262
+    KeyDown Left
+    DelayRandom 113,115
+    KeyUp Left
+    DelayRandom 600,609
+    KeyDown Right
+    DelayRandom 80,81
+    KeyUp Right
+    DelayRandom 50,51
+    KeyDown Space
+    DelayRandom 79,80
+    KeyUp Space
+    DelayRandom 61,62
+    KeyDown Space
+    DelayRandom 87,88
+    KeyUp Space
+    DelayRandom 997,1007
+    KeyDown Right
+    DelayRandom 275,278
+    KeyDown LShift
+    DelayRandom 208,211
+    KeyUp LShift
+    DelayRandom 209,212
+    KeyUp Right
+    DelayRandom 370,374
+    KeyDown Right
+    DelayRandom 297,300
+    KeyUp Right
+    DelayRandom 96,97
+    KeyDown Down
+    DelayRandom 95,96
+    KeyDown Space
+    DelayRandom 131,133
+    KeyUp Space
+    DelayRandom 64,65
+    KeyUp Down
+    DelayRandom 265,268
+    KeyDown H
+    DelayRandom 129,131
+    KeyUp H
+    DelayRandom 741,749
+    KeyDown Down
+    DelayRandom 146,148
+    KeyDown Space
+    DelayRandom 149,151
+    KeyUp Space
+    DelayRandom 63,64
+    KeyUp Down
+    DelayRandom 1001,1012
+    KeyDown Left
+    DelayRandom 224,227
+    KeyUp Left
+    DelayRandom 202,205
+    KeyDown E
+    DelayRandom 137,139
+    KeyUp E
+    DelayRandom 280,283
+    KeyDown Right
+    DelayRandom 129,131
+    KeyUp Right
+    DelayRandom 231,234
+    KeyDown Left
+    DelayRandom 133,135
+    KeyUp Left
+    DelayRandom 236,239
+    KeyDown S
+    DelayRandom 117,119
+    KeyUp S
+    DelayRandom 604,611
+    KeyDown Left
+    DelayRandom 1345,1262
+    KeyDown LShift
+    DelayRandom 168,170
+    KeyUp LShift
+    DelayRandom 72,73
+    KeyUp Left
+    DelayRandom 301,304
+    KeyDown Y
+    DelayRandom 160,162
+    KeyUp Y
+    DelayRandom 710,718
+    KeyDown Left
+    DelayRandom 467,472
+    KeyUp Left
+    DelayRandom 191,193
+    KeyDown A
+    DelayRandom 125,127
+    KeyUp A
+    DelayRandom 290,293
+    KeyDown S
+    DelayRandom 121,123
+    KeyUp S
+    DelayRandom 341,345
+    KeyDown Up
+    DelayRandom 133,135
+    KeyUp Up
+    DelayRandom 401,406
+    KeyDown Left
+    DelayRandom 129,131
+    KeyUp Left
+    DelayRandom 256,259
+    KeyDown LCtrl
+    DelayRandom 127,129
+    KeyUp LCtrl
+    DelayRandom 2178,2200
+    KeyDown Left
+    DelayRandom 95,96
+    KeyUp Left
+    DelayRandom 241,244
+    KeyDown Down
+    DelayRandom 80,81
+    KeyDown Space
+    DelayRandom 135,137
+    KeyUp Space
+    DelayRandom 24,25
+    KeyUp Down
+    DelayRandom 836,845
+    KeyDown Right
+    DelayRandom 163,165
+    KeyUp Right
+    DelayRandom 266,269
+    KeyDown A
+    DelayRandom 140,142
+    KeyUp A
+    DelayRandom 259,262
+    KeyDown S
+    DelayRandom 131,133
+    KeyUp S
+    DelayRandom 301,305
+    KeyDown Left
+    DelayRandom 127,129
+    KeyUp Left
+    DelayRandom 555,561
+    KeyDown Right
+    DelayRandom 99,100
+    KeyUp Right
+    DelayRandom 216,219
+    KeyDown Space
+    DelayRandom 80,81
+    KeyUp Space
+    DelayRandom 42,43
+    KeyDown Space
+    DelayRandom 113,115
+    KeyUp Space
+    DelayRandom 906,916
+    KeyDown Right
+    DelayRandom 63,64
+    KeyDown Space
+    DelayRandom 90,91
+    KeyUp Space
+    DelayRandom 27,28
+    KeyDown Space
+    DelayRandom 68,69
+    KeyUp Right
+    DelayRandom 24,25
+    KeyUp Space
+    DelayRandom 881,890
+    KeyDown Down
+    DelayRandom 86,87
+    KeyDown Space
+    DelayRandom 138,140
+    KeyUp Space
+    DelayRandom 37,38
+    KeyUp Down
+    DelayRandom 623,630
+    KeyDown Down
+    DelayRandom 121,123
+    KeyDown Space
+    DelayRandom 139,141
+    KeyUp Space
+    DelayRandom 31,32
+    KeyUp Down
+    DelayRandom 946,956
+    KeyDown Left
+    DelayRandom 604,611
+    KeyUp Left
+    DelayRandom 146,148
+    KeyDown E
+    DelayRandom 150,152
+    KeyUp E
+    DelayRandom 290,293
+    KeyDown Right
+    DelayRandom 155,157
+    KeyUp Right
+    DelayRandom 256,259
+    KeyDown Left
+    DelayRandom 150,152
+    KeyUp Left
+    DelayRandom 212,215
+    KeyDown S
+    DelayRandom 134,136
+    KeyUp S
+    DelayRandom 924,934
+    KeyDown Left
+    DelayRandom 1234,1241
+    KeyDown LShift
+    DelayRandom 201,204
+    KeyUp LShift
+    DelayRandom 65,66
+    KeyUp Left
+    DelayRandom 123,126
+End Sub
 
 //p2
-DelayRandom 536,542
-KeyDown Down
-DelayRandom 198,200
-KeyDown `
-DelayRandom 175,177
-KeyUp `
-DelayRandom 102,104
-KeyUp Down
-DelayRandom 475,480
-KeyDown Right
-DelayRandom 80,81
-KeyDown Space
-DelayRandom 69,70
-KeyUp Space
-DelayRandom 36,37
-KeyDown Space
-DelayRandom 84,85
-KeyUp Right
-DelayRandom 17,18
-KeyUp Space
-DelayRandom 915,925
-KeyDown A
-DelayRandom 100,102
-KeyUp A
-DelayRandom 206,209
-KeyDown S
-DelayRandom 112,114
-KeyUp S
-DelayRandom 174,176
-KeyDown Up
-DelayRandom 130,132
-KeyUp Up
-DelayRandom 504,510
-KeyDown Right
-DelayRandom 1261,1271
-KeyUp Right
-DelayRandom 175,177
-KeyDown LCtrl
-DelayRandom 106,108
-KeyUp LCtrl
-DelayRandom 1706,1724
-KeyDown Down
-DelayRandom 106,108
-KeyDown 1
-DelayRandom 148,150
-KeyUp 1
-DelayRandom 76,77
-KeyUp Down
-DelayRandom 680,687
-KeyDown Left
-DelayRandom 186,188
-KeyDown Space
-DelayRandom 62,63
-KeyUp Space
-DelayRandom 38,39
-KeyDown Space
-DelayRandom 90,91
-KeyUp Space
-DelayRandom 20,21
-KeyUp Left
-DelayRandom 1190,1202
-KeyDown A
-DelayRandom 141,143
-KeyUp A
-DelayRandom 256,259
-KeyDown S
-DelayRandom 122,124
-KeyUp S
-DelayRandom 305,309
-KeyDown Left
-DelayRandom 139,141
-KeyUp Left
-DelayRandom 442,447
-KeyDown Down
-DelayRandom 170,172
-KeyDown LShift
-DelayRandom 233,236
-KeyUp LShift
-DelayRandom 59,60
-KeyUp Down
-DelayRandom 874,883
-KeyDown Left
-DelayRandom 80,81
-KeyUp Left
-DelayRandom 114,116
-KeyDown G
-DelayRandom 114,116
-KeyUp G
-DelayRandom 1351,1365
-KeyDown Right
-DelayRandom 408,414
-KeyUp Right
-DelayRandom 242,245
-KeyDown Space
-DelayRandom 63,64
-KeyUp Space
-DelayRandom 335,339
-KeyDown Space
-DelayRandom 102,104
-KeyUp Space
-DelayRandom 3914,3954
-KeyDown A
-DelayRandom 134,136
-KeyUp A
-DelayRandom 203,206
-KeyDown S
-DelayRandom 120,122
-KeyUp S
-DelayRandom 165,167
-KeyDown Up
-DelayRandom 128,130
-KeyUp Up
-DelayRandom 486,491
-KeyDown LAlt
-DelayRandom 134,136
-KeyUp LAlt
-DelayRandom 391,395
-KeyDown Left
-DelayRandom 186,188
-KeyDown Space
-DelayRandom 132,134
-KeyUp Space
-DelayRandom 121,123
-KeyUp Left
-DelayRandom 1638,1655
-KeyDown A
-DelayRandom 116,118
-KeyUp A
-DelayRandom 289,292
-KeyDown S
-DelayRandom 115,117
-KeyUp S
-DelayRandom 225,228
-KeyDown Left
-DelayRandom 112,114
-KeyUp Left
-DelayRandom 491,496
-KeyDown Down
-DelayRandom 116,118
-KeyDown LShift
-DelayRandom 191,193
-KeyUp LShift
-DelayRandom 42,43
-KeyUp Down
-DelayRandom 825,834
-KeyDown C
-DelayRandom 165,167
-KeyUp C
-DelayRandom 2157,2179
-KeyDown Down
-DelayRandom 117,119
-KeyDown `
-DelayRandom 180,182
-KeyUp `
-DelayRandom 44,45
-KeyUp Down
-DelayRandom 955,965
-KeyDown Right
-DelayRandom 408,414
-KeyUp Right
-DelayRandom 314,318
-KeyDown Space
-DelayRandom 76,77
-KeyUp Space
-DelayRandom 70,71
-KeyDown Space
-DelayRandom 102,104
-KeyUp Space
-DelayRandom 2886,2915
-KeyDown A
-DelayRandom 126,128
-KeyUp A
-DelayRandom 208,211
-KeyDown S
-DelayRandom 105,107
-KeyUp S
-DelayRandom 204,207
-KeyDown Up
-DelayRandom 128,130
-KeyUp Up
-DelayRandom 1095,1106
-KeyDown LAlt
-DelayRandom 143,145
-KeyUp LAlt
-DelayRandom 312,316
-KeyDown Left
-DelayRandom 136,138
-KeyDown Space
-DelayRandom 106,108
-KeyUp Space
-DelayRandom 165,167
-KeyUp Left
-DelayRandom 1058,1069
-KeyDown Left
-DelayRandom 107,109
-KeyUp Left
-DelayRandom 411,416
-KeyDown A
-DelayRandom 144,146
-KeyUp A
-DelayRandom 190,192
-KeyDown S
-DelayRandom 103,105
-KeyUp S
-DelayRandom 259,262
-KeyDown Left
-DelayRandom 101,103
-KeyUp Left
-DelayRandom 2224,2247
-KeyDown Down
-DelayRandom 123,125
-KeyDown LShift
-DelayRandom 206,209
-KeyUp LShift
-DelayRandom 48,49
-KeyUp Down
-DelayRandom 413,418
-KeyDown G
-DelayRandom 172,174
-KeyUp G
-DelayRandom 2609,2636
-KeyDown Down
-DelayRandom 91,92
-KeyDown `
-DelayRandom 230,233
-KeyUp `
-DelayRandom 43,44
-KeyUp Down
-DelayRandom 1151,1163
-KeyDown Right
-DelayRandom 97,98
-KeyDown Space
-DelayRandom 72,73
-KeyUp Space
-DelayRandom 43,44
-KeyDown Space
-DelayRandom 97,98
-KeyUp Space
-DelayRandom 826,833
-KeyUp Right
-DelayRandom 2140,2165
-KeyDown A
-DelayRandom 122,124
-KeyUp A
-DelayRandom 206,209
-KeyDown S
-DelayRandom 106,108
-KeyUp S
-DelayRandom 247,250
-KeyDown Up
-DelayRandom 121,123
-KeyUp Up
-DelayRandom 2772,2800
-KeyDown LAlt
-DelayRandom 167,169
-KeyUp LAlt
-DelayRandom 272,275
-KeyDown Left
-DelayRandom 164,166
-KeyDown Space
-DelayRandom 101,103
-KeyUp Space
-DelayRandom 167,169
-KeyUp Left
-DelayRandom 1875,1884
-KeyDown A
-DelayRandom 131,133
-KeyUp A
-DelayRandom 181,183
-KeyDown S
-DelayRandom 118,120
-KeyUp S
-DelayRandom 400,405
-KeyDown Left
-DelayRandom 133,135
-KeyUp Left
-DelayRandom 2174,2196
-KeyDown Down
-DelayRandom 124,126
-KeyDown LShift
-DelayRandom 208,211
-KeyUp LShift
-DelayRandom 48,49
-KeyUp Down
+Sub Part2()
+    DelayRandom 536,542
+    KeyDown Down
+    DelayRandom 198,200
+    KeyDown `
+    DelayRandom 175,177
+    KeyUp `
+    DelayRandom 102,104
+    KeyUp Down
+    DelayRandom 475,480
+    KeyDown Right
+    DelayRandom 80,81
+    KeyDown Space
+    DelayRandom 69,70
+    KeyUp Space
+    DelayRandom 36,37
+    KeyDown Space
+    DelayRandom 84,85
+    KeyUp Right
+    DelayRandom 17,18
+    KeyUp Space
+    DelayRandom 915,925
+    KeyDown A
+    DelayRandom 100,102
+    KeyUp A
+    DelayRandom 206,209
+    KeyDown S
+    DelayRandom 112,114
+    KeyUp S
+    DelayRandom 174,176
+    KeyDown Up
+    DelayRandom 130,132
+    KeyUp Up
+    DelayRandom 504,510
+    KeyDown Right
+    DelayRandom 1261,1271
+    KeyUp Right
+    DelayRandom 175,177
+    KeyDown LCtrl
+    DelayRandom 106,108
+    KeyUp LCtrl
+    DelayRandom 1706,1724
+    KeyDown Down
+    DelayRandom 106,108
+    KeyDown 1
+    DelayRandom 148,150
+    KeyUp 1
+    DelayRandom 76,77
+    KeyUp Down
+    DelayRandom 680,687
+    KeyDown Left
+    DelayRandom 186,188
+    KeyDown Space
+    DelayRandom 62,63
+    KeyUp Space
+    DelayRandom 38,39
+    KeyDown Space
+    DelayRandom 90,91
+    KeyUp Space
+    DelayRandom 20,21
+    KeyUp Left
+    DelayRandom 1190,1202
+    KeyDown A
+    DelayRandom 141,143
+    KeyUp A
+    DelayRandom 256,259
+    KeyDown S
+    DelayRandom 122,124
+    KeyUp S
+    DelayRandom 305,309
+    KeyDown Left
+    DelayRandom 139,141
+    KeyUp Left
+    DelayRandom 442,447
+    KeyDown Down
+    DelayRandom 170,172
+    KeyDown LShift
+    DelayRandom 233,236
+    KeyUp LShift
+    DelayRandom 59,60
+    KeyUp Down
+    DelayRandom 874,883
+    KeyDown Left
+    DelayRandom 80,81
+    KeyUp Left
+    DelayRandom 114,116
+    KeyDown G
+    DelayRandom 114,116
+    KeyUp G
+    DelayRandom 1351,1365
+    KeyDown Right
+    DelayRandom 408,414
+    KeyUp Right
+    DelayRandom 242,245
+    KeyDown Space
+    DelayRandom 63,64
+    KeyUp Space
+    DelayRandom 335,339
+    KeyDown Space
+    DelayRandom 102,104
+    KeyUp Space
+    DelayRandom 3914,3954
+    KeyDown A
+    DelayRandom 134,136
+    KeyUp A
+    DelayRandom 203,206
+    KeyDown S
+    DelayRandom 120,122
+    KeyUp S
+    DelayRandom 165,167
+    KeyDown Up
+    DelayRandom 128,130
+    KeyUp Up
+    DelayRandom 486,491
+    KeyDown LAlt
+    DelayRandom 134,136
+    KeyUp LAlt
+    DelayRandom 391,395
+    KeyDown Left
+    DelayRandom 186,188
+    KeyDown Space
+    DelayRandom 132,134
+    KeyUp Space
+    DelayRandom 121,123
+    KeyUp Left
+    DelayRandom 1638,1655
+    KeyDown A
+    DelayRandom 116,118
+    KeyUp A
+    DelayRandom 289,292
+    KeyDown S
+    DelayRandom 115,117
+    KeyUp S
+    DelayRandom 225,228
+    KeyDown Left
+    DelayRandom 112,114
+    KeyUp Left
+    DelayRandom 491,496
+    KeyDown Down
+    DelayRandom 116,118
+    KeyDown LShift
+    DelayRandom 191,193
+    KeyUp LShift
+    DelayRandom 42,43
+    KeyUp Down
+    DelayRandom 825,834
+    KeyDown C
+    DelayRandom 165,167
+    KeyUp C
+    DelayRandom 2157,2179
+    KeyDown Down
+    DelayRandom 117,119
+    KeyDown `
+    DelayRandom 180,182
+    KeyUp `
+    DelayRandom 44,45
+    KeyUp Down
+    DelayRandom 955,965
+    KeyDown Right
+    DelayRandom 408,414
+    KeyUp Right
+    DelayRandom 314,318
+    KeyDown Space
+    DelayRandom 76,77
+    KeyUp Space
+    DelayRandom 70,71
+    KeyDown Space
+    DelayRandom 102,104
+    KeyUp Space
+    DelayRandom 2886,2915
+    KeyDown A
+    DelayRandom 126,128
+    KeyUp A
+    DelayRandom 208,211
+    KeyDown S
+    DelayRandom 105,107
+    KeyUp S
+    DelayRandom 204,207
+    KeyDown Up
+    DelayRandom 128,130
+    KeyUp Up
+    DelayRandom 1095,1106
+    KeyDown LAlt
+    DelayRandom 143,145
+    KeyUp LAlt
+    DelayRandom 312,316
+    KeyDown Left
+    DelayRandom 136,138
+    KeyDown Space
+    DelayRandom 106,108
+    KeyUp Space
+    DelayRandom 165,167
+    KeyUp Left
+    DelayRandom 1058,1069
+    KeyDown Left
+    DelayRandom 107,109
+    KeyUp Left
+    DelayRandom 411,416
+    KeyDown A
+    DelayRandom 144,146
+    KeyUp A
+    DelayRandom 190,192
+    KeyDown S
+    DelayRandom 103,105
+    KeyUp S
+    DelayRandom 259,262
+    KeyDown Left
+    DelayRandom 101,103
+    KeyUp Left
+    DelayRandom 2224,2247
+    KeyDown Down
+    DelayRandom 123,125
+    KeyDown LShift
+    DelayRandom 206,209
+    KeyUp LShift
+    DelayRandom 48,49
+    KeyUp Down
+    DelayRandom 413,418
+    KeyDown G
+    DelayRandom 172,174
+    KeyUp G
+    DelayRandom 2609,2636
+    KeyDown Down
+    DelayRandom 91,92
+    KeyDown `
+    DelayRandom 230,233
+    KeyUp `
+    DelayRandom 43,44
+    KeyUp Down
+    DelayRandom 1151,1163
+    KeyDown Right
+    DelayRandom 97,98
+    KeyDown Space
+    DelayRandom 72,73
+    KeyUp Space
+    DelayRandom 43,44
+    KeyDown Space
+    DelayRandom 97,98
+    KeyUp Space
+    DelayRandom 826,833
+    KeyUp Right
+    DelayRandom 2140,2165
+    KeyDown A
+    DelayRandom 122,124
+    KeyUp A
+    DelayRandom 206,209
+    KeyDown S
+    DelayRandom 106,108
+    KeyUp S
+    DelayRandom 247,250
+    KeyDown Up
+    DelayRandom 121,123
+    KeyUp Up
+    DelayRandom 2772,2800
+    KeyDown LAlt
+    DelayRandom 167,169
+    KeyUp LAlt
+    DelayRandom 272,275
+    KeyDown Left
+    DelayRandom 164,166
+    KeyDown Space
+    DelayRandom 101,103
+    KeyUp Space
+    DelayRandom 167,169
+    KeyUp Left
+    DelayRandom 1875,1884
+    KeyDown A
+    DelayRandom 131,133
+    KeyUp A
+    DelayRandom 181,183
+    KeyDown S
+    DelayRandom 118,120
+    KeyUp S
+    DelayRandom 400,405
+    KeyDown Left
+    DelayRandom 133,135
+    KeyUp Left
+    DelayRandom 2174,2196
+    KeyDown Down
+    DelayRandom 124,126
+    KeyDown LShift
+    DelayRandom 208,211
+    KeyUp LShift
+    DelayRandom 48,49
+    KeyUp Down
+End Sub
 
 //p3
-DelayRandom 642,649
-KeyDown Left
-DelayRandom 854,863
-KeyUp Left
-DelayRandom 61,62
-KeyDown Down
-DelayRandom 122,124
-KeyDown `
-DelayRandom 252,255
-KeyUp `
-DelayRandom 64,65
-KeyUp Down
-DelayRandom 1264,1277
-KeyDown LCtrl
-DelayRandom 142,144
-KeyUp LCtrl
-DelayRandom 488,493
-KeyDown LCtrl
-DelayRandom 773,781
-KeyUp LCtrl
-DelayRandom 1393,1407
-KeyDown Right
-DelayRandom 96,97
-KeyUp Right
-DelayRandom 51,52
-KeyDown F
-DelayRandom 1994,2014
-KeyUp F
-DelayRandom 455,460
-KeyDown A
-DelayRandom 143,145
-KeyUp A
-DelayRandom 231,234
-KeyDown S
-DelayRandom 116,118
-KeyUp S
-DelayRandom 277,280
-KeyDown Left
-DelayRandom 123,125
-KeyUp Left
-DelayRandom 297,300
-KeyDown Right
-DelayRandom 191,193
-KeyDown Space
-DelayRandom 74,75
-KeyUp Space
-DelayRandom 31,32
-KeyDown Space
-DelayRandom 85,86
-KeyUp Space
-DelayRandom 39,40
-KeyUp Right
-DelayRandom 60,61
-KeyDown F
-DelayRandom 276,279
-KeyUp F
-DelayRandom 624,631
-KeyDown Right
-DelayRandom 149,151
-KeyDown LShift
-DelayRandom 186,188
-KeyUp LShift
-DelayRandom 79,80
-KeyUp Right
-DelayRandom 349,353
-KeyDown Right
-DelayRandom 262,265
-KeyUp Right
-DelayRandom 64,65
-KeyDown Down
-DelayRandom 169,171
-KeyDown 1
-DelayRandom 145,147
-KeyUp 1
-DelayRandom 123,125
-KeyUp Down
-DelayRandom 497,502
-KeyDown Down
-DelayRandom 129,131
-KeyDown Space
-DelayRandom 133,135
-KeyUp Space
-DelayRandom 647,654
-KeyDown Space
-DelayRandom 141,143
-KeyUp Space
-DelayRandom 93,94
-KeyUp Down
-DelayRandom 794,802
-KeyDown Left
-DelayRandom 394,398
-KeyUp Left
-DelayRandom 120,122
-KeyDown A
-DelayRandom 137,139
-KeyUp A
-DelayRandom 172,174
-KeyDown S
-DelayRandom 134,136
-KeyUp S
-DelayRandom 259,262
-KeyDown Up
-DelayRandom 154,156
-KeyUp Up
-DelayRandom 865,874
-KeyDown Left
-DelayRandom 1160,1172
-KeyDown LShift
-DelayRandom 246,249
-KeyUp LShift
-DelayRandom 74,75
-KeyUp Left
-DelayRandom 2389,2413
-KeyDown C
-DelayRandom 149,151
-KeyUp C
-DelayRandom 1399,1413
-KeyDown Left
-DelayRandom 475,480
-KeyUp Left
-DelayRandom 110,112
-KeyDown Down
-DelayRandom 185,187
-KeyDown `
-DelayRandom 316,320
-KeyUp `
-DelayRandom 63,64
-KeyUp Down
-DelayRandom 942,952
-KeyDown Left
-DelayRandom 139,141
-KeyUp Left
-DelayRandom 1351,1365
-KeyDown LCtrl
-DelayRandom 148,150
-KeyUp LCtrl
-DelayRandom 582,588
-KeyDown LCtrl
-DelayRandom 718,726
-KeyUp LCtrl
-DelayRandom 965,975
-KeyDown Right
-DelayRandom 101,103
-KeyUp Right
-DelayRandom 136,138
-KeyDown G
-DelayRandom 170,172
-KeyUp G
-DelayRandom 1584,1600
-KeyDown Right
-DelayRandom 85,86
-KeyUp Right
-DelayRandom 162,164
-KeyDown A
-DelayRandom 143,145
-KeyUp A
-DelayRandom 233,236
-KeyDown S
-DelayRandom 118,120
-KeyUp S
-DelayRandom 199,201
-KeyDown Left
-DelayRandom 129,131
-KeyUp Left
-DelayRandom 651,658
-KeyDown Right
-DelayRandom 90,91
-KeyUp Right
-DelayRandom 257,260
-KeyDown Space
-DelayRandom 64,65
-KeyUp Space
-DelayRandom 36,37
-KeyDown Space
-DelayRandom 84,85
-KeyUp Space
-DelayRandom 648,655
-KeyDown F
-DelayRandom 255,258
-KeyUp F
-DelayRandom 669,676
-KeyDown Down
-DelayRandom 150,152
-KeyDown Space
-DelayRandom 131,133
-KeyUp Space
-DelayRandom 74,75
-KeyUp Down
-DelayRandom 743,751
-KeyDown Right
-DelayRandom 1273,1286
-KeyUp Right
-DelayRandom 743,751
-KeyDown B
-DelayRandom 215,218
-KeyUp B
-DelayRandom 892,901
-KeyDown Left
-DelayRandom 230,233
-KeyUp Left
-DelayRandom 336,340
-KeyDown A
-DelayRandom 137,139
-KeyUp A
-DelayRandom 303,307
-KeyDown S
-DelayRandom 117,119
-KeyUp S
-DelayRandom 306,310
-KeyDown Up
-DelayRandom 140,142
-KeyUp Up
-DelayRandom 774,782
-KeyDown Left
-DelayRandom 1237,1250
-KeyDown LShift
-DelayRandom 220,223
-KeyUp LShift
-DelayRandom 58,59
-KeyUp Left
-DelayRandom 3986,4026
-KeyDown Left
-DelayRandom 656,663
-KeyDown Down
-DelayRandom 28,29
-KeyUp Left
-DelayRandom 112,114
-KeyDown `
-DelayRandom 227,230
-KeyUp `
-DelayRandom 92,93
-KeyUp Down
-DelayRandom 645,652
-KeyDown Left
-DelayRandom 91,92
-KeyUp Left
-DelayRandom 542,548
-KeyDown LCtrl
-DelayRandom 102,104
-KeyUp LCtrl
-DelayRandom 747,755
-KeyDown LCtrl
-DelayRandom 558,564
-KeyUp LCtrl
-DelayRandom 510,516
-KeyDown Right
-DelayRandom 134,136
-KeyUp Right
-DelayRandom 240,243
-KeyDown A
-DelayRandom 148,150
-KeyUp A
-DelayRandom 325,329
-KeyDown S
-DelayRandom 131,133
-KeyUp S
-DelayRandom 302,306
-KeyDown Left
-DelayRandom 152,154
-KeyUp Left
-DelayRandom 475,480
-KeyDown Right
-DelayRandom 80,81
-KeyDown Space
-DelayRandom 89,90
-KeyUp Space
-DelayRandom 5,6
-KeyDown Space
-DelayRandom 90,91
-KeyDown F
-DelayRandom 11,12
-KeyUp Right
-DelayRandom 22,23
-KeyUp Space
-DelayRandom 83,84
-KeyUp F
-DelayRandom 1105,1117
-KeyDown Right
-DelayRandom 70,71
-KeyDown Space
-DelayRandom 63,64
-KeyUp Space
-DelayRandom 31,32
-KeyDown Space
-DelayRandom 80,81
-KeyUp Space
-DelayRandom 96,97
-KeyUp Right
-DelayRandom 44,45
-KeyDown F
-DelayRandom 251,254
-KeyUp F
-DelayRandom 816,825
-KeyDown Down
-DelayRandom 96,97
-KeyDown Space
-DelayRandom 134,136
-KeyUp Space
-DelayRandom 80,81
-KeyUp Down
-DelayRandom 908,918
-KeyDown Right
-DelayRandom 69,70
-KeyUp Right
-DelayRandom 111,113
-KeyDown Down
-DelayRandom 59,60
-KeyDown Space
-DelayRandom 171,173
-KeyUp Space
-DelayRandom 64,65
-KeyUp Down
-DelayRandom 1031,1042
-KeyDown Left
-DelayRandom 445,450
-KeyUp Left
-DelayRandom 189,191
-KeyDown A
-DelayRandom 143,145
-KeyUp A
-DelayRandom 175,177
-KeyDown S
-DelayRandom 124,126
-KeyUp S
-DelayRandom 217,220
-KeyDown Up
-DelayRandom 139,141
-KeyUp Up
-DelayRandom 930,940
-KeyDown Left
-DelayRandom 1864,1883
-KeyDown LShift
-DelayRandom 225,228
-KeyUp LShift
-DelayRandom 48,49
-KeyUp Left
-DelayRandom 512,521
-KeyDown F
-DelayRandom 427,432
-KeyUp F
+Sub Part3()
+    DelayRandom 642,649
+    KeyDown Left
+    DelayRandom 854,863
+    KeyUp Left
+    DelayRandom 61,62
+    KeyDown Down
+    DelayRandom 122,124
+    KeyDown `
+    DelayRandom 252,255
+    KeyUp `
+    DelayRandom 64,65
+    KeyUp Down
+    DelayRandom 1264,1277
+    KeyDown LCtrl
+    DelayRandom 142,144
+    KeyUp LCtrl
+    DelayRandom 488,493
+    KeyDown LCtrl
+    DelayRandom 773,781
+    KeyUp LCtrl
+    DelayRandom 1393,1407
+    KeyDown Right
+    DelayRandom 96,97
+    KeyUp Right
+    DelayRandom 51,52
+    KeyDown F
+    DelayRandom 1994,2014
+    KeyUp F
+    DelayRandom 455,460
+    KeyDown A
+    DelayRandom 143,145
+    KeyUp A
+    DelayRandom 231,234
+    KeyDown S
+    DelayRandom 116,118
+    KeyUp S
+    DelayRandom 277,280
+    KeyDown Left
+    DelayRandom 123,125
+    KeyUp Left
+    DelayRandom 297,300
+    KeyDown Right
+    DelayRandom 191,193
+    KeyDown Space
+    DelayRandom 74,75
+    KeyUp Space
+    DelayRandom 31,32
+    KeyDown Space
+    DelayRandom 85,86
+    KeyUp Space
+    DelayRandom 39,40
+    KeyUp Right
+    DelayRandom 60,61
+    KeyDown F
+    DelayRandom 276,279
+    KeyUp F
+    DelayRandom 624,631
+    KeyDown Right
+    DelayRandom 149,151
+    KeyDown LShift
+    DelayRandom 186,188
+    KeyUp LShift
+    DelayRandom 79,80
+    KeyUp Right
+    DelayRandom 349,353
+    KeyDown Right
+    DelayRandom 262,265
+    KeyUp Right
+    DelayRandom 64,65
+    KeyDown Down
+    DelayRandom 169,171
+    KeyDown 1
+    DelayRandom 145,147
+    KeyUp 1
+    DelayRandom 123,125
+    KeyUp Down
+    DelayRandom 497,502
+    KeyDown Down
+    DelayRandom 129,131
+    KeyDown Space
+    DelayRandom 133,135
+    KeyUp Space
+    DelayRandom 647,654
+    KeyDown Space
+    DelayRandom 141,143
+    KeyUp Space
+    DelayRandom 93,94
+    KeyUp Down
+    DelayRandom 794,802
+    KeyDown Left
+    DelayRandom 394,398
+    KeyUp Left
+    DelayRandom 120,122
+    KeyDown A
+    DelayRandom 137,139
+    KeyUp A
+    DelayRandom 172,174
+    KeyDown S
+    DelayRandom 134,136
+    KeyUp S
+    DelayRandom 259,262
+    KeyDown Up
+    DelayRandom 154,156
+    KeyUp Up
+    DelayRandom 865,874
+    KeyDown Left
+    DelayRandom 1160,1172
+    KeyDown LShift
+    DelayRandom 246,249
+    KeyUp LShift
+    DelayRandom 74,75
+    KeyUp Left
+    DelayRandom 2389,2413
+    KeyDown C
+    DelayRandom 149,151
+    KeyUp C
+    DelayRandom 1399,1413
+    KeyDown Left
+    DelayRandom 475,480
+    KeyUp Left
+    DelayRandom 110,112
+    KeyDown Down
+    DelayRandom 185,187
+    KeyDown `
+    DelayRandom 316,320
+    KeyUp `
+    DelayRandom 63,64
+    KeyUp Down
+    DelayRandom 942,952
+    KeyDown Left
+    DelayRandom 139,141
+    KeyUp Left
+    DelayRandom 1351,1365
+    KeyDown LCtrl
+    DelayRandom 148,150
+    KeyUp LCtrl
+    DelayRandom 582,588
+    KeyDown LCtrl
+    DelayRandom 718,726
+    KeyUp LCtrl
+    DelayRandom 965,975
+    KeyDown Right
+    DelayRandom 101,103
+    KeyUp Right
+    DelayRandom 136,138
+    KeyDown G
+    DelayRandom 170,172
+    KeyUp G
+    DelayRandom 1584,1600
+    KeyDown Right
+    DelayRandom 85,86
+    KeyUp Right
+    DelayRandom 162,164
+    KeyDown A
+    DelayRandom 143,145
+    KeyUp A
+    DelayRandom 233,236
+    KeyDown S
+    DelayRandom 118,120
+    KeyUp S
+    DelayRandom 199,201
+    KeyDown Left
+    DelayRandom 129,131
+    KeyUp Left
+    DelayRandom 651,658
+    KeyDown Right
+    DelayRandom 90,91
+    KeyUp Right
+    DelayRandom 257,260
+    KeyDown Space
+    DelayRandom 64,65
+    KeyUp Space
+    DelayRandom 36,37
+    KeyDown Space
+    DelayRandom 84,85
+    KeyUp Space
+    DelayRandom 648,655
+    KeyDown F
+    DelayRandom 255,258
+    KeyUp F
+    DelayRandom 669,676
+    KeyDown Down
+    DelayRandom 150,152
+    KeyDown Space
+    DelayRandom 131,133
+    KeyUp Space
+    DelayRandom 74,75
+    KeyUp Down
+    DelayRandom 743,751
+    KeyDown Right
+    DelayRandom 1273,1286
+    KeyUp Right
+    DelayRandom 743,751
+    KeyDown B
+    DelayRandom 215,218
+    KeyUp B
+    DelayRandom 892,901
+    KeyDown Left
+    DelayRandom 230,233
+    KeyUp Left
+    DelayRandom 336,340
+    KeyDown A
+    DelayRandom 137,139
+    KeyUp A
+    DelayRandom 303,307
+    KeyDown S
+    DelayRandom 117,119
+    KeyUp S
+    DelayRandom 306,310
+    KeyDown Up
+    DelayRandom 140,142
+    KeyUp Up
+    DelayRandom 774,782
+    KeyDown Left
+    DelayRandom 1237,1250
+    KeyDown LShift
+    DelayRandom 220,223
+    KeyUp LShift
+    DelayRandom 58,59
+    KeyUp Left
+    DelayRandom 3986,4026
+    KeyDown Left
+    DelayRandom 656,663
+    KeyDown Down
+    DelayRandom 28,29
+    KeyUp Left
+    DelayRandom 112,114
+    KeyDown `
+    DelayRandom 227,230
+    KeyUp `
+    DelayRandom 92,93
+    KeyUp Down
+    DelayRandom 645,652
+    KeyDown Left
+    DelayRandom 91,92
+    KeyUp Left
+    DelayRandom 542,548
+    KeyDown LCtrl
+    DelayRandom 102,104
+    KeyUp LCtrl
+    DelayRandom 747,755
+    KeyDown LCtrl
+    DelayRandom 558,564
+    KeyUp LCtrl
+    DelayRandom 510,516
+    KeyDown Right
+    DelayRandom 134,136
+    KeyUp Right
+    DelayRandom 240,243
+    KeyDown A
+    DelayRandom 148,150
+    KeyUp A
+    DelayRandom 325,329
+    KeyDown S
+    DelayRandom 131,133
+    KeyUp S
+    DelayRandom 302,306
+    KeyDown Left
+    DelayRandom 152,154
+    KeyUp Left
+    DelayRandom 475,480
+    KeyDown Right
+    DelayRandom 80,81
+    KeyDown Space
+    DelayRandom 89,90
+    KeyUp Space
+    DelayRandom 5,6
+    KeyDown Space
+    DelayRandom 90,91
+    KeyDown F
+    DelayRandom 11,12
+    KeyUp Right
+    DelayRandom 22,23
+    KeyUp Space
+    DelayRandom 83,84
+    KeyUp F
+    DelayRandom 1105,1117
+    KeyDown Right
+    DelayRandom 70,71
+    KeyDown Space
+    DelayRandom 63,64
+    KeyUp Space
+    DelayRandom 31,32
+    KeyDown Space
+    DelayRandom 80,81
+    KeyUp Space
+    DelayRandom 96,97
+    KeyUp Right
+    DelayRandom 44,45
+    KeyDown F
+    DelayRandom 251,254
+    KeyUp F
+    DelayRandom 816,825
+    KeyDown Down
+    DelayRandom 96,97
+    KeyDown Space
+    DelayRandom 134,136
+    KeyUp Space
+    DelayRandom 80,81
+    KeyUp Down
+    DelayRandom 908,918
+    KeyDown Right
+    DelayRandom 69,70
+    KeyUp Right
+    DelayRandom 111,113
+    KeyDown Down
+    DelayRandom 59,60
+    KeyDown Space
+    DelayRandom 171,173
+    KeyUp Space
+    DelayRandom 64,65
+    KeyUp Down
+    DelayRandom 1031,1042
+    KeyDown Left
+    DelayRandom 445,450
+    KeyUp Left
+    DelayRandom 189,191
+    KeyDown A
+    DelayRandom 143,145
+    KeyUp A
+    DelayRandom 175,177
+    KeyDown S
+    DelayRandom 124,126
+    KeyUp S
+    DelayRandom 217,220
+    KeyDown Up
+    DelayRandom 139,141
+    KeyUp Up
+    DelayRandom 930,940
+    KeyDown Left
+    DelayRandom 1864,1883
+    KeyDown LShift
+    DelayRandom 225,228
+    KeyUp LShift
+    DelayRandom 48,49
+    KeyUp Left
+    DelayRandom 512,521
+    KeyDown F
+    DelayRandom 427,432
+    KeyUp F
+End Sub
 
 //p4
-DelayRandom 581,587
-KeyDown Down
-DelayRandom 119,121
-KeyDown `
-DelayRandom 217,220
-KeyUp `
-DelayRandom 60,61
-KeyUp Down
-DelayRandom 578,584
-KeyDown V
-DelayRandom 154,156
-KeyUp V
-DelayRandom 769,777
-KeyDown Right
-DelayRandom 112,114
-KeyDown Space
-DelayRandom 79,80
-KeyUp Space
-DelayRandom 53,54
-KeyDown Space
-DelayRandom 55,56
-KeyUp Right
-DelayRandom 47,48
-KeyUp Space
-DelayRandom 1431,1446
-KeyDown Right
-DelayRandom 137,139
-KeyUp Right
-DelayRandom 2189,2211
-KeyDown F
-DelayRandom 905,915
-KeyUp F
-DelayRandom 364,368
-KeyDown A
-DelayRandom 135,137
-KeyUp A
-DelayRandom 140,142
-KeyDown S
-DelayRandom 129,131
-KeyUp S
-DelayRandom 219,222
-KeyDown Up
-DelayRandom 100,102
-KeyUp Up
-DelayRandom 292,295
-KeyDown Right
-DelayRandom 1041,1052
-KeyUp Right
-DelayRandom 360,364
-KeyDown LCtrl
-DelayRandom 147,149
-KeyUp LCtrl
-DelayRandom 1859,1878
-KeyDown Down
-DelayRandom 113,115
-KeyDown 1
-DelayRandom 149,151
-KeyUp 1
-DelayRandom 59,60
-KeyUp Down
-DelayRandom 543,549
-KeyDown Left
-DelayRandom 79,80
-KeyDown Space
-DelayRandom 69,70
-KeyUp Space
-DelayRandom 48,49
-KeyDown Space
-DelayRandom 32,33
-KeyUp Left
-DelayRandom 53,54
-KeyUp Space
-DelayRandom 2057,2078
-KeyDown A
-DelayRandom 155,157
-KeyUp A
-DelayRandom 241,244
-KeyDown S
-DelayRandom 132,134
-KeyUp S
-DelayRandom 278,281
-KeyDown Left
-DelayRandom 120,122
-KeyUp Left
-DelayRandom 910,920
-KeyDown Down
-DelayRandom 116,118
-KeyDown LShift
-DelayRandom 191,193
-KeyUp LShift
-DelayRandom 48,49
-KeyUp Down
-DelayRandom 1739,1757
-KeyDown C
-DelayRandom 180,182
-KeyUp C
-DelayRandom 1183,1195
-KeyDown F
-DelayRandom 197,199
-KeyUp F
-DelayRandom 949,959
-KeyDown Right
-DelayRandom 2527,2553
-KeyUp Right
-DelayRandom 523,529
-KeyDown Right
-DelayRandom 211,214
-KeyUp Right
-DelayRandom 306,310
-KeyDown A
-DelayRandom 153,155
-KeyUp A
-DelayRandom 208,211
-KeyDown S
-DelayRandom 122,124
-KeyUp S
-DelayRandom 197,199
-KeyDown Up
-DelayRandom 101,103
-KeyUp Up
-DelayRandom 452,457
-KeyDown LAlt
-DelayRandom 151,153
-KeyUp LAlt
-DelayRandom 316,320
-KeyDown Left
-DelayRandom 175,177
-KeyDown Space
-DelayRandom 203,206
-KeyUp Space
-DelayRandom 57,58
-KeyUp Left
-DelayRandom 1244,1257
-KeyDown Left
-DelayRandom 315,319
-KeyUp Left
-DelayRandom 950,960
-KeyDown A
-DelayRandom 143,145
-KeyUp A
-DelayRandom 197,199
-KeyDown S
-DelayRandom 132,134
-KeyUp S
-DelayRandom 301,305
-KeyDown Left
-DelayRandom 90,91
-KeyUp Left
-DelayRandom 792,800
-KeyDown Down
-DelayRandom 122,124
-KeyDown LShift
-DelayRandom 203,206
-KeyUp LShift
-DelayRandom 54,55
-KeyUp Down
-DelayRandom 1221,1234
-KeyDown G
-DelayRandom 196,198
-KeyUp G
-DelayRandom 1530,1546
-KeyDown Right
-DelayRandom 113,115
-KeyUp Right
-DelayRandom 37,38
-KeyDown Space
-DelayRandom 76,77
-KeyUp Space
-DelayRandom 54,55
-KeyDown Space
-DelayRandom 92,93
-KeyUp Space
-DelayRandom 3701,3739
-KeyDown A
-DelayRandom 144,146
-KeyUp A
-DelayRandom 164,166
-KeyDown S
-DelayRandom 143,145
-KeyUp S
-DelayRandom 190,192
-KeyDown Up
-DelayRandom 119,121
-KeyUp Up
-DelayRandom 421,426
-KeyDown LAlt
-DelayRandom 180,182
-KeyUp LAlt
-DelayRandom 317,321
-KeyDown Left
-DelayRandom 139,141
-KeyDown Space
-DelayRandom 145,147
-KeyUp Space
-DelayRandom 21,22
-KeyUp Left
-DelayRandom 2672,2699
-KeyDown B
-DelayRandom 193,195
-KeyUp B
-DelayRandom 2159,2181
-KeyDown A
-DelayRandom 155,157
-KeyUp A
-DelayRandom 196,198
-KeyDown S
-DelayRandom 134,136
-KeyUp S
-DelayRandom 244,247
-KeyDown Left
-DelayRandom 98,99
-KeyUp Left
-DelayRandom 405,410
-KeyDown Down
-DelayRandom 120,122
-KeyDown LShift
-DelayRandom 198,200
-KeyUp LShift
-DelayRandom 33,34
-KeyUp Down
-DelayRandom 947,957
-KeyDown Down
-DelayRandom 101,103
-KeyDown `
-DelayRandom 259,262
-KeyUp `
-DelayRandom 68,69
-KeyUp Down
-DelayRandom 1391,1405
-KeyDown F
-DelayRandom 1452,1467
-KeyUp F
-DelayRandom 554,560
-KeyDown Right
-DelayRandom 100,102
-KeyUp Right
-DelayRandom 490,495
-KeyDown Space
-DelayRandom 77,78
-KeyUp Space
-DelayRandom 46,47
-KeyDown Space
-DelayRandom 85,86
-KeyUp Space
-DelayRandom 2980,3010
-KeyDown Right
-DelayRandom 222,225
-KeyUp Right
-DelayRandom 2595,2621
-KeyDown A
-DelayRandom 172,174
-KeyUp A
-DelayRandom 180,182
-KeyDown S
-DelayRandom 123,125
-KeyUp S
-DelayRandom 251,254
-KeyDown Up
-DelayRandom 106,108
-KeyUp Up
-DelayRandom 399,403
-KeyDown LAlt
-DelayRandom 173,175
-KeyUp LAlt
-DelayRandom 391,395
-KeyDown Left
-DelayRandom 90,91
-KeyDown Space
-DelayRandom 150,152
-KeyUp Space
-DelayRandom 54,55
-KeyUp Left
-DelayRandom 2653,2680
-KeyDown A
-DelayRandom 165,167
-KeyUp A
-DelayRandom 243,246
-KeyDown S
-DelayRandom 127,129
-KeyUp S
-DelayRandom 265,268
-KeyDown Left
-DelayRandom 102,104
-KeyUp Left
-DelayRandom 1092,1103
-KeyDown Down
-DelayRandom 89,90
-KeyDown LShift
-DelayRandom 230,233
-KeyUp LShift
-DelayRandom 45,46
-KeyUp Down
+Sub Part4()
+    DelayRandom 581,587
+    KeyDown Down
+    DelayRandom 119,121
+    KeyDown `
+    DelayRandom 217,220
+    KeyUp `
+    DelayRandom 60,61
+    KeyUp Down
+    DelayRandom 578,584
+    KeyDown V
+    DelayRandom 154,156
+    KeyUp V
+    DelayRandom 769,777
+    KeyDown Right
+    DelayRandom 112,114
+    KeyDown Space
+    DelayRandom 79,80
+    KeyUp Space
+    DelayRandom 53,54
+    KeyDown Space
+    DelayRandom 55,56
+    KeyUp Right
+    DelayRandom 47,48
+    KeyUp Space
+    DelayRandom 1431,1446
+    KeyDown Right
+    DelayRandom 137,139
+    KeyUp Right
+    DelayRandom 2189,2211
+    KeyDown F
+    DelayRandom 905,915
+    KeyUp F
+    DelayRandom 364,368
+    KeyDown A
+    DelayRandom 135,137
+    KeyUp A
+    DelayRandom 140,142
+    KeyDown S
+    DelayRandom 129,131
+    KeyUp S
+    DelayRandom 219,222
+    KeyDown Up
+    DelayRandom 100,102
+    KeyUp Up
+    DelayRandom 292,295
+    KeyDown Right
+    DelayRandom 1041,1052
+    KeyUp Right
+    DelayRandom 360,364
+    KeyDown LCtrl
+    DelayRandom 147,149
+    KeyUp LCtrl
+    DelayRandom 1859,1878
+    KeyDown Down
+    DelayRandom 113,115
+    KeyDown 1
+    DelayRandom 149,151
+    KeyUp 1
+    DelayRandom 59,60
+    KeyUp Down
+    DelayRandom 543,549
+    KeyDown Left
+    DelayRandom 79,80
+    KeyDown Space
+    DelayRandom 69,70
+    KeyUp Space
+    DelayRandom 48,49
+    KeyDown Space
+    DelayRandom 32,33
+    KeyUp Left
+    DelayRandom 53,54
+    KeyUp Space
+    DelayRandom 2057,2078
+    KeyDown A
+    DelayRandom 155,157
+    KeyUp A
+    DelayRandom 241,244
+    KeyDown S
+    DelayRandom 132,134
+    KeyUp S
+    DelayRandom 278,281
+    KeyDown Left
+    DelayRandom 120,122
+    KeyUp Left
+    DelayRandom 910,920
+    KeyDown Down
+    DelayRandom 116,118
+    KeyDown LShift
+    DelayRandom 191,193
+    KeyUp LShift
+    DelayRandom 48,49
+    KeyUp Down
+    DelayRandom 1739,1757
+    KeyDown C
+    DelayRandom 180,182
+    KeyUp C
+    DelayRandom 1183,1195
+    KeyDown F
+    DelayRandom 197,199
+    KeyUp F
+    DelayRandom 949,959
+    KeyDown Right
+    DelayRandom 2527,2553
+    KeyUp Right
+    DelayRandom 523,529
+    KeyDown Right
+    DelayRandom 211,214
+    KeyUp Right
+    DelayRandom 306,310
+    KeyDown A
+    DelayRandom 153,155
+    KeyUp A
+    DelayRandom 208,211
+    KeyDown S
+    DelayRandom 122,124
+    KeyUp S
+    DelayRandom 197,199
+    KeyDown Up
+    DelayRandom 101,103
+    KeyUp Up
+    DelayRandom 452,457
+    KeyDown LAlt
+    DelayRandom 151,153
+    KeyUp LAlt
+    DelayRandom 316,320
+    KeyDown Left
+    DelayRandom 175,177
+    KeyDown Space
+    DelayRandom 203,206
+    KeyUp Space
+    DelayRandom 57,58
+    KeyUp Left
+    DelayRandom 1244,1257
+    KeyDown Left
+    DelayRandom 315,319
+    KeyUp Left
+    DelayRandom 950,960
+    KeyDown A
+    DelayRandom 143,145
+    KeyUp A
+    DelayRandom 197,199
+    KeyDown S
+    DelayRandom 132,134
+    KeyUp S
+    DelayRandom 301,305
+    KeyDown Left
+    DelayRandom 90,91
+    KeyUp Left
+    DelayRandom 792,800
+    KeyDown Down
+    DelayRandom 122,124
+    KeyDown LShift
+    DelayRandom 203,206
+    KeyUp LShift
+    DelayRandom 54,55
+    KeyUp Down
+    DelayRandom 1221,1234
+    KeyDown G
+    DelayRandom 196,198
+    KeyUp G
+    DelayRandom 1530,1546
+    KeyDown Right
+    DelayRandom 113,115
+    KeyUp Right
+    DelayRandom 37,38
+    KeyDown Space
+    DelayRandom 76,77
+    KeyUp Space
+    DelayRandom 54,55
+    KeyDown Space
+    DelayRandom 92,93
+    KeyUp Space
+    DelayRandom 3701,3739
+    KeyDown A
+    DelayRandom 144,146
+    KeyUp A
+    DelayRandom 164,166
+    KeyDown S
+    DelayRandom 143,145
+    KeyUp S
+    DelayRandom 190,192
+    KeyDown Up
+    DelayRandom 119,121
+    KeyUp Up
+    DelayRandom 421,426
+    KeyDown LAlt
+    DelayRandom 180,182
+    KeyUp LAlt
+    DelayRandom 317,321
+    KeyDown Left
+    DelayRandom 139,141
+    KeyDown Space
+    DelayRandom 145,147
+    KeyUp Space
+    DelayRandom 21,22
+    KeyUp Left
+    DelayRandom 2672,2699
+    KeyDown B
+    DelayRandom 193,195
+    KeyUp B
+    DelayRandom 2159,2181
+    KeyDown A
+    DelayRandom 155,157
+    KeyUp A
+    DelayRandom 196,198
+    KeyDown S
+    DelayRandom 134,136
+    KeyUp S
+    DelayRandom 244,247
+    KeyDown Left
+    DelayRandom 98,99
+    KeyUp Left
+    DelayRandom 405,410
+    KeyDown Down
+    DelayRandom 120,122
+    KeyDown LShift
+    DelayRandom 198,200
+    KeyUp LShift
+    DelayRandom 33,34
+    KeyUp Down
+    DelayRandom 947,957
+    KeyDown Down
+    DelayRandom 101,103
+    KeyDown `
+    DelayRandom 259,262
+    KeyUp `
+    DelayRandom 68,69
+    KeyUp Down
+    DelayRandom 1391,1405
+    KeyDown F
+    DelayRandom 1452,1467
+    KeyUp F
+    DelayRandom 554,560
+    KeyDown Right
+    DelayRandom 100,102
+    KeyUp Right
+    DelayRandom 490,495
+    KeyDown Space
+    DelayRandom 77,78
+    KeyUp Space
+    DelayRandom 46,47
+    KeyDown Space
+    DelayRandom 85,86
+    KeyUp Space
+    DelayRandom 2980,3010
+    KeyDown Right
+    DelayRandom 222,225
+    KeyUp Right
+    DelayRandom 2595,2621
+    KeyDown A
+    DelayRandom 172,174
+    KeyUp A
+    DelayRandom 180,182
+    KeyDown S
+    DelayRandom 123,125
+    KeyUp S
+    DelayRandom 251,254
+    KeyDown Up
+    DelayRandom 106,108
+    KeyUp Up
+    DelayRandom 399,403
+    KeyDown LAlt
+    DelayRandom 173,175
+    KeyUp LAlt
+    DelayRandom 391,395
+    KeyDown Left
+    DelayRandom 90,91
+    KeyDown Space
+    DelayRandom 150,152
+    KeyUp Space
+    DelayRandom 54,55
+    KeyUp Left
+    DelayRandom 2653,2680
+    KeyDown A
+    DelayRandom 165,167
+    KeyUp A
+    DelayRandom 243,246
+    KeyDown S
+    DelayRandom 127,129
+    KeyUp S
+    DelayRandom 265,268
+    KeyDown Left
+    DelayRandom 102,104
+    KeyUp Left
+    DelayRandom 1092,1103
+    KeyDown Down
+    DelayRandom 89,90
+    KeyDown LShift
+    DelayRandom 230,233
+    KeyUp LShift
+    DelayRandom 45,46
+    KeyUp Down
+End Sub
 
 //p5
-DelayRandom 461,466
-KeyDown Down
-DelayRandom 111,113
-KeyDown `
-DelayRandom 160,162
-KeyUp `
-DelayRandom 59,60
-KeyUp Down
-DelayRandom 578,584
-KeyDown G
-DelayRandom 140,142
-KeyUp G
-DelayRandom 720,728
-KeyDown Right
-DelayRandom 76,77
-KeyDown Space
-DelayRandom 80,81
-KeyUp Space
-DelayRandom 44,45
-KeyDown Space
-DelayRandom 105,107
-KeyUp Space
-DelayRandom 215,218
-KeyUp Right
-DelayRandom 601,608
-KeyDown Right
-DelayRandom 937,947
-KeyUp Right
-DelayRandom 223,226
-KeyDown LAlt
-DelayRandom 112,114
-KeyUp LAlt
-DelayRandom 1115,1127
-KeyDown LAlt
-DelayRandom 147,149
-KeyUp LAlt
-DelayRandom 1092,1103
-KeyDown Down
-DelayRandom 181,183
-KeyDown 1
-DelayRandom 163,165
-KeyUp 1
-DelayRandom 41,42
-KeyUp Down
-DelayRandom 609,616
-KeyDown Left
-DelayRandom 60,61
-KeyDown Space
-DelayRandom 70,71
-KeyUp Space
-DelayRandom 32,33
-KeyDown Space
-DelayRandom 67,68
-KeyUp Left
-DelayRandom 19,20
-KeyUp Space
-DelayRandom 190,192
-KeyDown X
-DelayRandom 54,55
-KeyDown C
-DelayRandom 105,107
-KeyUp X
-DelayRandom 29,30
-KeyUp C
-DelayRandom 1556,1572
-KeyDown Left
-DelayRandom 214,217
-KeyUp Left
-DelayRandom 1083,1094
-KeyDown Down
-DelayRandom 103,105
-KeyDown LShift
-DelayRandom 142,144
-KeyUp LShift
-DelayRandom 53,54
-KeyUp Down
-DelayRandom 862,871
-KeyDown Left
-DelayRandom 938,948
-KeyUp Left
-DelayRandom 413,418
-KeyDown LCtrl
-DelayRandom 107,109
-KeyUp LCtrl
-DelayRandom 685,692
-KeyDown LCtrl
-DelayRandom 457,462
-KeyUp LCtrl
-DelayRandom 646,653
-KeyDown Right
-DelayRandom 223,226
-KeyUp Right
-DelayRandom 342,346
-KeyDown A
-DelayRandom 140,142
-KeyUp A
-DelayRandom 200,203
-KeyDown S
-DelayRandom 135,137
-KeyUp S
-DelayRandom 221,224
-KeyDown Left
-DelayRandom 143,145
-KeyUp Left
-DelayRandom 411,416
-KeyDown Right
-DelayRandom 54,55
-KeyDown Space
-DelayRandom 69,70
-KeyUp Space
-DelayRandom 32,33
-KeyDown Space
-DelayRandom 191,193
-KeyUp Right
-DelayRandom 1,2
-KeyUp Space
-DelayRandom 623,630
-KeyDown Right
-DelayRandom 31,32
-KeyDown Space
-DelayRandom 74,75
-KeyUp Space
-DelayRandom 38,39
-KeyDown Space
-DelayRandom 69,70
-KeyUp Right
-DelayRandom 11,12
-KeyUp Space
-DelayRandom 1147,1159
-KeyDown Down
-DelayRandom 80,81
-KeyDown Space
-DelayRandom 124,126
-KeyUp Space
-DelayRandom 69,70
-KeyUp Down
-DelayRandom 619,626
-KeyDown Down
-DelayRandom 79,80
-KeyDown Space
-DelayRandom 132,134
-KeyUp Space
-DelayRandom 38,39
-KeyUp Down
-DelayRandom 908,918
-KeyDown B
-DelayRandom 181,183
-KeyUp B
-DelayRandom 1004,1015
-KeyDown Left
-DelayRandom 1194,1206
-KeyUp Left
-DelayRandom 272,275
-KeyDown A
-DelayRandom 128,130
-KeyUp A
-DelayRandom 312,316
-KeyDown S
-DelayRandom 110,112
-KeyUp S
-DelayRandom 236,239
-KeyDown Up
-DelayRandom 143,145
-KeyUp Up
-DelayRandom 609,616
-KeyDown Left
-DelayRandom 804,813
-KeyDown LShift
-DelayRandom 197,199
-KeyUp LShift
-DelayRandom 85,86
-KeyUp Left
-DelayRandom 1739,1757
-KeyDown Down
-DelayRandom 91,92
-KeyDown `
-DelayRandom 413,418
-KeyUp `
-DelayRandom 32,33
-KeyUp Down
-DelayRandom 1298,1311
-KeyDown Left
-DelayRandom 1037,1048
-KeyUp Left
-DelayRandom 437,442
-KeyDown LCtrl
-DelayRandom 140,142
-KeyUp LCtrl
-DelayRandom 615,622
-KeyDown LCtrl
-DelayRandom 628,635
-KeyUp LCtrl
-DelayRandom 496,501
-KeyDown Right
-DelayRandom 282,285
-KeyUp Right
-DelayRandom 385,389
-KeyDown A
-DelayRandom 135,137
-KeyUp A
-DelayRandom 201,204
-KeyDown S
-DelayRandom 123,125
-KeyUp S
-DelayRandom 211,214
-KeyDown Left
-DelayRandom 136,138
-KeyUp Left
-DelayRandom 430,435
-KeyDown Right
-DelayRandom 55,56
-KeyDown Space
-DelayRandom 73,74
-KeyUp Space
-DelayRandom 37,38
-KeyDown Space
-DelayRandom 76,77
-KeyUp Space
-DelayRandom 63,64
-KeyUp Right
-DelayRandom 1024,1035
-KeyDown Down
-DelayRandom 150,152
-KeyDown Space
-DelayRandom 106,108
-KeyUp Space
-DelayRandom 27,28
-KeyUp Down
-DelayRandom 865,874
-KeyDown Right
-DelayRandom 2009,2030
-KeyUp Right
-DelayRandom 376,380
-KeyDown Left
-DelayRandom 767,775
-KeyUp Left
-DelayRandom 159,161
-KeyDown A
-DelayRandom 167,169
-KeyUp A
-DelayRandom 216,219
-KeyDown S
-DelayRandom 129,131
-KeyUp S
-DelayRandom 174,176
-KeyDown Up
-DelayRandom 146,148
-KeyUp Up
-DelayRandom 1105,1117
-KeyDown Left
-DelayRandom 997,1007
-KeyDown LShift
-DelayRandom 239,242
-KeyUp LShift
-DelayRandom 45,46
-KeyUp Left
-DelayRandom 1695,1712
-KeyDown Left
-DelayRandom 641,648
-KeyUp Left
-DelayRandom 376,380
-KeyDown LCtrl
-DelayRandom 76,77
-KeyUp LCtrl
-DelayRandom 658,665
-KeyDown LCtrl
-DelayRandom 586,592
-KeyUp LCtrl
-DelayRandom 763,771
-KeyDown Right
-DelayRandom 139,141
-KeyUp Right
-DelayRandom 315,319
-KeyDown A
-DelayRandom 144,146
-KeyUp A
-DelayRandom 258,261
-KeyDown S
-DelayRandom 131,133
-KeyUp S
-DelayRandom 176,178
-KeyDown Left
-DelayRandom 136,138
-KeyUp Left
-DelayRandom 679,686
-KeyDown Right
-DelayRandom 62,63
-KeyDown Space
-DelayRandom 70,71
-KeyUp Space
-DelayRandom 26,27
-KeyDown Space
-DelayRandom 77,78
-KeyUp Right
-DelayRandom 3,4
-KeyUp Space
-DelayRandom 2736,2764
-KeyDown Right
-DelayRandom 82,83
-KeyDown LShift
-DelayRandom 162,164
-KeyUp LShift
-DelayRandom 102,104
-KeyUp Right
-DelayRandom 422,427
-KeyDown Right
-DelayRandom 382,386
-KeyUp Right
-DelayRandom 41,42
-KeyDown Down
-DelayRandom 85,86
-KeyDown Space
-DelayRandom 133,135
-KeyUp Space
-DelayRandom 49,50
-KeyUp Down
-DelayRandom 505,511
-KeyDown Down
-DelayRandom 155,157
-KeyDown Space
-DelayRandom 133,135
-KeyUp Space
-DelayRandom 28,29
-KeyUp Down
-DelayRandom 1600,1617
-KeyDown 4
-DelayRandom 188,190
-KeyUp 4
-DelayRandom 1200,1213
-KeyDown Left
-DelayRandom 768,776
-KeyUp Left
-DelayRandom 129,131
-KeyDown A
-DelayRandom 124,126
-KeyUp A
-DelayRandom 201,204
-KeyDown S
-DelayRandom 123,125
-KeyUp S
-DelayRandom 186,188
-KeyDown Up
-DelayRandom 121,123
-KeyUp Up
-DelayRandom 527,533
-KeyDown Left
-DelayRandom 724,732
-KeyDown LShift
-DelayRandom 200,203
-KeyUp LShift
-DelayRandom 20,21
-KeyUp Left
-
+Sub Part5()
+    DelayRandom 461,466
+    KeyDown Down
+    DelayRandom 111,113
+    KeyDown `
+    DelayRandom 160,162
+    KeyUp `
+    DelayRandom 59,60
+    KeyUp Down
+    DelayRandom 578,584
+    KeyDown G
+    DelayRandom 140,142
+    KeyUp G
+    DelayRandom 720,728
+    KeyDown Right
+    DelayRandom 76,77
+    KeyDown Space
+    DelayRandom 80,81
+    KeyUp Space
+    DelayRandom 44,45
+    KeyDown Space
+    DelayRandom 105,107
+    KeyUp Space
+    DelayRandom 215,218
+    KeyUp Right
+    DelayRandom 601,608
+    KeyDown Right
+    DelayRandom 937,947
+    KeyUp Right
+    DelayRandom 223,226
+    KeyDown LAlt
+    DelayRandom 112,114
+    KeyUp LAlt
+    DelayRandom 1115,1127
+    KeyDown LAlt
+    DelayRandom 147,149
+    KeyUp LAlt
+    DelayRandom 1092,1103
+    KeyDown Down
+    DelayRandom 181,183
+    KeyDown 1
+    DelayRandom 163,165
+    KeyUp 1
+    DelayRandom 41,42
+    KeyUp Down
+    DelayRandom 609,616
+    KeyDown Left
+    DelayRandom 60,61
+    KeyDown Space
+    DelayRandom 70,71
+    KeyUp Space
+    DelayRandom 32,33
+    KeyDown Space
+    DelayRandom 67,68
+    KeyUp Left
+    DelayRandom 19,20
+    KeyUp Space
+    DelayRandom 190,192
+    KeyDown X
+    DelayRandom 54,55
+    KeyDown C
+    DelayRandom 105,107
+    KeyUp X
+    DelayRandom 29,30
+    KeyUp C
+    DelayRandom 1556,1572
+    KeyDown Left
+    DelayRandom 214,217
+    KeyUp Left
+    DelayRandom 1083,1094
+    KeyDown Down
+    DelayRandom 103,105
+    KeyDown LShift
+    DelayRandom 142,144
+    KeyUp LShift
+    DelayRandom 53,54
+    KeyUp Down
+    DelayRandom 862,871
+    KeyDown Left
+    DelayRandom 938,948
+    KeyUp Left
+    DelayRandom 413,418
+    KeyDown LCtrl
+    DelayRandom 107,109
+    KeyUp LCtrl
+    DelayRandom 685,692
+    KeyDown LCtrl
+    DelayRandom 457,462
+    KeyUp LCtrl
+    DelayRandom 646,653
+    KeyDown Right
+    DelayRandom 223,226
+    KeyUp Right
+    DelayRandom 342,346
+    KeyDown A
+    DelayRandom 140,142
+    KeyUp A
+    DelayRandom 200,203
+    KeyDown S
+    DelayRandom 135,137
+    KeyUp S
+    DelayRandom 221,224
+    KeyDown Left
+    DelayRandom 143,145
+    KeyUp Left
+    DelayRandom 411,416
+    KeyDown Right
+    DelayRandom 54,55
+    KeyDown Space
+    DelayRandom 69,70
+    KeyUp Space
+    DelayRandom 32,33
+    KeyDown Space
+    DelayRandom 191,193
+    KeyUp Right
+    DelayRandom 1,2
+    KeyUp Space
+    DelayRandom 623,630
+    KeyDown Right
+    DelayRandom 31,32
+    KeyDown Space
+    DelayRandom 74,75
+    KeyUp Space
+    DelayRandom 38,39
+    KeyDown Space
+    DelayRandom 69,70
+    KeyUp Right
+    DelayRandom 11,12
+    KeyUp Space
+    DelayRandom 1147,1159
+    KeyDown Down
+    DelayRandom 80,81
+    KeyDown Space
+    DelayRandom 124,126
+    KeyUp Space
+    DelayRandom 69,70
+    KeyUp Down
+    DelayRandom 619,626
+    KeyDown Down
+    DelayRandom 79,80
+    KeyDown Space
+    DelayRandom 132,134
+    KeyUp Space
+    DelayRandom 38,39
+    KeyUp Down
+    DelayRandom 908,918
+    KeyDown B
+    DelayRandom 181,183
+    KeyUp B
+    DelayRandom 1004,1015
+    KeyDown Left
+    DelayRandom 1194,1206
+    KeyUp Left
+    DelayRandom 272,275
+    KeyDown A
+    DelayRandom 128,130
+    KeyUp A
+    DelayRandom 312,316
+    KeyDown S
+    DelayRandom 110,112
+    KeyUp S
+    DelayRandom 236,239
+    KeyDown Up
+    DelayRandom 143,145
+    KeyUp Up
+    DelayRandom 609,616
+    KeyDown Left
+    DelayRandom 804,813
+    KeyDown LShift
+    DelayRandom 197,199
+    KeyUp LShift
+    DelayRandom 85,86
+    KeyUp Left
+    DelayRandom 1739,1757
+    KeyDown Down
+    DelayRandom 91,92
+    KeyDown `
+    DelayRandom 413,418
+    KeyUp `
+    DelayRandom 32,33
+    KeyUp Down
+    DelayRandom 1298,1311
+    KeyDown Left
+    DelayRandom 1037,1048
+    KeyUp Left
+    DelayRandom 437,442
+    KeyDown LCtrl
+    DelayRandom 140,142
+    KeyUp LCtrl
+    DelayRandom 615,622
+    KeyDown LCtrl
+    DelayRandom 628,635
+    KeyUp LCtrl
+    DelayRandom 496,501
+    KeyDown Right
+    DelayRandom 282,285
+    KeyUp Right
+    DelayRandom 385,389
+    KeyDown A
+    DelayRandom 135,137
+    KeyUp A
+    DelayRandom 201,204
+    KeyDown S
+    DelayRandom 123,125
+    KeyUp S
+    DelayRandom 211,214
+    KeyDown Left
+    DelayRandom 136,138
+    KeyUp Left
+    DelayRandom 430,435
+    KeyDown Right
+    DelayRandom 55,56
+    KeyDown Space
+    DelayRandom 73,74
+    KeyUp Space
+    DelayRandom 37,38
+    KeyDown Space
+    DelayRandom 76,77
+    KeyUp Space
+    DelayRandom 63,64
+    KeyUp Right
+    DelayRandom 1024,1035
+    KeyDown Down
+    DelayRandom 150,152
+    KeyDown Space
+    DelayRandom 106,108
+    KeyUp Space
+    DelayRandom 27,28
+    KeyUp Down
+    DelayRandom 865,874
+    KeyDown Right
+    DelayRandom 2009,2030
+    KeyUp Right
+    DelayRandom 376,380
+    KeyDown Left
+    DelayRandom 767,775
+    KeyUp Left
+    DelayRandom 159,161
+    KeyDown A
+    DelayRandom 167,169
+    KeyUp A
+    DelayRandom 216,219
+    KeyDown S
+    DelayRandom 129,131
+    KeyUp S
+    DelayRandom 174,176
+    KeyDown Up
+    DelayRandom 146,148
+    KeyUp Up
+    DelayRandom 1105,1117
+    KeyDown Left
+    DelayRandom 997,1007
+    KeyDown LShift
+    DelayRandom 239,242
+    KeyUp LShift
+    DelayRandom 45,46
+    KeyUp Left
+    DelayRandom 1695,1712
+    KeyDown Left
+    DelayRandom 641,648
+    KeyUp Left
+    DelayRandom 376,380
+    KeyDown LCtrl
+    DelayRandom 76,77
+    KeyUp LCtrl
+    DelayRandom 658,665
+    KeyDown LCtrl
+    DelayRandom 586,592
+    KeyUp LCtrl
+    DelayRandom 763,771
+    KeyDown Right
+    DelayRandom 139,141
+    KeyUp Right
+    DelayRandom 315,319
+    KeyDown A
+    DelayRandom 144,146
+    KeyUp A
+    DelayRandom 258,261
+    KeyDown S
+    DelayRandom 131,133
+    KeyUp S
+    DelayRandom 176,178
+    KeyDown Left
+    DelayRandom 136,138
+    KeyUp Left
+    DelayRandom 679,686
+    KeyDown Right
+    DelayRandom 62,63
+    KeyDown Space
+    DelayRandom 70,71
+    KeyUp Space
+    DelayRandom 26,27
+    KeyDown Space
+    DelayRandom 77,78
+    KeyUp Right
+    DelayRandom 3,4
+    KeyUp Space
+    DelayRandom 2736,2764
+    KeyDown Right
+    DelayRandom 82,83
+    KeyDown LShift
+    DelayRandom 162,164
+    KeyUp LShift
+    DelayRandom 102,104
+    KeyUp Right
+    DelayRandom 422,427
+    KeyDown Right
+    DelayRandom 382,386
+    KeyUp Right
+    DelayRandom 41,42
+    KeyDown Down
+    DelayRandom 85,86
+    KeyDown Space
+    DelayRandom 133,135
+    KeyUp Space
+    DelayRandom 49,50
+    KeyUp Down
+    DelayRandom 505,511
+    KeyDown Down
+    DelayRandom 155,157
+    KeyDown Space
+    DelayRandom 133,135
+    KeyUp Space
+    DelayRandom 28,29
+    KeyUp Down
+    DelayRandom 1600,1617
+    KeyDown 4
+    DelayRandom 188,190
+    KeyUp 4
+    DelayRandom 1200,1213
+    KeyDown Left
+    DelayRandom 768,776
+    KeyUp Left
+    DelayRandom 129,131
+    KeyDown A
+    DelayRandom 124,126
+    KeyUp A
+    DelayRandom 201,204
+    KeyDown S
+    DelayRandom 123,125
+    KeyUp S
+    DelayRandom 186,188
+    KeyDown Up
+    DelayRandom 121,123
+    KeyUp Up
+    DelayRandom 527,533
+    KeyDown Left
+    DelayRandom 724,732
+    KeyDown LShift
+    DelayRandom 200,203
+    KeyUp LShift
+    DelayRandom 20,21
+    KeyUp Left
+End Sub
 
 //p6
-DelayRandom 481,486
-KeyDown Down
-DelayRandom 91,92
-KeyDown `
-DelayRandom 214,217
-KeyUp Down
-DelayRandom 36,37
-KeyUp `
-DelayRandom 1197,1209
-KeyDown Right
-DelayRandom 158,160
-KeyDown Space
-DelayRandom 81,82
-KeyUp Space
-DelayRandom 76,77
-KeyDown Space
-DelayRandom 79,80
-KeyUp Space
-DelayRandom 56,57
-KeyDown Space
-DelayRandom 43,44
-KeyUp Space
-DelayRandom 10,11
-KeyUp Right
-DelayRandom 1155,1167
-KeyDown Right
-DelayRandom 792,800
-KeyUp Right
-DelayRandom 231,234
-KeyDown LCtrl
-DelayRandom 171,173
-KeyUp LCtrl
-DelayRandom 710,718
-KeyDown LCtrl
-DelayRandom 549,555
-KeyUp LCtrl
-DelayRandom 836,845
-KeyDown Down
-DelayRandom 75,76
-KeyDown 1
-DelayRandom 181,183
-KeyUp 1
-DelayRandom 80,81
-KeyUp Down
-DelayRandom 869,878
-KeyDown Left
-DelayRandom 78,79
-KeyDown Space
-DelayRandom 61,62
-KeyUp Space
-DelayRandom 34,35
-KeyDown Space
-DelayRandom 82,83
-KeyUp Left
-DelayRandom 1,2
-KeyUp Space
-DelayRandom 2729,2757
-KeyDown C
-DelayRandom 134,136
-KeyUp C
-DelayRandom 971,981
-KeyDown Left
-DelayRandom 172,174
-KeyUp Left
-DelayRandom 170,172
-KeyDown A
-DelayRandom 122,124
-KeyUp A
-DelayRandom 156,158
-KeyDown S
-DelayRandom 129,131
-KeyUp S
-DelayRandom 202,205
-KeyDown Left
-DelayRandom 123,125
-KeyUp Left
-DelayRandom 391,395
-KeyDown Down
-DelayRandom 85,86
-KeyDown LShift
-DelayRandom 165,167
-KeyUp LShift
-DelayRandom 48,49
-KeyUp Down
-DelayRandom 452,457
-KeyDown F
-DelayRandom 1775,1793
-KeyUp F
-DelayRandom 431,436
-KeyDown G
-DelayRandom 193,195
-KeyUp G
-DelayRandom 562,568
-KeyDown Right
-DelayRandom 101,103
-KeyDown Space
-DelayRandom 53,54
-KeyUp Space
-DelayRandom 70,71
-KeyDown Space
-DelayRandom 46,47
-KeyUp Space
-DelayRandom 80,81
-KeyUp Right
-DelayRandom 1148,1160
-KeyDown A
-DelayRandom 117,119
-KeyUp A
-DelayRandom 151,153
-KeyDown S
-DelayRandom 123,125
-KeyUp S
-DelayRandom 216,219
-KeyDown Up
-DelayRandom 137,139
-KeyUp Up
-DelayRandom 415,420
-KeyDown Right
-DelayRandom 382,386
-KeyUp Right
-DelayRandom 139,141
-KeyDown LAlt
-DelayRandom 144,146
-KeyUp LAlt
-DelayRandom 300,304
-KeyDown Left
-DelayRandom 176,178
-KeyDown Space
-DelayRandom 149,151
-KeyUp Space
-DelayRandom 85,86
-KeyUp Left
-DelayRandom 1839,1858
-KeyDown H
-DelayRandom 145,147
-KeyUp H
-DelayRandom 2209,2232
-KeyDown Left
-DelayRandom 351,355
-KeyUp Left
-DelayRandom 116,118
-KeyDown A
-DelayRandom 143,145
-KeyUp A
-DelayRandom 117,119
-KeyDown S
-DelayRandom 123,125
-KeyUp S
-DelayRandom 200,203
-KeyDown Left
-DelayRandom 128,130
-KeyUp Left
-DelayRandom 470,475
-KeyDown Down
-DelayRandom 91,92
-KeyDown LShift
-DelayRandom 238,241
-KeyUp LShift
-DelayRandom 21,22
-KeyUp Down
-DelayRandom 2584,2610
-KeyDown Down
-DelayRandom 110,112
-KeyDown `
-DelayRandom 193,195
-KeyUp `
-DelayRandom 51,52
-KeyUp Down
-DelayRandom 788,796
-KeyDown Right
-DelayRandom 63,64
-KeyDown Space
-DelayRandom 75,76
-KeyUp Space
-DelayRandom 52,53
-KeyDown Space
-DelayRandom 115,117
-KeyUp Space
-DelayRandom 43,44
-KeyUp Right
-DelayRandom 1478,1493
-KeyDown A
-DelayRandom 161,163
-KeyUp A
-DelayRandom 150,152
-KeyDown S
-DelayRandom 142,144
-KeyUp S
-DelayRandom 177,179
-KeyDown Up
-DelayRandom 171,173
-KeyUp Up
-DelayRandom 551,557
-KeyDown Right
-DelayRandom 236,239
-KeyUp Right
-DelayRandom 1162,1174
-KeyDown Y
-DelayRandom 171,173
-KeyUp Y
-DelayRandom 1063,1074
-KeyDown LAlt
-DelayRandom 160,162
-KeyUp LAlt
-DelayRandom 290,293
-KeyDown Left
-DelayRandom 167,169
-KeyDown Space
-DelayRandom 156,158
-KeyUp Space
-DelayRandom 128,130
-KeyUp Left
-DelayRandom 576,582
-KeyDown G
-DelayRandom 156,158
-KeyUp G
-DelayRandom 3035,3066
-KeyDown A
-DelayRandom 150,152
-KeyUp A
-DelayRandom 200,203
-KeyDown S
-DelayRandom 140,142
-KeyUp S
-DelayRandom 159,161
-KeyDown Left
-DelayRandom 135,137
-KeyUp Left
-DelayRandom 901,911
-KeyDown Down
-DelayRandom 105,107
-KeyDown LShift
-DelayRandom 166,168
-KeyUp LShift
-DelayRandom 44,45
-KeyUp Down
-DelayRandom 2332,2356
-KeyDown Down
-DelayRandom 105,107
-KeyDown `
-DelayRandom 181,183
-KeyUp `
-DelayRandom 44,45
-KeyUp Down
-DelayRandom 544,550
-KeyDown F
-DelayRandom 914,924
-KeyUp F
-DelayRandom 333,337
-KeyDown Right
-DelayRandom 92,93
-KeyDown Space
-DelayRandom 69,70
-KeyUp Space
-DelayRandom 48,49
-KeyDown Space
-DelayRandom 16,17
-KeyUp Right
-DelayRandom 58,59
-KeyUp Space
-DelayRandom 191,193
-KeyDown F
-DelayRandom 229,232
-KeyUp F
-DelayRandom 938,948
-KeyDown Right
-DelayRandom 266,269
-KeyUp Right
-DelayRandom 143,145
-KeyDown A
-DelayRandom 153,155
-KeyUp A
-DelayRandom 197,199
-KeyDown S
-DelayRandom 133,135
-KeyUp S
-DelayRandom 174,176
-KeyDown Up
-DelayRandom 146,148
-KeyUp Up
-DelayRandom 707,715
-KeyDown B
-DelayRandom 206,209
-KeyUp B
-DelayRandom 837,846
-KeyDown LAlt
-DelayRandom 170,172
-KeyUp LAlt
-DelayRandom 367,371
-KeyDown Left
-DelayRandom 150,152
-KeyDown Space
-DelayRandom 143,145
-KeyUp Space
-DelayRandom 108,110
-KeyUp Left
-DelayRandom 3605,3642
-KeyDown A
-DelayRandom 134,136
-KeyUp A
-DelayRandom 135,137
-KeyDown S
-DelayRandom 141,143
-KeyUp S
-DelayRandom 180,182
-KeyDown Left
-DelayRandom 140,142
-KeyUp Left
-DelayRandom 838,847
-KeyDown Down
-DelayRandom 100,102
-KeyDown LShift
-DelayRandom 180,182
-KeyUp LShift
-DelayRandom 20,21
-KeyUp Down
+Sub Part6()
+    DelayRandom 481,486
+    KeyDown Down
+    DelayRandom 91,92
+    KeyDown `
+    DelayRandom 214,217
+    KeyUp Down
+    DelayRandom 36,37
+    KeyUp `
+    DelayRandom 1197,1209
+    KeyDown Right
+    DelayRandom 158,160
+    KeyDown Space
+    DelayRandom 81,82
+    KeyUp Space
+    DelayRandom 76,77
+    KeyDown Space
+    DelayRandom 79,80
+    KeyUp Space
+    DelayRandom 56,57
+    KeyDown Space
+    DelayRandom 43,44
+    KeyUp Space
+    DelayRandom 10,11
+    KeyUp Right
+    DelayRandom 1155,1167
+    KeyDown Right
+    DelayRandom 792,800
+    KeyUp Right
+    DelayRandom 231,234
+    KeyDown LCtrl
+    DelayRandom 171,173
+    KeyUp LCtrl
+    DelayRandom 710,718
+    KeyDown LCtrl
+    DelayRandom 549,555
+    KeyUp LCtrl
+    DelayRandom 836,845
+    KeyDown Down
+    DelayRandom 75,76
+    KeyDown 1
+    DelayRandom 181,183
+    KeyUp 1
+    DelayRandom 80,81
+    KeyUp Down
+    DelayRandom 869,878
+    KeyDown Left
+    DelayRandom 78,79
+    KeyDown Space
+    DelayRandom 61,62
+    KeyUp Space
+    DelayRandom 34,35
+    KeyDown Space
+    DelayRandom 82,83
+    KeyUp Left
+    DelayRandom 1,2
+    KeyUp Space
+    DelayRandom 2729,2757
+    KeyDown C
+    DelayRandom 134,136
+    KeyUp C
+    DelayRandom 971,981
+    KeyDown Left
+    DelayRandom 172,174
+    KeyUp Left
+    DelayRandom 170,172
+    KeyDown A
+    DelayRandom 122,124
+    KeyUp A
+    DelayRandom 156,158
+    KeyDown S
+    DelayRandom 129,131
+    KeyUp S
+    DelayRandom 202,205
+    KeyDown Left
+    DelayRandom 123,125
+    KeyUp Left
+    DelayRandom 391,395
+    KeyDown Down
+    DelayRandom 85,86
+    KeyDown LShift
+    DelayRandom 165,167
+    KeyUp LShift
+    DelayRandom 48,49
+    KeyUp Down
+    DelayRandom 452,457
+    KeyDown F
+    DelayRandom 1775,1793
+    KeyUp F
+    DelayRandom 431,436
+    KeyDown G
+    DelayRandom 193,195
+    KeyUp G
+    DelayRandom 562,568
+    KeyDown Right
+    DelayRandom 101,103
+    KeyDown Space
+    DelayRandom 53,54
+    KeyUp Space
+    DelayRandom 70,71
+    KeyDown Space
+    DelayRandom 46,47
+    KeyUp Space
+    DelayRandom 80,81
+    KeyUp Right
+    DelayRandom 1148,1160
+    KeyDown A
+    DelayRandom 117,119
+    KeyUp A
+    DelayRandom 151,153
+    KeyDown S
+    DelayRandom 123,125
+    KeyUp S
+    DelayRandom 216,219
+    KeyDown Up
+    DelayRandom 137,139
+    KeyUp Up
+    DelayRandom 415,420
+    KeyDown Right
+    DelayRandom 382,386
+    KeyUp Right
+    DelayRandom 139,141
+    KeyDown LAlt
+    DelayRandom 144,146
+    KeyUp LAlt
+    DelayRandom 300,304
+    KeyDown Left
+    DelayRandom 176,178
+    KeyDown Space
+    DelayRandom 149,151
+    KeyUp Space
+    DelayRandom 85,86
+    KeyUp Left
+    DelayRandom 1839,1858
+    KeyDown H
+    DelayRandom 145,147
+    KeyUp H
+    DelayRandom 2209,2232
+    KeyDown Left
+    DelayRandom 351,355
+    KeyUp Left
+    DelayRandom 116,118
+    KeyDown A
+    DelayRandom 143,145
+    KeyUp A
+    DelayRandom 117,119
+    KeyDown S
+    DelayRandom 123,125
+    KeyUp S
+    DelayRandom 200,203
+    KeyDown Left
+    DelayRandom 128,130
+    KeyUp Left
+    DelayRandom 470,475
+    KeyDown Down
+    DelayRandom 91,92
+    KeyDown LShift
+    DelayRandom 238,241
+    KeyUp LShift
+    DelayRandom 21,22
+    KeyUp Down
+    DelayRandom 2584,2610
+    KeyDown Down
+    DelayRandom 110,112
+    KeyDown `
+    DelayRandom 193,195
+    KeyUp `
+    DelayRandom 51,52
+    KeyUp Down
+    DelayRandom 788,796
+    KeyDown Right
+    DelayRandom 63,64
+    KeyDown Space
+    DelayRandom 75,76
+    KeyUp Space
+    DelayRandom 52,53
+    KeyDown Space
+    DelayRandom 115,117
+    KeyUp Space
+    DelayRandom 43,44
+    KeyUp Right
+    DelayRandom 1478,1493
+    KeyDown A
+    DelayRandom 161,163
+    KeyUp A
+    DelayRandom 150,152
+    KeyDown S
+    DelayRandom 142,144
+    KeyUp S
+    DelayRandom 177,179
+    KeyDown Up
+    DelayRandom 171,173
+    KeyUp Up
+    DelayRandom 551,557
+    KeyDown Right
+    DelayRandom 236,239
+    KeyUp Right
+    DelayRandom 1162,1174
+    KeyDown Y
+    DelayRandom 171,173
+    KeyUp Y
+    DelayRandom 1063,1074
+    KeyDown LAlt
+    DelayRandom 160,162
+    KeyUp LAlt
+    DelayRandom 290,293
+    KeyDown Left
+    DelayRandom 167,169
+    KeyDown Space
+    DelayRandom 156,158
+    KeyUp Space
+    DelayRandom 128,130
+    KeyUp Left
+    DelayRandom 576,582
+    KeyDown G
+    DelayRandom 156,158
+    KeyUp G
+    DelayRandom 3035,3066
+    KeyDown A
+    DelayRandom 150,152
+    KeyUp A
+    DelayRandom 200,203
+    KeyDown S
+    DelayRandom 140,142
+    KeyUp S
+    DelayRandom 159,161
+    KeyDown Left
+    DelayRandom 135,137
+    KeyUp Left
+    DelayRandom 901,911
+    KeyDown Down
+    DelayRandom 105,107
+    KeyDown LShift
+    DelayRandom 166,168
+    KeyUp LShift
+    DelayRandom 44,45
+    KeyUp Down
+    DelayRandom 2332,2356
+    KeyDown Down
+    DelayRandom 105,107
+    KeyDown `
+    DelayRandom 181,183
+    KeyUp `
+    DelayRandom 44,45
+    KeyUp Down
+    DelayRandom 544,550
+    KeyDown F
+    DelayRandom 914,924
+    KeyUp F
+    DelayRandom 333,337
+    KeyDown Right
+    DelayRandom 92,93
+    KeyDown Space
+    DelayRandom 69,70
+    KeyUp Space
+    DelayRandom 48,49
+    KeyDown Space
+    DelayRandom 16,17
+    KeyUp Right
+    DelayRandom 58,59
+    KeyUp Space
+    DelayRandom 191,193
+    KeyDown F
+    DelayRandom 229,232
+    KeyUp F
+    DelayRandom 938,948
+    KeyDown Right
+    DelayRandom 266,269
+    KeyUp Right
+    DelayRandom 143,145
+    KeyDown A
+    DelayRandom 153,155
+    KeyUp A
+    DelayRandom 197,199
+    KeyDown S
+    DelayRandom 133,135
+    KeyUp S
+    DelayRandom 174,176
+    KeyDown Up
+    DelayRandom 146,148
+    KeyUp Up
+    DelayRandom 707,715
+    KeyDown B
+    DelayRandom 206,209
+    KeyUp B
+    DelayRandom 837,846
+    KeyDown LAlt
+    DelayRandom 170,172
+    KeyUp LAlt
+    DelayRandom 367,371
+    KeyDown Left
+    DelayRandom 150,152
+    KeyDown Space
+    DelayRandom 143,145
+    KeyUp Space
+    DelayRandom 108,110
+    KeyUp Left
+    DelayRandom 3605,3642
+    KeyDown A
+    DelayRandom 134,136
+    KeyUp A
+    DelayRandom 135,137
+    KeyDown S
+    DelayRandom 141,143
+    KeyUp S
+    DelayRandom 180,182
+    KeyDown Left
+    DelayRandom 140,142
+    KeyUp Left
+    DelayRandom 838,847
+    KeyDown Down
+    DelayRandom 100,102
+    KeyDown LShift
+    DelayRandom 180,182
+    KeyUp LShift
+    DelayRandom 20,21
+    KeyUp Down
+End Sub
+
+a=random(1,7)
+if a==1 then
+    Call Part2()
+ElseIf a==2 then
+    Call Part1()
+ElseIf a==3 then
+    Call Part3()
+ElseIf a==4 then
+    Call Part4()
+ElseIf a==5 then
+    Call Part5()
+else
+    Call Part6()
+EndIf
+
