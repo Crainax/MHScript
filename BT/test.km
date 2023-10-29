@@ -5,10 +5,10 @@ Times=0
 
 [Script]
 Dim intX,intY
-FindPic 800,2300,1439,2559,"J:\MHscript\Img\Fly.bmp",000000,1.00,0,intX,intY	//ÕÒÍ¼
+FindPic 800,2300,1439,2559,"E:\MHImg\Fly.bmp",000000,1.00,0,intX,intY	//ÕÒÍ¼
 If intX >= 0 Then
 	MsgBox 123	//µ¯´°
 else
-	MsgBox    456	//µ¯´°
+	MsgBox 456	//µ¯´°
 End If
-Delay 1000
+Delay 300
