@@ -11,21 +11,33 @@ Sub Fly1()
     KeyDown E
     DelayRandom 137,139
     KeyUp E
-    DelayRandom 403,408
+    DelayRandom 239,242
     KeyDown Down
-    DelayRandom 103,105
+    DelayRandom 79,80
     KeyUp Down
-    DelayRandom 317,321
+    DelayRandom 269,272
     KeyDown Down
+    DelayRandom 53,54
+    KeyUp Down
+    DelayRandom 62,63
+    KeyDown Down
+    DelayRandom 128,130
+    KeyUp Down
+    DelayRandom 259,262
+    KeyDown Down
+    DelayRandom 121,123
+    KeyUp Down
+    DelayRandom 227,230
+    KeyDown Down
+    DelayRandom 69,70
+    KeyUp Down
     DelayRandom 70,71
-    KeyUp Down
-    DelayRandom 55,56
     KeyDown Down
-    DelayRandom 136,138
+    DelayRandom 129,131
     KeyUp Down
-    DelayRandom 449,454
+    DelayRandom 309,313
     KeyDown Down
-    DelayRandom 325,329
+    DelayRandom 295,298
     KeyUp Down
     DelayRandom 374,378
     KeyDown Up
@@ -35,7 +47,7 @@ Sub Fly1()
     KeyDown D
     DelayRandom 1133,1145
     KeyUp D
-    DelayRandom 618,625
+    DelayRandom 318,325
     KeyDown Right
     DelayRandom 95,96
     KeyUp Right
@@ -73,7 +85,7 @@ Sub Fly1()
     KeyUp Left
     DelayRandom 174,176
     KeyDown D
-    DelayRandom 4896,4945
+    DelayRandom 4696,4745
     KeyUp D
     DelayRandom 203,206
     KeyDown D
@@ -214,6 +226,6 @@ Sub Land1()
     DelayRandom 201,205
 End Sub
 
-// Call Fly1()
-Call Land1()
+Call Fly1()
+//Call Land1()
 
