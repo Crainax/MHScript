@@ -4,17 +4,26 @@ ScreenY=2560
 Times=0
 
 [Script]
+Dim mX,mY,i
 
 Sub Fly1()
     DelayRandom 65,78
-    KeyDown W
-    DelayRandom 122,124
-    KeyUp W
-    DelayRandom 502,512
-    KeyDown Q
-    DelayRandom 111,113
-    KeyUp Q
-    DelayRandom 714,722
+    FindPic 800,2300,1439,2559,"E:\MHImg\BT_V1.bmp",000000,1.00,0,mX,mY	//找V1
+    if mX >= 0 Then
+        KeyDown Q
+        DelayRandom 111,113
+        KeyUp Q
+        DelayRandom 714,722
+    End If
+    if i == 0 Then //根据i是否为0判断是不是第一次起飞(循环起飞不用开W)
+        FindPic 800,2300,1439,2559,"E:\MHImg\BT_V2.bmp",000000,1.00,0,mX,mY	//找V2
+        if mX >= 0 Then
+            KeyDown W
+            DelayRandom 122,124
+            KeyUp W
+            DelayRandom 402,412
+        End If
+    End If
     KeyDown E
     DelayRandom 137,139
     KeyUp E
@@ -122,119 +131,158 @@ Sub Land1()
     KeyDown W
     DelayRandom 119,121
     KeyUp W
-    DelayRandom 524,530
+    DelayRandom 82,83
     KeyDown Q
     DelayRandom 102,104
     KeyUp Q
-    DelayRandom 472,477
+    DelayRandom 462,467
     KeyDown Left
-    DelayRandom 95,96
+    DelayRandom 46,47
     KeyUp Left
-    DelayRandom 408,413
-    KeyDown Left
-    DelayRandom 260,263
-    KeyUp Left
-    DelayRandom 267,270
-    KeyDown Left
-    DelayRandom 96,97
+    DelayRandom 185,187
     KeyDown Space
-    DelayRandom 37,38
+    DelayRandom 46,47
     KeyUp Space
+    DelayRandom 54,55
+    KeyDown Space
     DelayRandom 70,71
-    KeyDown Space
-    DelayRandom 78,79
     KeyUp Space
-    DelayRandom 296,299
+    DelayRandom 341,345
     KeyDown LShift
-    DelayRandom 380,384
+    DelayRandom 813,822
     KeyUp LShift
-    DelayRandom 26,27
-    KeyUp Left
-    DelayRandom 1170,1182
-    KeyDown Left
-    DelayRandom 962,972
-    KeyUp Left
-    DelayRandom 106,108
+    DelayRandom 632,639
+    KeyDown Right
+    DelayRandom 63,64
+    KeyUp Right
+    DelayRandom 213,217
     KeyDown LAlt
-    DelayRandom 1396,1410
+    DelayRandom 1556,1572
     KeyUp LAlt
-    DelayRandom 164,166
+    DelayRandom 390,394
+    KeyDown R
+    DelayRandom 159,161
+    KeyUp R
+    DelayRandom 1078,1089
+    KeyDown S
+    DelayRandom 781,789
+    KeyUp S
+    DelayRandom 246,249
     KeyDown Down
-    DelayRandom 110,112
+    DelayRandom 105,107
     KeyDown 1
-    DelayRandom 170,172
+    DelayRandom 202,205
     KeyUp 1
-    DelayRandom 274,277
+    DelayRandom 77,78
     KeyUp Down
-    DelayRandom 880,889
-    KeyDown Right
-    DelayRandom 68,69
-    KeyUp Right
-    DelayRandom 417,422
+    DelayRandom 812,821
     KeyDown LAlt
-    DelayRandom 137,139
+    DelayRandom 80,81
     KeyUp LAlt
-    DelayRandom 1487,1502
+    DelayRandom 2133,2155
     KeyDown Right
-    DelayRandom 71,72
+    DelayRandom 94,95
     KeyUp Right
-    DelayRandom 289,292
+    DelayRandom 191,193
+    FindPic 800,2300,1439,2559,"E:\MHImg\BT_Spider.bmp",000000,1.00,0,mX,mY
+    if mX >= 0 Then //找蜘蛛
+        KeyDown H
+        DelayRandom 105,107
+        KeyUp H
+        DelayRandom 929,939
+    else
+        FindPic 800,2300,1439,2559,"E:\MHImg\BT_Lieyang.bmp",000000,1.00,0,mX,mY
+        if mX >= 0 Then //找烈阳
+            KeyDown Y
+            DelayRandom 105,107
+            KeyUp Y
+            DelayRandom 811,813
+        else
+            FindPic 800,2300,1439,2559,"E:\MHImg\BT_Whister.bmp",000000,1.00,0,mX,mY
+            if mX >= 0 Then //找哨子
+                KeyDown 5
+                DelayRandom 105,107
+                KeyUp 5
+                DelayRandom 72,74
+                KeyDown B
+                DelayRandom 97,99
+                KeyUp B
+                DelayRandom 312,324
+                KeyDown C
+                DelayRandom 214,217
+                KeyUp C
+                DelayRandom 879,891
+            else
+                FindPic 800,2300,1439,2559,"E:\MHImg\BT_Wugong.bmp",000000,1.00,0,mX,mY
+                if mX >= 0 Then //找武公
+                    KeyDown 4
+                    DelayRandom 105,107
+                    KeyUp 4
+                    DelayRandom 899,909
+                else //什么都没有就普攻一下
+                    KeyDown S
+                    DelayRandom 781,789
+                    KeyUp S
+                    DelayRandom 246,249
+                End If
+            End If
+        End If
+    End If
     KeyDown Space
-    DelayRandom 58,59
+    DelayRandom 62,63
     KeyUp Space
+    DelayRandom 79,80
+    KeyDown Space
+    DelayRandom 70,71
+    KeyUp Space
+    DelayRandom 407,412
+    KeyDown LShift
+    DelayRandom 871,880
+    KeyUp LShift
+    DelayRandom 756,764
+    KeyDown Right
+    DelayRandom 458,463
+    KeyUp Right
+    DelayRandom 161,163
+    KeyDown Down
+    DelayRandom 119,121
+    KeyDown Space
+    DelayRandom 112,114
+    KeyUp Space
+    DelayRandom 45,46
+    KeyUp Down
+    DelayRandom 1028,1039
+    KeyDown Down
+    DelayRandom 105,107
+    KeyDown Space
+    DelayRandom 109,111
+    KeyUp Space
+    DelayRandom 38,39
+    KeyUp Down
+    DelayRandom 1729,1747
+    KeyDown Down
     DelayRandom 70,71
     KeyDown Space
-    DelayRandom 69,70
+    DelayRandom 87,88
     KeyUp Space
-    DelayRandom 375,379
-    KeyDown LShift
-    DelayRandom 1036,1047
-    KeyUp LShift
-    DelayRandom 654,661
-    KeyDown H
-    DelayRandom 112,114
-    KeyUp H
-    DelayRandom 1491,1506
-    KeyDown Left
-    DelayRandom 169,171
-    KeyUp Left
-    DelayRandom 177,179
-    KeyDown Down
-    DelayRandom 112,114
-    KeyDown Space
-    DelayRandom 136,138
-    KeyUp Space
-    DelayRandom 62,63
+    DelayRandom 30,31
     KeyUp Down
-    DelayRandom 1068,1079
-    KeyDown Down
-    DelayRandom 120,122
-    KeyDown Space
-    DelayRandom 127,129
-    KeyUp Space
-    DelayRandom 45,46
-    KeyUp Down
-    DelayRandom 1247,1260
-    KeyDown Left
-    DelayRandom 1385,1399
-    KeyUp Left
-    DelayRandom 2792,2820
-    KeyDown Left
-    DelayRandom 45,46
-    KeyUp Left
+    DelayRandom 201,205
 End Sub
 
 Dim intX,intY
 intX=-1
 while intX < 0
     Delay 100
-    FindPic 800,2300,1439,2559,"E:\MHImg\Fly.bmp",000000,1.00,0,intX,intY
+    FindPic 800,2300,1439,2559,"E:\MHImg\BT_Fly.bmp",000000,1.00,0,intX,intY
 Wend
 //执行到这步代表判断成功
 
+i = 0
 while intX >= 0
     Call Fly1()
-    FindPic 800,2300,1439,2559,"E:\MHImg\Fly.bmp",000000,1.00,0,intX,intY	//落地判断,如果还能找到就循环飞
+    FindPic 800,2300,1439,2559,"E:\MHImg\BT_Fly.bmp",000000,1.00,0,intX,intY	//落地判断,如果还能找到就循环飞
+    i = i + 1
 Wend
 Call Land1() //技能冷却中 去捡钱
 
