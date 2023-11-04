@@ -166,10 +166,11 @@ Sub Move_Back() //从喷泉传送门回到待机点,
     FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
     intX = intX - logoX
     intY = intY - logoY
-    If intX < 120 Then //如果还在原地,就换个方式
-        tarX = 42
+    If intX < 100 Then //如果还在原地,就换个方式
+        tarX = 120
         tarY = 150
         Call Seek() //前往左下传送门
+        TracePrint 触发了强制离开喷泉地，左下到右下
     else //传送到了右边
         Call Attack()
         DelayRandom 246,249
@@ -215,6 +216,19 @@ Sub Move_Back() //从喷泉传送门回到待机点,
     End If
 
     DelayRandom 766,782
+
+    //如果人还在右上,强制去右下
+    FindPic 0,1650,300,1900,"E:\MHImg\MSLogo.bmp",000000,1.00,0,logoX,logoY
+    FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    intX = intX - logoX
+    intY = intY - logoY
+    If intY < 148 Then //如果还在原地,就强制前往下面
+        tarX = 120
+        tarY = 150
+        Call Seek() //前往左下传送门
+        TracePrint 触发了强制向下回去，右上到右下
+    End If
+
     Call Attack()
     KeyDown Left
     DelayRandom 676,683
@@ -233,7 +247,7 @@ Sub Move_Back() //从喷泉传送门回到待机点,
     KeyUp Up
 End Sub
 
-Sub Move_Water() //前往放喷泉的地方,todo:加个如果没过去的备用路线
+Sub Move_Water() //前往放喷泉的地方
     KeyDown Up
     DelayRandom 158,160
     KeyUp Up
@@ -244,9 +258,10 @@ Sub Move_Water() //前往放喷泉的地方,todo:加个如果没过去的备用路线
     intX = intX - logoX
     intY = intY - logoY
     If intX > 50 Then //如果还在原地,就换个方式
-        tarX = 120
+        tarX = 42
         tarY = 150
-        Call Seek() //前往右下传送门
+        TracePrint 触发了强制前往喷泉地，右下到左下
+        Call Seek() //前往左下传送门
         DelayRandom 775,783
         KeyDown Left
         DelayRandom 874,883
@@ -330,8 +345,8 @@ while 1 > 0
         DelayRandom 156,172
         Call Move_Back() //归位前的动作
     else
-        a = random(1,5)
-        if a == 1 then //竖直移动
+        a = random(1,7)
+        if a <= 2 then //竖直移动
             DelayRandom 335,341
             KeyDown F
             DelayRandom 1322,1336
@@ -355,8 +370,7 @@ while 1 > 0
             KeyUp LShift
             DelayRandom 341,350
             Call Attack()
-        ElseIf a == 2 then //水平移动
-
+        ElseIf a == 3 then //水平移动
             DelayRandom 360,367
             KeyDown F
             DelayRandom 1147,1159
@@ -371,7 +385,7 @@ while 1 > 0
             KeyUp Right
             DelayRandom 536,542
             KeyDown Right
-            DelayRandom 1373,1387
+            DelayRandom 1313,1327
             KeyUp Right
             DelayRandom 120,122
             Call Attack()
@@ -389,6 +403,27 @@ while 1 > 0
             DelayRandom 386,390
             Call Attack()
             DelayRandom 181,187
+
+            FindPic 0,1650,300,1900,"E:\MHImg\MSLogo.bmp",000000,1.00,0,logoX,logoY
+            FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+            intX = intX - logoX
+            intY = intY - logoY
+            If intY >= 148 Then //如果在最下层,就强制前往上层
+                TracePrint 普通刷怪时掉到了最下面，现在往上回去
+                KeyDown Left
+                DelayRandom 676,683
+                KeyUp Left
+                DelayRandom 348,352
+                KeyDown Up
+                DelayRandom 47,48
+                KeyDown LShift
+                DelayRandom 98,99
+                KeyUp LShift
+                DelayRandom 10,11
+                KeyUp Up
+                DelayRandom 102,104
+            End If
+
         else //原地放招
             KeyDown F
             DelayRandom 1500,2000
