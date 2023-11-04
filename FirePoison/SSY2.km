@@ -9,6 +9,53 @@ Dim logoX,logoY,intX,intY
 //已经算出实验室2右下传送dX = 120,dY = 150(可正负2判断)
 //已经算出实验室2左下传送dX = 42,dY = 150(可正负2判断)
 
+Sub Attack() //技能循环攻击
+    FindPic 800,2300,1439,2559,"E:\MHImg\HD_V1.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then //V1技能好了
+        KeyDown Q
+        DelayRandom 135,137
+        KeyUp Q
+        DelayRandom 735,743
+    else
+        FindPic 800,2300,1439,2559,"E:\MHImg\HD_V2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //V2技能好了
+            KeyDown W
+            DelayRandom 120,122
+            KeyUp W
+            DelayRandom 610,619
+        else
+            FindPic 800,2300,1439,2559,"E:\MHImg\HD_V4.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //V4技能好了
+                KeyDown S
+                DelayRandom 110,119
+                KeyUp S
+                DelayRandom 807,816
+            else
+                FindPic 800,2300,1439,2559,"E:\MHImg\HD_Stone.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //流星技能好了
+                    KeyDown B
+                    DelayRandom 141,143
+                    KeyUp B
+                    DelayRandom 841,849
+                else
+                    FindPic 800,2300,1439,2559,"E:\MHImg\HD_V3.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then //V3技能好了
+                        KeyDown E
+                        DelayRandom 185,187
+                        KeyUp E
+                        DelayRandom 670,677
+                        KeyDown V
+                        DelayRandom 145,147
+                        KeyUp V
+                        DelayRandom 835,844
+                    else
+                    End If
+                End If
+            End If
+        End If
+    End If
+End Sub
+
 Sub Seek()
     while  1>0
         FindPic 0,1650,300,1900,"E:\MHImg\MSLogo.bmp",000000,1.00,0,logoX,logoY
@@ -60,16 +107,106 @@ Sub Seek()
     Wend
 End Sub
 
+Sub Move_Back()
+    KeyDown Up
+    DelayRandom 140,142
+    KeyUp Up
+    DelayRandom 590,596
+
+    Call Attack()
+
+    DelayRandom 246,249
+    KeyDown Left
+    DelayRandom 39,40
+    KeyDown LShift
+    DelayRandom 96,97
+    KeyUp Left
+    DelayRandom 6,7
+    KeyUp LShift
+    DelayRandom 503,509
+    KeyDown F
+    DelayRandom 1281,1295
+    KeyUp F
+    DelayRandom 246,249
+    KeyDown Right
+    DelayRandom 3,4
+    KeyDown LShift
+    DelayRandom 105,107
+    KeyUp LShift
+    DelayRandom 5,6
+    KeyUp Right
+    DelayRandom 1401,1416
+    KeyDown Right
+    DelayRandom 4,5
+    KeyDown LShift
+    DelayRandom 105,107
+    KeyUp LShift
+    DelayRandom 5,6
+    KeyUp Right
+    DelayRandom 480,485
+    Call Attack()
+    KeyDown Left
+    DelayRandom 15,16
+    KeyDown LShift
+    DelayRandom 100,102
+    KeyUp LShift
+    DelayRandom 10,11
+    KeyUp Left
+    DelayRandom 1285,1298
+    KeyDown Up
+    DelayRandom 140,142
+    KeyUp Up
+    DelayRandom 766,782
+    Call Attack()
+    KeyDown Left
+    DelayRandom 676,683
+    KeyUp Left
+    DelayRandom 348,352
+    KeyDown A
+    DelayRandom 130,132
+    KeyUp A
+    DelayRandom 705,713
+    KeyDown Up
+    DelayRandom 47,48
+    KeyDown LShift
+    DelayRandom 98,99
+    KeyUp LShift
+    DelayRandom 10,11
+    KeyUp Up
+End Sub
+
 Sub Move_Water()
-    DelayRandom 123,125
     KeyDown Up
     DelayRandom 158,160
     KeyUp Up
-    DelayRandom 1630,1647
-    KeyDown F
-    DelayRandom 735,743
-    KeyUp F
-    DelayRandom 830,839
+    DelayRandom 512,534
+
+    FindPic 800,2300,1439,2559,"E:\MHImg\BT_Spider.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then //找蜘蛛
+        KeyDown H
+        DelayRandom 105,107
+        KeyUp H
+        DelayRandom 929,939
+    else
+        FindPic 800,2300,1439,2559,"E:\MHImg\BT_Lieyang.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //找烈阳
+            KeyDown Y
+            DelayRandom 105,107
+            KeyUp Y
+            DelayRandom 811,813
+        else
+            FindPic 800,2300,1439,2559,"E:\MHImg\BT_Wugong.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //找武公
+                KeyDown 4
+                DelayRandom 105,107
+                KeyUp 4
+                DelayRandom 899,909
+            else //什么都没有就普攻一下
+                Call Attack()
+            End If
+        End If
+    End If
+
     KeyDown Down
     DelayRandom 80,81
     KeyDown LShift
@@ -97,9 +234,13 @@ if intX >= 0 Then //喷泉CD好了
     tarX = 120
     tarY = 150
     Call Seek() //前往右下传送门
+    DelayRandom 123,125
     Call Move_Water() //放喷泉
     tarX = 42
     tarY = 150
     Call Seek() //前往左下传送门
-    Call Move_Water() //归位前的动作
+    DelayRandom 156,172
+    Call Move_Back() //归位前的动作
+else
+    Call Attack()
 End If
