@@ -81,7 +81,7 @@ End Sub
 
 Sub Infinite() //判断是否要补充终极无限了
     a = GetTimeStamp() - iTime
-	TracePrint 时间差: & a
+	//TracePrint 时间差: & a
     if a > inLimit then //该补充了
         FindPic 800,2300,1439,2559,"E:\MHImg\HD_Infi1.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then //R位置的终极无限
@@ -105,7 +105,7 @@ Sub Infinite() //判断是否要补充终极无限了
     End If
 End Sub
 
-Sub Seek()
+Sub Seek()  //寻路算法
     while  1>0
         FindPic 0,1650,300,1900,"E:\MHImg\MSLogo.bmp",000000,1.00,0,logoX,logoY
         FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -156,7 +156,7 @@ Sub Seek()
     Wend
 End Sub
 
-Sub Move_Back() //从喷泉传送门回到待机点,todo:加入判断
+Sub Move_Back() //从喷泉传送门回到待机点,todo:加入判断是否还在左边,是的话就直接走回右边传送点吧
     KeyDown Up
     DelayRandom 140,142
     KeyUp Up
@@ -173,9 +173,7 @@ Sub Move_Back() //从喷泉传送门回到待机点,todo:加入判断
     DelayRandom 6,7
     KeyUp LShift
     DelayRandom 503,509
-    KeyDown F
-    DelayRandom 1281,1295
-    KeyUp F
+    Call Attack()
     DelayRandom 246,249
     Call Infinite() //终极无限判断
     KeyDown Right
@@ -296,7 +294,92 @@ while 1 > 0
         DelayRandom 156,172
         Call Move_Back() //归位前的动作
     else
-        Call Attack()
+        a = random(1,5)
+        if a == 1 then //竖直移动
+            DelayRandom 335,341
+            KeyDown F
+            DelayRandom 1322,1336
+            KeyUp F
+            DelayRandom 413,418
+            KeyDown Up
+            DelayRandom 160,162
+            KeyDown LShift
+            DelayRandom 830,839
+            KeyUp LShift
+            DelayRandom 29,30
+            KeyUp Up
+            DelayRandom 371,377
+            Call Attack()
+            KeyDown Down
+            DelayRandom 76,77
+            KeyDown LShift
+            DelayRandom 902,912
+            KeyUp Down
+            DelayRandom 6,7
+            KeyUp LShift
+            DelayRandom 341,350
+        ElseIf a == 2 then //水平移动
+            DelayRandom 360,367
+            KeyDown F
+            DelayRandom 1163,1175
+            KeyUp F
+            DelayRandom 354,358
+            KeyDown Right
+            DelayRandom 19,20
+            KeyDown LShift
+            DelayRandom 101,103
+            KeyUp LShift
+            DelayRandom 20,21
+            KeyUp Right
+            DelayRandom 495,500
+            KeyDown Right
+            DelayRandom 5,6
+            KeyDown LShift
+            DelayRandom 135,137
+            KeyUp LShift
+            DelayRandom 5,6
+            KeyUp Right
+            DelayRandom 320,326
+            KeyDown Right
+            DelayRandom 5,6
+            KeyDown LShift
+            DelayRandom 110,112
+            KeyUp LShift
+            DelayRandom 30,31
+            KeyUp Right
+            DelayRandom 300,314
+            Call Attack()
+            DelayRandom 200,205
+            KeyDown Left
+            DelayRandom 30,31
+            KeyDown LShift
+            DelayRandom 95,96
+            KeyUp LShift
+            KeyUp Left
+            DelayRandom 370,375
+            KeyDown Left
+            DelayRandom 15,16
+            KeyDown LShift
+            DelayRandom 90,91
+            KeyUp LShift
+            DelayRandom 25,26
+            KeyUp Left
+            DelayRandom 440,446
+            KeyDown Left
+            DelayRandom 16,17
+            KeyDown LShift
+            DelayRandom 104,106
+            KeyUp LShift
+            DelayRandom 205,206
+            KeyUp Left
+            DelayRandom 181,187
+        else //原地放招
+            KeyDown F
+            DelayRandom 1500,2000
+            KeyUp F
+            DelayRandom 255,262
+            Call Attack()
+        End If
         Call Infinite() //终极无限判断
         DelayRandom 300,303
     End If
