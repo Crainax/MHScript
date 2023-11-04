@@ -1,0 +1,14 @@
+[General]
+ScreenX=1440
+ScreenY=2560
+Times=0
+
+[Script]
+Dim iTime,a,inLimit
+
+iTime = GetTimeStamp()
+while 1 > 0
+    a = GetTimeStamp() - iTime
+	TracePrint Ê±¼ä²î: & a
+    Delay 1000
+Wend

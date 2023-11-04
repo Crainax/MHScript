@@ -4,10 +4,13 @@ ScreenY=2560
 Times=0
 
 [Script]
-Dim tarX,tarY
-Dim logoX,logoY,intX,intY
+Dim tarX,  tarY               //寻位置相关:目标地点
+Dim logoX, logoY, intX, intY  //寻位置相关:当前地点
+Dim iTime, a,     inLimit     //终极无限的补充
+
 //已经算出实验室2右下传送dX = 120,dY = 150(可正负2判断)
 //已经算出实验室2左下传送dX = 42,dY = 150(可正负2判断)
+
 
 Sub Attack() //技能循环攻击
     FindPic 800,2300,1439,2559,"E:\MHImg\HD_V1.bmp",000000,1.00,0,intX,intY
@@ -49,8 +52,54 @@ Sub Attack() //技能循环攻击
                         KeyUp V
                         DelayRandom 835,844
                     else
+                        FindPic 800,2300,1439,2559,"E:\MHImg\HD_Blue.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //蓝焰斩技能好了
+                            KeyDown Z
+                            DelayRandom 177,182
+                            KeyUp Z
+                            DelayRandom 786,798
+                        else
+                            FindPic 800,2300,1439,2559,"E:\MHImg\BigBless.bmp",000000,1.00,0,intX,intY
+                            if intX >= 0 Then //补充个大祝福
+                                KeyDown 5
+                                DelayRandom 134,142
+                                KeyUp 5
+                                DelayRandom 512,519
+                            else //实在没有就普攻一下
+                                KeyDown F
+                                DelayRandom 1111,1392
+                                KeyUp F
+                                DelayRandom 246,249
+                            End If
+                        End If
                     End If
                 End If
+            End If
+        End If
+    End If
+End Sub
+
+Sub Infinite() //判断是否要补充终极无限了
+    a = GetTimeStamp() - iTime
+	TracePrint 时间差: & a
+    if a > inLimit then //该补充了
+        FindPic 800,2300,1439,2559,"E:\MHImg\HD_Infi1.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //R位置的终极无限
+            DelayRandom 400,410
+            KeyDown R
+            DelayRandom 225,228
+            KeyUp R
+            DelayRandom 578,584
+            iTime = GetTimeStamp()
+        else
+            FindPic 800,2300,1439,2559,"E:\MHImg\HD_Infi2.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //`位置的终极无限
+                DelayRandom 400,410
+                KeyDown `
+                DelayRandom 120,122
+                KeyUp `
+                DelayRandom 1474,1489
+                iTime = GetTimeStamp()
             End If
         End If
     End If
@@ -107,7 +156,7 @@ Sub Seek()
     Wend
 End Sub
 
-Sub Move_Back()
+Sub Move_Back() //从喷泉传送门回到待机点,todo:加入判断
     KeyDown Up
     DelayRandom 140,142
     KeyUp Up
@@ -128,6 +177,7 @@ Sub Move_Back()
     DelayRandom 1281,1295
     KeyUp F
     DelayRandom 246,249
+    Call Infinite() //终极无限判断
     KeyDown Right
     DelayRandom 3,4
     KeyDown LShift
@@ -175,12 +225,12 @@ Sub Move_Back()
     KeyUp Up
 End Sub
 
-Sub Move_Water()
+Sub Move_Water() //前往放喷泉的地方
     KeyDown Up
     DelayRandom 158,160
     KeyUp Up
     DelayRandom 512,534
-
+    Call Infinite() //终极无限判断
     FindPic 800,2300,1439,2559,"E:\MHImg\BT_Spider.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //找蜘蛛
         KeyDown H
@@ -229,18 +279,25 @@ Sub Move_Water()
     DelayRandom 812,821
 End Sub
 
-FindPic 800,2300,1439,2559,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
-if intX >= 0 Then //喷泉CD好了
-    tarX = 120
-    tarY = 150
-    Call Seek() //前往右下传送门
-    DelayRandom 123,125
-    Call Move_Water() //放喷泉
-    tarX = 42
-    tarY = 150
-    Call Seek() //前往左下传送门
-    DelayRandom 156,172
-    Call Move_Back() //归位前的动作
-else
-    Call Attack()
-End If
+//Main函数
+inLimit = 110 //定义一下终极无限的冷却时间
+iTime = GetTimeStamp() - inLimit
+while 1 > 0
+    FindPic 800,2300,1439,2559,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then //喷泉CD好了
+        tarX = 120
+        tarY = 150
+        Call Seek() //前往右下传送门
+        DelayRandom 123,125
+        Call Move_Water() //放喷泉
+        tarX = 42
+        tarY = 150
+        Call Seek() //前往左下传送门
+        DelayRandom 156,172
+        Call Move_Back() //归位前的动作
+    else
+        Call Attack()
+        Call Infinite() //终极无限判断
+        DelayRandom 300,303
+    End If
+Wend
