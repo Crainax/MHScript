@@ -156,54 +156,64 @@ Sub Seek()  //Ñ°Â·Ëã·¨
     Wend
 End Sub
 
-Sub Move_Back() //´ÓÅçÈª´«ËÍÃÅ»Øµ½´ý»úµã,todo:¼ÓÈëÅÐ¶ÏÊÇ·ñ»¹ÔÚ×ó±ß,ÊÇµÄ»°¾ÍÖ±½Ó×ß»ØÓÒ±ß´«ËÍµã°É
+Sub Move_Back() //´ÓÅçÈª´«ËÍÃÅ»Øµ½´ý»úµã,
     KeyDown Up
     DelayRandom 140,142
     KeyUp Up
     DelayRandom 590,596
 
-    Call Attack()
+    FindPic 0,1650,300,1900,"E:\MHImg\MSLogo.bmp",000000,1.00,0,logoX,logoY
+    FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    intX = intX - logoX
+    intY = intY - logoY
+    If intX < 120 Then //Èç¹û»¹ÔÚÔ­µØ,¾Í»»¸ö·½Ê½
+        tarX = 42
+        tarY = 150
+        Call Seek() //Ç°Íù×óÏÂ´«ËÍÃÅ
+    else //´«ËÍµ½ÁËÓÒ±ß
+        Call Attack()
+        DelayRandom 246,249
+        KeyDown Left
+        DelayRandom 39,40
+        KeyDown LShift
+        DelayRandom 96,97
+        KeyUp Left
+        DelayRandom 6,7
+        KeyUp LShift
+        DelayRandom 503,509
+        Call Attack()
+        DelayRandom 246,249
+        Call Infinite() //ÖÕ¼«ÎÞÏÞÅÐ¶Ï
+        KeyDown Right
+        DelayRandom 3,4
+        KeyDown LShift
+        DelayRandom 105,107
+        KeyUp LShift
+        DelayRandom 5,6
+        KeyUp Right
+        DelayRandom 1101,1116
+        KeyDown Right
+        DelayRandom 4,5
+        KeyDown LShift
+        DelayRandom 105,107
+        KeyUp LShift
+        DelayRandom 5,6
+        KeyUp Right
+        DelayRandom 480,485
+        Call Attack()
+        KeyDown Left
+        DelayRandom 15,16
+        KeyDown LShift
+        DelayRandom 100,102
+        KeyUp LShift
+        DelayRandom 10,11
+        KeyUp Left
+        DelayRandom 1345,1398
+        KeyDown Up
+        DelayRandom 140,142
+        KeyUp Up
+    End If
 
-    DelayRandom 246,249
-    KeyDown Left
-    DelayRandom 39,40
-    KeyDown LShift
-    DelayRandom 96,97
-    KeyUp Left
-    DelayRandom 6,7
-    KeyUp LShift
-    DelayRandom 503,509
-    Call Attack()
-    DelayRandom 246,249
-    Call Infinite() //ÖÕ¼«ÎÞÏÞÅÐ¶Ï
-    KeyDown Right
-    DelayRandom 3,4
-    KeyDown LShift
-    DelayRandom 105,107
-    KeyUp LShift
-    DelayRandom 5,6
-    KeyUp Right
-    DelayRandom 1401,1416
-    KeyDown Right
-    DelayRandom 4,5
-    KeyDown LShift
-    DelayRandom 105,107
-    KeyUp LShift
-    DelayRandom 5,6
-    KeyUp Right
-    DelayRandom 480,485
-    Call Attack()
-    KeyDown Left
-    DelayRandom 15,16
-    KeyDown LShift
-    DelayRandom 100,102
-    KeyUp LShift
-    DelayRandom 10,11
-    KeyUp Left
-    DelayRandom 1285,1298
-    KeyDown Up
-    DelayRandom 140,142
-    KeyUp Up
     DelayRandom 766,782
     Call Attack()
     KeyDown Left
@@ -223,49 +233,75 @@ Sub Move_Back() //´ÓÅçÈª´«ËÍÃÅ»Øµ½´ý»úµã,todo:¼ÓÈëÅÐ¶ÏÊÇ·ñ»¹ÔÚ×ó±ß,ÊÇµÄ»°¾ÍÖ±½Ó×
     KeyUp Up
 End Sub
 
-Sub Move_Water() //Ç°Íù·ÅÅçÈªµÄµØ·½
+Sub Move_Water() //Ç°Íù·ÅÅçÈªµÄµØ·½,todo:¼Ó¸öÈç¹ûÃ»¹ýÈ¥µÄ±¸ÓÃÂ·Ïß
     KeyDown Up
     DelayRandom 158,160
     KeyUp Up
     DelayRandom 512,534
-    Call Infinite() //ÖÕ¼«ÎÞÏÞÅÐ¶Ï
-    FindPic 800,2300,1439,2559,"E:\MHImg\BT_Spider.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then //ÕÒÖ©Öë
-        KeyDown H
-        DelayRandom 105,107
-        KeyUp H
-        DelayRandom 929,939
-    else
-        FindPic 800,2300,1439,2559,"E:\MHImg\BT_Lieyang.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then //ÕÒÁÒÑô
-            KeyDown Y
+
+    FindPic 0,1650,300,1900,"E:\MHImg\MSLogo.bmp",000000,1.00,0,logoX,logoY
+    FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    intX = intX - logoX
+    intY = intY - logoY
+    If intX > 50 Then //Èç¹û»¹ÔÚÔ­µØ,¾Í»»¸ö·½Ê½
+        tarX = 120
+        tarY = 150
+        Call Seek() //Ç°ÍùÓÒÏÂ´«ËÍÃÅ
+        DelayRandom 775,783
+        KeyDown Left
+        DelayRandom 874,883
+        KeyUp Left
+        DelayRandom 196,198
+        KeyDown Up
+        DelayRandom 120,122
+        KeyDown LShift
+        DelayRandom 160,162
+        KeyUp LShift
+        DelayRandom 5,6
+        KeyUp Up
+        DelayRandom 156,172
+    else //´«ËÍµ½ÁËÓÒ±ß
+
+        Call Infinite() //ÖÕ¼«ÎÞÏÞÅÐ¶Ï
+        FindPic 800,2300,1439,2559,"E:\MHImg\BT_Spider.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //ÕÒÖ©Öë
+            KeyDown H
             DelayRandom 105,107
-            KeyUp Y
-            DelayRandom 811,813
+            KeyUp H
+            DelayRandom 929,939
         else
-            FindPic 800,2300,1439,2559,"E:\MHImg\BT_Wugong.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then //ÕÒÎä¹«
-                KeyDown 4
+            FindPic 800,2300,1439,2559,"E:\MHImg\BT_Lieyang.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //ÕÒÁÒÑô
+                KeyDown Y
                 DelayRandom 105,107
-                KeyUp 4
-                DelayRandom 899,909
-            else //Ê²Ã´¶¼Ã»ÓÐ¾ÍÆÕ¹¥Ò»ÏÂ
-                Call Attack()
+                KeyUp Y
+                DelayRandom 811,813
+            else
+                FindPic 800,2300,1439,2559,"E:\MHImg\BT_Wugong.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //ÕÒÎä¹«
+                    KeyDown 4
+                    DelayRandom 105,107
+                    KeyUp 4
+                    DelayRandom 899,909
+                else //Ê²Ã´¶¼Ã»ÓÐ¾ÍÆÕ¹¥Ò»ÏÂ
+                    Call Attack()
+                End If
             End If
         End If
+
+        KeyDown Down
+        DelayRandom 80,81
+        KeyDown LShift
+        DelayRandom 147,149
+        KeyUp LShift
+        DelayRandom 43,44
+        KeyUp Down
+        DelayRandom 335,339
+        KeyDown Right
+        DelayRandom 674,681
+        KeyUp Right
     End If
 
-    KeyDown Down
-    DelayRandom 80,81
-    KeyDown LShift
-    DelayRandom 147,149
-    KeyUp LShift
-    DelayRandom 43,44
-    KeyUp Down
-    DelayRandom 335,339
-    KeyDown Right
-    DelayRandom 674,681
-    KeyUp Right
     DelayRandom 206,209
     KeyDown Down
     DelayRandom 95,96
@@ -318,60 +354,40 @@ while 1 > 0
             DelayRandom 6,7
             KeyUp LShift
             DelayRandom 341,350
+            Call Attack()
         ElseIf a == 2 then //Ë®Æ½ÒÆ¶¯
+
             DelayRandom 360,367
             KeyDown F
-            DelayRandom 1163,1175
+            DelayRandom 1147,1159
             KeyUp F
-            DelayRandom 354,358
+            DelayRandom 528,534
             KeyDown Right
-            DelayRandom 19,20
+            DelayRandom 433,438
             KeyDown LShift
-            DelayRandom 101,103
+            DelayRandom 119,121
             KeyUp LShift
-            DelayRandom 20,21
+            DelayRandom 51,52
             KeyUp Right
-            DelayRandom 495,500
+            DelayRandom 536,542
             KeyDown Right
-            DelayRandom 5,6
-            KeyDown LShift
-            DelayRandom 135,137
-            KeyUp LShift
-            DelayRandom 5,6
+            DelayRandom 1373,1387
             KeyUp Right
-            DelayRandom 320,326
-            KeyDown Right
-            DelayRandom 5,6
-            KeyDown LShift
-            DelayRandom 110,112
-            KeyUp LShift
-            DelayRandom 30,31
-            KeyUp Right
-            DelayRandom 300,314
+            DelayRandom 120,122
             Call Attack()
-            DelayRandom 200,205
             KeyDown Left
-            DelayRandom 30,31
+            DelayRandom 1554,1570
             KeyDown LShift
-            DelayRandom 95,96
+            DelayRandom 130,132
             KeyUp LShift
-            KeyUp Left
-            DelayRandom 370,375
-            KeyDown Left
-            DelayRandom 15,16
-            KeyDown LShift
-            DelayRandom 90,91
-            KeyUp LShift
-            DelayRandom 25,26
-            KeyUp Left
-            DelayRandom 440,446
-            KeyDown Left
             DelayRandom 16,17
-            KeyDown LShift
-            DelayRandom 104,106
-            KeyUp LShift
-            DelayRandom 205,206
             KeyUp Left
+            DelayRandom 455,460
+            KeyDown Left
+            DelayRandom 149,151
+            KeyUp Left
+            DelayRandom 386,390
+            Call Attack()
             DelayRandom 181,187
         else //Ô­µØ·ÅÕÐ
             KeyDown F
