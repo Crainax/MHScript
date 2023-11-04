@@ -1,0 +1,62 @@
+[General]
+ScreenX=1440
+ScreenY=2560
+Times=0
+
+[Script]
+Dim logoX,logoY,intX,intY
+//已经算出实验室2右下传送dX = 120,dY = 150(可正负2判断)
+
+Sub SeekY()
+    while  1>0
+        FindPic 0,1650,300,1900,"E:\MHImg\MSLogo.bmp",000000,1.00,0,logoX,logoY
+        FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        intX = intX - logoX
+        intY = intY - logoY
+        If intY < 148 Then //先向下走
+            KeyDown Down
+            KeyDown Shift
+        else
+            KeyUp Down
+            KeyUp Shift
+            If intX < 100 Then //小于100就右瞬
+                KeyDown Right
+                KeyUp Left
+                KeyDown Shift
+            ElseIf intX < 115 then //小于115就只右走
+                KeyDown Right
+                KeyUp Left
+                KeyUp Shift
+            ElseIf intX < 120 then //靠近了就小碎步
+                KeyDown Right
+                DelayRandom 10,15
+                KeyUp Right
+                KeyUp Left
+                KeyUp Shift
+            ElseIf intX == 120 then //120刚好合适
+                KeyUp Left
+                KeyUp Right
+                KeyUp Shift
+                Exit Sub
+            ElseIf intX <= 124 then //靠近了就小碎步
+                KeyDown Left
+                DelayRandom 10,15
+                KeyUp Left
+                KeyUp Right
+                KeyUp Shift
+            ElseIf intX <= 140 then //140以内就左走
+                KeyDown Left
+                KeyUp Right
+                KeyUp Shift
+            else //太远就左瞬
+                KeyDown Left
+                KeyUp Right
+                KeyDown Shift
+            End If
+        End If
+        Delay 5
+    Wend
+End Sub
+
+Call SeekY()
+MsgBox 测试结束

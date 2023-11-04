@@ -1,0 +1,16 @@
+[General]
+ScreenX=1440
+ScreenY=2560
+Times=0
+
+[Script]
+Dim logoX,logoY,intX,intY
+FindPic 0,1650,300,1900,"E:\MHImg\MSLogo.bmp",000000,1.00,0,logoX,logoY	//找图
+FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY	//找图
+If intX >= 0 Then
+	TracePrint [图标X轴 & logoX & ,图标Y轴 & logoY & ],[绿点X轴 & intX & ,绿点Y轴 & intY & ]
+	MsgBox [图标X轴 & logoX & ,图标Y轴 & logoY & ],[绿点X轴 & intX & ,绿点Y轴 & intY & ]
+else
+	MsgBox "没找到"	 //弹窗
+End If
+Delay 300
