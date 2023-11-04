@@ -9,7 +9,7 @@ Dim logoX,logoY,intX,intY
 //已经算出实验室2右下传送dX = 120,dY = 150(可正负2判断)
 //已经算出实验室2左下传送dX = 42,dY = 150(可正负2判断)
 
-Sub SeekY()
+Sub Seek()
     while  1>0
         FindPic 0,1650,300,1900,"E:\MHImg\MSLogo.bmp",000000,1.00,0,logoX,logoY
         FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -60,7 +60,46 @@ Sub SeekY()
     Wend
 End Sub
 
-tarX = 42
-tarY = 150
-Call SeekY()
-MsgBox 测试结束
+Sub Move_Water()
+    DelayRandom 123,125
+    KeyDown Up
+    DelayRandom 158,160
+    KeyUp Up
+    DelayRandom 1630,1647
+    KeyDown F
+    DelayRandom 735,743
+    KeyUp F
+    DelayRandom 830,839
+    KeyDown Down
+    DelayRandom 80,81
+    KeyDown LShift
+    DelayRandom 147,149
+    KeyUp LShift
+    DelayRandom 43,44
+    KeyUp Down
+    DelayRandom 335,339
+    KeyDown Right
+    DelayRandom 674,681
+    KeyUp Right
+    DelayRandom 206,209
+    KeyDown Down
+    DelayRandom 95,96
+    KeyDown 1
+    DelayRandom 194,196
+    KeyUp 1
+    DelayRandom 66,67
+    KeyUp Down
+    DelayRandom 812,821
+End Sub
+
+FindPic 800,2300,1439,2559,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
+if intX >= 0 Then //喷泉CD好了
+    tarX = 120
+    tarY = 150
+    Call Seek() //前往右下传送门
+    Call Move_Water() //放喷泉
+    tarX = 42
+    tarY = 150
+    Call Seek() //前往左下传送门
+    Call Move_Water() //归位前的动作
+End If
