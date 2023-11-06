@@ -11,6 +11,7 @@ Dim tolerance,tolLoc //快速移动的容差,0代表精确移动,另外个是局部变量
 //目前已经算出一个二段跳能跳32的X轴(平地)
 //几个测试点:绳子下(127,150),右中(173,128),右顶可上跳(146,106),右顶不可上跳(120,100),左上不可上跳(56,122),左上(22,108),火毒站位(105,139)
 
+
 Sub Move()  //精确的移动
     consecutiveTimes = -1  //初始就启用指南针判断
     consecutiveMax   = 3   //降落默认值为4
@@ -39,38 +40,48 @@ Sub Move()  //精确的移动
             else  //速走的默认为4
                 tolLoc = 4
             End If
-            if intX < (tarX-30) Then //向右二段跳
+            if intX < (tarX-24) Then //向右二段跳
                 consecutiveTimes = 0 //启动降落判断
                 cY = intY
                 TracePrint 右跳
                 DelayRandom 15,25
                 KeyDown Right
-                DelayRandom 155,160
+                DelayRandom 50,51
                 KeyDown Space
-                DelayRandom 71,74
+                DelayRandom 80,81
                 KeyUp Space
-                DelayRandom 33,34
+                DelayRandom 30,31
                 KeyDown Space
-                DelayRandom 91,94
+                DelayRandom 75,76
                 KeyUp Space
-                DelayRandom 146,151
+                DelayRandom 85,86
                 KeyUp Right
-            Else If intX > (tarX+30) Then //向左二段跳
+                DelayRandom 41,42
+                KeyDown F
+                DelayRandom 113,115
+                KeyUp F
+                DelayRandom 146,151
+            Else If intX > (tarX+24) Then //向左二段跳
                 consecutiveTimes = 0 //启动降落判断
                 cY = 0
                 TracePrint 左跳
                 DelayRandom 15,25
                 KeyDown Left
-                DelayRandom 155,160
+                DelayRandom 50,51
                 KeyDown Space
-                DelayRandom 71,74
+                DelayRandom 80,81
                 KeyUp Space
-                DelayRandom 33,34
+                DelayRandom 30,31
                 KeyDown Space
-                DelayRandom 91,94
+                DelayRandom 75,76
                 KeyUp Space
-                DelayRandom 146,151
+                DelayRandom 85,86
                 KeyUp Left
+                DelayRandom 41,42
+                KeyDown F
+                DelayRandom 113,115
+                KeyUp F
+                DelayRandom 146,151
             Else If intX < (tarX-tolLoc) Then //向右走
                 KeyDown Right
             Else If intX > (tarX+tolLoc) Then //向左走
@@ -101,7 +112,7 @@ Sub Move()  //精确的移动
                         DelayRandom 328,430
                         KeyUp Ctrl
                     else
-                        consecutiveMax = 5 //延长一点降落判断
+                        consecutiveMax = 6 //延长一点降落判断
                         TracePrint 上跳一次
                         KeyDown Alt
                         DelayRandom 328,430
@@ -131,9 +142,13 @@ Sub Move()  //精确的移动
     Wend
 End Sub
 
-tarX = 105
-tarY = 139
-tolerance = 0 //精确移动
-tolerance = 4 //容忍度,4为推荐值
+tolLoc = 1
+GetFileLine tarX,Move.Conf,tolLoc		//文件查找
+tolLoc = 2
+GetFileLine tarY,Move.Conf,tolLoc		//文件查找
+tolLoc = 3
+GetFileLine tolerance,Move.Conf,tolLoc	//文件查找
+TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance
+//tolerance = 4 //容忍度,4为推荐值
 Call Move()
 MsgBox 测试结束

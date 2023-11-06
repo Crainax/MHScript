@@ -1,0 +1,11 @@
+[General]
+ScreenX=1440
+ScreenY=2560
+Times=0
+
+[Script]
+Dim tarX,tarY //目标
+Dim logoX,logoY,intX,intY //算目的地差值
+Dim cY,consecutiveTimes,consecutiveMax //用这个东西判断角色是不是没有X或Y轴变化了
+Dim tolerance,tolLoc //快速移动的容差,0代表精确移动,另外个是局部变量
+//几个点:喷泉点(144,120)容忍4,右下种子点(134,150)容忍8,平时站立点(104,139)容忍4,火释放点(104,125)容忍4/面向右,风(36,136),容忍4/面向左,左上传送(20,122)容忍0,左下传送(42,150),右下传送(120,150),右上传送就是喷泉点.
