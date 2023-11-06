@@ -4,8 +4,295 @@ ScreenY=2560
 Times=0
 
 [Script]
-Dim tarX,tarY //ç›®æ ‡
-Dim logoX,logoY,intX,intY //ç®—ç›®çš„åœ°å·®å€¼
-Dim cY,consecutiveTimes,consecutiveMax //ç”¨è¿™ä¸ªä¸œè¥¿åˆ¤æ–­è§’è‰²æ˜¯ä¸æ˜¯æ²¡æœ‰Xæˆ–Yè½´å˜åŒ–äº†
-Dim tolerance,tolLoc //å¿«é€Ÿç§»åŠ¨çš„å®¹å·®,0ä»£è¡¨ç²¾ç¡®ç§»åŠ¨,å¦å¤–ä¸ªæ˜¯å±€éƒ¨å˜é‡
-//å‡ ä¸ªç‚¹:å–·æ³‰ç‚¹(144,120)å®¹å¿4,å³ä¸‹ç§å­ç‚¹(134,150)å®¹å¿8,å¹³æ—¶ç«™ç«‹ç‚¹(104,139)å®¹å¿4,ç«é‡Šæ”¾ç‚¹(104,125)å®¹å¿4/é¢å‘å³,é£Ž(36,136),å®¹å¿4/é¢å‘å·¦,å·¦ä¸Šä¼ é€(20,122)å®¹å¿0,å·¦ä¸‹ä¼ é€(42,150),å³ä¸‹ä¼ é€(120,150),å³ä¸Šä¼ é€å°±æ˜¯å–·æ³‰ç‚¹.
+Dim tarX,tarY //Ä¿±ê
+Dim logoX,logoY,intX,intY //ËãÄ¿µÄµØ²îÖµ
+Dim cY,consecutiveTimes,consecutiveMax //ÓÃÕâ¸ö¶«Î÷ÅÐ¶Ï½ÇÉ«ÊÇ²»ÊÇÃ»ÓÐX»òYÖá±ä»¯ÁË
+Dim tolerance,tolLoc //¿ìËÙÒÆ¶¯µÄÈÝ²î,0´ú±í¾«È·ÒÆ¶¯,ÁíÍâ¸öÊÇ¾Ö²¿±äÁ¿
+Dim windTime,fireTime,seedTime,fountainTime,a,stoneSteleTime,pickingTime
+//¼¸¸öµã:ÅçÈªµã(144,120)ÈÝÈÌ4,ÓÒÏÂÖÖ×Óµã(134,150)ÈÝÈÌ8,Æ½Ê±Õ¾Á¢µã(85,150)ÈÝÈÌ4,»ðÊÍ·Åµã(104,125)ÈÝÈÌ4/ÃæÏòÓÒ,·ç(36,136),ÈÝÈÌ4/ÃæÏò×ó,×óÉÏ´«ËÍ(20,122)ÈÝÈÌ0,×óÏÂ´«ËÍ(42,150),ÓÒÏÂ´«ËÍ(120,150),ÓÒÉÏ´«ËÍ¾ÍÊÇÅçÈªµã,ÓÒÏÂ½Ç¼ñÇ®(161,150)ÈÝÈÌ4
+
+
+Sub Move()  //¾«È·µÄÒÆ¶¯
+    consecutiveTimes = -1  //³õÊ¼¾ÍÆôÓÃÖ¸ÄÏÕëÅÐ¶Ï
+    consecutiveMax   = 3   //½µÂäÄ¬ÈÏÖµÎª4
+    while  1 > 0
+        FindPic 0,1650,300,1900,"E:\MHImg\MSLogo.bmp",000000,1.00,0,logoX,logoY
+        FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        intX = intX - logoX
+        intY = intY - logoY
+        if consecutiveTimes >= 0 Then //Ä¿Ç°ÊÇÔÚ¿ÕÖÐÅÐ¶Ï½µÂäµÄ½×¶Î
+            if intY == cY Then //YÖáÃ»±ä»¯ÁË
+                consecutiveTimes = consecutiveTimes + 1
+                if consecutiveTimes >= consecutiveMax Then
+                    consecutiveTimes	= -1	//ÅÐ¶ÏÎªÒÑ¾­ÂäµØ
+                    consecutiveMax		= 3		//¹éÎ»×î´ó½µÂäÅÐ¶ÏÖµ
+                End If
+            else
+                cY = intY
+                consecutiveTimes = 0
+            End If
+        else //¼ÌÐø¸ù¾Ý
+            if tolerance > 4 Then
+                tolLoc = tolerance
+            else  //ËÙ×ßµÄÄ¬ÈÏÎª4
+                tolLoc = 4
+            End If
+            if intX < (tarX-24) Then //ÏòÓÒ¶þ¶ÎÌø
+                consecutiveTimes = 0 //Æô¶¯½µÂäÅÐ¶Ï
+                cY = intY
+                DelayRandom 15,25
+                KeyDown Right
+                DelayRandom 50,51
+                KeyDown Space
+                DelayRandom 80,81
+                KeyUp Space
+                DelayRandom 30,31
+                KeyDown Space
+                DelayRandom 75,76
+                KeyUp Space
+                DelayRandom 85,86
+                KeyUp Right
+                DelayRandom 41,42
+                KeyDown F
+                DelayRandom 113,115
+                KeyUp F
+                DelayRandom 146,151
+            Else If intX > (tarX+24) Then //Ïò×ó¶þ¶ÎÌø
+                consecutiveTimes = 0 //Æô¶¯½µÂäÅÐ¶Ï
+                cY = 0
+                DelayRandom 15,25
+                KeyDown Left
+                DelayRandom 50,51
+                KeyDown Space
+                DelayRandom 80,81
+                KeyUp Space
+                DelayRandom 30,31
+                KeyDown Space
+                DelayRandom 75,76
+                KeyUp Space
+                DelayRandom 85,86
+                KeyUp Left
+                DelayRandom 41,42
+                KeyDown F
+                DelayRandom 113,115
+                KeyUp F
+                DelayRandom 146,151
+            Else If intX < (tarX-tolLoc) Then //ÏòÓÒ×ß
+                KeyDown Right
+            Else If intX > (tarX+tolLoc) Then //Ïò×ó×ß
+                KeyDown Left
+            else
+                KeyUp Right
+                KeyUp Left
+                If intY < tarY Then //Èç¹ûÈËÔÚÄ¿±êÖ®ÉÏ,¾ÍÏÂÌø(YÖáÊÇÓÃÏà·´±È½Ï·û)
+                    consecutiveTimes = 0 //Æô¶¯½µÂäÅÐ¶Ï
+                    cY = intY
+                    DelayRandom 12,13
+                    KeyDown Down
+                    DelayRandom 76,77
+                    KeyDown Space
+                    DelayRandom 128,130
+                    KeyUp Space
+                    DelayRandom 453,454
+                    KeyUp Down
+                    DelayRandom 32,33
+                Else If intY > tarY Then //Èç¹ûÈËÔÚÄ¿±êÖ®ÏÂ,¾ÍÉÏÌø(YÖáÊÇÓÃÏà·´±È½Ï·û)
+                    consecutiveTimes = 0 //Æô¶¯½µÂäÅÐ¶Ï
+                    cY = intY
+                    if intY > (tarY+25) Then	//>=26ÉÏÌø¾Í¹»²»µ½ÁË
+                        consecutiveMax = 8 //ÑÓ³¤Ò»µã½µÂäÅÐ¶Ï
+                        KeyDown Ctrl
+                        DelayRandom 328,430
+                        KeyUp Ctrl
+                    else
+                        consecutiveMax = 6 //ÑÓ³¤Ò»µã½µÂäÅÐ¶Ï
+                        KeyDown Alt
+                        DelayRandom 328,430
+                        KeyUp Alt
+                    End If
+                else
+                    if tolerance < 4 Then //ÈÝÈÌ¶ÈÐ¡ÓÚ4»¹ÊÇÒªÐ¡Ëé²½
+                        //YÖáÒ²´ï±êÁË,µ½XÖáÁË
+                        If intX < (tarX-tolerance) Then //ÏòÓÒÐ¡Ëé²½
+                            KeyDown Right
+                            DelayRandom 10,15
+                            KeyUp Right
+                        Else If intX > (tarX+tolerance) Then //Ïò×óÐ¡Ëé²½
+                            KeyDown Left
+                            DelayRandom 10,15
+                            KeyUp Left
+                        else
+                            Exit Sub
+                        End If
+                    else //ÈÝÈÌ¶È´óÓÚµÈÓÚ4¿ÉÒÔÖ±½Ó½áÊø
+                        Exit Sub
+                    End If
+                End If
+            End If
+        End If
+        Delay 5
+    Wend
+End Sub
+
+
+
+windTime       = 0               //ÉÏ´Î·çµÄÊ±¼ä
+fireTime       = 0               //ÉÏ´Î»ðµÄÊ±¼ä
+seedTime       = 0               //ÉÏ´ÎÖÖ×ÓµÄÊ±¼ä
+fountainTime   = 0               //ÉÏ´ÎÅçÈªµÄÊ±¼ä
+stoneSteleTime = 0               //ÉÏ´ÎÂÖ»ØµÄÊ±¼ä
+pickingTime    = GetTimeStamp()  //ÉÏ´Î¼ñÇ®µÄÊ±¼ä
+
+while 1 > 0
+    FindPic 800,2300,1439,2559,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
+    a = GetTimeStamp() - fountainTime
+    if a > 55 or intX >= 0 then //¿ÉÒÔÅçÈªÁË
+        tarX = 144
+        tarY = 120
+        tolerance = 4
+        TracePrint Ä¿±êÇ°ÍùÅçÈª
+        Call Move()
+        DelayRandom 56,58
+        KeyDown Right
+        DelayRandom 62,68
+        KeyUp Right
+        DelayRandom 106,109
+        KeyDown Down
+        DelayRandom 95,96
+        KeyDown 1
+        DelayRandom 194,196
+        KeyUp 1
+        DelayRandom 66,67
+        KeyUp Down
+        DelayRandom 712,721
+        fountainTime = GetTimeStamp()
+        TracePrint ÅçÈª·ÅºÃÁË
+    End If
+
+    //todo:¿ÉÄÜµÃÓÃÄ£ºýÍ¼Æ¬²éÕÒÅÐ¶ÏÍøÂçÑÓ³ÙµÄÇé¿öÁË,µ«ÊÇºÃÏñÎÊÌâÒ²²»´ó
+
+    a = GetTimeStamp() - stoneSteleTime
+    if a > 570 then //¿ÉÒÔ·ÅÂÖÁË
+        TracePrint Ä¿±êÔ­µØ·ÅÂÖ
+        DelayRandom 56,58
+        KeyDown O
+        DelayRandom 137,139
+        KeyUp O
+        DelayRandom 736,747
+        stoneSteleTime = GetTimeStamp()
+        TracePrint ÂÖ·ÅºÃÁË
+    End If
+
+    a = GetTimeStamp() - windTime
+    if a > 14 then //¿ÉÒÔ·Å·çÁË
+        tarX = 36
+        tarY = 136
+        tolerance = 4
+        TracePrint Ä¿±êÇ°Íù·çÊÍ·Å
+        Call Move()
+        DelayRandom 56,58
+        KeyDown Left
+        DelayRandom 114,118
+        KeyUp Left
+        DelayRandom 386,398
+        KeyDown A
+        DelayRandom 137,142
+        KeyUp A
+        DelayRandom 249,257
+        KeyDown S
+        DelayRandom 140,145
+        KeyUp S
+        DelayRandom 460,486
+        KeyDown Right
+        DelayRandom 90,94
+        KeyUp Right
+        DelayRandom 253,258
+        windTime = GetTimeStamp()
+        TracePrint ·çÊÍ·ÅºÃÁË
+    End If
+
+    a = GetTimeStamp() - fireTime
+    if a > 14 then //¿ÉÒÔ·Å»ðÁË
+        tarX = 104
+        tarY = 125
+        tolerance = 4
+        TracePrint Ä¿±êÇ°Íù»ðÊÍ·Å
+        Call Move()
+        DelayRandom 56,58
+        KeyDown Right
+        DelayRandom 116,120
+        KeyUp Right
+        DelayRandom 184,190
+        KeyDown A
+        DelayRandom 135,140
+        KeyUp A
+        DelayRandom 239,247
+        KeyDown S
+        DelayRandom 97,100
+        KeyUp S
+        DelayRandom 494,500
+        KeyDown Up
+        DelayRandom 138,143
+        KeyUp Up
+        DelayRandom 352,375
+        fireTime = GetTimeStamp()
+        TracePrint »ðÊÍ·ÅºÃÁË
+    else
+
+        a = GetTimeStamp() - pickingTime
+        if a > 120 then //¿ÉÒÔ¼ñÇ®ÁË
+            tarX = 161
+            tarY = 150
+            tolerance = 4
+            TracePrint Ä¿±êÇ°ÍùÓÒÏÂ¼ñÇ®
+            Call Move()
+            DelayRandom 56,58
+            KeyDown F
+            DelayRandom 600,800
+            KeyUp F
+            DelayRandom 455,469
+            pickingTime = GetTimeStamp()
+            TracePrint Ä¿±êÇ°ÍùÓÒÏÂ¼ñÇ®
+        else
+
+            a = GetTimeStamp() - seedTime
+            if a > 14 then //¿ÉÒÔ·ÅÖÖ×ÓÁË
+                tarX = 134
+                tarY = 150
+                tolerance = 8
+                TracePrint Ä¿±êÇ°ÍùÖÖ×ÓÊÍ·Å
+                Call Move()
+                DelayRandom 56,58
+                KeyDown Down
+                DelayRandom 95,98
+                KeyDown `
+                DelayRandom 251,259
+                KeyUp `
+                DelayRandom 119,123
+                KeyUp Down
+                DelayRandom 455,469
+                seedTime = GetTimeStamp()
+                TracePrint ÖÖ×ÓÊÍ·ÅºÃÁË
+            else //Ç°ÍùÅ£ÂíµØ·½·Å¼¼ÄÜ
+                tarX = 85
+                tarY = 150
+                tolerance = 4
+                Call Move()
+                DelayRandom 56,58
+                KeyDown Down
+                DelayRandom 95,98
+                KeyDown `
+                DelayRandom 251,259
+                KeyUp `
+                DelayRandom 119,123
+                KeyUp Down
+                DelayRandom 455,469
+                seedTime = GetTimeStamp()
+
+            End If
+        End If
+
+    End If
+
+
+Wend
