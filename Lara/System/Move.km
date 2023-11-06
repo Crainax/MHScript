@@ -6,11 +6,13 @@ Times=0
 [Script]
 Dim tarX,tarY //目标
 Dim logoX,logoY,intX,intY //算目的地差值
-Dim cY,consecutiveTimes //用这个东西判断角色是不是没有X或Y轴变化了
+Dim cY,consecutiveTimes,consecutiveMax //用这个东西判断角色是不是没有X或Y轴变化了
 //目前已经算出一个二段跳能跳32的X轴(平地)
+//几个测试点:绳子下(127,150),右中(173,128),右顶可上跳(146,106),右顶不可上跳(120,100),左上不可上跳(56,122),左上(22,108),火毒站位(105,139)
 
 Sub Move()  //精确的移动
-    consecutiveTimes = -1 //初始就启用指南针判断
+    consecutiveTimes = -1  //初始就启用指南针判断
+    consecutiveMax   = 3   //降落默认值为4
     while  1 > 0
         FindPic 0,1650,300,1900,"E:\MHImg\MSLogo.bmp",000000,1.00,0,logoX,logoY
         FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -20,8 +22,9 @@ Sub Move()  //精确的移动
             if intY == cY Then //Y轴没变化了
                 consecutiveTimes = consecutiveTimes + 1
                 TracePrint 降落判断: & consecutiveTimes
-                if consecutiveTimes > 4 Then
-                    consecutiveTimes = -1 //判断为已经落地
+                if consecutiveTimes >= consecutiveMax Then
+                    consecutiveTimes	= -1	//判断为已经落地
+                    consecutiveMax		= 3		//归位最大降落判断值
                     TracePrint 判断已经落地
                 End If
             else
@@ -67,30 +70,44 @@ Sub Move()  //精确的移动
             Else If intX > (tarX+4) Then //向左走
                 KeyDown Left
             else
-                If Then //如果人在目标之上,就下跳
+                KeyUp Right
+                KeyUp Left
+                If intY < tarY Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
                     consecutiveTimes = 0 //启动降落判断
                     cY = intY
-                    DelayRandom 55,57
+                    TracePrint 下跳一次
+                    DelayRandom 12,13
                     KeyDown Down
                     DelayRandom 76,77
                     KeyDown Space
                     DelayRandom 128,130
                     KeyUp Space
-                    DelayRandom 53,54
+                    DelayRandom 453,454
                     KeyUp Down
                     DelayRandom 32,33
-                Else If Then //如果人在目标之下,就上跳
+                Else If intY > tarY Then //如果人在目标之下,就上跳(Y轴是用相反比较符)
+                    consecutiveTimes = 0 //启动降落判断
+                    cY = intY
+                    if intY > (tarY+25) Then	//>=26上跳就够不到了
+                        consecutiveMax = 8 //延长一点降落判断
+                        TracePrint 绳子一次
+                        KeyDown Ctrl
+                        DelayRandom 328,430
+                        KeyUp Ctrl
+                    else
+                        consecutiveMax = 5 //延长一点降落判断
+                        TracePrint 上跳一次
+                        KeyDown Alt
+                        DelayRandom 328,430
+                        KeyUp Alt
+                    End If
                 else
                     //Y轴也达标了,到X轴了
                     If intX < tarX Then //向右小碎步
-                        KeyUp Right
-                        KeyUp Left
                         KeyDown Right
                         DelayRandom 10,15
                         KeyUp Right
                     Else If intX > tarX Then //向左小碎步
-                        KeyUp Right
-                        KeyUp Left
                         KeyDown Left
                         DelayRandom 10,15
                         KeyUp Left
@@ -104,7 +121,7 @@ Sub Move()  //精确的移动
     Wend
 End Sub
 
-tarX = 42
-tarY = 150
+tarX = 105
+tarY = 139
 Call Move()
 MsgBox 测试结束
