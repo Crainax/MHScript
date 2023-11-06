@@ -1,0 +1,110 @@
+[General]
+ScreenX=1440
+ScreenY=2560
+Times=0
+
+[Script]
+Dim tarX,tarY //目标
+Dim logoX,logoY,intX,intY //算目的地差值
+Dim cY,consecutiveTimes //用这个东西判断角色是不是没有X或Y轴变化了
+//目前已经算出一个二段跳能跳32的X轴(平地)
+
+Sub Move()  //精确的移动
+    consecutiveTimes = -1 //初始就启用指南针判断
+    while  1 > 0
+        FindPic 0,1650,300,1900,"E:\MHImg\MSLogo.bmp",000000,1.00,0,logoX,logoY
+        FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        intX = intX - logoX
+        intY = intY - logoY
+        if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
+            if intY == cY Then //Y轴没变化了
+                consecutiveTimes = consecutiveTimes + 1
+                TracePrint 降落判断: & consecutiveTimes
+                if consecutiveTimes > 4 Then
+                    consecutiveTimes = -1 //判断为已经落地
+                    TracePrint 判断已经落地
+                End If
+            else
+                cY = intY
+                consecutiveTimes = 0
+                TracePrint 降落判断: & consecutiveTimes
+            End If
+        else //继续根据
+            if intX < (tarX-30) Then //向右二段跳
+                consecutiveTimes = 0 //启动降落判断
+                cY = intY
+                TracePrint 右跳
+                DelayRandom 15,25
+                KeyDown Right
+                DelayRandom 155,160
+                KeyDown Space
+                DelayRandom 71,74
+                KeyUp Space
+                DelayRandom 33,34
+                KeyDown Space
+                DelayRandom 91,94
+                KeyUp Space
+                DelayRandom 146,151
+                KeyUp Right
+            Else If intX > (tarX+30) Then //向左二段跳
+                consecutiveTimes = 0 //启动降落判断
+                cY = 0
+                TracePrint 左跳
+                DelayRandom 15,25
+                KeyDown Left
+                DelayRandom 155,160
+                KeyDown Space
+                DelayRandom 71,74
+                KeyUp Space
+                DelayRandom 33,34
+                KeyDown Space
+                DelayRandom 91,94
+                KeyUp Space
+                DelayRandom 146,151
+                KeyUp Left
+            Else If intX < (tarX-4) Then //向右走
+                KeyDown Right
+            Else If intX > (tarX+4) Then //向左走
+                KeyDown Left
+            else
+                If Then //如果人在目标之上,就下跳
+                    consecutiveTimes = 0 //启动降落判断
+                    cY = intY
+                    DelayRandom 55,57
+                    KeyDown Down
+                    DelayRandom 76,77
+                    KeyDown Space
+                    DelayRandom 128,130
+                    KeyUp Space
+                    DelayRandom 53,54
+                    KeyUp Down
+                    DelayRandom 32,33
+                Else If Then //如果人在目标之下,就上跳
+                else
+                    //Y轴也达标了,到X轴了
+                    If intX < tarX Then //向右小碎步
+                        KeyUp Right
+                        KeyUp Left
+                        KeyDown Right
+                        DelayRandom 10,15
+                        KeyUp Right
+                    Else If intX > tarX Then //向左小碎步
+                        KeyUp Right
+                        KeyUp Left
+                        KeyDown Left
+                        DelayRandom 10,15
+                        KeyUp Left
+                    else
+                        Exit Sub
+                    End If
+                End If
+            End If
+        End If
+        Delay 5
+    Wend
+End Sub
+
+tarX = 42
+tarY = 150
+Call Move()
+MsgBox 测试结束
