@@ -1,0 +1,109 @@
+[General]
+ScreenX=1440
+ScreenY=2560
+Times=0
+
+[Script]
+Dim intX, intY  //寻位置相关:当前地点
+Dim iTime,a,inLimit
+Sub Attack() //技能循环攻击
+    FindPic 800,2300,1439,2559,"E:\MHImg\HD_V1.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then //V1技能好了
+        KeyDown Q
+        DelayRandom 135,137
+        KeyUp Q
+        DelayRandom 735,743
+    else
+        FindPic 800,2300,1439,2559,"E:\MHImg\HD_V2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //V2技能好了
+            KeyDown W
+            DelayRandom 120,122
+            KeyUp W
+            DelayRandom 610,619
+        else
+            FindPic 800,2300,1439,2559,"E:\MHImg\HD_V4.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //V4技能好了
+                KeyDown S
+                DelayRandom 110,119
+                KeyUp S
+                DelayRandom 807,816
+            else
+                FindPic 800,2300,1439,2559,"E:\MHImg\HD_Stone.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //流星技能好了
+                    KeyDown B
+                    DelayRandom 141,143
+                    KeyUp B
+                    DelayRandom 841,849
+                else
+                    FindPic 800,2300,1439,2559,"E:\MHImg\HD_V3.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then //V3技能好了
+                        KeyDown E
+                        DelayRandom 185,187
+                        KeyUp E
+                        DelayRandom 670,677
+                        KeyDown V
+                        DelayRandom 145,147
+                        KeyUp V
+                        DelayRandom 835,844
+                    else
+                        FindPic 800,2300,1439,2559,"E:\MHImg\HD_Blue.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //蓝焰斩技能好了
+                            KeyDown Z
+                            DelayRandom 177,182
+                            KeyUp Z
+                            DelayRandom 786,798
+                        else
+                            FindPic 800,2300,1439,2559,"E:\MHImg\BigBless.bmp",000000,1.00,0,intX,intY
+                            if intX >= 0 Then //补充个大祝福
+                                KeyDown 5
+                                DelayRandom 134,142
+                                KeyUp 5
+                                DelayRandom 512,519
+                            else //实在没有就普攻一下
+                                KeyDown F
+                                DelayRandom 1111,1392
+                                KeyUp F
+                                DelayRandom 246,249
+                            End If
+                        End If
+                    End If
+                End If
+            End If
+        End If
+    End If
+End Sub
+
+
+iTime = GetTimeStamp()
+while 1 > 0
+    Call Attack()
+    DelayRandom 1000,2000
+    a = GetTimeStamp() - iTime
+    if a > 40 then
+        iTime = GetTimeStamp()
+        KeyDown Down
+        DelayRandom 100,105
+        KeyDown Shift
+        DelayRandom 100,105
+        KeyUp Shift
+        DelayRandom 100,105
+        KeyUp Down
+        DelayRandom 400,455
+        KeyDown Up
+        DelayRandom 100,105
+        KeyDown Shift
+        DelayRandom 100,105
+        KeyUp Shift
+        DelayRandom 100,105
+        KeyUp Up
+        DelayRandom 100,105
+        KeyDown Left
+        DelayRandom 100,105
+        KeyUp Left
+        DelayRandom 100,105
+        KeyDown Right
+        DelayRandom 100,105
+        KeyUp Right
+        DelayRandom 100,105
+    End If
+Wend
