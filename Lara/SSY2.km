@@ -9,7 +9,7 @@ Dim logoX,logoY,intX,intY //算目的地差值
 Dim cY,consecutiveTimes,consecutiveMax //用这个东西判断角色是不是没有X或Y轴变化了
 Dim tolerance,tolLoc //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim windTime,fireTime,seedTime,fountainTime,a,stoneSteleTime,pickingTime
-//几个点:喷泉点(144,120)容忍4,右下种子点(134,150)容忍8,平时站立点(85,150)容忍4,火释放点(104,125)容忍4/面向右,风(36,136),容忍4/面向左,左上传送(20,122)容忍0,左下传送(42,150),右下传送(120,150),右上传送就是喷泉点,右下角捡钱(161,150)容忍4
+//几个点:喷泉点(144,120)容忍4,右下种子点(134,150)容忍8,平时站立点(85,150)容忍4,火释放点(104,125)容忍4/面向右,风(36,136),容忍4/面向左,左上传送(20,122)容忍0,左下传送(42,150),右下传送(120,150),右上传送就是喷泉点,右下角/右上角捡钱(161,150)容忍4(158,120)容忍4
 
 
 Sub Move()  //精确的移动
@@ -134,7 +134,77 @@ Sub Move()  //精确的移动
     Wend
 End Sub
 
+Sub SpellList() //随便扔技能
+ FindPic 800,2300,1439,2559,"E:\MHImg\BT_Spider.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //找蜘蛛
+            KeyDown H
+            DelayRandom 105,107
+            KeyUp H
+            DelayRandom 929,939
+        else
+            FindPic 800,2300,1439,2559,"E:\MHImg\BT_Lieyang.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //找烈阳
+                KeyDown Y
+                DelayRandom 105,107
+                KeyUp Y
+                DelayRandom 811,813
+            else
+                FindPic 800,2300,1439,2559,"E:\MHImg\LL_V1.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //找V1
+                    KeyDown G
+                    DelayRandom 123,130
+                    KeyUp G
+                    DelayRandom 387,400
+                else
+                    FindPic 800,2300,1439,2559,"E:\MHImg\LL_V2.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then //找V2
+                        KeyDown C
+                        DelayRandom 152,160
+                        KeyUp C
+                        DelayRandom 822,912
+                    else
+                        FindPic 800,2300,1439,2559,"E:\MHImg\LL_V3.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //找V3
+                            KeyDown V
+                            DelayRandom 123,130
+                            KeyUp V
+                            DelayRandom 899,909
+                        else
+                            FindPic 800,2300,1439,2559,"E:\MHImg\LL_V4.bmp",000000,1.00,0,intX,intY
+                            if intX >= 0 Then //找V4
+                                KeyDown B
+                                DelayRandom 105,107
+                                KeyUp B
+                                DelayRandom 712,780
+                            else
+                                FindPic 800,2300,1439,2559,"E:\MHImg\GelanBless.bmp",000000,1.00,0,intX,intY
+                                if intX >= 0 Then //找女神祝福
+                                    KeyDown 5
+                                    DelayRandom 134,142
+                                    KeyUp 5
+                                    DelayRandom 512,519
+                                else
+                                    FindPic 800,2300,1439,2559,"E:\MHImg\BT_Wugong.bmp",000000,1.00,0,intX,intY
+                                    if intX >= 0 Then //找武公
+                                        KeyDown 4
+                                        DelayRandom 105,107
+                                        KeyUp 4
+                                        DelayRandom 899,909
+                                    else //什么都没有就普攻一下
+                                        KeyDown F
+                                        DelayRandom 811,892
+                                        KeyUp F
+                                        DelayRandom 246,249
+                                    End If
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
 
+            End If
+        End If
+End Sub
 
 windTime       = 0               //上次风的时间
 fireTime       = 0               //上次火的时间
@@ -241,10 +311,10 @@ while 1 > 0
 
         a = GetTimeStamp() - pickingTime
         if a > 120 then //可以捡钱了
-            tarX = 161
-            tarY = 150
+            tarX = 158
+            tarY = 120
             tolerance = 4
-            TracePrint 目标前往右下捡钱
+            TracePrint 目标前往右上捡钱
             Call Move()
             DelayRandom 56,58
             KeyDown F
@@ -252,7 +322,7 @@ while 1 > 0
             KeyUp F
             DelayRandom 455,469
             pickingTime = GetTimeStamp()
-            TracePrint 目标前往右下捡钱
+            TracePrint 目标前往右上捡钱
         else
 
             a = GetTimeStamp() - seedTime
@@ -276,19 +346,11 @@ while 1 > 0
             else //前往牛马地方放技能
                 tarX = 85
                 tarY = 150
-                tolerance = 4
+                tolerance = 8
                 Call Move()
                 DelayRandom 56,58
-                KeyDown Down
-                DelayRandom 95,98
-                KeyDown `
-                DelayRandom 251,259
-                KeyUp `
-                DelayRandom 119,123
-                KeyUp Down
-                DelayRandom 455,469
-                seedTime = GetTimeStamp()
-
+                Call SpellList()
+                DelayRandom 155,169
             End If
         End If
 
