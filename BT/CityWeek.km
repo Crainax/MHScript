@@ -1,0 +1,162 @@
+[General]
+ScreenX=1440
+ScreenY=2560
+Times=0
+
+
+
+[Script]
+Dim mX,mY
+Dim intX,intY
+
+while 1>0
+
+    FindPic 800,2300,1439,2559,"E:\MHImg\BT_Fly.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 then
+
+        KeyDown E
+        DelayRandom 137,139
+        KeyUp E
+        DelayRandom 239,242
+        KeyDown Down
+        DelayRandom 79,80
+        KeyUp Down
+        DelayRandom 269,272
+        KeyDown Down
+        DelayRandom 53,54
+        KeyUp Down
+        DelayRandom 62,63
+        KeyDown Down
+        DelayRandom 128,130
+        KeyUp Down
+        DelayRandom 259,262
+        KeyDown Down
+        DelayRandom 121,123
+        KeyUp Down
+        DelayRandom 227,230
+        KeyDown Down
+        DelayRandom 69,70
+        KeyUp Down
+        DelayRandom 70,71
+        KeyDown Down
+        DelayRandom 129,131
+        KeyUp Down
+        DelayRandom 309,313
+        KeyDown Down
+        DelayRandom 295,298
+        KeyUp Down
+        DelayRandom 374,378
+        KeyDown Up
+        DelayRandom 681,688
+        KeyUp Up
+        DelayRandom 194,196
+        KeyDown D
+        DelayRandom 1133,1145
+        KeyUp D
+        DelayRandom 318,325
+        KeyDown D
+        DelayRandom 4696,4745
+        KeyUp D
+        DelayRandom 203,206
+        KeyDown D
+        DelayRandom 2151,2173
+        KeyUp D
+        DelayRandom 323,327
+        KeyDown D
+        DelayRandom 2586,2612
+        KeyUp D
+        DelayRandom 320,324
+        KeyDown D
+        DelayRandom 3040,3061
+        KeyUp D
+        DelayRandom 218,221
+        KeyDown D
+        DelayRandom 2628,2655
+        KeyUp D
+        DelayRandom 219,222
+        KeyDown D
+        DelayRandom 2606,2623
+        KeyUp D
+        DelayRandom 365,369
+        KeyDown D
+        DelayRandom 1498,1513
+        KeyUp D
+        DelayRandom 326,330
+        KeyDown D
+        DelayRandom 1010,1021
+        KeyUp D
+        DelayRandom 159,161
+        KeyDown E
+        DelayRandom 79,80
+        KeyUp E
+
+    else //不能飞再放小技能
+        FindPic 800,2300,1439,2559,"E:\MHImg\BT_V1.bmp",000000,1.00,0,mX,mY	//找V1
+        if mX >= 0 Then
+            KeyDown Q
+            DelayRandom 111,113
+            KeyUp Q
+            DelayRandom 714,722
+        End If
+        FindPic 800,2300,1439,2559,"E:\MHImg\BT_V2.bmp",000000,1.00,0,mX,mY	//找V2
+        if mX >= 0 Then
+            KeyDown W
+            DelayRandom 122,124
+            KeyUp W
+            DelayRandom 402,412
+        End If
+
+        FindPic 800,2300,1439,2559,"E:\MHImg\BT_Spider.bmp",000000,1.00,0,mX,mY
+        if mX >= 0 Then //找蜘蛛
+            KeyDown H
+            DelayRandom 105,107
+            KeyUp H
+            DelayRandom 929,939
+        else
+            FindPic 800,2300,1439,2559,"E:\MHImg\BT_Lieyang.bmp",000000,1.00,0,mX,mY
+            if mX >= 0 Then //找烈阳
+                KeyDown Y
+                DelayRandom 105,107
+                KeyUp Y
+                DelayRandom 811,813
+            else
+                FindPic 800,2300,1439,2559,"E:\MHImg\BT_Whister.bmp",000000,1.00,0,mX,mY
+                if mX >= 0 Then //找哨子
+                    KeyDown 5
+                    DelayRandom 105,107
+                    KeyUp 5
+                    DelayRandom 72,74
+                    KeyDown B
+                    DelayRandom 97,99
+                    KeyUp B
+                    DelayRandom 312,324
+                    KeyDown C
+                    DelayRandom 214,217
+                    KeyUp C
+                    DelayRandom 879,891
+                else
+                    FindPic 800,2300,1439,2559,"E:\MHImg\BT_Water.bmp",000000,1.00,0,mX,mY
+                    if mX >= 0 Then //找喷泉
+                        KeyDown 1
+                        DelayRandom 105,107
+                        KeyUp 1
+                        DelayRandom 899,909
+                    else //什么都没有就普攻一下
+                        KeyDown S
+                        DelayRandom 387,391
+                        KeyDown Left
+                        DelayRandom 88,89
+                        KeyUp Left
+                        DelayRandom 555,557
+                        KeyDown Right
+                        DelayRandom 187,189
+                        KeyUp Right
+                        DelayRandom 503,505
+                        KeyUp S
+                    End If
+                End If
+            End If
+        End If
+    End If
+    DelayRandom 300,350
+Wend

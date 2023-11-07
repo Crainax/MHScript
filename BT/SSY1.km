@@ -5,6 +5,7 @@ Times=0
 
 [Script]
 Dim mX,mY,i
+Dim intX,intY
 
 Sub Fly1()
     DelayRandom 65,78
@@ -355,7 +356,6 @@ Sub Land1()
 
 End Sub
 
-Dim intX,intY
 
 while 1 > 0
     intX=-1
