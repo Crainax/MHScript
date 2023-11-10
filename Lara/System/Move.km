@@ -107,7 +107,7 @@ Sub Move()  //精确的移动
                     cY = intY
                     if intY > (tarY+25) Then	//>=26上跳就够不到了
                         consecutiveMax = 8 //延长一点降落判断
-                        TracePrint 绳子一次
+                        TracePrint 钩子一次 //TODO:加个刹车
                         KeyDown Ctrl
                         DelayRandom 328,430
                         KeyUp Ctrl
