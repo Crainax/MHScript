@@ -4,12 +4,15 @@ ScreenY=2560
 Times=0
 
 [Script]
-Dim tarX,tarY //目标
-Dim logoX,logoY,intX,intY //算目的地差值
-Dim DashCool //冲刺冷却
-Dim tolerance,temp //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim BoomOK,FlyOK //轰炸的计时器冷却
-
+Dim tarX,      tarY                              //目标
+Dim logoX,     logoY,            intX, intY      //算目的地差值
+Dim DashCool                                     //冲刺冷却
+Dim tolerance, temp                              //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim BoomOK,    FlyOK                             //轰炸的计时器冷却
+Dim cY,        consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X或Y轴变化了
+Dim Hooking                                      //钩子中,方便中途刹车
+Dim Landing                                      //在地面时无限循环状态
+Dim a,         stoneSteleTime,   V12Time         //冷却相关
 
 Sub on_timer1 //轰炸计时器
     BoomOK = 1
@@ -19,7 +22,7 @@ Sub on_timer2 //飞行计时器
     FlyOK = 1
 EndSub
 
-Sub Boom() //找图轰炸
+Sub Boom() //轰炸函数(利用定时器)
     FindPic 800,2300,1439,2559,"E:\MHImg\BT_Boom.bmp",000000,0.8,0,intX,intY	//找V1
     if intX >= 0 or BoomOK == 1 Then
         BoomOK = 0
@@ -109,7 +112,138 @@ Sub Move_Fly()  //飞行阶段的定点移动
     Wend
 End Sub
 
-Sub Fly1()
+Sub Move_Bild() //鸟形态的地面移动
+    consecutiveTimes	= -1  //初始就启用指南针判断
+    consecutiveMax		= 3   //降落默认值为4
+    Hooking				= 0   //钩子关闭
+    while  1 > 0
+        FindPic 0,1650,300,1900,"E:\MHImg\MSLogo.bmp",000000,1.00,0,logoX,logoY
+        FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        intX = intX - logoX
+        intY = intY - logoY
+        if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
+            if Hooking > 0 and intY <= tarY Then //钩子的判断刹车
+                KeyDown Alt
+                DelayRandom 258,282
+                KeyUp Alt
+                Hooking = 0
+            End If
+            if intY == cY Then //Y轴没变化了
+                consecutiveTimes = consecutiveTimes + 1
+                if consecutiveTimes >= consecutiveMax Then
+                    consecutiveTimes	= -1	//判断为已经落地
+                    consecutiveMax		= 3		//归位最大降落判断值
+                End If
+            else
+                cY = intY
+                consecutiveTimes = 0
+            End If
+        else //继续根据
+            if tolerance > 4 Then
+                temp = tolerance
+            else  //速走的默认为4
+                temp = 4
+            End If
+            if intX < (tarX-24) Then //向右二段跳 //todo:可以加入滑翔
+                consecutiveTimes = 0 //启动降落判断
+                cY = intY
+                DelayRandom 15,25
+                KeyDown Right
+                DelayRandom 50,51
+                KeyDown Space
+                DelayRandom 80,81
+                KeyUp Space
+                DelayRandom 30,31
+                KeyDown Space
+                DelayRandom 75,76
+                KeyUp Space
+                DelayRandom 85,86
+                KeyUp Right
+                DelayRandom 146,151
+            Else If intX > (tarX+24) Then //向左二段跳 //todo:可以加入滑翔
+                consecutiveTimes = 0 //启动降落判断
+                cY = 0
+                DelayRandom 15,25
+                KeyDown Left
+                DelayRandom 50,51
+                KeyDown Space
+                DelayRandom 80,81
+                KeyUp Space
+                DelayRandom 30,31
+                KeyDown Space
+                DelayRandom 75,76
+                KeyUp Space
+                DelayRandom 85,86
+                KeyUp Left
+                DelayRandom 146,151
+            Else If intX < (tarX-temp) Then //向右走
+                KeyDown Right
+            Else If intX > (tarX+temp) Then //向左走
+                KeyDown Left
+            else
+                KeyUp Right
+                KeyUp Left
+                If intY < tarY Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
+                    consecutiveTimes = 0 //启动降落判断
+                    cY = intY
+                    DelayRandom 12,13
+                    KeyDown Down
+                    DelayRandom 76,77
+                    KeyDown Space
+                    DelayRandom 128,130
+                    KeyUp Space
+                    DelayRandom 453,454
+                    KeyUp Down
+                    DelayRandom 32,33
+                Else If intY > tarY Then //如果人在目标之下,就上跳(Y轴是用相反比较符)
+                    consecutiveTimes = 0 //启动降落判断
+                    cY = intY
+                    if intY > (tarY+25) Then	//>=26上跳就够不到了
+                        consecutiveMax = 6 //延长一点降落判断
+                        KeyDown Space
+                        DelayRandom 5,6
+                        KeyUp Space
+                        DelayRandom 5,6
+                        KeyDown Up
+                        DelayRandom 5,6
+                        KeyUp Up
+                        DelayRandom 5,6
+                        KeyDown Up
+                        DelayRandom 5,6
+                        KeyUp Up
+                        DelayRandom 167,198
+                    else
+                        consecutiveMax = 6 //延长一点降落判断
+                        KeyDown Alt
+                        DelayRandom 128,132
+                        KeyUp Alt
+                        Hooking = 1 //开启钩子判断
+                    End If
+                else
+                    if tolerance < 4 Then //容忍度小于4还是要小碎步
+                        //Y轴也达标了,到X轴了
+                        If intX < (tarX-tolerance) Then //向右小碎步
+                            KeyDown Right
+                            DelayRandom 10,15
+                            KeyUp Right
+                        Else If intX > (tarX+tolerance) Then //向左小碎步
+                            KeyDown Left
+                            DelayRandom 10,15
+                            KeyUp Left
+                        else
+                            Exit Sub
+                        End If
+                    else //容忍度大于等于4可以直接结束
+                        Exit Sub
+                    End If
+                End If
+            End If
+        End If
+        Delay 5
+    Wend
+End Sub
+
+Sub Fly1() //飞行模式,启动!
     DelayRandom 65,78
     FindPic 800,2300,1439,2559,"E:\MHImg\BT_V1.bmp",000000,1.00,0,intX,intY	//找V1
     if intX >= 0 Then
@@ -118,7 +252,7 @@ Sub Fly1()
         KeyUp Q
         DelayRandom 714,722
     End If
-    if temp == 0 Then //根据i是否为0判断是不是第一次起飞(循环起飞不用开W)
+    if Landing > 0 Then //根据有没有触地决定放不放V2
         FindPic 800,2300,1439,2559,"E:\MHImg\BT_V2.bmp",000000,1.00,0,intX,intY	//找V2
         if intX >= 0 Then
             KeyDown W
@@ -128,6 +262,7 @@ Sub Fly1()
         End If
     End If
     Timer 2,1,29900
+    Landing = 0 //重置落地循环
     KeyDown E
     DelayRandom 137,139
     KeyUp E
@@ -154,74 +289,18 @@ Sub Fly1()
     Wend
 End Sub
 
-//这里是落地
-Sub Land1()
-    DelayRandom 1143,1155
-    KeyDown W
-    DelayRandom 119,121
-    KeyUp W
-    DelayRandom 82,83
-    KeyDown Q
-    DelayRandom 102,104
-    KeyUp Q
-    DelayRandom 462,467
-    KeyDown Left
-    DelayRandom 46,47
-    KeyUp Left
-    DelayRandom 185,187
-    KeyDown Space
-    DelayRandom 46,47
-    KeyUp Space
-    DelayRandom 54,55
-    KeyDown Space
-    DelayRandom 70,71
-    KeyUp Space
-    DelayRandom 341,345
-    KeyDown LShift
-    DelayRandom 813,822
-    KeyUp LShift
-    DelayRandom 632,639
-    KeyDown Right
-    DelayRandom 63,64
-    KeyUp Right
-    DelayRandom 213,217
-    FindPic 800,2300,1439,2559,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then //喷泉可以放
-        KeyDown LAlt
-        DelayRandom 1556,1572
-        KeyUp LAlt
-        DelayRandom 390,394
-        // KeyDown R
-        // DelayRandom 159,161
-        // KeyUp R
-        // DelayRandom 1078,1089
-        // KeyDown S
-        // DelayRandom 781,789
-        // KeyUp S
-        // DelayRandom 246,249
-        KeyDown Down
-        DelayRandom 105,107
-        KeyDown 1
-        DelayRandom 202,205
-        KeyUp 1
-        DelayRandom 77,78
-        KeyUp Down
-        DelayRandom 812,821
-        KeyDown LAlt
-        DelayRandom 80,81
-        KeyUp LAlt
-        DelayRandom 1833,1855
-    else //喷泉放不了
-        KeyDown LAlt
-        DelayRandom 80,81
-        KeyUp LAlt
-        DelayRandom 2433,2493
-    End If
+Sub DarkAttack()
+    KeyDown G
+    DelayRandom 159,161
+    KeyUp G
+    DelayRandom 1078,1089
+    KeyDown S
+    DelayRandom 781,789
+    KeyUp S
+    DelayRandom 246,249
+End Sub
 
-    KeyDown Right
-    DelayRandom 94,95
-    KeyUp Right
-    DelayRandom 91,93
+Sub Spell() //放能放的技能
     FindPic 800,2300,1439,2559,"E:\MHImg\BT_Spider.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //找蜘蛛
         KeyDown H
@@ -250,143 +329,128 @@ Sub Land1()
                 DelayRandom 214,217
                 KeyUp C
                 DelayRandom 879,891
-            else
-                FindPic 800,2300,1439,2559,"E:\MHImg\BT_Wugong.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //找武公
-                    KeyDown 4
-                    DelayRandom 105,107
-                    KeyUp 4
-                    DelayRandom 899,909
-                else //什么都没有就普攻一下
-                    KeyDown S
-                    DelayRandom 781,789
-                    KeyUp S
-                    DelayRandom 246,249
-                End If
             End If
         End If
     End If
-    KeyDown Space
-    DelayRandom 62,63
-    KeyUp Space
-    DelayRandom 79,80
-    KeyDown Space
-    DelayRandom 70,71
-    KeyUp Space
-    DelayRandom 407,412
-    KeyDown LShift
-    DelayRandom 871,880
-    KeyUp LShift
-    DelayRandom 756,764
+End Sub
 
-    FindPic 800,2300,1439,2559,"E:\MHImg\BT_Fly.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then //技能CD转好了就直接放技能吧
-        Exit Sub
+//无限循环
+Landing        = 1
+stoneSteleTime = 0  //上次轮回的时间
+V12Time        = 0  //上次V12的时间
+while 1 > 0
+
+    FindPic 800,2300,1439,2559,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 //最优先放喷泉
+        tarX = 31
+        tarY = 140
+        tolerance = 4
+        Call Move_Bild()
+        DelayRandom 56,58
+        KeyDown Right
+        DelayRandom 12,13
+        KeyUp Right
+        DelayRandom 106,109
+        KeyDown Down
+        DelayRandom 95,96
+        KeyDown 1
+        DelayRandom 194,196
+        KeyUp 1
+        DelayRandom 66,67
+        KeyUp Down
+        DelayRandom 612,621
+        temp = random(1,3)
+        if temp == 1 Then
+            Landing = 1 //下一个目标可以去上面
+        else
+            Landing = 3 //下一个目标也可以去右下
+        End If
     End If
 
-    KeyDown Right
-    DelayRandom 110,112
-    KeyUp Right
-    DelayRandom 306,310
-
-    intY=random(1,3)
-    if intY == 1 Then //一半的概率补轮
+    a = GetTimeStamp() - stoneSteleTime
+    if a > 570 then //可以放轮了
+        TracePrint 目标原地放轮
+        DelayRandom 56,58
         KeyDown O
         DelayRandom 137,139
         KeyUp O
-        DelayRandom 836,847
+        DelayRandom 736,747
+        stoneSteleTime = GetTimeStamp()
+        TracePrint 轮放好了
     End If
-
-    KeyDown S
-    DelayRandom 387,391
-    KeyDown Left
-    DelayRandom 88,89
-    KeyUp Left
-    DelayRandom 155,157
-    KeyDown Down
-    DelayRandom 76,77
-    KeyDown Space
-    DelayRandom 128,130
-    KeyUp Space
-    DelayRandom 53,54
-    KeyUp Down
-    DelayRandom 466,471
 
     FindPic 800,2300,1439,2559,"E:\MHImg\BT_Fly.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then //技能CD转好了就直接放技能吧
-        KeyUp S
-        Exit Sub
-    End If
-
-    KeyDown Right
-    DelayRandom 187,189
-    KeyUp Right
-    DelayRandom 103,105
-    KeyDown Down
-    DelayRandom 119,121
-    KeyDown Space
-    DelayRandom 112,114
-    KeyUp Down
-    DelayRandom 1,2
-    KeyUp Space
-    DelayRandom 160,162
-
-    FindPic 800,2300,1439,2559,"E:\MHImg\BT_Fly.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then //技能CD转好了就直接放技能吧
-        KeyUp S
-        Exit Sub
-    End If
-
-    KeyDown Left
-    DelayRandom 178,180
-    KeyUp Left
-    DelayRandom 268,271
-    KeyDown Right
-    DelayRandom 127,129
-    KeyUp Right
-    DelayRandom 327,331
-    KeyDown Down
-    DelayRandom 54,55
-    KeyDown Space
-    DelayRandom 128,130
-    KeyUp Space
-    DelayRandom 45,46
-    KeyUp Down
-    DelayRandom 153,155
-
-    FindPic 800,2300,1439,2559,"E:\MHImg\BT_Fly.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then //技能CD转好了就直接放技能吧
-        KeyUp S
-        Exit Sub
-    End If
-
-    KeyDown Left
-    DelayRandom 194,196
-    KeyUp Left
-    DelayRandom 169,171
-    KeyDown Right
-    DelayRandom 102,104
-    KeyUp Right
-    DelayRandom 94,95
-    KeyUp S
-
-End Sub
-
-
-while 1 > 0
-    intX=-1
-    while intX < 0
-        Delay 100
-        FindPic 800,2300,1439,2559,"E:\MHImg\BT_Fly.bmp",000000,1.00,0,intX,intY
-    Wend
-    //执行到这步代表判断成功
-
-    temp = 0
-    while intX >= 0
+    if intX >= 0 //进入飞行模式
         Call Fly1()
-        FindPic 800,2300,1439,2559,"E:\MHImg\BT_Fly.bmp",000000,1.00,0,intX,intY	//落地判断,如果还能找到就循环飞
-        temp = temp + 1
-    Wend
-    Call Land1() //技能冷却中 去捡钱
+    End If
+
+    FindPic 800,2300,1439,2559,"E:\MHImg\BT_V2.bmp",000000,1.00,0,intX,intY	//找V2
+    a = GetTimeStamp() - V12Time
+    if intX >= 0 and a > 4 Then //找到V2就放
+        KeyDown W
+        DelayRandom 122,124
+        KeyUp W
+        DelayRandom 402,412
+        V12Time = GetTimeStamp()
+    End If
+    //todo:Landing拆得更细一些,方便检测进入循环
+    FindPic 800,2300,1439,2559,"E:\MHImg\BT_V1.bmp",000000,1.00,0,intX,intY	//找V1
+    a = GetTimeStamp() - V12Time
+    if intX >= 0 and a > 4 Then //找到V1就放
+        KeyDown Q
+        DelayRandom 111,113
+        KeyUp Q
+        DelayRandom 714,722
+        V12Time = GetTimeStamp()
+    End If
+
+    if Landing == 1 Then //下个目标:左上角
+        tarX = 32
+        tarY = 101
+        tolerance = 5
+        Call Move_Bild()
+        Call Spell() //放技能
+        Call DarkAttack() //幽暗+攻击
+        Landing = 2 //
+    End If
+
+    if Landing == 2 Then //下个目标:右上角
+        tarX = 117
+        tarY = 106
+        tolerance = 6
+        Call Move_Bild()
+        Call DarkAttack() //幽暗+攻击
+        temp = random(1,3)
+        if temp == 1 Then
+            Landing = 2 //下一个目标可以去上面
+        else
+            Landing = 3 //下一个目标也可以去右下
+        End If
+    End If
+
+    if Landing == 3 Then //下个目标:右下角
+        tarX = 131
+        tarY = 154
+        tolerance = 4
+        Call Move_Bild()
+        Call Spell() //放技能
+        Call DarkAttack() //幽暗+攻击
+        Landing = 4 //
+    End If
+
+    if Landing == 4 or Landing == 0 Then //下个目标:右下角
+        tarX = 31
+        tarY = 140
+        tolerance = 4
+        Call Move_Bild()
+        Call DarkAttack() //幽暗+攻击
+        temp = random(1,3)
+        if temp == 1 Then
+            Landing = 2 //下一个目标可以去上面
+        else
+            Landing = 3 //下一个目标也可以去右下
+        End If
+    End If
+
 Wend
 
