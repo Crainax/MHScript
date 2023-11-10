@@ -1,0 +1,101 @@
+[General]
+ScreenX=1440
+ScreenY=2560
+Times=0
+
+[Script]
+Dim tarX,tarY //目标
+Dim logoX,logoY,intX,intY //算目的地差值
+Dim DashCool //冲刺冷却
+Dim tolerance,temp //快速移动的容差,0代表精确移动,另外个是局部变量
+//目前已经算出一个二段跳能跳32的X轴(平地)
+//几个测试点:轰炸点(右)-99,130    轰炸点(左)-48,129
+//一个左冲或一个右冲能44轴,但是Y轴不好控制
+
+Sub Move_Fly()  //飞行阶段的移动
+    DashCool = 0
+    while  1 > 0
+        FindPic 0,1650,300,1900,"E:\MHImg\MSLogo.bmp",000000,1.00,0,logoX,logoY
+        FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        intX = intX - logoX
+        intY = intY - logoY
+        temp = 0
+        If DashCool <= 0 //冲刺冷却,别太频繁
+            If intY < (tarY-32) Then //过远就下冲法
+                KeyDown Down
+                DelayRandom 53,54
+                KeyUp Down
+                DelayRandom 46,47
+                KeyDown Down
+                DelayRandom 45,46
+                KeyUp Down
+            Else If intY > (tarY+32) Then //过远就上冲法
+                KeyDown Up
+                DelayRandom 53,54
+                KeyUp Up
+                DelayRandom 46,47
+                KeyDown Up
+                DelayRandom 45,46
+                KeyUp Up
+            Else If intX > (tarX+32) Then //过远就左冲法
+                KeyDown Left
+                DelayRandom 53,54
+                KeyUp Left
+                DelayRandom 46,47
+                KeyDown Left
+                DelayRandom 45,46
+                KeyUp Left
+            Else If intX < (tarX-32) Then //过远就右冲法
+                KeyDown Right
+                DelayRandom 53,54
+                KeyUp Right
+                DelayRandom 46,47
+                KeyDown Right
+                DelayRandom 45,46
+                KeyUp Right
+            End If
+            DashCool = 20
+        else
+            DashCool = DashCool - 1
+            If intY < (tarY-tolerance) Then //如果人在目标之上,按压下(Y轴是用相反比较符)
+                KeyUp Up
+                KeyDown Down
+            Else If intY > (tarY+tolerance) //如果人在目标之下,按压上(Y轴是用相反比较符)
+                KeyUp Down
+                KeyDown Up
+            else
+                KeyUp Down
+                KeyUp Up
+                temp = temp + 1
+            End If
+
+            If intX < (tarX-tolerance) Then //如果人在目标之左,按压右
+                KeyUp Left
+                KeyDown Right
+            Else If intX > (tarX+tolerance) //如果人在目标之右,按压左
+                KeyUp Right
+                KeyDown Left
+            else
+                KeyUp Right
+                KeyUp Left
+                temp = temp + 1
+            End If
+
+            if temp >= 2 Then
+                Exit Sub
+            End If
+        End If
+
+        Delay 5
+    Wend
+End Sub
+
+temp = 1
+GetFileLine tarX,Move.Conf,temp		//文件查找
+temp = 2
+GetFileLine tarY,Move.Conf,temp		//文件查找
+temp = 3
+GetFileLine tolerance,Move.Conf,temp	//文件查找
+TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance
+Call Move_Fly()
+MsgBox 到达目的[ & tarX & , & tarY & ],容忍度 & tolerance
