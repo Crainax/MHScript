@@ -13,6 +13,7 @@ Dim cY,        consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X
 Dim Hooking                                      //钩子中,方便中途刹车
 Dim Landing                                      //在地面时无限循环状态
 Dim a,         stoneSteleTime,   V12Time         //冷却相关
+Dim Rotation,  RotateTimes                       //绕方向
 
 Sub on_timer1 //轰炸计时器
     BoomOK = 1
@@ -144,7 +145,7 @@ Sub Move_Bild() //鸟形态的地面移动
             else  //速走的默认为4
                 temp = 4
             End If
-            if intX < (tarX-24) Then //向右二段跳 //todo:可以加入滑翔
+            if intX < (tarX-24) Then //向右二段跳
                 consecutiveTimes = 0 //启动降落判断
                 cY = intY
                 DelayRandom 15,25
@@ -160,7 +161,7 @@ Sub Move_Bild() //鸟形态的地面移动
                 DelayRandom 85,86
                 KeyUp Right
                 DelayRandom 146,151
-            Else If intX > (tarX+24) Then //向左二段跳 //todo:可以加入滑翔
+            Else If intX > (tarX+24) Then //向左二段跳
                 consecutiveTimes = 0 //启动降落判断
                 cY = 0
                 DelayRandom 15,25
@@ -196,7 +197,6 @@ Sub Move_Bild() //鸟形态的地面移动
                     KeyUp Down
                     DelayRandom 32,33
                 Else If intY > tarY Then //如果人在目标之下,就上跳(Y轴是用相反比较符)
-                    consecutiveTimes = 0 //启动降落判断
                     cY = intY
                     if intY > (tarY+25) Then	//>=26上跳就够不到了
                         consecutiveMax = 6 //延长一点降落判断
@@ -336,19 +336,31 @@ End Sub
 
 //无限循环
 Landing        = 1
+Rotation       = 0  //一开始是顺时针
+RotateTimes    = 0  //方向满5次才转向
 stoneSteleTime = 0  //上次轮回的时间
 V12Time        = 0  //上次V12的时间
 while 1 > 0
 
+    FindPic 800,2300,1439,2559,"E:\MHImg\BT_V1.bmp",000000,1.00,0,intX,intY	//找V1
+    a = GetTimeStamp() - V12Time
+    if intX >= 0 and a > 4 Then //找到V1就放,瞬手的事
+        KeyDown Q
+        DelayRandom 111,113
+        KeyUp Q
+        DelayRandom 714,722
+        V12Time = GetTimeStamp()
+    End If
+
     FindPic 800,2300,1439,2559,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
     if intX >= 0 //最优先放喷泉
-        tarX = 31
+        tarX = 28
         tarY = 140
-        tolerance = 4
+        tolerance = 2
         Call Move_Bild()
         DelayRandom 56,58
         KeyDown Right
-        DelayRandom 12,13
+        DelayRandom 112,115
         KeyUp Right
         DelayRandom 106,109
         KeyDown Down
@@ -359,11 +371,10 @@ while 1 > 0
         DelayRandom 66,67
         KeyUp Down
         DelayRandom 612,621
-        temp = random(1,3)
-        if temp == 1 Then
-            Landing = 1 //下一个目标可以去上面
+        if Rotation == 0 then // 顺时针
+            Landing = 2
         else
-            Landing = 3 //下一个目标也可以去右下
+            Landing = 0
         End If
     End If
 
@@ -382,75 +393,80 @@ while 1 > 0
     FindPic 800,2300,1439,2559,"E:\MHImg\BT_Fly.bmp",000000,1.00,0,intX,intY
     if intX >= 0 //进入飞行模式
         Call Fly1()
-    End If
-
-    FindPic 800,2300,1439,2559,"E:\MHImg\BT_V2.bmp",000000,1.00,0,intX,intY	//找V2
-    a = GetTimeStamp() - V12Time
-    if intX >= 0 and a > 4 Then //找到V2就放
-        KeyDown W
-        DelayRandom 122,124
-        KeyUp W
-        DelayRandom 402,412
-        V12Time = GetTimeStamp()
-    End If
-    //todo:Landing拆得更细一些,方便检测进入循环
-    FindPic 800,2300,1439,2559,"E:\MHImg\BT_V1.bmp",000000,1.00,0,intX,intY	//找V1
-    a = GetTimeStamp() - V12Time
-    if intX >= 0 and a > 4 Then //找到V1就放
-        KeyDown Q
-        DelayRandom 111,113
-        KeyUp Q
-        DelayRandom 714,722
-        V12Time = GetTimeStamp()
-    End If
-
-    if Landing == 1 Then //下个目标:左上角
-        tarX = 32
-        tarY = 101
-        tolerance = 5
-        Call Move_Bild()
-        Call Spell() //放技能
-        Call DarkAttack() //幽暗+攻击
-        Landing = 2 //
-    End If
-
-    if Landing == 2 Then //下个目标:右上角
-        tarX = 117
-        tarY = 106
-        tolerance = 6
-        Call Move_Bild()
-        Call DarkAttack() //幽暗+攻击
-        temp = random(1,3)
-        if temp == 1 Then
-            Landing = 2 //下一个目标可以去上面
+        if Rotation == 0 then // 顺时针
+            Landing = 7
         else
-            Landing = 3 //下一个目标也可以去右下
+            Landing = 3
+        End If
+    else //方便进入下一个循环
+
+        FindPic 800,2300,1439,2559,"E:\MHImg\BT_V2.bmp",000000,1.00,0,intX,intY	//找V2
+        a = GetTimeStamp() - V12Time
+        if intX >= 0 and a > 4 Then //找到V2就放,瞬手的事
+            KeyDown W
+            DelayRandom 122,124
+            KeyUp W
+            DelayRandom 402,412
+            V12Time = GetTimeStamp()
+        End If
+
+        //1:喷泉点,3:右下角,5:右下角2楼,7:右上角,9:左上角
+        if Landing%2 == 0 Then //偶数时放技能和幽暗
+            Call Spell() //放技能
+            Call DarkAttack() //幽暗+攻击
+            if Rotation == 0 then // 顺时针
+                Landing = Landing + 1
+            else
+                Landing = Landing - 1
+            End If
+
+            if Landing < 0 Then //到边界了就去另一个边界
+                Landing = 9
+            End If
+        Else //换地!
+            RotateTimes = RotateTimes + 1
+            If RotateTimes >= 5 Then //满5次方向就换个方向
+                If Rotation == 1 Then
+                    Rotation = 0
+                else
+                    Rotation = 1
+                End If
+                RotateTimes = 0
+            End If
+
+            if Landing == 1 Then
+                tarX = 28
+                tarY = 140
+                tolerance = 2
+            Else If Landing == 3 Then
+                tarX = 111
+                tarY = 154
+                tolerance = 4
+            Else If Landing == 5 Then
+                tarX = 111
+                tarY = 140
+                tolerance = 4
+            Else If Landing == 7 Then
+                tarX = 111
+                tarY = 106
+                tolerance = 4
+            else
+                tarX = 31
+                tarY = 101
+                tolerance = 4
+            End If
+            if Rotation == 0 then // 顺时针
+                Landing = Landing + 1
+            else
+                Landing = Landing - 1
+            End If
+            if Landing > 9 Then //到边界了就去另一个边界
+                Landing = 0
+            End If
+            Call Move_Bild()
         End If
     End If
 
-    if Landing == 3 Then //下个目标:右下角
-        tarX = 131
-        tarY = 154
-        tolerance = 4
-        Call Move_Bild()
-        Call Spell() //放技能
-        Call DarkAttack() //幽暗+攻击
-        Landing = 4 //
-    End If
-
-    if Landing == 4 or Landing == 0 Then //下个目标:右下角
-        tarX = 31
-        tarY = 140
-        tolerance = 4
-        Call Move_Bild()
-        Call DarkAttack() //幽暗+攻击
-        temp = random(1,3)
-        if temp == 1 Then
-            Landing = 2 //下一个目标可以去上面
-        else
-            Landing = 3 //下一个目标也可以去右下
-        End If
-    End If
 
 Wend
 
