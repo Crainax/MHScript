@@ -168,7 +168,7 @@ Sub Move_Bild() //鸟形态的地面移动
             Else If intX > (tarX+temp) Then //向左走
                 KeyDown Left
             else
-                KeyUp Rights
+                KeyUp Right
                 KeyUp Left
                 If intY < tarY Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
                     consecutiveTimes = 0 //启动降落判断
@@ -188,26 +188,26 @@ Sub Move_Bild() //鸟形态的地面移动
                     cY = intY
                     if intY > (tarY+25) Then	//>=26上跳就够不到了
                         consecutiveMax = 6 //延长一点降落判断
-                        TracePrint 上跳一次
-                        KeyDown Space
-                        DelayRandom 5,6
-                        KeyUp Space
-                        DelayRandom 5,6
-                        KeyDown Up
-                        DelayRandom 5,6
-                        KeyUp Up
-                        DelayRandom 5,6
-                        KeyDown Up
-                        DelayRandom 5,6
-                        KeyUp Up
-                        DelayRandom 167,198
-                    else
-                        consecutiveMax = 6 //延长一点降落判断
                         TracePrint 钩子一次
                         KeyDown Alt
                         DelayRandom 128,132
                         KeyUp Alt
                         Hooking = 1 //开启钩子判断
+                    else
+                        consecutiveMax = 8 //延长一点降落判断
+                        TracePrint 上跳一次
+                        DelayRandom 128,130
+                        KeyDown Space
+                        DelayRandom 70,71
+                        KeyUp Space
+                        DelayRandom 394,398
+                        KeyDown Up
+                        DelayRandom 67,68
+                        KeyUp Up
+                        DelayRandom 54,55
+                        KeyDown Up
+                        DelayRandom 87,88
+                        KeyUp Up
                     End If
                 else
                     if tolerance < 4 Then //容忍度小于4还是要小碎步

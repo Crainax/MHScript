@@ -145,7 +145,7 @@ Sub Move_Bild() //鸟形态的地面移动
             else  //速走的默认为4
                 temp = 4
             End If
-            if intX < (tarX-24) Then //向右二段跳
+            if intX < (tarX-24) Then //向右二段跳 //todo:可以加入滑翔
                 consecutiveTimes = 0 //启动降落判断
                 cY = intY
                 DelayRandom 15,25
@@ -161,7 +161,7 @@ Sub Move_Bild() //鸟形态的地面移动
                 DelayRandom 85,86
                 KeyUp Right
                 DelayRandom 146,151
-            Else If intX > (tarX+24) Then //向左二段跳
+            Else If intX > (tarX+24) Then //向左二段跳 //todo:可以加入滑翔
                 consecutiveTimes = 0 //启动降落判断
                 cY = 0
                 DelayRandom 15,25
@@ -197,27 +197,28 @@ Sub Move_Bild() //鸟形态的地面移动
                     KeyUp Down
                     DelayRandom 32,33
                 Else If intY > tarY Then //如果人在目标之下,就上跳(Y轴是用相反比较符)
+                    consecutiveTimes = 0 //启动降落判断
                     cY = intY
                     if intY > (tarY+25) Then	//>=26上跳就够不到了
-                        consecutiveMax = 6 //延长一点降落判断
-                        KeyDown Space
-                        DelayRandom 5,6
-                        KeyUp Space
-                        DelayRandom 5,6
-                        KeyDown Up
-                        DelayRandom 5,6
-                        KeyUp Up
-                        DelayRandom 5,6
-                        KeyDown Up
-                        DelayRandom 5,6
-                        KeyUp Up
-                        DelayRandom 167,198
-                    else
                         consecutiveMax = 6 //延长一点降落判断
                         KeyDown Alt
                         DelayRandom 128,132
                         KeyUp Alt
                         Hooking = 1 //开启钩子判断
+                    else
+                        consecutiveMax = 8 //延长一点降落判断
+                        DelayRandom 128,130
+                        KeyDown Space
+                        DelayRandom 70,71
+                        KeyUp Space
+                        DelayRandom 394,398
+                        KeyDown Up
+                        DelayRandom 67,68
+                        KeyUp Up
+                        DelayRandom 54,55
+                        KeyDown Up
+                        DelayRandom 87,88
+                        KeyUp Up
                     End If
                 else
                     if tolerance < 4 Then //容忍度小于4还是要小碎步
@@ -242,6 +243,7 @@ Sub Move_Bild() //鸟形态的地面移动
         Delay 5
     Wend
 End Sub
+
 
 Sub Fly1() //飞行模式,启动!
     DelayRandom 65,78
