@@ -1,52 +1,122 @@
 [General]
-ScreenX=1440
-ScreenY=2560
+ScreenX=2560
+ScreenY=1440
 Times=0
 
 [Script]
-Dim tarX,      tarY                          //ç›®æ ‡
-Dim logoX,     logoY,            intX, intY  //ç®—ç›®çš„åœ°å·®å€¼
-Dim cY,        consecutiveTimes, YDirection  //ç”¨è¿™ä¸ªä¸œè¥¿åˆ¤æ–­è§’è‰²æ˜¯ä¸æ˜¯æ²¡æœ‰Xæˆ–Yè½´å˜åŒ–äº†
-Dim tolerance, tolLoc                        //å¿«é€Ÿç§»åŠ¨çš„å®¹å·®,0ä»£è¡¨ç²¾ç¡®ç§»åŠ¨,å¦å¤–ä¸ªæ˜¯å±€éƒ¨å˜é‡
+Dim x1,x2,y1,y2 // ¾ØĞÎÇøÓò:Ğ¡µØÍ¼²ÉÑùµã
+Dim x3,x4,y3,y4 // 2¸ö¶¥µã:¼¼ÄÜÇø/Ä¢¹½¹«Ö÷
+Dim xEnd,yEnd //ÆÁÄ»ÓÒÏÂ½Ç¶¥µã
+Dim tarX,      tarY                          //Ä¿±ê
+Dim logoX,     logoY,            intX, intY  //ËãÄ¿µÄµØ²îÖµ
+Dim cY,        consecutiveTimes, YDirection  //ÓÃÕâ¸ö¶«Î÷ÅĞ¶Ï½ÇÉ«ÊÇ²»ÊÇÃ»ÓĞX»òYÖá±ä»¯ÁË
+Dim tolerance, tolLoc                        //¿ìËÙÒÆ¶¯µÄÈİ²î,0´ú±í¾«È·ÒÆ¶¯,ÁíÍâ¸öÊÇ¾Ö²¿±äÁ¿
+//×óÉÏ´«ËÍµã(-96,90),ÅçÈªµã(-81,104),×óÏÂ´«ËÍµã(-73,118),ÓÒÏÂ´«ËÍµã(5,118),ÓÒÉÏ´«ËÍµã(29,88),ÓÒÏÂ¼ñÇ®µã(48,118),ÆÕ¹¥(-8,107),ÉÏÑ²(-8,79),²âÊÔÉÏË²(15,68),²âÊÔÉÏË²(-58,90),
 
-Sub Move() //ç²¾ç¡®çš„ç§»åŠ¨
-    consecutiveTimes = -1 //åˆå§‹å°±å¯ç”¨æŒ‡å—é’ˆåˆ¤æ–­
-    YDirection = 0 //æ–¹å‘åˆå§‹åŒ–
+
+Sub Move() //¾«È·µÄÒÆ¶¯
+    consecutiveTimes = -1 //³õÊ¼¾ÍÆôÓÃÖ¸ÄÏÕëÅĞ¶Ï
+    YDirection = 0 //·½Ïò³õÊ¼»¯
     while  1 > 0
-        FindPic 0,1650,300,1900,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-        FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
 
-        if intX < 0 Then //äººç‰©è·‘åˆ°äº†è¾¹ç•Œ  å¤„ç†ä¸€ä¸‹
-            TracePrint æ²¡æ‰¾åˆ°äºº,å¼€å§‹å·¦å³ç§»è‡ªæµ‹
+        if intX < 0 Then //ÈËÎïÅÜµ½ÁË±ß½ç  ´¦ÀíÒ»ÏÂ
+            TracePrint Ã»ÕÒµ½ÈË,¿ªÊ¼×óÓÒÒÆ×Ô²â & intX &, & intY
             KeyDown Left
             DelayRandom 1000,1500
             KeyUp Left
-            FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-            if intX < 0 Then //å·¦ç§»äº†è¿˜æ˜¯æ²¡æ‰¾åˆ°,å°±å³ç§»
+            FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+            if intX < 0 Then //×óÒÆÁË»¹ÊÇÃ»ÕÒµ½,¾ÍÓÒÒÆ
                 KeyDown Right
                 DelayRandom 1000,1500
                 KeyUp Right
-                FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+                FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
             End if
         End if
 
         intX = intX - logoX
         intY = intY - logoY
 
-        if consecutiveTimes >= 0 Then //åˆ¤æ–­ä¸‹ç¬å’Œä¸Šç¬æ˜¯å¦å¡ä½æ¥åˆ‡æ¢æ–¹å¼
-            if intY == cY Then //Yè½´æ²¡å˜åŒ–äº†
+        if tolerance > 4 Then
+            tolLoc = tolerance
+        else  //ËÙ×ßµÄÄ¬ÈÏÎª4
+            tolLoc = 4
+        End If
+        if intX < (tarX-12) Then //ÓÒË²
+            KeyDown Right
+            KeyUp Left
+            KeyDown Shift
+        Else If intX > (tarX+12) Then //Ïò×óË²
+            KeyDown Left
+            KeyUp Right
+            KeyDown Shift
+        Else If intX < (tarX-tolLoc) Then //ÏòÓÒ×ß
+            KeyDown Right
+            KeyUp Left
+            KeyUp Shift
+        Else If intX > (tarX+tolLoc) Then //Ïò×ó×ß
+            KeyDown Left
+            KeyUp Right
+            KeyUp Shift
+        else //µ½Y·½ÏòµÄÁË
+            KeyUp Right //ÕâÒ»²½ÒÑ¾­²»ĞèÒª·½Ïò¼üÁË
+            KeyUp Left //ÕâÒ»²½ÒÑ¾­²»ĞèÒª·½Ïò¼üÁË
+            If intY < tarY Then //Èç¹ûÈËÔÚÄ¿±êÖ®ÉÏ,¾ÍÏÂË²(YÖáÊÇÓÃÏà·´±È½Ï·û)
+                if consecutiveTimes < 0 then
+                    consecutiveTimes = 0 //Æô¶¯¼à¿Ø¿¨×¡ÅĞ¶Ï
+                End If
+                cY = intY
+                YDirection = 0
+                KeyDown Down
+                KeyDown Shift
+            Else If intY > tarY Then //Èç¹ûÈËÔÚÄ¿±êÖ®ÏÂ,¾ÍÉÏË²(YÖáÊÇÓÃÏà·´±È½Ï·û)
+                if consecutiveTimes < 0 then
+                    consecutiveTimes = 0 //Æô¶¯¼à¿Ø¿¨×¡ÅĞ¶Ï
+                End If
+                cY = intY
+                YDirection = 1
+                KeyDown Up
+                KeyDown Shift
+            else //YÖá¸ã¶¨ÁË,µ½ÈİÈÌ¶ÈµÄXÖáÁË
+                KeyUp Down
+                KeyUp Up
+                KeyUp Shift //ÕâÒ»²½ÒÑ¾­²»ĞèÒªshift¼üÁË
+                consecutiveTimes = -1 //ÕâÒ»²½ÒÑ¾­²»ĞèÒª¼à¿ØYÖá¿¨×¡ÁË
+                TracePrint YÖáµ½ÁË
+                if tolerance < 4 Then //ÈİÈÌ¶ÈĞ¡ÓÚ4»¹ÊÇÒªĞ¡Ëé²½
+                    //YÖáÒ²´ï±êÁË,µ½XÖáÁË
+                    If intX < (tarX-tolerance) Then //ÏòÓÒĞ¡Ëé²½
+                        KeyDown Right
+                        DelayRandom 10,15
+                        KeyUp Right
+                    Else If intX > (tarX+tolerance) Then //Ïò×óĞ¡Ëé²½
+                        KeyDown Left
+                        DelayRandom 10,15
+                        KeyUp Left
+                    else
+                        Exit Sub
+                    End If
+                else //ÈİÈÌ¶È´óÓÚµÈÓÚ4¿ÉÒÔÖ±½Ó½áÊø
+                    Exit Sub
+                End If
+            End If
+        End If
+
+        if consecutiveTimes >= 0 Then //ÅĞ¶ÏÏÂË²ºÍÉÏË²ÊÇ·ñ¿¨×¡À´ÇĞ»»·½Ê½
+            if intY == cY Then //YÖáÃ»±ä»¯ÁË
                 consecutiveTimes = consecutiveTimes + 1
-                TracePrint Yè½´å¡ä½: & consecutiveTimes
-                if consecutiveTimes >= 8 Then //Yè½´
-                    consecutiveTimes	= 0	//ç›‘æ§é‡ç½®
-                    TracePrint ç¡®å®æ˜¯å¡ä½äº†
-                    if YDirection > 0 then //ä¸Šç¬å¡ä½
-                        TracePrint é’©å­ä¸€æ¬¡
+                TracePrint YÖá¿¨×¡: & consecutiveTimes
+                if consecutiveTimes >= 15 Then //YÖá
+                    consecutiveTimes	= 0	//¼à¿ØÖØÖÃ
+                    TracePrint È·ÊµÊÇ¿¨×¡ÁË
+                    if YDirection > 0 then //ÉÏË²¿¨×¡
+                        TracePrint ¹³×ÓÒ»´Î
                         KeyDown Alt
                         DelayRandom 328,430
                         KeyUp Alt
-                    else //ä¸‹ç¬å¡ä½
-                        TracePrint ä¸‹è·³ä¸€æ¬¡
+                    else //ÏÂË²¿¨×¡
+                        TracePrint ÏÂÌøÒ»´Î
                         DelayRandom 12,13
                         KeyDown Down
                         DelayRandom 76,77
@@ -61,69 +131,7 @@ Sub Move() //ç²¾ç¡®çš„ç§»åŠ¨
             else
                 cY = intY
                 consecutiveTimes = 0
-                TracePrint Yè½´å¡ä½: & consecutiveTimes
-            End If
-        End If
-
-        if tolerance > 4 Then
-            tolLoc = tolerance
-        else  //é€Ÿèµ°çš„é»˜è®¤ä¸º4
-            tolLoc = 4
-        End If
-        if intX < (tarX-12) Then //å³ç¬
-            KeyDown Right
-            KeyUp Left
-            KeyDown Shift
-        Else If intX > (tarX+12) Then //å‘å·¦ç¬
-            KeyDown Left
-            KeyUp Right
-            KeyDown Shift
-        Else If intX < (tarX-tolLoc) Then //å‘å³èµ°
-            KeyDown Right
-            KeyUp Left
-            KeyUp Shift
-        Else If intX > (tarX+tolLoc) Then //å‘å·¦èµ°
-            KeyDown Left
-            KeyUp Right
-            KeyUp Shift
-        else //åˆ°Yæ–¹å‘çš„äº†
-            KeyUp Right //è¿™ä¸€æ­¥å·²ç»ä¸éœ€è¦æ–¹å‘é”®äº†
-            KeyUp Left //è¿™ä¸€æ­¥å·²ç»ä¸éœ€è¦æ–¹å‘é”®äº†
-            If intY < tarY Then //å¦‚æœäººåœ¨ç›®æ ‡ä¹‹ä¸Š,å°±ä¸‹ç¬(Yè½´æ˜¯ç”¨ç›¸åæ¯”è¾ƒç¬¦)
-                if consecutiveTimes < 0 then
-                    consecutiveTimes = 0 //å¯åŠ¨ç›‘æ§å¡ä½åˆ¤æ–­
-                End If
-                cY = intY
-                YDirection = 0
-                KeyDown Down
-                KeyDown Shift
-            Else If intY > tarY Then //å¦‚æœäººåœ¨ç›®æ ‡ä¹‹ä¸‹,å°±ä¸Šç¬(Yè½´æ˜¯ç”¨ç›¸åæ¯”è¾ƒç¬¦)
-                if consecutiveTimes < 0 then
-                    consecutiveTimes = 0 //å¯åŠ¨ç›‘æ§å¡ä½åˆ¤æ–­
-                End If
-                cY = intY
-                YDirection = 1
-                KeyDown Up
-                KeyDown Shift
-            else //Yè½´æå®šäº†,åˆ°å®¹å¿åº¦çš„Xè½´äº†
-                KeyUp Shift //è¿™ä¸€æ­¥å·²ç»ä¸éœ€è¦shifté”®äº†
-                consecutiveTimes = -1 //è¿™ä¸€æ­¥å·²ç»ä¸éœ€è¦ç›‘æ§Yè½´å¡ä½äº†
-                if tolerance < 4 Then //å®¹å¿åº¦å°äº4è¿˜æ˜¯è¦å°ç¢æ­¥
-                    //Yè½´ä¹Ÿè¾¾æ ‡äº†,åˆ°Xè½´äº†
-                    If intX < (tarX-tolerance) Then //å‘å³å°ç¢æ­¥
-                        KeyDown Right
-                        DelayRandom 10,15
-                        KeyUp Right
-                    Else If intX > (tarX+tolerance) Then //å‘å·¦å°ç¢æ­¥
-                        KeyDown Left
-                        DelayRandom 10,15
-                        KeyUp Left
-                    else
-                        Exit Sub
-                    End If
-                else //å®¹å¿åº¦å¤§äºç­‰äº4å¯ä»¥ç›´æ¥ç»“æŸ
-                    Exit Sub
-                End If
+                TracePrint YÖá¿¨×¡: & consecutiveTimes
             End If
         End If
 
@@ -131,13 +139,27 @@ Sub Move() //ç²¾ç¡®çš„ç§»åŠ¨
     Wend
 End Sub
 
+//·Ö±æÂÊ³õÊ¼»¯
+GetScreenResolution intX, intY
+if intX > intY then //ºá·ÅÆÁÄ»
+    x1 = 700
+    y1 = 550
+    x2 = 1650
+    y2 = 850
+else //Êú·ÅÆÁÄ»
+    x1 = 0
+    y1 = 1650
+    x2 = 300
+    y2 = 1900
+End If
+
 tolLoc = 1
-GetFileLine tarX,Move.Conf,tolLoc		//æ–‡ä»¶æŸ¥æ‰¾
+GetFileLine tarX,Move.Conf,tolLoc		//ÎÄ¼ş²éÕÒ
 tolLoc = 2
-GetFileLine tarY,Move.Conf,tolLoc		//æ–‡ä»¶æŸ¥æ‰¾
+GetFileLine tarY,Move.Conf,tolLoc		//ÎÄ¼ş²éÕÒ
 tolLoc = 3
-GetFileLine tolerance,Move.Conf,tolLoc	//æ–‡ä»¶æŸ¥æ‰¾
-TracePrint å‰å¾€[ & tarX & , & tarY & ],å®¹å¿åº¦ & tolerance
-//tolerance = 4 //å®¹å¿åº¦,4ä¸ºæ¨èå€¼
+GetFileLine tolerance,Move.Conf,tolLoc	//ÎÄ¼ş²éÕÒ
+TracePrint Ç°Íù[ & tarX & , & tarY & ],ÈİÈÌ¶È & tolerance
+//tolerance = 4 //ÈİÈÌ¶È,4ÎªÍÆ¼öÖµ
 Call Move()
-MsgBox æµ‹è¯•ç»“æŸ
+MsgBox ²âÊÔ½áÊø
