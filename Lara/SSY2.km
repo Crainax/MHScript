@@ -20,6 +20,7 @@ Sub Move()  //精确的移动
         FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
 
         if intX < 0 Then //人物跑到了边界  处理一下
+            TracePrint 没找到人,开始左右移自测
             KeyDown Left
             DelayRandom 1000,1500
             KeyUp Left
@@ -234,7 +235,7 @@ while 1 > 0
         tarX = 144
         tarY = 120
         tolerance = 4
-        TracePrint 目标前往喷泉
+        //TracePrint 目标前往喷泉
         Call Move()
         DelayRandom 56,58
         KeyDown Right
@@ -250,21 +251,21 @@ while 1 > 0
         KeyUp Down
         DelayRandom 712,721
         fountainTime = GetTimeStamp()
-        TracePrint 喷泉放好了
+        //TracePrint 喷泉放好了
     End If
 
     //todo:可能得用模糊图片查找判断网络延迟的情况了,但是好像问题也不大
 
     a = GetTimeStamp() - stoneSteleTime
     if a > 570 then //可以放轮了
-        TracePrint 目标原地放轮
+        //TracePrint 目标原地放轮
         DelayRandom 56,58
         KeyDown O
         DelayRandom 137,139
         KeyUp O
         DelayRandom 736,747
         stoneSteleTime = GetTimeStamp()
-        TracePrint 轮放好了
+        //TracePrint 轮放好了
     End If
 
     a = GetTimeStamp() - windTime
@@ -272,7 +273,7 @@ while 1 > 0
         tarX = 36
         tarY = 136
         tolerance = 4
-        TracePrint 目标前往风释放
+        //TracePrint 目标前往风释放
         Call Move()
         DelayRandom 56,58
         KeyDown Left
@@ -292,7 +293,7 @@ while 1 > 0
         KeyUp Right
         DelayRandom 253,258
         windTime = GetTimeStamp()
-        TracePrint 风释放好了
+        //TracePrint 风释放好了
     End If
 
     a = GetTimeStamp() - fireTime
@@ -300,7 +301,7 @@ while 1 > 0
         tarX = 104
         tarY = 125
         tolerance = 4
-        TracePrint 目标前往火释放
+        //TracePrint 目标前往火释放
         Call Move()
         DelayRandom 56,58
         KeyDown Right
@@ -320,7 +321,7 @@ while 1 > 0
         KeyUp Up
         DelayRandom 352,375
         fireTime = GetTimeStamp()
-        TracePrint 火释放好了
+        //TracePrint 火释放好了
     else
 
         a = GetTimeStamp() - pickingTime
@@ -328,7 +329,7 @@ while 1 > 0
             tarX = 158
             tarY = 120
             tolerance = 4
-            TracePrint 目标前往右上捡钱
+            //TracePrint 目标前往右上捡钱
             Call Move()
             DelayRandom 56,58
             KeyDown F
@@ -336,7 +337,7 @@ while 1 > 0
             KeyUp F
             DelayRandom 455,469
             pickingTime = GetTimeStamp()
-            TracePrint 目标前往右上捡钱
+            //TracePrint 目标前往右上捡钱
         else
 
             a = GetTimeStamp() - seedTime
@@ -344,7 +345,7 @@ while 1 > 0
                 tarX = 134
                 tarY = 150
                 tolerance = 8
-                TracePrint 目标前往种子释放
+                //TracePrint 目标前往种子释放
                 Call Move()
                 DelayRandom 56,58
                 KeyDown Down
@@ -356,7 +357,7 @@ while 1 > 0
                 KeyUp Down
                 DelayRandom 455,469
                 seedTime = GetTimeStamp()
-                TracePrint 种子释放好了
+                //TracePrint 种子释放好了
             else //前往牛马地方放技能
                 tarX = 85
                 tarY = 150
