@@ -356,9 +356,9 @@ while 1 > 0
 
     FindPic 800,2300,1439,2559,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
     if intX >= 0 //最优先放喷泉
-        tarX = 28
+        tarX = 31
         tarY = 140
-        tolerance = 2
+        tolerance = 4
         Call Move_Bild()
         DelayRandom 56,58
         KeyDown Right
@@ -437,9 +437,9 @@ while 1 > 0
             End If
 
             if Landing == 1 Then
-                tarX = 28
+                tarX = 31
                 tarY = 140
-                tolerance = 2
+                tolerance = 4
             Else If Landing == 3 Then
                 tarX = 111
                 tarY = 154
@@ -454,7 +454,7 @@ while 1 > 0
                 tolerance = 4
             else
                 tarX = 31
-                tarY = 101
+                tarY = 115
                 tolerance = 4
             End If
             if Rotation == 0 then // 顺时针

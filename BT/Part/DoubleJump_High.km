@@ -1,0 +1,12 @@
+DelayRandom 381,385
+KeyDown Space
+DelayRandom 60,61 //偏高
+KeyUp Space
+DelayRandom 60,61
+KeyDown Up
+DelayRandom 70,71
+KeyUp Up
+DelayRandom 45,46
+KeyDown Up
+DelayRandom 78,79
+KeyUp Up

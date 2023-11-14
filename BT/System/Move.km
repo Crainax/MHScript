@@ -12,7 +12,7 @@ Dim cY,consecutiveTimes,consecutiveMax //ÓÃÕâ¸ö¶«Î÷ÅÐ¶Ï½ÇÉ«ÊÇ²»ÊÇÃ»ÓÐX»òYÖá±ä»¯Á
 Dim Hooking //¹³×ÓÖÐ,·½±ãÖÐÍ¾É²³µ
 //Ä¿Ç°ÒÑ¾­Ëã³öÒ»¸ö¶þ¶ÎÌøÄÜÌø32µÄXÖá(Æ½µØ)
 //¼¸¸ö²âÊÔµã:ºäÕ¨µã(ÓÒ)-99,130    ºäÕ¨µã(×ó)-48,129
-//¼¸¸ö²âÊÔµã:ÄñÌø×ó(42,154),ÄñÌøÓÒ(131,154),ÄñÌøÓÒÉÏ(111,106),ÄñÌø×óÉÏ(31,101),ÄñÌøÅçÈª(31,140),ÓÒÏÂ(111,154),ÓÒÏÂµÚ¶þ²ã(111,140)
+//¼¸¸ö²âÊÔµã:ÄñÌø×ó(42,154),ÄñÌøÓÒ(131,154),ÄñÌøÓÒÉÏ(111,106),ÄñÌø×óÉÏ(31,101),ÄñÌøÅçÈª(31,140),ÓÒÏÂ(111,154),ÓÒÏÂµÚ¶þ²ã(111,140)£¬×óÉÏµÚ¶þ²ã 31£¬115
 //Ò»¸ö×ó³å»òÒ»¸öÓÒ³åÄÜ44Öá,µ«ÊÇYÖá²»ºÃ¿ØÖÆ
 
 Sub Move_Fly()  //·ÉÐÐ½×¶ÎµÄÒÆ¶¯
@@ -95,7 +95,7 @@ End Sub
 
 Sub Move_Bild() //ÄñÐÎÌ¬µÄµØÃæÒÆ¶¯
     consecutiveTimes	= -1  //³õÊ¼¾ÍÆôÓÃÖ¸ÄÏÕëÅÐ¶Ï
-    consecutiveMax		= 3   //½µÂäÄ¬ÈÏÖµÎª4
+    consecutiveMax		= 4   //½µÂäÄ¬ÈÏÖµÎª4
     Hooking				= 0   //¹³×Ó¹Ø±Õ
     while  1 > 0
         FindPic 0,1650,300,1900,"E:\MHImg\MSLogo.bmp",000000,1.00,0,logoX,logoY
@@ -115,7 +115,7 @@ Sub Move_Bild() //ÄñÐÎÌ¬µÄµØÃæÒÆ¶¯
                 //TracePrint ½µÂäÅÐ¶Ï: & consecutiveTimes
                 if consecutiveTimes >= consecutiveMax Then
                     consecutiveTimes	= -1	//ÅÐ¶ÏÎªÒÑ¾­ÂäµØ
-                    consecutiveMax		= 3		//¹éÎ»×î´ó½µÂäÅÐ¶ÏÖµ
+                    consecutiveMax		= 4		//¹éÎ»×î´ó½µÂäÅÐ¶ÏÖµ
                     //TracePrint ÅÐ¶ÏÒÑ¾­ÂäµØ
                 End If
             else
@@ -193,9 +193,24 @@ Sub Move_Bild() //ÄñÐÎÌ¬µÄµØÃæÒÆ¶¯
                         DelayRandom 128,132
                         KeyUp Alt
                         Hooking = 1 //¿ªÆô¹³×ÓÅÐ¶Ï
-                    else
+                    Else if intY >= (tarY+16) Then	// < 26Ê±ÌøµÃ¸ßÒ»Ð©
                         consecutiveMax = 8 //ÑÓ³¤Ò»µã½µÂäÅÐ¶Ï
-                        TracePrint ÉÏÌøÒ»´Î
+                        TracePrint ÉÏÌøÒ»´Î¸ß
+                        DelayRandom 128,130
+                        KeyDown Space
+                        DelayRandom 69,70
+                        KeyUp Space
+                        DelayRandom 325,329
+                        KeyDown Up
+                        DelayRandom 61,62
+                        KeyUp Up
+                        DelayRandom 54,55
+                        KeyDown Up
+                        DelayRandom 98,99
+                        KeyUp Up
+                    else //Ð¡ÓÚ16¾ÍÕâÑùÌø
+                        consecutiveMax = 8 //ÑÓ³¤Ò»µã½µÂäÅÐ¶Ï
+                        TracePrint ÉÏÌøÒ»´Î°«
                         DelayRandom 128,130
                         KeyDown Space
                         DelayRandom 70,71
