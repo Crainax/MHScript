@@ -18,6 +18,21 @@ Sub Move()  //精确的移动
     while  1 > 0
         FindPic 0,1650,300,1900,"E:\MHImg\MSLogo.bmp",000000,1.00,0,logoX,logoY
         FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+
+        if intX < 0 Then //人物跑到了边界  处理一下
+            TracePrint 没找到人,开始左右移自测
+            KeyDown Left
+            DelayRandom 1000,1500
+            KeyUp Left
+            FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+            if intX < 0 Then //左移了还是没找到,就右移
+                KeyDown Right
+                DelayRandom 1000,1500
+                KeyUp Right
+                FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+            End if
+        End if
+
         intX = intX - logoX
         intY = intY - logoY
         if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
