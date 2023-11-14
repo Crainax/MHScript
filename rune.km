@@ -1,0 +1,8 @@
+[General]
+ScreenX=2560
+ScreenY=1440
+Times=0
+
+[Script]
+Beep 1000,2000
+MsgBox Hello
