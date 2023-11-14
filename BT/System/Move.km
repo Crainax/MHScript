@@ -10,6 +10,7 @@ Dim DashCool //冲刺冷却
 Dim tolerance,temp //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim cY,consecutiveTimes,consecutiveMax //用这个东西判断角色是不是没有X或Y轴变化了
 Dim Hooking //钩子中,方便中途刹车
+Dim gliding //滑翔中
 //目前已经算出一个二段跳能跳32的X轴(平地)
 //几个测试点:轰炸点(右)-99,130    轰炸点(左)-48,129
 //几个测试点:鸟跳左(42,154),鸟跳右(131,154),鸟跳右上(111,106),鸟跳左上(31,101),鸟跳喷泉(31,140),右下(111,154),右下第二层(111,140)，左上第二层 31，115
@@ -103,6 +104,13 @@ Sub Move_Bild() //鸟形态的地面移动
         intX = intX - logoX
         intY = intY - logoY
         if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
+            if gliding > 0 Then
+                If intX >= (tarX-12) and intX <= (tarX+12) Then //滑翔该下来了
+                    TracePrint 滑翔预判结束
+                    gliding = 0 //结束滑翔
+                    KeyUp LShift
+                End If
+            End If
             if Hooking > 0 and intY <= tarY Then //钩子的判断刹车
                 TracePrint 钩子刹车
                 KeyDown Alt
@@ -117,6 +125,11 @@ Sub Move_Bild() //鸟形态的地面移动
                     consecutiveTimes	= -1	//判断为已经落地
                     consecutiveMax		= 4		//归位最大降落判断值
                     //TracePrint 判断已经落地
+                    if gliding > 0 Then //滑翔提前碰地了
+                        TracePrint 滑翔触地提前结束
+                        gliding = 0 //结束滑翔
+                        KeyUp LShift
+                    End If
                 End If
             else
                 cY = intY
@@ -129,10 +142,54 @@ Sub Move_Bild() //鸟形态的地面移动
             else  //速走的默认为4
                 temp = 4
             End If
-            if intX < (tarX-24) Then //向右二段跳 //todo:可以加入滑翔
+            if intX < (tarX-32) Then //向右滑翔
+                consecutiveMax = 8 //延长一点降落判断
                 consecutiveTimes = 0 //启动降落判断
                 cY = intY
-                TracePrint 右跳滑翔
+                gliding = 1 //开始滑翔
+                TracePrint 右滑翔
+                DelayRandom 15,25
+                KeyDown Right
+                DelayRandom 79,80
+                KeyUp Right
+                DelayRandom 210,213
+                KeyDown Space
+                DelayRandom 53,54
+                KeyUp Space
+                DelayRandom 54,55
+                KeyDown Space
+                DelayRandom 63,64
+                KeyUp Space
+                DelayRandom 176,178
+                KeyDown LShift
+                // DelayRandom 402,407
+                // KeyUp LShift
+            Else if intX > (tarX+32) Then //向左滑翔
+                consecutiveMax = 8 //延长一点降落判断
+                consecutiveTimes = 0 //启动降落判断
+                cY = intY
+                gliding = 1 //开始滑翔
+                TracePrint 左滑翔
+                DelayRandom 15,25
+                KeyDown Left
+                DelayRandom 79,80
+                KeyUp Left
+                DelayRandom 210,213
+                KeyDown Space
+                DelayRandom 53,54
+                KeyUp Space
+                DelayRandom 54,55
+                KeyDown Space
+                DelayRandom 63,64
+                KeyUp Space
+                DelayRandom 176,178
+                KeyDown LShift
+                // DelayRandom 402,407
+                // KeyUp LShift
+            Else if intX <= (tarX-18) Then //向右二段跳
+                consecutiveTimes = 0 //启动降落判断
+                cY = intY
+                TracePrint 右跳
                 DelayRandom 15,25
                 KeyDown Right
                 DelayRandom 50,51
@@ -146,10 +203,10 @@ Sub Move_Bild() //鸟形态的地面移动
                 DelayRandom 85,86
                 KeyUp Right
                 DelayRandom 146,151
-            Else If intX > (tarX+24) Then //向左二段跳 //todo:可以加入滑翔
+            Else If intX >= (tarX+18) Then //向左二段跳
                 consecutiveTimes = 0 //启动降落判断
                 cY = 0
-                TracePrint 左跳滑翔
+                TracePrint 左跳
                 DelayRandom 15,25
                 KeyDown Left
                 DelayRandom 50,51
