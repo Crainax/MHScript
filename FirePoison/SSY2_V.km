@@ -10,6 +10,11 @@ Dim xEnd,  yEnd               //屏幕右下角顶点
 Dim tarX,  tarY               //寻位置相关:目标地点
 Dim logoX, logoY, intX, intY  //寻位置相关:当前地点
 Dim InfiTime, a,     inLimit     //终极无限的补充
+Dim cY,        consecutiveTimes, YDirection  //用这个东西判断角色是不是没有X或Y轴变化了
+Dim UpAttackTime,pickingTime,leftUpTime,leftDownTime
+Dim tolerance, tolLoc                        //快速移动的容差,0代表精确移动,另外个是局部变量
+
+
 
 //已经算出实验室2右下传送dX = 120,dY = 150(可正负2判断)
 //已经算出实验室2左下传送dX = 42,dY = 150(可正负2判断)
@@ -385,10 +390,10 @@ while 1 > 0
             tarY      = 79
             tolerance = 6
             Call Move()
-            Attack()
+            Call Attack()
             UpAttackTime = GetTimeStamp()
         else
-            a = GetTimeStamp() - PickingTime
+            a = GetTimeStamp() - pickingTime
             if a > 120 then //向右下捡钱
                 DelayRandom 156,160
                 KeyDown F
@@ -399,8 +404,8 @@ while 1 > 0
                 tarY      = 118
                 tolerance = 4
                 Call Move()
-                Attack()
-                PickingTime = GetTimeStamp()
+                Call Attack()
+                pickingTime = GetTimeStamp()
             else //原地放招
                 KeyDown F
                 DelayRandom 1500,2000

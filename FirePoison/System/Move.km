@@ -10,13 +10,14 @@ Dim xEnd,yEnd //屏幕右下角顶点
 Dim tarX,      tarY                          //目标
 Dim logoX,     logoY,            intX, intY  //算目的地差值
 Dim cY,        consecutiveTimes, YDirection  //用这个东西判断角色是不是没有X或Y轴变化了
-Dim tolerance, tolLoc                        //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim tolerance, tolLoc,specialing            //快速移动的容差,0代表精确移动,另外个是局部变量
 //左上传送点(-96,90),喷泉点(-81,104),左下传送点(-73,118),右下传送点(5,118),右上传送点(29,88),右下捡钱点(48,118),普攻(-8,107),上巡(-8,79),测试上瞬(15,68),测试上瞬(-58,90),
 
 
 Sub Move() //精确的移动
     consecutiveTimes = -1 //初始就启用指南针判断
     YDirection = 0 //方向初始化
+    specialing = 0 //默认钩子或者下跳方法关闭
     while  1 > 0
         FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -65,40 +66,43 @@ Sub Move() //精确的移动
             If intY < tarY Then //如果人在目标之上,就下瞬(Y轴是用相反比较符)
                 if consecutiveTimes < 0 then
                     consecutiveTimes = 0 //启动监控卡住判断
+                    cY = intY
                 End If
-                cY = intY
                 YDirection = 0
                 KeyDown Down
                 KeyDown Shift
+
             Else If intY > tarY Then //如果人在目标之下,就上瞬(Y轴是用相反比较符)
                 if consecutiveTimes < 0 then
                     consecutiveTimes = 0 //启动监控卡住判断
+                    cY = intY
                 End If
-                cY = intY
                 YDirection = 1
                 KeyDown Up
                 KeyDown Shift
-            else //Y轴搞定了,到容忍度的X轴了
-                KeyUp Down
-                KeyUp Up
-                KeyUp Shift //这一步已经不需要shift键了
-                consecutiveTimes = -1 //这一步已经不需要监控Y轴卡住了
-                TracePrint Y轴到了
-                if tolerance < 4 Then //容忍度小于4还是要小碎步
-                    //Y轴也达标了,到X轴了
-                    If intX < (tarX-tolerance) Then //向右小碎步
-                        KeyDown Right
-                        DelayRandom 10,15
-                        KeyUp Right
-                    Else If intX > (tarX+tolerance) Then //向左小碎步
-                        KeyDown Left
-                        DelayRandom 10,15
-                        KeyUp Left
-                    else
+            else //Y轴搞定了,到容忍度的X轴了,前提是不在空中
+                if specialing == 0 Then
+                    KeyUp Down
+                    KeyUp Up
+                    KeyUp Shift //这一步已经不需要shift键了
+                    consecutiveTimes = -1 //这一步已经不需要监控Y轴卡住了
+                    TracePrint Y轴到了
+                    if tolerance < 4 Then //容忍度小于4还是要小碎步
+                        //Y轴也达标了,到X轴了
+                        If intX < (tarX-tolerance) Then //向右小碎步
+                            KeyDown Right
+                            DelayRandom 10,15
+                            KeyUp Right
+                        Else If intX > (tarX+tolerance) Then //向左小碎步
+                            KeyDown Left
+                            DelayRandom 10,15
+                            KeyUp Left
+                        else
+                            Exit Sub
+                        End If
+                    else //容忍度大于等于4可以直接结束
                         Exit Sub
                     End If
-                else //容忍度大于等于4可以直接结束
-                    Exit Sub
                 End If
             End If
         End If
@@ -108,24 +112,37 @@ Sub Move() //精确的移动
                 consecutiveTimes = consecutiveTimes + 1
                 TracePrint Y轴卡住: & consecutiveTimes
                 if consecutiveTimes >= 15 Then //Y轴
-                    consecutiveTimes	= 0	//监控重置
-                    TracePrint 确实是卡住了
+                    if specialing > 0 Then //特殊手段到了
+                        specialing = 0
+                    else
+                        consecutiveTimes	= 0	//监控重置
+                        TracePrint 确实是卡住了
+                        if YDirection > 0 then //上瞬卡住
+                            TracePrint 钩子一次
+                            KeyDown Alt
+                            DelayRandom 328,430
+                            KeyUp Alt
+                            specialing = 1
+                        else //下瞬卡住
+                            TracePrint 下跳一次
+                            DelayRandom 12,13
+                            KeyDown Down
+                            DelayRandom 76,77
+                            KeyDown Space
+                            DelayRandom 128,130
+                            KeyUp Space
+                            DelayRandom 453,454
+                            KeyUp Down
+                            DelayRandom 32,33
+                            specialing = 1
+                        End If
+                    End If
+                else
+                    KeyDown Shift
                     if YDirection > 0 then //上瞬卡住
-                        TracePrint 钩子一次
-                        KeyDown Alt
-                        DelayRandom 328,430
-                        KeyUp Alt
-                    else //下瞬卡住
-                        TracePrint 下跳一次
-                        DelayRandom 12,13
+                        KeyDown Up
+                    else
                         KeyDown Down
-                        DelayRandom 76,77
-                        KeyDown Space
-                        DelayRandom 128,130
-                        KeyUp Space
-                        DelayRandom 453,454
-                        KeyUp Down
-                        DelayRandom 32,33
                     End If
                 End If
             else
@@ -133,6 +150,7 @@ Sub Move() //精确的移动
                 consecutiveTimes = 0
                 TracePrint Y轴卡住: & consecutiveTimes
             End If
+
         End If
 
         Delay 5
