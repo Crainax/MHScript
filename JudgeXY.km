@@ -1,0 +1,45 @@
+[General]
+ScreenX=2560
+ScreenY=1440
+Times=0
+
+[Script]
+Dim tarX,      tarY    //目标
+Dim tolerance, tolLoc  //快速移动的容差,0代表精确移动,另外个是局部变量
+
+Sub Judge() //判断人物是否在某个地点旁边,用tarXY,tolerance,tolLoc返回结果,不能嵌套move()使用,可以先使用这个再用move
+    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    tolLoc = 0
+    if intX >= 0 Then //找到了人物才会进行下去
+        intX = intX - logoX
+        intY = intY - logoY
+        if intY == tarY and intX >= (tarX - tolerance) and intX <= (tarX + tolerance) then
+            tolLoc = 1
+        End If
+    End If
+End Sub
+
+//分辨率初始化
+GetScreenResolution intX, intY
+if intX > intY then //横放屏幕
+    x1 = 700
+    y1 = 550
+    x2 = 1650
+    y2 = 850
+else //竖放屏幕
+    x1 = 0
+    y1 = 1650
+    x2 = 300
+    y2 = 1900
+End If
+
+tolLoc = 1
+GetFileLine tarX,Judge.Conf,tolLoc		//文件查找
+tolLoc = 2
+GetFileLine tarY,Judge.Conf,tolLoc		//文件查找
+tolLoc = 3
+GetFileLine tolerance,Judge.Conf,tolLoc	//文件查找
+TracePrint 判断位置[ & tarX & , & tarY & ],容忍度 & tolerance
+Call Judge()
+MsgBox 测试结束,结果 & tolLoc
