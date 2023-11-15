@@ -279,18 +279,21 @@ else //竖放屏幕
     x2 = 300
     y2 = 1900
 End If
-inLimit        = 110                       //定义一下终极无限的冷却时间
-InfiTime       = GetTimeStamp() - inLimit  //上次终极无限的时间
-stoneSteleTime = 0                         //上次上巡的时间
-pickingTime    = GetTimeStamp()            //上次捡钱的时间
+inLimit      = 110                       //定义一下终极无限的冷却时间
+InfiTime     = GetTimeStamp() - inLimit  //上次终极无限的时间
+UpAttackTime = 0                         //上次上巡的时间
+pickingTime  = GetTimeStamp()            //上次捡钱的时间
+leftUpTime   = 0                         //上次左上角传送
+leftDownTime = 0                         //上次左下角传送
 while 1 > 0
     FindPic 800,2300,1439,2559,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //喷泉CD好了
-        a = random(1,3)
-        if a == 1 then //一半概率通过传送门去
-            tarX      = 5
-            tarY      = 118
-            tolerance = 0
+        a = GetTimeStamp() - leftUpTime
+        if a > 128 then //走门
+            leftUpTime = GetTimeStamp()
+            tarX       = 5
+            tarY       = 118
+            tolerance  = 0
             Call Move() //前往右下传送门
             KeyDown Up
             DelayRandom 158,160
@@ -326,11 +329,12 @@ while 1 > 0
         KeyUp Down
         DelayRandom 712,721
 
-        a = random(1,3)
-        if a == 1 then //一半概率通过传送门回去
-            tarX      = -73
-            tarY      = 118
-            tolerance = 0
+        a = GetTimeStamp() - leftDownTime
+        if a > 124 then //走门
+            leftDownTime = GetTimeStamp()
+            tarX         = -73
+            tarY         = 118
+            tolerance    = 0
             Call Move() //前往左下传送门
             KeyDown Up
             DelayRandom 158,160
