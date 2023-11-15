@@ -11,7 +11,7 @@ Dim tarX,      tarY                          //目标
 Dim logoX,     logoY,            intX, intY  //算目的地差值
 Dim cY,        consecutiveTimes, YDirection  //用这个东西判断角色是不是没有X或Y轴变化了
 Dim tolerance, tolLoc,specialing            //快速移动的容差,0代表精确移动,另外个是局部变量
-//左上传送点(-96,90),喷泉点(-81,104),左下传送点(-73,118),右下传送点(5,118),右上传送点(29,88),右下捡钱点(48,118),普攻(-8,107),上巡(-8,79),测试上瞬(15,68),测试上瞬(-58,90),
+//左上传送点(-96,90),喷泉点(-81,104),左下传送点(-73,118),右下传送点(5,118),右上传送点(29,88),右下捡钱点(48,118),普攻(-8,107),上巡(-8,79),测试上瞬(15,68),测试上瞬(-58,90),左下捡钱(-98,118)
 
 
 Sub Move() //精确的移动
@@ -44,22 +44,24 @@ Sub Move() //精确的移动
         else  //速走的默认为4
             tolLoc = 4
         End If
-        if intX < (tarX-12) Then //右瞬
+        if intX < (tarX-12) Then //右瞬:这里的shit必须要抬起来 不然好像下面会出问题
             KeyDown Right
-            KeyUp Left
-            KeyDown Shift
+            DelayRandom 12,13
+            KeyDown LShift
+            DelayRandom 68,69
+            KeyUp LShift
+            DelayRandom 212,233
         Else If intX > (tarX+12) Then //向左瞬
             KeyDown Left
-            KeyUp Right
-            KeyDown Shift
+            DelayRandom 12,13
+            KeyDown LShift
+            DelayRandom 68,69
+            KeyUp LShift
+            DelayRandom 212,233
         Else If intX < (tarX-tolLoc) Then //向右走
             KeyDown Right
-            KeyUp Left
-            KeyUp Shift
         Else If intX > (tarX+tolLoc) Then //向左走
             KeyDown Left
-            KeyUp Right
-            KeyUp Shift
         else //到Y方向的了
             KeyUp Right //这一步已经不需要方向键了
             KeyUp Left //这一步已经不需要方向键了
@@ -180,4 +182,33 @@ GetFileLine tolerance,Move.Conf,tolLoc	//文件查找
 TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance
 //tolerance = 4 //容忍度,4为推荐值
 Call Move()
+
+tarX      = 5
+tarY      = 118
+tolerance = 4
+Call Move() //回去一波右下角放
+KeyDown Left
+DelayRandom 123,130
+KeyUp Left
+DelayRandom 348,352
+KeyDown A
+DelayRandom 130,132
+KeyUp A
+DelayRandom 405,413
+
+tarX      = -8
+tarY      = 107
+tolerance = 6
+Call Move()
+
+DelayRandom 56,58
+KeyDown F
+DelayRandom 1322,1336
+KeyUp F
+DelayRandom 413,418
+tarX      = -8
+tarY      = 79
+tolerance = 6
+Call Move()
+
 MsgBox 测试结束

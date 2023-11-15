@@ -4,16 +4,15 @@ ScreenY=1440
 Times=0
 
 [Script]
-Dim x1,    x2,    y1,   y2    // 矩形区域:小地图采样点
-Dim x3,    x4,    y3,   y4    // 2个顶点:技能区/蘑菇公主
-Dim xEnd,  yEnd               //屏幕右下角顶点
-Dim tarX,  tarY               //寻位置相关:目标地点
-Dim logoX, logoY, intX, intY  //寻位置相关:当前地点
-Dim InfiTime, a,     inLimit     //终极无限的补充
-Dim cY,        consecutiveTimes, YDirection  //用这个东西判断角色是不是没有X或Y轴变化了
-Dim UpAttackTime,pickingTime,leftUpTime,leftDownTime
-Dim tolerance, tolLoc,specialing             //快速移动的容差,0代表精确移动,另外个是局部变量
-
+Dim x1,           x2,               y1,   y2      // 矩形区域:小地图采样点
+Dim x3,           x4,               y3,   y4      // 2个顶点:技能区/蘑菇公主
+Dim xEnd,         yEnd                            //屏幕右下角顶点
+Dim tarX,         tarY                            //寻位置相关:目标地点
+Dim logoX,        logoY,            intX, intY    //寻位置相关:当前地点
+Dim InfiTime,     a,                inLimit       //终极无限的补充
+Dim cY,           consecutiveTimes, YDirection    //用这个东西判断角色是不是没有X或Y轴变化了
+Dim UpAttackTime, leftUpTime,       leftDownTime  //各种时间间隔
+Dim tolerance,    tolLoc,           specialing    //快速移动的容差,0代表精确移动,另外个是局部变量
 
 
 //已经算出实验室2右下传送dX = 120,dY = 150(可正负2判断)
@@ -171,24 +170,22 @@ Sub Move() //精确的移动
         End If
         if intX < (tarX-12) Then //右瞬
             KeyDown Right
-            KeyUp Left
-            KeyDown Shift
-            specialing = 0
+            DelayRandom 12,13
+            KeyDown LShift
+            DelayRandom 68,69
+            KeyUp LShift
+            DelayRandom 212,233
         Else If intX > (tarX+12) Then //向左瞬
             KeyDown Left
-            KeyUp Right
-            KeyDown Shift
-            specialing = 0
+            DelayRandom 12,13
+            KeyDown LShift
+            DelayRandom 68,69
+            KeyUp LShift
+            DelayRandom 212,233
         Else If intX < (tarX-tolLoc) Then //向右走
             KeyDown Right
-            KeyUp Left
-            KeyUp Shift
-            specialing = 0
         Else If intX > (tarX+tolLoc) Then //向左走
             KeyDown Left
-            KeyUp Right
-            KeyUp Shift
-            specialing = 0
         else //到Y方向的了
             KeyUp Right //这一步已经不需要方向键了
             KeyUp Left //这一步已经不需要方向键了
@@ -280,6 +277,7 @@ Sub Move() //精确的移动
     Wend
 End Sub
 
+
 Sub Judge() //判断人物是否在某个地点旁边,用tarXY,tolerance,tolLoc返回结果,不能嵌套move()使用,可以先使用这个再用move
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -317,7 +315,6 @@ End If
 inLimit      = 110                       //定义一下终极无限的冷却时间
 InfiTime     = GetTimeStamp() - inLimit  //上次终极无限的时间
 UpAttackTime = 0                         //上次上巡的时间
-pickingTime  = GetTimeStamp() - 100      //上次捡钱的时间
 leftUpTime   = GetTimeStamp() - 50       //上次左上角传送
 leftDownTime = GetTimeStamp() - 90       //上次左下角传送
 while 1 > 0
@@ -368,6 +365,14 @@ while 1 > 0
         a = GetTimeStamp() - leftDownTime
         if a > 124 then //走门
             leftDownTime = GetTimeStamp()
+
+            tarX         = -98
+            tarY         = 118
+            tolerance    = 4
+            Call Move() //先去左下捡钱
+            DelayRandom 300,500
+            Call Attack()
+
             tarX         = -73
             tarY         = 118
             tolerance    = 0
@@ -385,20 +390,17 @@ while 1 > 0
                 Call Spell() //放武公
                 DelayRandom 1560,1758
 
-                a = GetTimeStamp() - pickingTime
-                if a > 123 then //向右下捡钱
-                    DelayRandom 156,160
-                    KeyDown F
-                    DelayRandom 1147,1159
-                    KeyUp F
-                    DelayRandom 373,380
-                    tarX      = 48
-                    tarY      = 118
-                    tolerance = 4
-                    Call Move()
-                    Call Attack()
-                    pickingTime = GetTimeStamp()
-                End If
+                //这里是捡钱
+                DelayRandom 156,160
+                KeyDown F
+                DelayRandom 1147,1159
+                KeyUp F
+                DelayRandom 373,380
+                tarX      = 48
+                tarY      = 118
+                tolerance = 4
+                Call Move()
+                Call Attack()
             End If
         End If
 

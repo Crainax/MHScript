@@ -183,8 +183,8 @@ while 1 > 0
     tolerance = 4
     Call Move()
     If result = 0 Then //找到图了
-        MsgBox 这图没人!
         Beep 1000,3000
+        MsgBox 这图没人!
         EndScript
     else
         Delay 321
