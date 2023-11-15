@@ -173,18 +173,22 @@ Sub Move() //精确的移动
             KeyDown Right
             KeyUp Left
             KeyDown Shift
+            specialing = 0
         Else If intX > (tarX+12) Then //向左瞬
             KeyDown Left
             KeyUp Right
             KeyDown Shift
+            specialing = 0
         Else If intX < (tarX-tolLoc) Then //向右走
             KeyDown Right
             KeyUp Left
             KeyUp Shift
+            specialing = 0
         Else If intX > (tarX+tolLoc) Then //向左走
             KeyDown Left
             KeyUp Right
             KeyUp Shift
+            specialing = 0
         else //到Y方向的了
             KeyUp Right //这一步已经不需要方向键了
             KeyUp Left //这一步已经不需要方向键了

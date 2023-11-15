@@ -1,0 +1,16 @@
+DelayRandom 785,793
+KeyDown Esc
+DelayRandom 146,148
+KeyUp Esc
+DelayRandom 191,193
+KeyDown Enter
+DelayRandom 115,117
+KeyUp Enter
+DelayRandom 350,354
+KeyDown Right
+DelayRandom 107,109
+KeyUp Right
+DelayRandom 250,253
+KeyDown Enter
+DelayRandom 93,94
+KeyUp Enter
