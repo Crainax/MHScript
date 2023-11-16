@@ -4,15 +4,15 @@ ScreenY=1440
 Times=0
 
 [Script]
-Dim x1,           x2,               y1,   y2      // 矩形区域:小地图采样点
-Dim x3,           x4,               y3,   y4      // 2个顶点:技能区/蘑菇公主
-Dim xEnd,         yEnd                            //屏幕右下角顶点
-Dim tarX,         tarY                            //寻位置相关:目标地点
-Dim logoX,        logoY,            intX, intY    //寻位置相关:当前地点
-Dim InfiTime,     a,                inLimit       //终极无限的补充
-Dim cY,           consecutiveTimes, YDirection    //用这个东西判断角色是不是没有X或Y轴变化了
-Dim UpAttackTime, leftUpTime,       leftDownTime  //各种时间间隔
-Dim tolerance,    tolLoc,           specialing    //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim x1,           x2,         y1,   y2      // 矩形区域:小地图采样点
+Dim x3,           x4,         y3,   y4      // 2个顶点:技能区/蘑菇公主
+Dim xEnd,         yEnd                      //屏幕右下角顶点
+Dim tarX,         tarY                      //寻位置相关:目标地点
+Dim logoX,        logoY,      intX, intY    //寻位置相关:当前地点
+Dim InfiTime,     a,          inLimit       //终极无限的补充
+Dim cY,           consecutiveTimes          //用这个东西判断角色是不是没有X或Y轴变化了
+Dim UpAttackTime, leftUpTime, leftDownTime  //各种时间间隔
+Dim tolerance,    tolLoc,     stuckTimes    //快速移动的容差,0代表精确移动,另外个是局部变量
 
 
 //已经算出实验室2右下传送dX = 120,dY = 150(可正负2判断)
@@ -141,13 +141,14 @@ End Sub
 
 Sub Move() //精确的移动
     consecutiveTimes = -1 //初始就启用指南针判断
-    YDirection = 0 //方向初始化
-    specialing = 0 //默认钩子或者下跳方法关闭
+    stuckTimes = 0 //防卡检测初始次数为0
+    cY = 0
     while  1 > 0
         FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
 
         if intX < 0 Then //人物跑到了边界  处理一下
+            TracePrint 没找到人,开始左右移自测 & intX &, & intY
             KeyDown Left
             DelayRandom 1000,1500
             KeyUp Left
@@ -163,55 +164,105 @@ Sub Move() //精确的移动
         intX = intX - logoX
         intY = intY - logoY
 
-        if tolerance > 4 Then
-            tolLoc = tolerance
-        else  //速走的默认为4
-            tolLoc = 4
-        End If
-        if intX < (tarX-12) Then //右瞬
-            KeyDown Right
-            DelayRandom 12,13
-            KeyDown LShift
-            DelayRandom 68,69
-            KeyUp LShift
-            DelayRandom 212,233
-        Else If intX > (tarX+12) Then //向左瞬
-            KeyDown Left
-            DelayRandom 12,13
-            KeyDown LShift
-            DelayRandom 68,69
-            KeyUp LShift
-            DelayRandom 212,233
-        Else If intX < (tarX-tolLoc) Then //向右走
-            KeyDown Right
-        Else If intX > (tarX+tolLoc) Then //向左走
-            KeyDown Left
-        else //到Y方向的了
-            KeyUp Right //这一步已经不需要方向键了
-            KeyUp Left //这一步已经不需要方向键了
-            If intY < tarY Then //如果人在目标之上,就下瞬(Y轴是用相反比较符)
-                if consecutiveTimes < 0 then
-                    consecutiveTimes = 0 //启动监控卡住判断
-                    cY = intY
+        if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
+            if intY == cY Then //Y轴没变化了
+                consecutiveTimes = consecutiveTimes + 1
+                TracePrint 降落判断: & consecutiveTimes
+                if consecutiveTimes >= 8 Then
+                    consecutiveTimes	= -1	//判断为已经落地
+                    TracePrint 判断已经落地
                 End If
-                YDirection = 0
-                KeyDown Down
-                KeyDown Shift
-
-            Else If intY > tarY Then //如果人在目标之下,就上瞬(Y轴是用相反比较符)
-                if consecutiveTimes < 0 then
-                    consecutiveTimes = 0 //启动监控卡住判断
-                    cY = intY
-                End If
-                YDirection = 1
-                KeyDown Up
-                KeyDown Shift
-            else //Y轴搞定了,到容忍度的X轴了,前提是不在空中
-                if specialing == 0 Then
+            else
+                cY = intY
+                consecutiveTimes = 0
+                TracePrint 降落判断: & consecutiveTimes
+            End If
+        else //继续根据
+            if tolerance > 4 Then
+                tolLoc = tolerance
+            else  //速走的默认为4
+                tolLoc = 4
+            End If
+            if intX < (tarX-12) Then //右瞬:这里的shit必须要抬起来 不然好像下面会出问题
+                KeyDown Right
+                DelayRandom 12,13
+                KeyDown LShift
+                DelayRandom 68,69
+                KeyUp LShift
+                DelayRandom 212,233
+            Else If intX > (tarX+12) Then //向左瞬
+                KeyDown Left
+                DelayRandom 12,13
+                KeyDown LShift
+                DelayRandom 68,69
+                KeyUp LShift
+                DelayRandom 212,233
+            Else If intX < (tarX-tolLoc) Then //向右走
+                KeyDown Right
+            Else If intX > (tarX+tolLoc) Then //向左走
+                KeyDown Left
+            else //到Y方向的了
+                KeyUp Right
+                KeyUp Left
+                If intY < tarY Then //如果人在目标之上,就下瞬(Y轴是用相反比较符)
+                    KeyUp Up
+                    If stuckTimes < 5 Then //普通下瞬
+                        if cY != intY Then //有变化了,就重置计数器
+                            cY = intY
+                            stuckTimes = 0
+                        else
+                            stuckTimes = stuckTimes + 1 //原地就计数器+1
+                        End If
+                        KeyDown Down
+                        DelayRandom 12,13
+                        KeyDown LShift
+                        DelayRandom 68,69
+                        KeyUp LShift
+                        DelayRandom 212,233
+                    else //计数器达到5次Y轴不动了,下跳
+                        consecutiveTimes = 0     //启动降落判断
+                        cY               = intY
+                        stuckTimes       = 0
+                        DelayRandom 12,13
+                        KeyDown Down
+                        DelayRandom 76,77
+                        KeyDown Space
+                        DelayRandom 128,130
+                        KeyUp Space
+                        DelayRandom 453,454
+                        KeyUp Down
+                        DelayRandom 32,33
+                    End If
+                Else If intY > tarY Then //如果人在目标之下,就上瞬(Y轴是用相反比较符)
+                    KeyUp Down
+                    If stuckTimes < 5 Then //普通上瞬
+                        if cY != intY Then //有变化了,就重置计数器
+                            cY = intY
+                            stuckTimes = 0
+                        else
+                            stuckTimes = stuckTimes + 1 //原地就计数器+1
+                        End If
+                        KeyDown Up
+                        DelayRandom 12,13
+                        KeyDown LShift
+                        DelayRandom 68,69
+                        KeyUp LShift
+                        DelayRandom 212,233
+                    else //计数器达到5次Y轴不动了,钩子
+                        consecutiveTimes = 0     //启动降落判断
+                        cY               = intY
+                        stuckTimes       = 0
+                        DelayRandom 12,13
+                        KeyDown Alt
+                        DelayRandom 328,430
+                        KeyUp Alt
+                        DelayRandom 32,33
+                    End If
+                else //Y轴搞定了,到容忍度的X轴了,前提是不在空中
                     KeyUp Down
                     KeyUp Up
-                    KeyUp Shift //这一步已经不需要shift键了
                     consecutiveTimes = -1 //这一步已经不需要监控Y轴卡住了
+                    TracePrint Y轴到了
                     if tolerance < 4 Then //容忍度小于4还是要小碎步
                         //Y轴也达标了,到X轴了
                         If intX < (tarX-tolerance) Then //向右小碎步
@@ -232,50 +283,10 @@ Sub Move() //精确的移动
             End If
         End If
 
-        if consecutiveTimes >= 0 Then //判断下瞬和上瞬是否卡住来切换方式
-            if intY == cY Then //Y轴没变化了
-                consecutiveTimes = consecutiveTimes + 1
-                if consecutiveTimes >= 15 Then //Y轴
-                    if specialing > 0 Then //特殊手段到了
-                        specialing = 0
-                    else
-                        consecutiveTimes	= 0	//监控重置
-                        if YDirection > 0 then //上瞬卡住
-                            KeyDown Alt
-                            DelayRandom 328,430
-                            KeyUp Alt
-                            specialing = 1
-                        else //下瞬卡住
-                            DelayRandom 12,13
-                            KeyDown Down
-                            DelayRandom 76,77
-                            KeyDown Space
-                            DelayRandom 128,130
-                            KeyUp Space
-                            DelayRandom 453,454
-                            KeyUp Down
-                            DelayRandom 32,33
-                            specialing = 1
-                        End If
-                    End If
-                else
-                    KeyDown Shift
-                    if YDirection > 0 then //上瞬卡住
-                        KeyDown Up
-                    else
-                        KeyDown Down
-                    End If
-                End If
-            else
-                cY = intY
-                consecutiveTimes = 0
-            End If
-
-        End If
-
         Delay 5
     Wend
 End Sub
+
 
 
 Sub Judge() //判断人物是否在某个地点旁边,用tarXY,tolerance,tolLoc返回结果,不能嵌套move()使用,可以先使用这个再用move

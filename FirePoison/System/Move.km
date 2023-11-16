@@ -134,27 +134,25 @@ Sub Move() //精确的移动
                         DelayRandom 32,33
                     End If
                 else //Y轴搞定了,到容忍度的X轴了,前提是不在空中
-                    if stuckTimes == 0 Then
-                        KeyUp Down
-                        KeyUp Up
-                        consecutiveTimes = -1 //这一步已经不需要监控Y轴卡住了
-                        TracePrint Y轴到了
-                        if tolerance < 4 Then //容忍度小于4还是要小碎步
-                            //Y轴也达标了,到X轴了
-                            If intX < (tarX-tolerance) Then //向右小碎步
-                                KeyDown Right
-                                DelayRandom 10,15
-                                KeyUp Right
-                            Else If intX > (tarX+tolerance) Then //向左小碎步
-                                KeyDown Left
-                                DelayRandom 10,15
-                                KeyUp Left
-                            else
-                                Exit Sub
-                            End If
-                        else //容忍度大于等于4可以直接结束
+                    KeyUp Down
+                    KeyUp Up
+                    consecutiveTimes = -1 //这一步已经不需要监控Y轴卡住了
+                    TracePrint Y轴到了
+                    if tolerance < 4 Then //容忍度小于4还是要小碎步
+                        //Y轴也达标了,到X轴了
+                        If intX < (tarX-tolerance) Then //向右小碎步
+                            KeyDown Right
+                            DelayRandom 10,15
+                            KeyUp Right
+                        Else If intX > (tarX+tolerance) Then //向左小碎步
+                            KeyDown Left
+                            DelayRandom 10,15
+                            KeyUp Left
+                        else
                             Exit Sub
                         End If
+                    else //容忍度大于等于4可以直接结束
+                        Exit Sub
                     End If
                 End If
             End If
@@ -187,11 +185,14 @@ GetFileLine tolerance,Move.Conf,tolLoc	//文件查找
 TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance
 //tolerance = 4 //容忍度,4为推荐值
 Call Move()
+TracePrint 到了
 
 tarX      = 5
 tarY      = 118
 tolerance = 4
+TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance
 Call Move() //回去一波右下角放
+TracePrint 到了
 KeyDown Left
 DelayRandom 123,130
 KeyUp Left
@@ -204,7 +205,9 @@ DelayRandom 405,413
 tarX      = -8
 tarY      = 107
 tolerance = 6
+TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance
 Call Move()
+TracePrint 到了
 
 DelayRandom 56,58
 KeyDown F
@@ -214,6 +217,8 @@ DelayRandom 413,418
 tarX      = -8
 tarY      = 79
 tolerance = 6
+TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance
 Call Move()
+TracePrint 到了
 
 MsgBox 测试结束
