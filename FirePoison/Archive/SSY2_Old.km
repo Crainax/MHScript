@@ -4,45 +4,45 @@ ScreenY=2560
 Times=0
 
 [Script]
-Dim tarX,  tarY               //Ñ°Î»ÖÃÏà¹Ø:Ä¿±êµØµã
-Dim logoX, logoY, intX, intY  //Ñ°Î»ÖÃÏà¹Ø:µ±Ç°µØµã
-Dim iTime, a,     inLimit     //ÖÕ¼«ÎÞÏÞµÄ²¹³ä
+Dim tarX,  tarY               //Ñ°Î»ï¿½ï¿½ï¿½ï¿½ï¿½:Ä¿ï¿½ï¿½Øµï¿½
+Dim logoX, logoY, intX, intY  //Ñ°Î»ï¿½ï¿½ï¿½ï¿½ï¿½:ï¿½ï¿½Ç°ï¿½Øµï¿½
+Dim iTime, a,     inLimit     //ï¿½Õ¼ï¿½ï¿½ï¿½ï¿½ÞµÄ²ï¿½ï¿½ï¿½
 
-//ÒÑ¾­Ëã³öÊµÑéÊÒ2ÓÒÏÂ´«ËÍdX = 120,dY = 150(¿ÉÕý¸º2ÅÐ¶Ï)
-//ÒÑ¾­Ëã³öÊµÑéÊÒ2×óÏÂ´«ËÍdX = 42,dY = 150(¿ÉÕý¸º2ÅÐ¶Ï)
+//ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½dX = 120,dY = 150(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½Ð¶ï¿½)
+//ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½dX = 42,dY = 150(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½Ð¶ï¿½)
 
 
-Sub Attack() //¼¼ÄÜÑ­»·¹¥»÷
+Sub Attack() //ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     FindPic 800,2300,1439,2559,"E:\MHImg\HD_V1.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then //V1¼¼ÄÜºÃÁË
+    if intX >= 0 Then //V1ï¿½ï¿½ï¿½Üºï¿½ï¿½ï¿½
         KeyDown Q
         DelayRandom 135,137
         KeyUp Q
         DelayRandom 735,743
     else
         FindPic 800,2300,1439,2559,"E:\MHImg\HD_V2.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then //V2¼¼ÄÜºÃÁË
+        if intX >= 0 Then //V2ï¿½ï¿½ï¿½Üºï¿½ï¿½ï¿½
             KeyDown W
             DelayRandom 120,122
             KeyUp W
             DelayRandom 610,619
         else
             FindPic 800,2300,1439,2559,"E:\MHImg\HD_V4.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then //V4¼¼ÄÜºÃÁË
+            if intX >= 0 Then //V4ï¿½ï¿½ï¿½Üºï¿½ï¿½ï¿½
                 KeyDown S
                 DelayRandom 110,119
                 KeyUp S
                 DelayRandom 807,816
             else
                 FindPic 800,2300,1439,2559,"E:\MHImg\HD_Stone.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //Á÷ÐÇ¼¼ÄÜºÃÁË
+                if intX >= 0 Then //ï¿½ï¿½ï¿½Ç¼ï¿½ï¿½Üºï¿½ï¿½ï¿½
                     KeyDown B
                     DelayRandom 141,143
                     KeyUp B
                     DelayRandom 841,849
                 else
                     FindPic 800,2300,1439,2559,"E:\MHImg\HD_V3.bmp",000000,1.00,0,intX,intY
-                    if intX >= 0 Then //V3¼¼ÄÜºÃÁË
+                    if intX >= 0 Then //V3ï¿½ï¿½ï¿½Üºï¿½ï¿½ï¿½
                         KeyDown E
                         DelayRandom 185,187
                         KeyUp E
@@ -53,19 +53,19 @@ Sub Attack() //¼¼ÄÜÑ­»·¹¥»÷
                         DelayRandom 835,844
                     else
                         FindPic 800,2300,1439,2559,"E:\MHImg\HD_Blue.bmp",000000,1.00,0,intX,intY
-                        if intX >= 0 Then //À¶ÑæÕ¶¼¼ÄÜºÃÁË
+                        if intX >= 0 Then //ï¿½ï¿½ï¿½ï¿½Õ¶ï¿½ï¿½ï¿½Üºï¿½ï¿½ï¿½
                             KeyDown Z
                             DelayRandom 177,182
                             KeyUp Z
                             DelayRandom 786,798
                         else
                             FindPic 800,2300,1439,2559,"E:\MHImg\BigBless.bmp",000000,1.00,0,intX,intY
-                            if intX >= 0 Then //²¹³ä¸ö´ó×£¸£
+                            if intX >= 0 Then //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×£ï¿½ï¿½
                                 KeyDown 5
                                 DelayRandom 134,142
                                 KeyUp 5
                                 DelayRandom 512,519
-                            else //ÊµÔÚÃ»ÓÐ¾ÍÆÕ¹¥Ò»ÏÂ
+                            else //Êµï¿½ï¿½Ã»ï¿½Ð¾ï¿½ï¿½Õ¹ï¿½Ò»ï¿½ï¿½
                                 KeyDown F
                                 DelayRandom 1111,1392
                                 KeyUp F
@@ -79,12 +79,12 @@ Sub Attack() //¼¼ÄÜÑ­»·¹¥»÷
     End If
 End Sub
 
-Sub Infinite() //ÅÐ¶ÏÊÇ·ñÒª²¹³äÖÕ¼«ÎÞÏÞÁË
+Sub Infinite() //ï¿½Ð¶ï¿½ï¿½Ç·ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     a = GetTimeStamp() - iTime
-	//TracePrint Ê±¼ä²î: & a
-    if a > inLimit then //¸Ã²¹³äÁË
+	//TracePrint Ê±ï¿½ï¿½ï¿½: & a
+    if a > inLimit then //ï¿½Ã²ï¿½ï¿½ï¿½ï¿½ï¿½
         FindPic 800,2300,1439,2559,"E:\MHImg\HD_Infi1.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then //RÎ»ÖÃµÄÖÕ¼«ÎÞÏÞ
+        if intX >= 0 Then //RÎ»ï¿½Ãµï¿½ï¿½Õ¼ï¿½ï¿½ï¿½ï¿½ï¿½
             DelayRandom 400,410
             KeyDown R
             DelayRandom 225,228
@@ -93,7 +93,7 @@ Sub Infinite() //ÅÐ¶ÏÊÇ·ñÒª²¹³äÖÕ¼«ÎÞÏÞÁË
             iTime = GetTimeStamp()
         else
             FindPic 800,2300,1439,2559,"E:\MHImg\HD_Infi2.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then //`Î»ÖÃµÄÖÕ¼«ÎÞÏÞ
+            if intX >= 0 Then //`Î»ï¿½Ãµï¿½ï¿½Õ¼ï¿½ï¿½ï¿½ï¿½ï¿½
                 DelayRandom 400,410
                 KeyDown `
                 DelayRandom 120,122
@@ -105,48 +105,48 @@ Sub Infinite() //ÅÐ¶ÏÊÇ·ñÒª²¹³äÖÕ¼«ÎÞÏÞÁË
     End If
 End Sub
 
-Sub Seek()  //Ñ°Â·Ëã·¨
+Sub Seek()  //Ñ°Â·ï¿½ã·¨
     while  1>0
         FindPic 0,1650,300,1900,"E:\MHImg\MSLogo.bmp",000000,1.00,0,logoX,logoY
         FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
         intX = intX - logoX
         intY = intY - logoY
-        If intY < (tarY-2) Then //ÏÈÏòÏÂ×ß
+        If intY < (tarY-2) Then //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             KeyDown Down
             KeyDown Shift
         else
             KeyUp Down
             KeyUp Shift
-            If intX < (tarX-20) Then //Ð¡ÓÚ20¾ÍÓÒË²
+            If intX < (tarX-20) Then //Ð¡ï¿½ï¿½20ï¿½ï¿½ï¿½ï¿½Ë²
                 KeyDown Right
                 KeyUp Left
                 KeyDown Shift
-            ElseIf intX < (tarX-5) then //Ð¡ÓÚ115¾ÍÖ»ÓÒ×ß
+            ElseIf intX < (tarX-5) then //Ð¡ï¿½ï¿½115ï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½
                 KeyDown Right
                 KeyUp Left
                 KeyUp Shift
-            ElseIf intX < tarX then //¿¿½üÁË¾ÍÐ¡Ëé²½
+            ElseIf intX < tarX then //ï¿½ï¿½ï¿½ï¿½ï¿½Ë¾ï¿½Ð¡ï¿½é²½
                 KeyDown Right
                 DelayRandom 10,15
                 KeyUp Right
                 KeyUp Left
                 KeyUp Shift
-            ElseIf intX == tarX then //120¸ÕºÃºÏÊÊ
+            ElseIf intX == tarX then //120ï¿½ÕºÃºï¿½ï¿½ï¿½
                 KeyUp Left
                 KeyUp Right
                 KeyUp Shift
                 Exit Sub
-            ElseIf intX <= (tarX+4) then //¿¿½üÁË¾ÍÐ¡Ëé²½
+            ElseIf intX <= (tarX+4) then //ï¿½ï¿½ï¿½ï¿½ï¿½Ë¾ï¿½Ð¡ï¿½é²½
                 KeyDown Left
                 DelayRandom 10,15
                 KeyUp Left
                 KeyUp Right
                 KeyUp Shift
-            ElseIf intX <= (tarX+20) then //140ÒÔÄÚ¾Í×ó×ß
+            ElseIf intX <= (tarX+20) then //140ï¿½ï¿½ï¿½Ú¾ï¿½ï¿½ï¿½ï¿½ï¿½
                 KeyDown Left
                 KeyUp Right
                 KeyUp Shift
-            else //Ì«Ô¶¾Í×óË²
+            else //Ì«Ô¶ï¿½ï¿½ï¿½ï¿½Ë²
                 KeyDown Left
                 KeyUp Right
                 KeyDown Shift
@@ -156,7 +156,7 @@ Sub Seek()  //Ñ°Â·Ëã·¨
     Wend
 End Sub
 
-Sub Move_Back() //´ÓÅçÈª´«ËÍÃÅ»Øµ½´ý»úµã,
+Sub Move_Back() //ï¿½ï¿½ï¿½ï¿½Èªï¿½ï¿½ï¿½ï¿½ï¿½Å»Øµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,
     KeyDown Up
     DelayRandom 140,142
     KeyUp Up
@@ -166,12 +166,12 @@ Sub Move_Back() //´ÓÅçÈª´«ËÍÃÅ»Øµ½´ý»úµã,
     FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
     intX = intX - logoX
     intY = intY - logoY
-    If intX < 100 Then //Èç¹û»¹ÔÚÔ­µØ,¾Í»»¸ö·½Ê½
+    If intX < 100 Then //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½,ï¿½Í»ï¿½ï¿½ï¿½ï¿½ï¿½Ê½
         tarX = 120
         tarY = 150
-        Call Seek() //Ç°Íù×óÏÂ´«ËÍÃÅ
-        TracePrint ´¥·¢ÁËÇ¿ÖÆÀë¿ªÅçÈªµØ£¬×óÏÂµ½ÓÒÏÂ
-    else //´«ËÍµ½ÁËÓÒ±ß
+        Call Seek() //Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½ï¿½ï¿½
+        TracePrint ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ë¿ªï¿½ï¿½Èªï¿½Ø£ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½
+    else //ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½Ò±ï¿½
         Call Attack()
         DelayRandom 246,249
         KeyDown Left
@@ -184,7 +184,7 @@ Sub Move_Back() //´ÓÅçÈª´«ËÍÃÅ»Øµ½´ý»úµã,
         DelayRandom 503,509
         Call Attack()
         DelayRandom 246,249
-        Call Infinite() //ÖÕ¼«ÎÞÏÞÅÐ¶Ï
+        Call Infinite() //ï¿½Õ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½
         KeyDown Right
         DelayRandom 3,4
         KeyDown LShift
@@ -217,16 +217,16 @@ Sub Move_Back() //´ÓÅçÈª´«ËÍÃÅ»Øµ½´ý»úµã,
 
     DelayRandom 766,782
 
-    //Èç¹ûÈË»¹ÔÚÓÒÉÏ,Ç¿ÖÆÈ¥ÓÒÏÂ
+    //ï¿½ï¿½ï¿½ï¿½Ë»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,Ç¿ï¿½ï¿½È¥ï¿½ï¿½ï¿½ï¿½
     FindPic 0,1650,300,1900,"E:\MHImg\MSLogo.bmp",000000,1.00,0,logoX,logoY
     FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
     intX = intX - logoX
     intY = intY - logoY
-    If intY < 148 Then //Èç¹û»¹ÔÚÔ­µØ,¾ÍÇ¿ÖÆÇ°ÍùÏÂÃæ
+    If intY < 148 Then //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½,ï¿½ï¿½Ç¿ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         tarX = 120
         tarY = 150
-        Call Seek() //Ç°Íù×óÏÂ´«ËÍÃÅ
-        TracePrint ´¥·¢ÁËÇ¿ÖÆÏòÏÂ»ØÈ¥£¬ÓÒÉÏµ½ÓÒÏÂ
+        Call Seek() //Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½ï¿½ï¿½
+        TracePrint ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ï¿½ï¿½Â»ï¿½È¥ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½
     End If
 
     Call Attack()
@@ -247,7 +247,7 @@ Sub Move_Back() //´ÓÅçÈª´«ËÍÃÅ»Øµ½´ý»úµã,
     KeyUp Up
 End Sub
 
-Sub Move_Water() //Ç°Íù·ÅÅçÈªµÄµØ·½
+Sub Move_Water() //Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Èªï¿½ÄµØ·ï¿½
     KeyDown Up
     DelayRandom 158,160
     KeyUp Up
@@ -257,11 +257,11 @@ Sub Move_Water() //Ç°Íù·ÅÅçÈªµÄµØ·½
     FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
     intX = intX - logoX
     intY = intY - logoY
-    If intX > 50 Then //Èç¹û»¹ÔÚÔ­µØ,¾Í»»¸ö·½Ê½
+    If intX > 50 Then //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½,ï¿½Í»ï¿½ï¿½ï¿½ï¿½ï¿½Ê½
         tarX = 42
         tarY = 150
-        TracePrint ´¥·¢ÁËÇ¿ÖÆÇ°ÍùÅçÈªµØ£¬ÓÒÏÂµ½×óÏÂ
-        Call Seek() //Ç°Íù×óÏÂ´«ËÍÃÅ
+        TracePrint ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½Èªï¿½Ø£ï¿½ï¿½ï¿½ï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½
+        Call Seek() //Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½ï¿½ï¿½
         DelayRandom 775,783
         KeyDown Left
         DelayRandom 874,883
@@ -275,30 +275,30 @@ Sub Move_Water() //Ç°Íù·ÅÅçÈªµÄµØ·½
         DelayRandom 5,6
         KeyUp Up
         DelayRandom 156,172
-    else //´«ËÍµ½ÁËÓÒ±ß
+    else //ï¿½ï¿½ï¿½Íµï¿½ï¿½ï¿½ï¿½Ò±ï¿½
 
-        Call Infinite() //ÖÕ¼«ÎÞÏÞÅÐ¶Ï
+        Call Infinite() //ï¿½Õ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½
         FindPic 800,2300,1439,2559,"E:\MHImg\BT_Spider.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then //ÕÒÖ©Öë
+        if intX >= 0 Then //ï¿½ï¿½Ö©ï¿½ï¿½
             KeyDown H
             DelayRandom 105,107
             KeyUp H
             DelayRandom 929,939
         else
             FindPic 800,2300,1439,2559,"E:\MHImg\BT_Lieyang.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then //ÕÒÁÒÑô
+            if intX >= 0 Then //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 KeyDown Y
                 DelayRandom 105,107
                 KeyUp Y
                 DelayRandom 811,813
             else
                 FindPic 800,2300,1439,2559,"E:\MHImg\BT_Wugong.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //ÕÒÎä¹«
+                if intX >= 0 Then //ï¿½ï¿½ï¿½ä¹«
                     KeyDown 4
                     DelayRandom 105,107
                     KeyUp 4
                     DelayRandom 899,909
-                else //Ê²Ã´¶¼Ã»ÓÐ¾ÍÆÕ¹¥Ò»ÏÂ
+                else //Ê²Ã´ï¿½ï¿½Ã»ï¿½Ð¾ï¿½ï¿½Õ¹ï¿½Ò»ï¿½ï¿½
                     Call Attack()
                 End If
             End If
@@ -328,25 +328,25 @@ Sub Move_Water() //Ç°Íù·ÅÅçÈªµÄµØ·½
     DelayRandom 812,821
 End Sub
 
-//Mainº¯Êý
-inLimit = 110 //¶¨ÒåÒ»ÏÂÖÕ¼«ÎÞÏÞµÄÀäÈ´Ê±¼ä
+//Mainï¿½ï¿½ï¿½ï¿½
+inLimit = 110 //ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Õ¼ï¿½ï¿½ï¿½ï¿½Þµï¿½ï¿½ï¿½È´Ê±ï¿½ï¿½
 iTime = GetTimeStamp() - inLimit
 while 1 > 0
     FindPic 800,2300,1439,2559,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then //ÅçÈªCDºÃÁË
+    if intX >= 0 Then //ï¿½ï¿½ÈªCDï¿½ï¿½ï¿½ï¿½
         tarX = 120
         tarY = 150
-        Call Seek() //Ç°ÍùÓÒÏÂ´«ËÍÃÅ
+        Call Seek() //Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½ï¿½ï¿½
         DelayRandom 123,125
-        Call Move_Water() //·ÅÅçÈª
+        Call Move_Water() //ï¿½ï¿½ï¿½ï¿½Èª
         tarX = 42
         tarY = 150
-        Call Seek() //Ç°Íù×óÏÂ´«ËÍÃÅ
+        Call Seek() //Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½ï¿½ï¿½ï¿½ï¿½
         DelayRandom 156,172
-        Call Move_Back() //¹éÎ»Ç°µÄ¶¯×÷
+        Call Move_Back() //ï¿½ï¿½Î»Ç°ï¿½Ä¶ï¿½ï¿½ï¿½
     else
         a = random(1,7)
-        if a <= 2 then //ÊúÖ±ÒÆ¶¯
+        if a <= 2 then //ï¿½ï¿½Ö±ï¿½Æ¶ï¿½
             DelayRandom 335,341
             KeyDown F
             DelayRandom 1322,1336
@@ -370,7 +370,7 @@ while 1 > 0
             KeyUp LShift
             DelayRandom 341,350
             Call Attack()
-        ElseIf a == 3 then //Ë®Æ½ÒÆ¶¯
+        ElseIf a == 3 then //Ë®Æ½ï¿½Æ¶ï¿½
             DelayRandom 360,367
             KeyDown F
             DelayRandom 1147,1159
@@ -408,8 +408,8 @@ while 1 > 0
             FindPic 0,1650,300,1900,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
             intX = intX - logoX
             intY = intY - logoY
-            If intY >= 148 Then //Èç¹ûÔÚ×îÏÂ²ã,¾ÍÇ¿ÖÆÇ°ÍùÉÏ²ã
-                TracePrint ÆÕÍ¨Ë¢¹ÖÊ±µôµ½ÁË×îÏÂÃæ£¬ÏÖÔÚÍùÉÏ»ØÈ¥
+            If intY >= 148 Then //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â²ï¿½,ï¿½ï¿½Ç¿ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Ï²ï¿½
+                TracePrint ï¿½ï¿½Í¨Ë¢ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï»ï¿½È¥
                 KeyDown Left
                 DelayRandom 676,683
                 KeyUp Left
@@ -424,14 +424,14 @@ while 1 > 0
                 DelayRandom 102,104
             End If
 
-        else //Ô­µØ·ÅÕÐ
+        else //Ô­ï¿½Ø·ï¿½ï¿½ï¿½
             KeyDown F
             DelayRandom 1500,2000
             KeyUp F
             DelayRandom 255,262
             Call Attack()
         End If
-        Call Infinite() //ÖÕ¼«ÎÞÏÞÅÐ¶Ï
+        Call Infinite() //ï¿½Õ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½
         DelayRandom 300,303
     End If
 Wend
