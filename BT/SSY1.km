@@ -338,8 +338,8 @@ Sub Fly1() //飞行模式,启动!
     DelayRandom 137,139
     KeyUp E
     DelayRandom 239,242
-    tarX = 99
-    tarY = 130
+    tarX = 7
+    tarY = 98
     tolerance = 1
     TracePrint Flyaway
     Call Move_Fly()
