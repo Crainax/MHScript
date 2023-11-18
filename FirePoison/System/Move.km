@@ -169,13 +169,20 @@ if intX > intY then //横放屏幕
     y1 = 550
     x2 = 1650
     y2 = 850
+    x3 = 1500
+    y3 = 1250
+    xEnd = 2560
+    yEnd = 1440
 else //竖放屏幕
     x1 = 0
     y1 = 1650
     x2 = 300
     y2 = 1900
+    x3 = 800
+    y3 = 2300
+    xEnd = 1440
+    yEnd = 2560
 End If
-
 tolLoc = 1
 GetFileLine tarX,Move.Conf,tolLoc		//文件查找
 tolLoc = 2

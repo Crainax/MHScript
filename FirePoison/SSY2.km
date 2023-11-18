@@ -143,8 +143,8 @@ Sub Move() //精确的移动
     stuckTimes = 0 //防卡检测初始次数为0
     cY = 0
     while  1 > 0
-        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
 
         if intX < 0 Then //人物跑到了边界  处理一下
             TracePrint 没找到人,开始左右移自测 & intX &, & intY
@@ -160,21 +160,20 @@ Sub Move() //精确的移动
             End if
         End if
 
+        // TracePrint [图标X轴 & logoX & ,图标Y轴 & logoY & ],[绿点X轴 & intX & ,绿点Y轴 & intY & ]
+
         intX = intX - logoX
         intY = intY - logoY
 
         if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
             if intY == cY Then //Y轴没变化了
                 consecutiveTimes = consecutiveTimes + 1
-                TracePrint 降落判断: & consecutiveTimes
                 if consecutiveTimes >= 8 Then
                     consecutiveTimes	= -1	//判断为已经落地
-                    TracePrint 判断已经落地
                 End If
             else
                 cY = intY
                 consecutiveTimes = 0
-                TracePrint 降落判断: & consecutiveTimes
             End If
         else //继续根据
             if tolerance > 4 Then
@@ -285,8 +284,6 @@ Sub Move() //精确的移动
         Delay 5
     Wend
 End Sub
-
-
 
 Sub Judge() //判断人物是否在某个地点旁边,用tarXY,tolerance,tolLoc返回结果,不能嵌套move()使用,可以先使用这个再用move
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
