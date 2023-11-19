@@ -4,7 +4,6 @@ ScreenY=2560
 Times=0
 
 
-
 [Script]
 Dim mX,mY
 Dim intX,intY

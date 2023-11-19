@@ -314,7 +314,7 @@ End Sub
 
 Sub Move_Bear()  //熊形态的移动
     consecutiveTimes = -1  //初始就启用指南针判断
-    consecutiveMax   = 3   //降落默认值为4
+    consecutiveMax   = 4   //降落默认值为4
     while  1 > 0
         FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -347,7 +347,7 @@ Sub Move_Bear()  //熊形态的移动
                 TracePrint 降落判断: & consecutiveTimes
                 if consecutiveTimes >= consecutiveMax Then
                     consecutiveTimes	= -1	//判断为已经落地
-                    consecutiveMax		= 3		//归位最大降落判断值
+                    consecutiveMax		= 4		//归位最大降落判断值
                     TracePrint 判断已经落地
                 End If
             else
