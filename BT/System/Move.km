@@ -312,8 +312,139 @@ Sub Move_Bild() //鸟形态的地面移动
     Wend
 End Sub
 
-Sub Move_Bear() //熊形态的地面移动
+Sub Move_Beer()  //熊形态的移动
+    consecutiveTimes = -1  //初始就启用指南针判断
+    consecutiveMax   = 3   //降落默认值为4
+    while  1 > 0
+        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
 
+        if intX < 0 Then //人物跑到了边界  处理一下
+            KeyDown Left
+            DelayRandom 200,250
+            KeyUp Left
+            FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+            if intX < 0 Then //左移了还是没找到,就右移
+                KeyDown Right
+                DelayRandom 200,250
+                KeyUp Right
+                FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+            End if
+        End if
+
+        intX = intX - logoX
+        intY = intY - logoY
+        if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
+            if Hooking > 0 and intY <= tarY Then //钩子的判断刹车
+                TracePrint 钩子刹车
+                KeyDown Alt
+                DelayRandom 258,282
+                KeyUp Alt
+                Hooking = 0
+            End If
+            if intY == cY Then //Y轴没变化了
+                consecutiveTimes = consecutiveTimes + 1
+                TracePrint 降落判断: & consecutiveTimes
+                if consecutiveTimes >= consecutiveMax Then
+                    consecutiveTimes	= -1	//判断为已经落地
+                    consecutiveMax		= 3		//归位最大降落判断值
+                    TracePrint 判断已经落地
+                End If
+            else
+                cY = intY
+                consecutiveTimes = 0
+                TracePrint 降落判断: & consecutiveTimes
+            End If
+        else //继续根据
+            if tolerance > 4 Then
+                tolLoc = tolerance
+            else  //速走的默认为4
+                tolLoc = 4
+            End If
+            if intX < (tarX-24) Then //向右二段跳
+                consecutiveTimes = 0 //启动降落判断
+                cY = intY
+                TracePrint 右跳
+                DelayRandom 15,25
+                KeyDown Right
+                DelayRandom 50,51
+                KeyDown Space
+                DelayRandom 80,81
+                KeyUp Space
+                DelayRandom 30,31
+                KeyDown Space
+                DelayRandom 75,76
+                KeyUp Space
+                DelayRandom 85,86
+                KeyUp Right
+                DelayRandom 41,42
+            Else If intX > (tarX+24) Then //向左二段跳
+                consecutiveTimes = 0 //启动降落判断
+                cY = 0
+                TracePrint 左跳
+                DelayRandom 15,25
+                KeyDown Left
+                DelayRandom 50,51
+                KeyDown Space
+                DelayRandom 80,81
+                KeyUp Space
+                DelayRandom 30,31
+                KeyDown Space
+                DelayRandom 75,76
+                KeyUp Space
+                DelayRandom 85,86
+                KeyUp Left
+                DelayRandom 41,42
+            Else If intX < (tarX-tolLoc) Then //向右走
+                KeyDown Right
+            Else If intX > (tarX+tolLoc) Then //向左走
+                KeyDown Left
+            else
+                KeyUp Right
+                KeyUp Left
+                If intY < tarY Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
+                    consecutiveTimes = 0 //启动降落判断
+                    cY = intY
+                    TracePrint 下跳一次
+                    DelayRandom 12,13
+                    KeyDown Down
+                    DelayRandom 76,77
+                    KeyDown Space
+                    DelayRandom 128,130
+                    KeyUp Space
+                    DelayRandom 453,454
+                    KeyUp Down
+                    DelayRandom 32,33
+                Else If intY > tarY Then //如果人在目标之下,上钩
+                    consecutiveTimes = 0 //启动降落判断
+                    cY = intY
+                    consecutiveMax = 8 //延长一点降落判断
+                    TracePrint 钩子一次
+                    KeyDown Ctrl
+                    DelayRandom 328,430
+                    KeyUp Ctrl
+                else
+                    if tolerance < 4 Then //容忍度小于4还是要小碎步
+                        //Y轴也达标了,到X轴了
+                        If intX < (tarX-tolerance) Then //向右小碎步
+                            KeyDown Right
+                            DelayRandom 10,15
+                            KeyUp Right
+                        Else If intX > (tarX+tolerance) Then //向左小碎步
+                            KeyDown Left
+                            DelayRandom 10,15
+                            KeyUp Left
+                        else
+                            Exit Sub
+                        End If
+                    else //容忍度大于等于4可以直接结束
+                        Exit Sub
+                    End If
+                End If
+            End If
+        End If
+        Delay 5
+    Wend
 End Sub
 
 GetScreenResolution intX, intY

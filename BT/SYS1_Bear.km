@@ -1,0 +1,406 @@
+[General]
+ScreenX=1440
+ScreenY=2560
+Times=0
+
+[Script]
+Dim x1,        x2,               y1,   y2        // 矩形区域:小地图采样点
+Dim x3,        x4,               y3,   y4        // 2个顶点:技能区/蘑菇公主
+Dim xEnd,      yEnd                              //屏幕右下角顶点
+Dim tarX,      tarY                              //目标
+Dim logoX,     logoY,            intX, intY      //算目的地差值
+Dim tolerance, temp                              //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim FartOK                                       //熊屁的计时器冷却
+Dim cY,        consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X或Y轴变化了
+Dim Hooking                                      //钩子中和滑翔中,方便中途刹车
+Dim a,         stoneSteleTime,   V12Time         //冷却相关
+
+
+Sub on_timer1 //熊屁计时器
+    FartOK = 1
+EndSub
+
+Sub Move_Bear()  //熊形态的移动
+    consecutiveTimes = -1  //初始就启用指南针判断
+    consecutiveMax   = 3   //降落默认值为4
+    while  1 > 0
+        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+
+        if intX < 0 Then //人物跑到了边界  处理一下
+            KeyDown Left
+            DelayRandom 200,250
+            KeyUp Left
+            FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+            if intX < 0 Then //左移了还是没找到,就右移
+                KeyDown Right
+                DelayRandom 200,250
+                KeyUp Right
+                FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+            End if
+        End if
+
+        intX = intX - logoX
+        intY = intY - logoY
+        if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
+            if Hooking > 0 and intY <= tarY Then //钩子的判断刹车
+                TracePrint 钩子刹车
+                KeyDown Alt
+                DelayRandom 258,282
+                KeyUp Alt
+                Hooking = 0
+            End If
+            if intY == cY Then //Y轴没变化了
+                consecutiveTimes = consecutiveTimes + 1
+                TracePrint 降落判断: & consecutiveTimes
+                if consecutiveTimes >= consecutiveMax Then
+                    consecutiveTimes	= -1	//判断为已经落地
+                    consecutiveMax		= 3		//归位最大降落判断值
+                    TracePrint 判断已经落地
+                End If
+            else
+                cY = intY
+                consecutiveTimes = 0
+                TracePrint 降落判断: & consecutiveTimes
+            End If
+        else //继续根据
+            if tolerance > 4 Then
+                tolLoc = tolerance
+            else  //速走的默认为4
+                tolLoc = 4
+            End If
+            if intX < (tarX-24) Then //向右二段跳
+                consecutiveTimes = 0 //启动降落判断
+                cY = intY
+                TracePrint 右跳
+                DelayRandom 15,25
+                KeyDown Right
+                DelayRandom 50,51
+                KeyDown Space
+                DelayRandom 80,81
+                KeyUp Space
+                DelayRandom 30,31
+                KeyDown Space
+                DelayRandom 75,76
+                KeyUp Space
+                DelayRandom 85,86
+                KeyUp Right
+                DelayRandom 41,42
+            Else If intX > (tarX+24) Then //向左二段跳
+                consecutiveTimes = 0 //启动降落判断
+                cY = 0
+                TracePrint 左跳
+                DelayRandom 15,25
+                KeyDown Left
+                DelayRandom 50,51
+                KeyDown Space
+                DelayRandom 80,81
+                KeyUp Space
+                DelayRandom 30,31
+                KeyDown Space
+                DelayRandom 75,76
+                KeyUp Space
+                DelayRandom 85,86
+                KeyUp Left
+                DelayRandom 41,42
+            Else If intX < (tarX-tolLoc) Then //向右走
+                KeyDown Right
+            Else If intX > (tarX+tolLoc) Then //向左走
+                KeyDown Left
+            else
+                KeyUp Right
+                KeyUp Left
+                If intY < tarY Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
+                    consecutiveTimes = 0 //启动降落判断
+                    cY = intY
+                    TracePrint 下跳一次
+                    DelayRandom 12,13
+                    KeyDown Down
+                    DelayRandom 76,77
+                    KeyDown Space
+                    DelayRandom 128,130
+                    KeyUp Space
+                    DelayRandom 453,454
+                    KeyUp Down
+                    DelayRandom 32,33
+                Else If intY > tarY Then //如果人在目标之下,上钩
+                    consecutiveTimes = 0 //启动降落判断
+                    cY = intY
+                    consecutiveMax = 8 //延长一点降落判断
+                    TracePrint 钩子一次
+                    KeyDown Ctrl
+                    DelayRandom 328,430
+                    KeyUp Ctrl
+                else
+                    if tolerance < 4 Then //容忍度小于4还是要小碎步
+                        //Y轴也达标了,到X轴了
+                        If intX < (tarX-tolerance) Then //向右小碎步
+                            KeyDown Right
+                            DelayRandom 10,15
+                            KeyUp Right
+                        Else If intX > (tarX+tolerance) Then //向左小碎步
+                            KeyDown Left
+                            DelayRandom 10,15
+                            KeyUp Left
+                        else
+                            Exit Sub
+                        End If
+                    else //容忍度大于等于4可以直接结束
+                        Exit Sub
+                    End If
+                End If
+            End If
+        End If
+        Delay 5
+    Wend
+End Sub
+
+Sub Judge() //判断人物是否在某个地点旁边,用tarXY,tolerance,tolLoc返回结果,不能嵌套move()使用,可以先使用这个再用move
+    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    tolLoc = 0
+    if intX >= 0 Then //找到了人物才会进行下去
+        intX = intX - logoX
+        intY = intY - logoY
+        if intY == tarY and intX >= (tarX - tolerance) and intX <= (tarX + tolerance) then
+            tolLoc = 1
+        End If
+    End If
+End Sub
+
+Sub FindFountain //寻找喷泉并放喷泉(要求状态是0)
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 then //可以喷泉了
+        tarX = 29
+        tarY = 88
+        tolerance = 4
+        Call Move_Bear()
+        DelayRandom 56,58
+        KeyDown Right
+        DelayRandom 62,68
+        KeyUp Right
+        DelayRandom 106,109
+        KeyDown Down
+        DelayRandom 95,96
+        KeyDown 1
+        DelayRandom 194,196
+        KeyUp 1
+        DelayRandom 66,67
+        KeyUp Down
+        DelayRandom 712,721
+    End If
+    currentState = 1 //无论找没找到喷泉下一步都是去左下角
+End Sub
+
+Sub Fart //放熊屁,CD没好就放其他技能
+    while 1 > 0
+
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Fart.bmp",000000,1.0,0,intX,intY	//找熊屁
+        if intX >= 0 or FartOK == 1 Then
+            FartOK = 0
+            Timer 1,1,5000
+            KeyDown D
+            DelayRandom 623,650
+            KeyUp D
+            DelayRandom 5,6
+            break
+        else //放其他小技能
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Spider.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //找蜘蛛
+                KeyDown H
+                DelayRandom 105,107
+                KeyUp H
+                DelayRandom 929,939
+            else
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Lieyang.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //找烈阳
+                    KeyDown Y
+                    DelayRandom 105,107
+                    KeyUp Y
+                    DelayRandom 811,813
+                else
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_diningTable.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then //找打翻
+                        KeyDown V
+                        DelayRandom 105,107
+                        KeyUp V
+                        DelayRandom 1529,1639
+                    else
+                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Whister.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //找哨子
+                            KeyDown 5
+                            DelayRandom 105,107
+                            KeyUp 5
+                            DelayRandom 72,74
+                            KeyDown B
+                            DelayRandom 97,99
+                            KeyUp B
+                            DelayRandom 312,324
+                            KeyDown C
+                            DelayRandom 214,217
+                            KeyUp C
+                            DelayRandom 879,891
+                        End If
+                    End If
+                End If
+            End If
+        End If
+
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_V2.bmp",000000,1.00,0,intX,intY	//找V2
+        if intX >= 0 Then //找到V2就放,瞬手的事
+            KeyDown W
+            DelayRandom 122,124
+            KeyUp W
+            DelayRandom 402,412
+        End If
+
+        DelayRandom 5,10
+    Wend
+End Sub
+
+GetScreenResolution intX, intY
+if intX > intY then //横放屏幕
+    x1 = 700
+    y1 = 550
+    x2 = 1650
+    y2 = 850
+    x3 = 1500
+    y3 = 1250
+    xEnd = 2560
+    yEnd = 1440
+else //竖放屏幕
+    x1 = 0
+    y1 = 1650
+    x2 = 300
+    y2 = 1900
+    x3 = 800
+    y3 = 2300
+    xEnd = 1440
+    yEnd = 2560
+End If
+stoneSteleTime = 0               //上次轮回的时间
+pickingTime    = GetTimeStamp()  //上次捡钱的时间
+currentState   = 0               //当前的状态
+FartOK         = 0               //熊屁当前可放
+
+while 1 > 0
+
+    a = GetTimeStamp() - stoneSteleTime
+    if a > 570 then //可以放轮了
+        //TracePrint 目标原地放轮
+        DelayRandom 56,58
+        KeyDown O
+        DelayRandom 137,139
+        KeyUp O
+        DelayRandom 736,747
+        stoneSteleTime = GetTimeStamp()
+        //TracePrint 轮放好了
+    End If
+
+    if (currentState == 0) Then //第一部就是喷泉啦,没的话就直接
+        call FindFountain() //找喷泉,找到就扔
+    End
+
+    tarX      = -55
+    tarY      = 83
+    tolerance = 6
+    Call Judge() //判断位置
+    if tolLoc > 0 or currentState == 1 Then //现在人在喷泉地,下个目的地是左下
+        tarX      = -55
+        tarY      = 108
+        tolerance = 4
+        Call Move_Bear()
+    End If
+
+    tarX      = -55
+    tarY      = 108
+    tolerance = 6
+    Call Judge() //判断位置
+    if tolLoc > 0 or currentState == 2 Then //人在左下,看下是捡钱还是熊屁1
+        a = GetTimeStamp() - pickingTime
+        if a > 130 then //可以捡钱了,捡前钱先放个屁
+            Call Fart()
+            tarX = -55
+            tarY = 122
+            tolerance = 4
+            Call Move_Bear()
+            pickingTime = GetTimeStamp()
+            currentState = 4
+        else
+            tarX      = -38
+            tarY      = 108
+            tolerance = 4
+            Call Move_Bear()
+            KeyDown Left
+            DelayRandom 62,65
+            KeyUp Left
+            DelayRandom 12,14
+            Call Fart()
+            currentState = 3
+        End If
+
+    End If
+
+    if currentState == 3 Then //熊屁1放完了,接下来去熊屁2
+        tarX      = 15
+        tarY      = 108
+        tolerance = 4
+        Call Move_Bear()
+        currentState = 5 //分支汇流
+    End If
+
+    if currentState == 4 Then //最下面一层捡钱中(如果自动寻路表现不好就再用录制吧)
+        tarX      = 15
+        tarY      = 108
+        tolerance = 4
+        Call Move_Bear()
+        currentState = 5 //分支汇流
+    End If
+
+    tarX      = 15
+    tarY      = 108
+    tolerance = 6
+    Call Judge()
+    if tolLoc > 0 or currentState == 5 Then //开放熊屁2
+        KeyDown Left
+        DelayRandom 35,40
+        KeyUp Left
+        DelayRandom 16,18
+        Call Fart()
+        tarX      = 18
+        tarY      = 74
+        tolerance = 4
+        Call Move_Bear() //前往熊屁3地点
+        currentState = 6 //开始去熊屁3
+    End If
+
+    tarX      = 18
+    tarY      = 74
+    tolerance = 6
+    Call Judge()
+    if tolLoc > 0 or currentState == 6 Then //在熊屁3地点
+        Call Fart()
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //可以喷泉了
+            currentState = 7 //下一步去小波波
+            TracePrint 下一步去小波波了
+        else
+            currentState = 1 //下一步去左下角
+            TracePrint 下一步还是去左下角
+        End If
+     End If
+
+    if currentState == 7 Then //当前在小波波处,放的前提是喷泉好了(上一层判断进入了该行为)
+        DelayRandom 23,25
+        KeyDown E
+        DelayRandom 152,160
+        KeyUp E
+        DelayRandom 701,720
+        currentState = 0 //下一步去喷泉
+    End If
+
+    if currentState < 0 or currentState > 8 Then
+        currentState = 0 //初始化状态为0
+    End If
+    Delay 5
+Wend
