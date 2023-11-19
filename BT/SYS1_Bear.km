@@ -329,12 +329,25 @@ while 1 > 0
             pickingTime = GetTimeStamp()
             currentState = 4
         else
-            tarX      = -38
-            tarY      = 108
-            tolerance = 4
-            Call Move_Bear()
+            // tarX      = -38
+            // tarY      = 108
+            // tolerance = 4
+            // Call Move_Bear()
+            DelayRandom 15,25
+            KeyDown Right
+            DelayRandom 95,96
+            KeyDown Space
+            DelayRandom 64,65
+            KeyUp Space
+            DelayRandom 119,121
+            KeyDown Space
+            DelayRandom 97,98
+            KeyUp Space
+            DelayRandom 42,43
+            KeyUp Right
+            DelayRandom 41,42
             KeyDown Left
-            DelayRandom 62,65
+            DelayRandom 262,265
             KeyUp Left
             DelayRandom 12,14
             Call Fart()
