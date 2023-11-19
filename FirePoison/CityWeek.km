@@ -4,38 +4,41 @@ ScreenY=2560
 Times=0
 
 [Script]
+Dim x1,        x2,               y1,   y2        // 矩形区域:小地图采样点
+Dim x3,        x4,               y3,   y4        // 2个顶点:技能区/蘑菇公主
+Dim xEnd,      yEnd                              //屏幕右下角顶点
 Dim intX, intY  //寻位置相关:当前地点
 Dim iTime,a,inLimit
 Sub Attack() //技能循环攻击
-    FindPic 800,2300,1439,2559,"E:\MHImg\HD_V1.bmp",000000,1.00,0,intX,intY
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_V1.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //V1技能好了
         KeyDown Q
         DelayRandom 135,137
         KeyUp Q
         DelayRandom 735,743
     else
-        FindPic 800,2300,1439,2559,"E:\MHImg\HD_V2.bmp",000000,1.00,0,intX,intY
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_V2.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then //V2技能好了
             KeyDown W
             DelayRandom 120,122
             KeyUp W
             DelayRandom 610,619
         else
-            FindPic 800,2300,1439,2559,"E:\MHImg\HD_V4.bmp",000000,1.00,0,intX,intY
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_V4.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then //V4技能好了
                 KeyDown S
                 DelayRandom 110,119
                 KeyUp S
                 DelayRandom 807,816
             else
-                FindPic 800,2300,1439,2559,"E:\MHImg\HD_Stone.bmp",000000,1.00,0,intX,intY
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_Stone.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then //流星技能好了
                     KeyDown B
                     DelayRandom 141,143
                     KeyUp B
                     DelayRandom 841,849
                 else
-                    FindPic 800,2300,1439,2559,"E:\MHImg\HD_V3.bmp",000000,1.00,0,intX,intY
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_V3.bmp",000000,1.00,0,intX,intY
                     if intX >= 0 Then //V3技能好了
                         KeyDown E
                         DelayRandom 185,187
@@ -46,14 +49,14 @@ Sub Attack() //技能循环攻击
                         KeyUp V
                         DelayRandom 835,844
                     else
-                        FindPic 800,2300,1439,2559,"E:\MHImg\HD_Blue.bmp",000000,1.00,0,intX,intY
+                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_Blue.bmp",000000,1.00,0,intX,intY
                         if intX >= 0 Then //蓝焰斩技能好了
                             KeyDown Z
                             DelayRandom 177,182
                             KeyUp Z
                             DelayRandom 786,798
                         else
-                            FindPic 800,2300,1439,2559,"E:\MHImg\BigBless.bmp",000000,1.00,0,intX,intY
+                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BigBless.bmp",000000,1.00,0,intX,intY
                             if intX >= 0 Then //补充个大祝福
                                 KeyDown 5
                                 DelayRandom 134,142
@@ -73,7 +76,26 @@ Sub Attack() //技能循环攻击
     End If
 End Sub
 
-
+GetScreenResolution intX, intY
+if intX > intY then //横放屏幕
+    x1 = 700
+    y1 = 550
+    x2 = 1650
+    y2 = 850
+    x3 = 1500
+    y3 = 1250
+    xEnd = 2560
+    yEnd = 1440
+else //竖放屏幕
+    x1 = 0
+    y1 = 1650
+    x2 = 300
+    y2 = 1900
+    x3 = 800
+    y3 = 2300
+    xEnd = 1440
+    yEnd = 2560
+End If
 iTime = GetTimeStamp()
 while 1 > 0
     Call Attack()
