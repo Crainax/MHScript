@@ -9,7 +9,7 @@ Dim x3,        x4,               y3,   y4        // 2个顶点:技能区/蘑菇公主
 Dim xEnd,      yEnd                              //屏幕右下角顶点
 Dim tarX,      tarY                              //目标
 Dim logoX,     logoY,            intX, intY      //算目的地差值
-Dim DashCool                                     //冲刺冷却
+Dim DashCool,  tolLoc                            //冲刺冷却
 Dim tolerance, temp                              //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim cY,        consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X或Y轴变化了
 Dim Hooking,   gliding                           //钩子中(方便中途刹车)/滑翔中
@@ -21,7 +21,7 @@ Dim Hooking,   gliding                           //钩子中(方便中途刹车)/滑翔中
 //改成MapAnchor版本后:喷泉从(31,140)->(-63,108)
 
 
-//熊:喷泉(-55,83),喷泉下方(-55,108),最下方捡钱(-55,122),火1(-38,108),火2(15,108),火3(18,74),小波波(-22,80)
+//熊:喷泉(-58,83),喷泉下方(-58,108),最下方捡钱(-58,122),火1(-38,108),火2(18,108),火3(18,74),小波波(-22,80)
 
 Sub Move_Fly()  //飞行阶段的移动
     DashCool = 0
@@ -312,7 +312,7 @@ Sub Move_Bild() //鸟形态的地面移动
     Wend
 End Sub
 
-Sub Move_Beer()  //熊形态的移动
+Sub Move_Bear()  //熊形态的移动
     consecutiveTimes = -1  //初始就启用指南针判断
     consecutiveMax   = 3   //降落默认值为4
     while  1 > 0
@@ -367,15 +367,15 @@ Sub Move_Beer()  //熊形态的移动
                 TracePrint 右跳
                 DelayRandom 15,25
                 KeyDown Right
-                DelayRandom 50,51
+                DelayRandom 95,96
                 KeyDown Space
-                DelayRandom 80,81
+                DelayRandom 64,65
                 KeyUp Space
-                DelayRandom 30,31
+                DelayRandom 119,121
                 KeyDown Space
-                DelayRandom 75,76
+                DelayRandom 97,98
                 KeyUp Space
-                DelayRandom 85,86
+                DelayRandom 42,43
                 KeyUp Right
                 DelayRandom 41,42
             Else If intX > (tarX+24) Then //向左二段跳
@@ -384,15 +384,15 @@ Sub Move_Beer()  //熊形态的移动
                 TracePrint 左跳
                 DelayRandom 15,25
                 KeyDown Left
-                DelayRandom 50,51
+                DelayRandom 95,96
                 KeyDown Space
-                DelayRandom 80,81
+                DelayRandom 64,65
                 KeyUp Space
-                DelayRandom 30,31
+                DelayRandom 119,121
                 KeyDown Space
-                DelayRandom 75,76
+                DelayRandom 97,98
                 KeyUp Space
-                DelayRandom 85,86
+                DelayRandom 42,43
                 KeyUp Left
                 DelayRandom 41,42
             Else If intX < (tarX-tolLoc) Then //向右走
@@ -420,9 +420,10 @@ Sub Move_Beer()  //熊形态的移动
                     cY = intY
                     consecutiveMax = 8 //延长一点降落判断
                     TracePrint 钩子一次
-                    KeyDown Ctrl
+                    Hooking = 1
+                    KeyDown Alt
                     DelayRandom 328,430
-                    KeyUp Ctrl
+                    KeyUp Alt
                 else
                     if tolerance < 4 Then //容忍度小于4还是要小碎步
                         //Y轴也达标了,到X轴了

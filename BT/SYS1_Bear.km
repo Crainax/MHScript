@@ -4,35 +4,36 @@ ScreenY=2560
 Times=0
 
 [Script]
-Dim x1,        x2,               y1,   y2        // çŸ©å½¢åŒºåŸŸ:å°åœ°å›¾é‡‡æ ·ç‚¹
-Dim x3,        x4,               y3,   y4        // 2ä¸ªé¡¶ç‚¹:æŠ€èƒ½åŒº/è˜‘è‡å…¬ä¸»
-Dim xEnd,      yEnd                              //å±å¹•å³ä¸‹è§’é¡¶ç‚¹
-Dim tarX,      tarY                              //ç›®æ ‡
-Dim logoX,     logoY,            intX, intY      //ç®—ç›®çš„åœ°å·®å€¼
-Dim tolerance, temp                              //å¿«é€Ÿç§»åŠ¨çš„å®¹å·®,0ä»£è¡¨ç²¾ç¡®ç§»åŠ¨,å¦å¤–ä¸ªæ˜¯å±€éƒ¨å˜é‡
-Dim FartOK                                       //ç†Šå±çš„è®¡æ—¶å™¨å†·å´
-Dim cY,        consecutiveTimes, consecutiveMax  //ç”¨è¿™ä¸ªä¸œè¥¿åˆ¤æ–­è§’è‰²æ˜¯ä¸æ˜¯æ²¡æœ‰Xæˆ–Yè½´å˜åŒ–äº†
-Dim Hooking                                      //é’©å­ä¸­å’Œæ»‘ç¿”ä¸­,æ–¹ä¾¿ä¸­é€”åˆ¹è½¦
-Dim a,         stoneSteleTime,   V12Time         //å†·å´ç›¸å…³
+Dim x1,             x2,               y1,   y2        // ¾ØĞÎÇøÓò:Ğ¡µØÍ¼²ÉÑùµã
+Dim x3,             x4,               y3,   y4        // 2¸ö¶¥µã:¼¼ÄÜÇø/Ä¢¹½¹«Ö÷
+Dim xEnd,           yEnd                              //ÆÁÄ»ÓÒÏÂ½Ç¶¥µã
+Dim tarX,           tarY                              //Ä¿±ê
+Dim logoX,          logoY,            intX, intY      //ËãÄ¿µÄµØ²îÖµ
+Dim tolerance,      temp                              //¿ìËÙÒÆ¶¯µÄÈİ²î,0´ú±í¾«È·ÒÆ¶¯,ÁíÍâ¸öÊÇ¾Ö²¿±äÁ¿
+Dim FartOK,         Hooking                           //ĞÜÆ¨µÄ¼ÆÊ±Æ÷ÀäÈ´,¹³×ÓÖĞÅĞ¶Ï
+Dim cY,             consecutiveTimes, consecutiveMax  //ÓÃÕâ¸ö¶«Î÷ÅĞ¶Ï½ÇÉ«ÊÇ²»ÊÇÃ»ÓĞX»òYÖá±ä»¯ÁË
+Dim tolLoc,         a,                currentState    //ÀäÈ´ºÍ×´Ì¬Ïà¹Ø
+Dim stoneSteleTime, pickingTime                       //ÀäÈ´
 
 
-Sub on_timer1 //ç†Šå±è®¡æ—¶å™¨
+Sub on_timer1 //ĞÜÆ¨¼ÆÊ±Æ÷
     FartOK = 1
 EndSub
 
-Sub Move_Bear()  //ç†Šå½¢æ€çš„ç§»åŠ¨
-    consecutiveTimes = -1  //åˆå§‹å°±å¯ç”¨æŒ‡å—é’ˆåˆ¤æ–­
-    consecutiveMax   = 3   //é™è½é»˜è®¤å€¼ä¸º4
+
+Sub Move_Bear()  //ĞÜĞÎÌ¬µÄÒÆ¶¯
+    consecutiveTimes = -1  //³õÊ¼¾ÍÆôÓÃÖ¸ÄÏÕëÅĞ¶Ï
+    consecutiveMax   = 3   //½µÂäÄ¬ÈÏÖµÎª4
     while  1 > 0
         FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
 
-        if intX < 0 Then //äººç‰©è·‘åˆ°äº†è¾¹ç•Œ  å¤„ç†ä¸€ä¸‹
+        if intX < 0 Then //ÈËÎïÅÜµ½ÁË±ß½ç  ´¦ÀíÒ»ÏÂ
             KeyDown Left
             DelayRandom 200,250
             KeyUp Left
             FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-            if intX < 0 Then //å·¦ç§»äº†è¿˜æ˜¯æ²¡æ‰¾åˆ°,å°±å³ç§»
+            if intX < 0 Then //×óÒÆÁË»¹ÊÇÃ»ÕÒµ½,¾ÍÓÒÒÆ
                 KeyDown Right
                 DelayRandom 200,250
                 KeyUp Right
@@ -42,78 +43,78 @@ Sub Move_Bear()  //ç†Šå½¢æ€çš„ç§»åŠ¨
 
         intX = intX - logoX
         intY = intY - logoY
-        if consecutiveTimes >= 0 Then //ç›®å‰æ˜¯åœ¨ç©ºä¸­åˆ¤æ–­é™è½çš„é˜¶æ®µ
-            if Hooking > 0 and intY <= tarY Then //é’©å­çš„åˆ¤æ–­åˆ¹è½¦
-                TracePrint é’©å­åˆ¹è½¦
+        if consecutiveTimes >= 0 Then //Ä¿Ç°ÊÇÔÚ¿ÕÖĞÅĞ¶Ï½µÂäµÄ½×¶Î
+            if Hooking > 0 and intY <= tarY Then //¹³×ÓµÄÅĞ¶ÏÉ²³µ
+                TracePrint ¹³×ÓÉ²³µ
                 KeyDown Alt
                 DelayRandom 258,282
                 KeyUp Alt
                 Hooking = 0
             End If
-            if intY == cY Then //Yè½´æ²¡å˜åŒ–äº†
+            if intY == cY Then //YÖáÃ»±ä»¯ÁË
                 consecutiveTimes = consecutiveTimes + 1
-                TracePrint é™è½åˆ¤æ–­: & consecutiveTimes
+                TracePrint ½µÂäÅĞ¶Ï: & consecutiveTimes
                 if consecutiveTimes >= consecutiveMax Then
-                    consecutiveTimes	= -1	//åˆ¤æ–­ä¸ºå·²ç»è½åœ°
-                    consecutiveMax		= 3		//å½’ä½æœ€å¤§é™è½åˆ¤æ–­å€¼
-                    TracePrint åˆ¤æ–­å·²ç»è½åœ°
+                    consecutiveTimes	= -1	//ÅĞ¶ÏÎªÒÑ¾­ÂäµØ
+                    consecutiveMax		= 3		//¹éÎ»×î´ó½µÂäÅĞ¶ÏÖµ
+                    TracePrint ÅĞ¶ÏÒÑ¾­ÂäµØ
                 End If
             else
                 cY = intY
                 consecutiveTimes = 0
-                TracePrint é™è½åˆ¤æ–­: & consecutiveTimes
+                TracePrint ½µÂäÅĞ¶Ï: & consecutiveTimes
             End If
-        else //ç»§ç»­æ ¹æ®
+        else //¼ÌĞø¸ù¾İ
             if tolerance > 4 Then
                 tolLoc = tolerance
-            else  //é€Ÿèµ°çš„é»˜è®¤ä¸º4
+            else  //ËÙ×ßµÄÄ¬ÈÏÎª4
                 tolLoc = 4
             End If
-            if intX < (tarX-24) Then //å‘å³äºŒæ®µè·³
-                consecutiveTimes = 0 //å¯åŠ¨é™è½åˆ¤æ–­
+            if intX < (tarX-24) Then //ÏòÓÒ¶ş¶ÎÌø
+                consecutiveTimes = 0 //Æô¶¯½µÂäÅĞ¶Ï
                 cY = intY
-                TracePrint å³è·³
+                TracePrint ÓÒÌø
                 DelayRandom 15,25
                 KeyDown Right
-                DelayRandom 50,51
+                DelayRandom 95,96
                 KeyDown Space
-                DelayRandom 80,81
+                DelayRandom 64,65
                 KeyUp Space
-                DelayRandom 30,31
+                DelayRandom 119,121
                 KeyDown Space
-                DelayRandom 75,76
+                DelayRandom 97,98
                 KeyUp Space
-                DelayRandom 85,86
+                DelayRandom 42,43
                 KeyUp Right
                 DelayRandom 41,42
-            Else If intX > (tarX+24) Then //å‘å·¦äºŒæ®µè·³
-                consecutiveTimes = 0 //å¯åŠ¨é™è½åˆ¤æ–­
+            Else If intX > (tarX+24) Then //Ïò×ó¶ş¶ÎÌø
+                consecutiveTimes = 0 //Æô¶¯½µÂäÅĞ¶Ï
                 cY = 0
-                TracePrint å·¦è·³
+                TracePrint ×óÌø
                 DelayRandom 15,25
                 KeyDown Left
-                DelayRandom 50,51
+                DelayRandom 95,96
                 KeyDown Space
-                DelayRandom 80,81
+                DelayRandom 64,65
                 KeyUp Space
-                DelayRandom 30,31
+                DelayRandom 119,121
                 KeyDown Space
-                DelayRandom 75,76
+                DelayRandom 97,98
                 KeyUp Space
-                DelayRandom 85,86
+                DelayRandom 42,43
                 KeyUp Left
                 DelayRandom 41,42
-            Else If intX < (tarX-tolLoc) Then //å‘å³èµ°
+            Else If intX < (tarX-tolLoc) Then //ÏòÓÒ×ß
                 KeyDown Right
-            Else If intX > (tarX+tolLoc) Then //å‘å·¦èµ°
+            Else If intX > (tarX+tolLoc) Then //Ïò×ó×ß
                 KeyDown Left
             else
                 KeyUp Right
                 KeyUp Left
-                If intY < tarY Then //å¦‚æœäººåœ¨ç›®æ ‡ä¹‹ä¸Š,å°±ä¸‹è·³(Yè½´æ˜¯ç”¨ç›¸åæ¯”è¾ƒç¬¦)
-                    consecutiveTimes = 0 //å¯åŠ¨é™è½åˆ¤æ–­
+                If intY < tarY Then //Èç¹ûÈËÔÚÄ¿±êÖ®ÉÏ,¾ÍÏÂÌø(YÖáÊÇÓÃÏà·´±È½Ï·û)
+                    consecutiveTimes = 0 //Æô¶¯½µÂäÅĞ¶Ï
                     cY = intY
-                    TracePrint ä¸‹è·³ä¸€æ¬¡
+                    TracePrint ÏÂÌøÒ»´Î
                     DelayRandom 12,13
                     KeyDown Down
                     DelayRandom 76,77
@@ -123,29 +124,30 @@ Sub Move_Bear()  //ç†Šå½¢æ€çš„ç§»åŠ¨
                     DelayRandom 453,454
                     KeyUp Down
                     DelayRandom 32,33
-                Else If intY > tarY Then //å¦‚æœäººåœ¨ç›®æ ‡ä¹‹ä¸‹,ä¸Šé’©
-                    consecutiveTimes = 0 //å¯åŠ¨é™è½åˆ¤æ–­
+                Else If intY > tarY Then //Èç¹ûÈËÔÚÄ¿±êÖ®ÏÂ,ÉÏ¹³
+                    consecutiveTimes = 0 //Æô¶¯½µÂäÅĞ¶Ï
                     cY = intY
-                    consecutiveMax = 8 //å»¶é•¿ä¸€ç‚¹é™è½åˆ¤æ–­
-                    TracePrint é’©å­ä¸€æ¬¡
-                    KeyDown Ctrl
+                    consecutiveMax = 8 //ÑÓ³¤Ò»µã½µÂäÅĞ¶Ï
+                    TracePrint ¹³×ÓÒ»´Î
+                    Hooking = 1
+                    KeyDown Alt
                     DelayRandom 328,430
-                    KeyUp Ctrl
+                    KeyUp Alt
                 else
-                    if tolerance < 4 Then //å®¹å¿åº¦å°äº4è¿˜æ˜¯è¦å°ç¢æ­¥
-                        //Yè½´ä¹Ÿè¾¾æ ‡äº†,åˆ°Xè½´äº†
-                        If intX < (tarX-tolerance) Then //å‘å³å°ç¢æ­¥
+                    if tolerance < 4 Then //ÈİÈÌ¶ÈĞ¡ÓÚ4»¹ÊÇÒªĞ¡Ëé²½
+                        //YÖáÒ²´ï±êÁË,µ½XÖáÁË
+                        If intX < (tarX-tolerance) Then //ÏòÓÒĞ¡Ëé²½
                             KeyDown Right
                             DelayRandom 10,15
                             KeyUp Right
-                        Else If intX > (tarX+tolerance) Then //å‘å·¦å°ç¢æ­¥
+                        Else If intX > (tarX+tolerance) Then //Ïò×óĞ¡Ëé²½
                             KeyDown Left
                             DelayRandom 10,15
                             KeyUp Left
                         else
                             Exit Sub
                         End If
-                    else //å®¹å¿åº¦å¤§äºç­‰äº4å¯ä»¥ç›´æ¥ç»“æŸ
+                    else //ÈİÈÌ¶È´óÓÚµÈÓÚ4¿ÉÒÔÖ±½Ó½áÊø
                         Exit Sub
                     End If
                 End If
@@ -155,11 +157,11 @@ Sub Move_Bear()  //ç†Šå½¢æ€çš„ç§»åŠ¨
     Wend
 End Sub
 
-Sub Judge() //åˆ¤æ–­äººç‰©æ˜¯å¦åœ¨æŸä¸ªåœ°ç‚¹æ—è¾¹,ç”¨tarXY,tolerance,tolLocè¿”å›ç»“æœ,ä¸èƒ½åµŒå¥—move()ä½¿ç”¨,å¯ä»¥å…ˆä½¿ç”¨è¿™ä¸ªå†ç”¨move
+Sub Judge() //ÅĞ¶ÏÈËÎïÊÇ·ñÔÚÄ³¸öµØµãÅÔ±ß,ÓÃtarXY,tolerance,tolLoc·µ»Ø½á¹û,²»ÄÜÇ¶Ì×move()Ê¹ÓÃ,¿ÉÒÔÏÈÊ¹ÓÃÕâ¸öÔÙÓÃmove
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
     tolLoc = 0
-    if intX >= 0 Then //æ‰¾åˆ°äº†äººç‰©æ‰ä¼šè¿›è¡Œä¸‹å»
+    if intX >= 0 Then //ÕÒµ½ÁËÈËÎï²Å»á½øĞĞÏÂÈ¥
         intX = intX - logoX
         intY = intY - logoY
         if intY == tarY and intX >= (tarX - tolerance) and intX <= (tarX + tolerance) then
@@ -168,11 +170,11 @@ Sub Judge() //åˆ¤æ–­äººç‰©æ˜¯å¦åœ¨æŸä¸ªåœ°ç‚¹æ—è¾¹,ç”¨tarXY,tolerance,tolLocè
     End If
 End Sub
 
-Sub FindFountain //å¯»æ‰¾å–·æ³‰å¹¶æ”¾å–·æ³‰(è¦æ±‚çŠ¶æ€æ˜¯0)
+Sub FindFountain //Ñ°ÕÒÅçÈª²¢·ÅÅçÈª(ÒªÇó×´Ì¬ÊÇ0)
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 then //å¯ä»¥å–·æ³‰äº†
-        tarX = 29
-        tarY = 88
+    if intX >= 0 then //¿ÉÒÔÅçÈªÁË
+        tarX = -58
+        tarY = 83
         tolerance = 4
         Call Move_Bear()
         DelayRandom 56,58
@@ -189,13 +191,13 @@ Sub FindFountain //å¯»æ‰¾å–·æ³‰å¹¶æ”¾å–·æ³‰(è¦æ±‚çŠ¶æ€æ˜¯0)
         KeyUp Down
         DelayRandom 712,721
     End If
-    currentState = 1 //æ— è®ºæ‰¾æ²¡æ‰¾åˆ°å–·æ³‰ä¸‹ä¸€æ­¥éƒ½æ˜¯å»å·¦ä¸‹è§’
+    currentState = 1 //ÎŞÂÛÕÒÃ»ÕÒµ½ÅçÈªÏÂÒ»²½¶¼ÊÇÈ¥×óÏÂ½Ç
 End Sub
 
-Sub Fart //æ”¾ç†Šå±,CDæ²¡å¥½å°±æ”¾å…¶ä»–æŠ€èƒ½
+Sub Fart //·ÅĞÜÆ¨,CDÃ»ºÃ¾Í·ÅÆäËû¼¼ÄÜ
     while 1 > 0
 
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Fart.bmp",000000,1.0,0,intX,intY	//æ‰¾ç†Šå±
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Fart.bmp",000000,1.0,0,intX,intY	//ÕÒĞÜÆ¨
         if intX >= 0 or FartOK == 1 Then
             FartOK = 0
             Timer 1,1,5000
@@ -204,30 +206,30 @@ Sub Fart //æ”¾ç†Šå±,CDæ²¡å¥½å°±æ”¾å…¶ä»–æŠ€èƒ½
             KeyUp D
             DelayRandom 5,6
             break
-        else //æ”¾å…¶ä»–å°æŠ€èƒ½
+        else //·ÅÆäËûĞ¡¼¼ÄÜ
             FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Spider.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then //æ‰¾èœ˜è››
+            if intX >= 0 Then //ÕÒÖ©Öë
                 KeyDown H
                 DelayRandom 105,107
                 KeyUp H
                 DelayRandom 929,939
             else
                 FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Lieyang.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //æ‰¾çƒˆé˜³
+                if intX >= 0 Then //ÕÒÁÒÑô
                     KeyDown Y
                     DelayRandom 105,107
                     KeyUp Y
                     DelayRandom 811,813
                 else
                     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_diningTable.bmp",000000,1.00,0,intX,intY
-                    if intX >= 0 Then //æ‰¾æ‰“ç¿»
+                    if intX >= 0 Then //ÕÒ´ò·­
                         KeyDown V
                         DelayRandom 105,107
                         KeyUp V
                         DelayRandom 1529,1639
                     else
                         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Whister.bmp",000000,1.00,0,intX,intY
-                        if intX >= 0 Then //æ‰¾å“¨å­
+                        if intX >= 0 Then //ÕÒÉÚ×Ó
                             KeyDown 5
                             DelayRandom 105,107
                             KeyUp 5
@@ -246,8 +248,8 @@ Sub Fart //æ”¾ç†Šå±,CDæ²¡å¥½å°±æ”¾å…¶ä»–æŠ€èƒ½
             End If
         End If
 
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_V2.bmp",000000,1.00,0,intX,intY	//æ‰¾V2
-        if intX >= 0 Then //æ‰¾åˆ°V2å°±æ”¾,ç¬æ‰‹çš„äº‹
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_V2.bmp",000000,1.00,0,intX,intY	//ÕÒV2
+        if intX >= 0 Then //ÕÒµ½V2¾Í·Å,Ë²ÊÖµÄÊÂ
             KeyDown W
             DelayRandom 122,124
             KeyUp W
@@ -259,7 +261,7 @@ Sub Fart //æ”¾ç†Šå±,CDæ²¡å¥½å°±æ”¾å…¶ä»–æŠ€èƒ½
 End Sub
 
 GetScreenResolution intX, intY
-if intX > intY then //æ¨ªæ”¾å±å¹•
+if intX > intY then //ºá·ÅÆÁÄ»
     x1 = 700
     y1 = 550
     x2 = 1650
@@ -268,7 +270,7 @@ if intX > intY then //æ¨ªæ”¾å±å¹•
     y3 = 1250
     xEnd = 2560
     yEnd = 1440
-else //ç«–æ”¾å±å¹•
+else //Êú·ÅÆÁÄ»
     x1 = 0
     y1 = 1650
     x2 = 300
@@ -278,49 +280,49 @@ else //ç«–æ”¾å±å¹•
     xEnd = 1440
     yEnd = 2560
 End If
-stoneSteleTime = 0               //ä¸Šæ¬¡è½®å›çš„æ—¶é—´
-pickingTime    = GetTimeStamp()  //ä¸Šæ¬¡æ¡é’±çš„æ—¶é—´
-currentState   = 0               //å½“å‰çš„çŠ¶æ€
-FartOK         = 0               //ç†Šå±å½“å‰å¯æ”¾
+stoneSteleTime = 0               //ÉÏ´ÎÂÖ»ØµÄÊ±¼ä
+pickingTime    = GetTimeStamp()  //ÉÏ´Î¼ñÇ®µÄÊ±¼ä
+currentState   = 0               //µ±Ç°µÄ×´Ì¬
+FartOK         = 0               //ĞÜÆ¨µ±Ç°¿É·Å
 
 while 1 > 0
 
     a = GetTimeStamp() - stoneSteleTime
-    if a > 570 then //å¯ä»¥æ”¾è½®äº†
-        //TracePrint ç›®æ ‡åŸåœ°æ”¾è½®
+    if a > 570 then //¿ÉÒÔ·ÅÂÖÁË
+        //TracePrint Ä¿±êÔ­µØ·ÅÂÖ
         DelayRandom 56,58
         KeyDown O
         DelayRandom 137,139
         KeyUp O
         DelayRandom 736,747
         stoneSteleTime = GetTimeStamp()
-        //TracePrint è½®æ”¾å¥½äº†
+        //TracePrint ÂÖ·ÅºÃÁË
     End If
 
-    if (currentState == 0) Then //ç¬¬ä¸€éƒ¨å°±æ˜¯å–·æ³‰å•¦,æ²¡çš„è¯å°±ç›´æ¥
-        call FindFountain() //æ‰¾å–·æ³‰,æ‰¾åˆ°å°±æ‰”
-    End
+    if currentState == 0 Then //µÚÒ»²¿¾ÍÊÇÅçÈªÀ²,Ã»µÄ»°¾ÍÖ±½Ó
+        call FindFountain() //ÕÒÅçÈª,ÕÒµ½¾ÍÈÓ
+    End If
 
-    tarX      = -55
+    tarX      = -58
     tarY      = 83
     tolerance = 6
-    Call Judge() //åˆ¤æ–­ä½ç½®
-    if tolLoc > 0 or currentState == 1 Then //ç°åœ¨äººåœ¨å–·æ³‰åœ°,ä¸‹ä¸ªç›®çš„åœ°æ˜¯å·¦ä¸‹
-        tarX      = -55
+    Call Judge() //ÅĞ¶ÏÎ»ÖÃ
+    if tolLoc > 0 or currentState == 1 Then //ÏÖÔÚÈËÔÚÅçÈªµØ,ÏÂ¸öÄ¿µÄµØÊÇ×óÏÂ
+        tarX      = -58
         tarY      = 108
         tolerance = 4
         Call Move_Bear()
     End If
 
-    tarX      = -55
+    tarX      = -58
     tarY      = 108
     tolerance = 6
-    Call Judge() //åˆ¤æ–­ä½ç½®
-    if tolLoc > 0 or currentState == 2 Then //äººåœ¨å·¦ä¸‹,çœ‹ä¸‹æ˜¯æ¡é’±è¿˜æ˜¯ç†Šå±1
+    Call Judge() //ÅĞ¶ÏÎ»ÖÃ
+    if tolLoc > 0 or currentState == 2 Then //ÈËÔÚ×óÏÂ,¿´ÏÂÊÇ¼ñÇ®»¹ÊÇĞÜÆ¨1
         a = GetTimeStamp() - pickingTime
-        if a > 130 then //å¯ä»¥æ¡é’±äº†,æ¡å‰é’±å…ˆæ”¾ä¸ªå±
+        if a > 130 then //¿ÉÒÔ¼ñÇ®ÁË,¼ñÇ°Ç®ÏÈ·Å¸öÆ¨
             Call Fart()
-            tarX = -55
+            tarX = -58
             tarY = 122
             tolerance = 4
             Call Move_Bear()
@@ -341,27 +343,27 @@ while 1 > 0
 
     End If
 
-    if currentState == 3 Then //ç†Šå±1æ”¾å®Œäº†,æ¥ä¸‹æ¥å»ç†Šå±2
-        tarX      = 15
+    if currentState == 3 Then //ĞÜÆ¨1·ÅÍêÁË,½ÓÏÂÀ´È¥ĞÜÆ¨2
+        tarX      = 18
         tarY      = 108
         tolerance = 4
         Call Move_Bear()
-        currentState = 5 //åˆ†æ”¯æ±‡æµ
+        currentState = 5 //·ÖÖ§»ãÁ÷
     End If
 
-    if currentState == 4 Then //æœ€ä¸‹é¢ä¸€å±‚æ¡é’±ä¸­(å¦‚æœè‡ªåŠ¨å¯»è·¯è¡¨ç°ä¸å¥½å°±å†ç”¨å½•åˆ¶å§)
-        tarX      = 15
+    if currentState == 4 Then //×îÏÂÃæÒ»²ã¼ñÇ®ÖĞ(Èç¹û×Ô¶¯Ñ°Â·±íÏÖ²»ºÃ¾ÍÔÙÓÃÂ¼ÖÆ°É)
+        tarX      = 18
         tarY      = 108
         tolerance = 4
         Call Move_Bear()
-        currentState = 5 //åˆ†æ”¯æ±‡æµ
+        currentState = 5 //·ÖÖ§»ãÁ÷
     End If
 
-    tarX      = 15
+    tarX      = 18
     tarY      = 108
     tolerance = 6
     Call Judge()
-    if tolLoc > 0 or currentState == 5 Then //å¼€æ”¾ç†Šå±2
+    if tolLoc > 0 or currentState == 5 Then //¿ª·ÅĞÜÆ¨2
         KeyDown Left
         DelayRandom 35,40
         KeyUp Left
@@ -370,37 +372,37 @@ while 1 > 0
         tarX      = 18
         tarY      = 74
         tolerance = 4
-        Call Move_Bear() //å‰å¾€ç†Šå±3åœ°ç‚¹
-        currentState = 6 //å¼€å§‹å»ç†Šå±3
+        Call Move_Bear() //Ç°ÍùĞÜÆ¨3µØµã
+        currentState = 6 //¿ªÊ¼È¥ĞÜÆ¨3
     End If
 
     tarX      = 18
     tarY      = 74
     tolerance = 6
     Call Judge()
-    if tolLoc > 0 or currentState == 6 Then //åœ¨ç†Šå±3åœ°ç‚¹
+    if tolLoc > 0 or currentState == 6 Then //ÔÚĞÜÆ¨3µØµã
         Call Fart()
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 then //å¯ä»¥å–·æ³‰äº†
-            currentState = 7 //ä¸‹ä¸€æ­¥å»å°æ³¢æ³¢
-            TracePrint ä¸‹ä¸€æ­¥å»å°æ³¢æ³¢äº†
+        if intX >= 0 then //¿ÉÒÔÅçÈªÁË
+            currentState = 7 //ÏÂÒ»²½È¥Ğ¡²¨²¨
+            TracePrint ÏÂÒ»²½È¥Ğ¡²¨²¨ÁË
         else
-            currentState = 1 //ä¸‹ä¸€æ­¥å»å·¦ä¸‹è§’
-            TracePrint ä¸‹ä¸€æ­¥è¿˜æ˜¯å»å·¦ä¸‹è§’
+            currentState = 1 //ÏÂÒ»²½È¥×óÏÂ½Ç
+            TracePrint ÏÂÒ»²½»¹ÊÇÈ¥×óÏÂ½Ç
         End If
-Â     End If
+    End If
 
-    if currentState == 7 Then //å½“å‰åœ¨å°æ³¢æ³¢å¤„,æ”¾çš„å‰ææ˜¯å–·æ³‰å¥½äº†(ä¸Šä¸€å±‚åˆ¤æ–­è¿›å…¥äº†è¯¥è¡Œä¸º)
+    if currentState == 7 Then //µ±Ç°ÔÚĞ¡²¨²¨´¦,·ÅµÄÇ°ÌáÊÇÅçÈªºÃÁË(ÉÏÒ»²ãÅĞ¶Ï½øÈëÁË¸ÃĞĞÎª)
         DelayRandom 23,25
         KeyDown E
         DelayRandom 152,160
         KeyUp E
         DelayRandom 701,720
-        currentState = 0 //ä¸‹ä¸€æ­¥å»å–·æ³‰
+        currentState = 0 //ÏÂÒ»²½È¥ÅçÈª
     End If
 
     if currentState < 0 or currentState > 8 Then
-        currentState = 0 //åˆå§‹åŒ–çŠ¶æ€ä¸º0
+        currentState = 0 //³õÊ¼»¯×´Ì¬Îª0
     End If
     Delay 5
 Wend
