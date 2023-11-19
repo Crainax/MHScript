@@ -178,7 +178,7 @@ else //Êú·ÅÆÁÄ»
     yEnd = 2560
 End If
 while 1 > 0
-    tarX      = 48
+    tarX      = 19
     tarY      = 118
     tolerance = 4
     Call Move()
