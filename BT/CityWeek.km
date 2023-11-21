@@ -5,12 +5,35 @@ Times=0
 
 
 [Script]
+Dim x1,        x2,               y1,   y2        // ¾ØÐÎÇøÓò:Ð¡µØÍ¼²ÉÑùµã
+Dim x3,        x4,               y3,   y4        // 2¸ö¶¥µã:¼¼ÄÜÇø/Ä¢¹½¹«Ö÷
+Dim xEnd,      yEnd                              //ÆÁÄ»ÓÒÏÂ½Ç¶¥µã
 Dim mX,mY
 Dim intX,intY
 
+GetScreenResolution intX, intY
+if intX > intY then //ºá·ÅÆÁÄ»
+    x1 = 700
+    y1 = 550
+    x2 = 1650
+    y2 = 850
+    x3 = 1500
+    y3 = 1250
+    xEnd = 2560
+    yEnd = 1440
+else //Êú·ÅÆÁÄ»
+    x1 = 0
+    y1 = 1650
+    x2 = 300
+    y2 = 1900
+    x3 = 800
+    y3 = 2300
+    xEnd = 1440
+    yEnd = 2560
+End If
 while 1>0
 
-    FindPic 800,2300,1439,2559,"E:\MHImg\BT_Fly.bmp",000000,1.00,0,intX,intY
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Fly.bmp",000000,1.00,0,intX,intY
     if intX >= 0 then
 
         KeyDown E
@@ -89,15 +112,15 @@ while 1>0
         DelayRandom 79,80
         KeyUp E
 
-    else //ä¸èƒ½é£žå†æ”¾å°æŠ€èƒ½
-        FindPic 800,2300,1439,2559,"E:\MHImg\BT_V1.bmp",000000,1.00,0,mX,mY	//æ‰¾V1
+    else //²»ÄÜ·ÉÔÙ·ÅÐ¡¼¼ÄÜ
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_V1.bmp",000000,1.00,0,mX,mY	//ÕÒV1
         if mX >= 0 Then
             KeyDown Q
             DelayRandom 111,113
             KeyUp Q
             DelayRandom 714,722
         End If
-        FindPic 800,2300,1439,2559,"E:\MHImg\BT_V2.bmp",000000,1.00,0,mX,mY	//æ‰¾V2
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_V2.bmp",000000,1.00,0,mX,mY	//ÕÒV2
         if mX >= 0 Then
             KeyDown W
             DelayRandom 122,124
@@ -105,22 +128,22 @@ while 1>0
             DelayRandom 402,412
         End If
 
-        FindPic 800,2300,1439,2559,"E:\MHImg\BT_Spider.bmp",000000,1.00,0,mX,mY
-        if mX >= 0 Then //æ‰¾èœ˜è››
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Spider.bmp",000000,1.00,0,mX,mY
+        if mX >= 0 Then //ÕÒÖ©Öë
             KeyDown H
             DelayRandom 105,107
             KeyUp H
             DelayRandom 929,939
         else
-            FindPic 800,2300,1439,2559,"E:\MHImg\BT_Lieyang.bmp",000000,1.00,0,mX,mY
-            if mX >= 0 Then //æ‰¾çƒˆé˜³
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Lieyang.bmp",000000,1.00,0,mX,mY
+            if mX >= 0 Then //ÕÒÁÒÑô
                 KeyDown Y
                 DelayRandom 105,107
                 KeyUp Y
                 DelayRandom 811,813
             else
-                FindPic 800,2300,1439,2559,"E:\MHImg\BT_Whister.bmp",000000,1.00,0,mX,mY
-                if mX >= 0 Then //æ‰¾å“¨å­
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Whister.bmp",000000,1.00,0,mX,mY
+                if mX >= 0 Then //ÕÒÉÚ×Ó
                     KeyDown 5
                     DelayRandom 105,107
                     KeyUp 5
@@ -134,13 +157,13 @@ while 1>0
                     KeyUp C
                     DelayRandom 879,891
                 else
-                    FindPic 800,2300,1439,2559,"E:\MHImg\BT_Water.bmp",000000,1.00,0,mX,mY
-                    if mX >= 0 Then //æ‰¾å–·æ³‰
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Water.bmp",000000,1.00,0,mX,mY
+                    if mX >= 0 Then //ÕÒÅçÈª
                         KeyDown 1
                         DelayRandom 105,107
                         KeyUp 1
                         DelayRandom 899,909
-                    else //ä»€ä¹ˆéƒ½æ²¡æœ‰å°±æ™®æ”»ä¸€ä¸‹
+                    else //Ê²Ã´¶¼Ã»ÓÐ¾ÍÆÕ¹¥Ò»ÏÂ
                         KeyDown S
                         DelayRandom 387,391
                         KeyDown Left
