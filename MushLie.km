@@ -10,37 +10,18 @@ Dim xEnd,      yEnd                              //屏幕右下角顶点
 Dim tarX,      tarY                              //目标
 Dim logoX,     logoY,            intX, intY      //算目的地差值
 
-Sub Move  //模拟移动,不要移植这个
-	TracePrint [轮X轴 & x & ,轮Y轴 & y & ]
-End Sub
-
-Sub on_timer4 //查地图轮,每10秒一次
-    FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
+Sub on_timer3 //查蘑菇公主测谎,每5.3秒一次
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\MushLie.bmp",000000,1.00,0,intX,intY
     if intX >= 0 then
-        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-        intX = intX - logoX
-        intY = intY - logoY
-        TracePrint 找到了轮,现在自动移动中
-        //找到了轮
-        tarX      = intX
-        tarY      = intY
-        tolerance = 2
-        Call Move()
         //暂停脚本
-        Beep 1000,300
-        DelayRandom 200,220
-        Beep 1000,300
-        DelayRandom 200,220
-        Beep 1000,300
-        DelayRandom 200,220
-        Beep 1000,300
+        Beep 500,2000
+        MsgBox 找到了蘑菇公主
         Pause()
     else
-        TracePrint 没找到轮
+        TracePrint 没找到蘑菇公主
     End If
-    Timer 4,1,5000 //无限循环
+    Timer 3,1,5000 //无限循环
 EndSub
-
 
 GetScreenResolution intX, intY
 if intX > intY then //横放屏幕
@@ -62,4 +43,4 @@ else //竖放屏幕
     xEnd = 1440
     yEnd = 2560
 End If
-Timer 4,1,5000 //无限循环
+Timer 3,1,5300 //无限循环
