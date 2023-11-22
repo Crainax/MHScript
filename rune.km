@@ -4,5 +4,34 @@ ScreenY=1440
 Times=0
 
 [Script]
-Beep 1000,2000
-MsgBox Hello
+
+Sub Move  //模拟移动,不要移植这个
+	TracePrint [轮X轴 & x & ,轮Y轴 & y & ]
+End Sub
+
+Sub on_timer4 //查地图轮,每10秒一次
+    FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 then
+        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+        intX = intX - logoX
+        intY = intY - logoY
+        TracePrint 找到了轮,现在自动移动中
+        //找到了轮
+        tarX      = intX
+        tarY      = intY
+        tolerance = 2
+        Call Move()
+        //暂停脚本
+        Beep 1000,300
+        DelayRandom 200,220
+        Beep 1000,300
+        DelayRandom 200,220
+        Beep 1000,300
+        DelayRandom 200,220
+        Beep 1000,300
+        Pause()
+    else
+        TracePrint 没找到轮
+    End If
+    Timer 4,1,5000 //无限循环
+EndSub
