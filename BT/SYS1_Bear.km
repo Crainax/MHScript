@@ -204,7 +204,7 @@ Sub Fart //放熊屁,CD没好就放其他技能
             KeyDown D
             DelayRandom 623,650
             KeyUp D
-            DelayRandom 5,6
+            DelayRandom 105,106
             break
         else //放其他小技能
             FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Spider.bmp",000000,1.00,0,intX,intY

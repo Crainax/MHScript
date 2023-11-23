@@ -4,29 +4,29 @@ ScreenY=1440
 Times=0
 
 [Script]
-Dim x1,        x2,               y1,   y2        // çŸ©å½¢åŒºåŸŸ:å°åœ°å›¾é‡‡æ ·ç‚¹
-Dim x3,        x4,               y3,   y4        // 2ä¸ªé¡¶ç‚¹:æŠ€èƒ½åŒº/è˜‘è‡å…¬ä¸»
-Dim xEnd,      yEnd                              //å±å¹•å³ä¸‹è§’é¡¶ç‚¹
-Dim tarX,      tarY                              //ç›®æ ‡
-Dim logoX,     logoY,            intX, intY      //ç®—ç›®çš„åœ°å·®å€¼
+Dim x1,    x2,    y1,   y2    // ¾ØÐÎÇøÓò:Ð¡µØÍ¼²ÉÑùµã
+Dim x3,    x4,    y3,   y4    // 2¸ö¶¥µã:¼¼ÄÜÇø/Ä¢¹½¹«Ö÷
+Dim xEnd,  yEnd               //ÆÁÄ»ÓÒÏÂ½Ç¶¥µã
+Dim tarX,  tarY,  tolerance   //Ä¿±ê
+Dim logoX, logoY, intX, intY  //ËãÄ¿µÄµØ²îÖµ
 
-Sub Move  //æ¨¡æ‹Ÿç§»åŠ¨,ä¸è¦ç§»æ¤è¿™ä¸ª
-	TracePrint [è½®Xè½´ & x & ,è½®Yè½´ & y & ]
+Sub Move  //Ä£ÄâÒÆ¶¯,²»ÒªÒÆÖ²Õâ¸ö
+	MsgBox [ÂÖXÖá & tarX & ,ÂÖYÖá & tarY & ]
 End Sub
 
-Sub on_timer4 //æŸ¥åœ°å›¾è½®,æ¯10ç§’ä¸€æ¬¡
+Sub on_timer4 //²éµØÍ¼ÂÖ,Ã¿10ÃëÒ»´Î
     FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
     if intX >= 0 then
         FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
         intX = intX - logoX
         intY = intY - logoY
-        TracePrint æ‰¾åˆ°äº†è½®,çŽ°åœ¨è‡ªåŠ¨ç§»åŠ¨ä¸­
-        //æ‰¾åˆ°äº†è½®
+        TracePrint ÕÒµ½ÁËÂÖ,ÏÖÔÚ×Ô¶¯ÒÆ¶¯ÖÐ
+        //ÕÒµ½ÁËÂÖ
         tarX      = intX
         tarY      = intY
         tolerance = 2
         Call Move()
-        //æš‚åœè„šæœ¬
+        //ÔÝÍ£½Å±¾
         Beep 1000,300
         DelayRandom 200,220
         Beep 1000,300
@@ -34,16 +34,16 @@ Sub on_timer4 //æŸ¥åœ°å›¾è½®,æ¯10ç§’ä¸€æ¬¡
         Beep 1000,300
         DelayRandom 200,220
         Beep 1000,300
-        Pause()
+        Pause
     else
-        TracePrint æ²¡æ‰¾åˆ°è½®
+        TracePrint Ã»ÕÒµ½ÂÖ
     End If
-    Timer 4,1,5000 //æ— é™å¾ªçŽ¯
+    Timer 4,1,5000 //ÎÞÏÞÑ­»·
 EndSub
 
 
 GetScreenResolution intX, intY
-if intX > intY then //æ¨ªæ”¾å±å¹•
+if intX > intY then //ºá·ÅÆÁÄ»
     x1 = 700
     y1 = 550
     x2 = 1650
@@ -52,7 +52,7 @@ if intX > intY then //æ¨ªæ”¾å±å¹•
     y3 = 1250
     xEnd = 2560
     yEnd = 1440
-else //ç«–æ”¾å±å¹•
+else //Êú·ÅÆÁÄ»
     x1 = 0
     y1 = 1650
     x2 = 300
@@ -62,4 +62,8 @@ else //ç«–æ”¾å±å¹•
     xEnd = 1440
     yEnd = 2560
 End If
-Timer 4,1,5000 //æ— é™å¾ªçŽ¯
+Timer 4,1,3100 //ÎÞÏÞÑ­»·
+TracePrint ¿ªÊ¼ÁËÅ¶
+while 1 > 0
+    DelayRandom 500,1000
+Wend
