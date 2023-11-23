@@ -149,6 +149,34 @@ Sub Move_Bear  //熊形态的移动
     Wend
 End Sub
 
+Sub on_timer4 //查地图轮,每10秒一次
+    FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 then
+        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+        intX = intX - logoX
+        intY = intY - logoY - 1
+        TracePrint 找到了轮,现在自动移动中 & intX & , & intY
+        //找到了轮
+        tarX      = intX
+        tarY      = intY
+        tolerance = 2
+        Call Move_Bear()
+        TracePrint 移动到了
+        //暂停脚本
+        Beep 1000,300
+        DelayRandom 200,220
+        Beep 1000,300
+        DelayRandom 200,220
+        Beep 1000,300
+        DelayRandom 200,220
+        Beep 1000,300
+        Pause
+    else
+        TracePrint 没找到轮
+    End If
+    Timer 4,1,5000 //无限循环
+EndSub
+
 Sub Judge //判断人物是否在某个地点旁边,用tarXY,tolerance,tolLoc返回结果,不能嵌套move()使用,可以先使用这个再用move
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -278,7 +306,7 @@ pickingTime    = GetTimeStamp()  //上次捡钱的时间
 boboTime       = 0               //上次放小波波的时间
 currentState   = -1              //初始状态不要去放喷泉
 FartOK         = 0               //熊屁当前可放
-
+Timer          4, 1, 3100        //无限循环解符文
 while 1 > 0
 
     a = GetTimeStamp() - stoneSteleTime

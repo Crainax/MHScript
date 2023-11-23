@@ -14,12 +14,12 @@ Sub Move  //模拟移动,不要移植这个
 	MsgBox [轮X轴 & tarX & ,轮Y轴 & tarY & ]
 End Sub
 
-Sub on_timer4 //查地图轮,每10秒一次
+Sub on_timer4 //查地图轮,每3秒一次
     FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
     if intX >= 0 then
         FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
         intX = intX - logoX
-        intY = intY - logoY
+        intY = intY - logoY - 1 //图标的对准问题
         TracePrint 找到了轮,现在自动移动中
         //找到了轮
         tarX      = intX
