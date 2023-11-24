@@ -5,12 +5,11 @@ Times=0
 
 [Script]
 Dim x1,        x2,               y1,   y2        // 矩形区域:小地图采样点
-Dim x3,        x4,               y3,   y4        // 2个顶点:技能区/蘑菇公主
-Dim xEnd,      yEnd                              //屏幕右下角顶点
+Dim x3,        y3,               xEnd, yEnd      // 2个顶点:技能区/屏幕右下角顶点
 Dim tarX,      tarY                              //目标
 Dim logoX,     logoY,            intX, intY      //算目的地差值
 Dim DashCool,  tolLoc                            //冲刺冷却
-Dim tolerance, temp                              //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim tolerance, temp,             yTolerance      //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim cY,        consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X或Y轴变化了
 Dim Hooking,   gliding                           //钩子中(方便中途刹车)/滑翔中
 
@@ -402,7 +401,7 @@ Sub Move_Bear()  //熊形态的移动
             else
                 KeyUp Right
                 KeyUp Left
-                If intY < tarY Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
+                If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
                     consecutiveTimes = 0 //启动降落判断
                     cY = intY
                     TracePrint 下跳一次
@@ -415,7 +414,7 @@ Sub Move_Bear()  //熊形态的移动
                     DelayRandom 453,454
                     KeyUp Down
                     DelayRandom 32,33
-                Else If intY > tarY Then //如果人在目标之下,上钩
+                Else If intY > (tarY + yTolerance) Then //如果人在目标之下,上钩
                     consecutiveTimes = 0 //启动降落判断
                     cY = intY
                     consecutiveMax = 8 //延长一点降落判断
@@ -425,6 +424,7 @@ Sub Move_Bear()  //熊形态的移动
                     DelayRandom 328,430
                     KeyUp Alt
                 else
+                    yTolerance = 0 //重置Y容忍,默认为0
                     if tolerance < 4 Then //容忍度小于4还是要小碎步
                         //Y轴也达标了,到X轴了
                         If intX < (tarX-tolerance) Then //向右小碎步

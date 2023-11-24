@@ -5,11 +5,10 @@ Times=0
 
 [Script]
 Dim x1,             x2,               y1,   y2        // 矩形区域:小地图采样点
-Dim x3,             x4,               y3,   y4        // 2个顶点:技能区/蘑菇公主
-Dim xEnd,           yEnd                              //屏幕右下角顶点
+Dim x3,             y3,               xEnd, yEnd      // 2个顶点:技能区/屏幕右下角顶点
 Dim tarX,           tarY                              //目标
 Dim logoX,          logoY,            intX, intY      //算目的地差值
-Dim tolerance,      temp                              //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim tolerance,      yTolerance                        //快速移动的容差
 Dim FartOK,         Hooking                           //熊屁的计时器冷却,钩子中判断
 Dim cY,             consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X或Y轴变化了
 Dim tolLoc,         a,                currentState    //冷却和状态相关
@@ -19,7 +18,6 @@ Dim stoneSteleTime, pickingTime,      boboTime        //冷却
 Sub on_timer1 //熊屁计时器
     FartOK = 1
 EndSub
-
 
 Sub Move_Bear  //熊形态的移动
     consecutiveTimes = -1  //初始就启用指南针判断
@@ -69,7 +67,7 @@ Sub Move_Bear  //熊形态的移动
             if intX < (tarX-24) Then //向右二段跳
                 consecutiveTimes = 0 //启动降落判断
                 cY = intY
-                DelayRandom 115,125
+                DelayRandom 15,25
                 KeyDown Right
                 DelayRandom 95,96
                 KeyDown Space
@@ -85,7 +83,7 @@ Sub Move_Bear  //熊形态的移动
             Else If intX > (tarX+24) Then //向左二段跳
                 consecutiveTimes = 0 //启动降落判断
                 cY = 0
-                DelayRandom 115,125
+                DelayRandom 15,25
                 KeyDown Left
                 DelayRandom 95,96
                 KeyDown Space
@@ -105,7 +103,7 @@ Sub Move_Bear  //熊形态的移动
             else
                 KeyUp Right
                 KeyUp Left
-                If intY < tarY Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
+                If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
                     consecutiveTimes = 0 //启动降落判断
                     cY = intY
                     DelayRandom 12,13
@@ -117,7 +115,7 @@ Sub Move_Bear  //熊形态的移动
                     DelayRandom 453,454
                     KeyUp Down
                     DelayRandom 32,33
-                Else If intY > tarY Then //如果人在目标之下,上钩
+                Else If intY > (tarY + yTolerance) Then //如果人在目标之下,上钩
                     consecutiveTimes = 0 //启动降落判断
                     cY = intY
                     consecutiveMax = 8 //延长一点降落判断
@@ -126,6 +124,7 @@ Sub Move_Bear  //熊形态的移动
                     DelayRandom 328,430
                     KeyUp Alt
                 else
+                    yTolerance = 0 //重置Y容忍,默认为0
                     if tolerance < 4 Then //容忍度小于4还是要小碎步
                         //Y轴也达标了,到X轴了
                         If intX < (tarX-tolerance) Then //向右小碎步
@@ -157,9 +156,10 @@ Sub on_timer4 //查地图轮,每10秒一次
         intY = intY - logoY - 1
         TracePrint 找到了轮,现在自动移动中 & intX & , & intY
         //找到了轮
-        tarX      = intX
-        tarY      = intY
-        tolerance = 2
+        tarX       = intX
+        tarY       = intY
+        tolerance  = 2
+        yTolerance = 2     //Y容忍可以多一点
         Call Move_Bear()
         TracePrint 移动到了
         //暂停脚本
