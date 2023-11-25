@@ -163,13 +163,13 @@ Sub on_timer4 //查地图轮,每10秒一次
         Call Move_Bear()
         TracePrint 移动到了
         //暂停脚本
-        Beep 1000,300
-        DelayRandom 200,220
-        Beep 1000,300
-        DelayRandom 200,220
-        Beep 1000,300
-        DelayRandom 200,220
-        Beep 1000,300
+        Beep 1000,200
+        DelayRandom 100,120
+        Beep 1000,200
+        DelayRandom 100,120
+        Beep 1000,200
+        DelayRandom 100,120
+        Beep 1000,200
         Pause
     else
         TracePrint 没找到轮

@@ -4,13 +4,12 @@ ScreenY=2560
 Times=0
 
 [Script]
-Dim x1,x2,y1,y2 // 矩形区域:小地图采样点
-Dim x3,x4,y3,y4 // 2个顶点:技能区/蘑菇公主
-Dim xEnd,yEnd //屏幕右下角顶点
-Dim tarX,tarY //目标
-Dim logoX,logoY,intX,intY //算目的地差值
-Dim cY,consecutiveTimes,consecutiveMax //用这个东西判断角色是不是没有X或Y轴变化了
-Dim tolerance,tolLoc //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim x1,        x2,               y1,   y2        // 矩形区域:小地图采样点
+Dim x3,        y3,               xEnd, yEnd      // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,      tarY                              //目标
+Dim logoX,     logoY,            intX, intY      //算目的地差值
+Dim cY,        consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X或Y轴变化了
+Dim tolerance, tolLoc,           yTolerance      //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim windTime,fireTime,seedTime,fountainTime,a,stoneSteleTime,pickingTime
 //几个点:喷泉点(144,120)容忍4,右下种子点(134,150)容忍8,平时站立点(85,150)容忍4,火释放点(104,125)容忍4/面向右,风(36,136),容忍4/面向左,左上传送(20,122)容忍0,左下传送(42,150),右下传送(120,150),右上传送就是喷泉点,右下角/右上角捡钱(161,150)容忍4(158,120)容忍4
 
@@ -102,7 +101,7 @@ Sub Move()  //精确的移动
             else
                 KeyUp Right
                 KeyUp Left
-                If intY < tarY Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
+                If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
                     consecutiveTimes = 0 //启动降落判断
                     cY = intY
                     DelayRandom 12,13
@@ -114,7 +113,7 @@ Sub Move()  //精确的移动
                     DelayRandom 453,454
                     KeyUp Down
                     DelayRandom 32,33
-                Else If intY > tarY Then //如果人在目标之下,就上跳(Y轴是用相反比较符)
+                Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上跳(Y轴是用相反比较符)
                     consecutiveTimes = 0 //启动降落判断
                     cY = intY
                     if intY > (tarY+25) Then	//>=26上跳就够不到了
@@ -129,6 +128,7 @@ Sub Move()  //精确的移动
                         KeyUp Alt
                     End If
                 else
+                    yTolerance = 0
                     if tolerance < 4 Then //容忍度小于4还是要小碎步
                         //Y轴也达标了,到X轴了
                         If intX < (tarX-tolerance) Then //向右小碎步
@@ -151,6 +151,34 @@ Sub Move()  //精确的移动
         Delay 5
     Wend
 End Sub
+
+Sub on_timer4 //查地图轮,每3秒一次
+    FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 then
+        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+        intX = intX - logoX
+        intY = intY - logoY - 1 //图标的对准问题
+        TracePrint 找到了轮,现在自动移动中
+        //找到了轮
+        tarX       = intX
+        tarY       = intY
+        tolerance  = 2
+        yTolerance = 2
+        Call Move()
+        //暂停脚本
+        Beep 1000,200
+        DelayRandom 100,120
+        Beep 1000,200
+        DelayRandom 100,120
+        Beep 1000,200
+        DelayRandom 100,120
+        Beep 1000,200
+        Pause
+    else
+        TracePrint 没找到轮
+    End If
+    Timer 4,1,5000 //无限循环
+EndSub
 
 Sub SpellList() //随便扔技能
  FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Spider.bmp",000000,1.00,0,intX,intY
@@ -224,8 +252,6 @@ Sub SpellList() //随便扔技能
         End If
 End Sub
 
-
-
 //分辨率初始化
 
 GetScreenResolution intX, intY
@@ -249,12 +275,12 @@ else //竖放屏幕
     yEnd = 2560
 End If
 windTime       = 0               //上次风的时间
-fireTime        = 0               //上次火的时间
+fireTime       = 0               //上次火的时间
 seedTime       = 0               //上次种子的时间
 fountainTime   = 0               //上次喷泉的时间
 stoneSteleTime = 0               //上次轮回的时间
 pickingTime    = GetTimeStamp()  //上次捡钱的时间
-
+Timer          4, 1, 3100        //无限循环解轮
 while 1 > 0
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
     a = GetTimeStamp() - fountainTime
