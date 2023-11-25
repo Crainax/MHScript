@@ -306,6 +306,7 @@ pickingTime    = GetTimeStamp()  //上次捡钱的时间
 boboTime       = 0               //上次放小波波的时间
 currentState   = -1              //初始状态不要去放喷泉
 FartOK         = 0               //熊屁当前可放
+yTolerance     = 0               //初始化容忍
 Timer          4, 1, 3100        //无限循环解符文
 while 1 > 0
 
