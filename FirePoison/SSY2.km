@@ -349,6 +349,7 @@ InfiTime     = GetTimeStamp() - inLimit  //上次终极无限的时间
 UpAttackTime = 0                         //上次上巡的时间
 leftUpTime   = GetTimeStamp() - 50       //上次左上角传送
 leftDownTime = GetTimeStamp() - 90       //上次左下角传送
+yTolerance   = 0                         //初始化
 Timer        4, 1, 3100                  //无限循环
 while 1 > 0
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY

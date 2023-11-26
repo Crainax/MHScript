@@ -280,6 +280,7 @@ seedTime       = 0               //上次种子的时间
 fountainTime   = 0               //上次喷泉的时间
 stoneSteleTime = 0               //上次轮回的时间
 pickingTime    = GetTimeStamp()  //上次捡钱的时间
+yTolerance     = 0               //初始化
 Timer          4, 1, 3100        //无限循环解轮
 while 1 > 0
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
