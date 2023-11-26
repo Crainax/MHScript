@@ -154,14 +154,12 @@ Sub on_timer4 //查地图轮,每10秒一次
         FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
         intX = intX - logoX
         intY = intY - logoY - 1
-        TracePrint 找到了轮,现在自动移动中 & intX & , & intY
         //找到了轮
         tarX       = intX
         tarY       = intY
         tolerance  = 2
         yTolerance = 2     //Y容忍可以多一点
         Call Move_Bear()
-        TracePrint 移动到了
         //暂停脚本
         Beep 1000,200
         DelayRandom 100,120
@@ -172,7 +170,6 @@ Sub on_timer4 //查地图轮,每10秒一次
         Beep 1000,200
         Pause
     else
-        TracePrint 没找到轮
     End If
     Timer 4,1,5000 //无限循环
 EndSub
@@ -312,14 +309,12 @@ while 1 > 0
 
     a = GetTimeStamp() - stoneSteleTime
     if a > 570 then //可以放轮了
-        //TracePrint 目标原地放轮
         DelayRandom 56,58
         KeyDown O
         DelayRandom 137,139
         KeyUp O
         DelayRandom 736,747
         stoneSteleTime = GetTimeStamp()
-        //TracePrint 轮放好了
     End If
 
     if currentState == 0 Then //第一部就是喷泉啦,没的话就直接
@@ -345,7 +340,6 @@ while 1 > 0
 
         a = GetTimeStamp() - boboTime
         if a > 55 and tolLoc > 0 then //放个小波波
-            TracePrint 放个小波波
             DelayRandom 123,135
             KeyDown E
             DelayRandom 152,160
@@ -357,7 +351,6 @@ while 1 > 0
 
         a = GetTimeStamp() - pickingTime
         if a > 130 then //可以捡钱了,捡前钱先放个屁
-            TracePrint a & ,下去捡钱
             Call Fart()
             tarX = -58
             tarY = 122
@@ -366,7 +359,6 @@ while 1 > 0
             pickingTime = GetTimeStamp()
             currentState = 4
         else //去真正的熊屁点
-            TracePrint a & ,不走捡钱路
             DelayRandom 15,25
             KeyDown Right
             DelayRandom 95,96
@@ -483,17 +475,14 @@ while 1 > 0
             KeyUp Left
             DelayRandom 741,742
             currentState = 0
-            TracePrint 下一步去喷泉了
         else if a > 130 then //去捡钱点
             currentState = 1 //下一步去左下角
-            TracePrint 提前左下角捡钱点
         else //直接去熊屁点1
             tarX      = -38
             tarY      = 108
             tolerance = 4
             Call Move_Bear()
             currentState = 3 //不绕远路了  直接熊屁点1
-            TracePrint 下一步还是熊屁点1
         End If
     End If
 

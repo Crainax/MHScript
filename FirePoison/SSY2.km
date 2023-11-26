@@ -113,7 +113,6 @@ End Sub
 
 Sub Infinite //判断是否要补充终极无限了
     a = GetTimeStamp() - InfiTime
-	//TracePrint 时间差: & a
     if a > inLimit then //该补充了
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_Infi1.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then //R位置的终极无限
@@ -146,7 +145,6 @@ Sub Move //精确的移动
         FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
 
         if intX < 0 Then //人物跑到了边界  处理一下
-            TracePrint 没找到人,开始左右移自测 & intX &, & intY
             KeyDown Left
             DelayRandom 200,250
             KeyUp Left
@@ -288,7 +286,6 @@ Sub on_timer4 //查地图轮,每3秒一次
         FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
         intX = intX - logoX
         intY = intY - logoY - 1 //图标的对准问题
-        TracePrint 找到了轮,现在自动移动中
         //找到了轮
         tarX       = intX
         tarY       = intY
@@ -305,7 +302,6 @@ Sub on_timer4 //查地图轮,每3秒一次
         Beep 1000,200
         Pause
     else
-        TracePrint 没找到轮
     End If
     Timer 4,1,5000 //无限循环
 EndSub
