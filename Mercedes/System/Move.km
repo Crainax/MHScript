@@ -12,8 +12,6 @@ Dim cY,        consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X
 Dim tolerance, tolLoc,           yTolerance      //快速移动的容差,0代表精确移动,另外个是局部变量
 
 //目前已经算出一个二段跳能跳32的X轴(平地)
-//几个测试点:绳子下(127,150),右中(173,128),右顶可上跳(146,106),右顶不可上跳(120,100),左上不可上跳(56,122),左上(22,108),火毒站位(105,139)
-
 
 Sub Move()  //精确的移动
     consecutiveTimes = -1  //初始就启用指南针判断
@@ -58,48 +56,82 @@ Sub Move()  //精确的移动
             else  //速走的默认为4
                 tolLoc = 4
             End If
-            if intX < (tarX-24) Then //向右二段跳
+            if intX < (tarX-36) Then //向右二段跳+普攻
+                consecutiveTimes = 0 //启动降落判断
+                cY = intY
+                TracePrint 右S跳
+                DelayRandom 15,25
+                KeyDown Right
+                DelayRandom 38,39
+                KeyDown Space
+                DelayRandom 98,99
+                KeyUp Space
+                DelayRandom 37,38
+                KeyDown Space
+                DelayRandom 127,129
+                KeyUp Space
+                DelayRandom 225,228
+                KeyDown S
+                DelayRandom 24,25
+                KeyUp Right
+                DelayRandom 96,97
+                KeyUp S
+                DelayRandom 41,42
+            Else If intX > (tarX+36) Then //向左二段跳+普攻
+                consecutiveTimes = 0 //启动降落判断
+                cY = 0
+                TracePrint 左S跳
+                DelayRandom 15,25
+                KeyDown Left
+                DelayRandom 38,39
+                KeyDown Space
+                DelayRandom 98,99
+                KeyUp Space
+                DelayRandom 37,38
+                KeyDown Space
+                DelayRandom 127,129
+                KeyUp Space
+                DelayRandom 225,228
+                KeyDown S
+                DelayRandom 24,25
+                KeyUp Left
+                DelayRandom 96,97
+                KeyUp S
+                DelayRandom 41,42
+            Else if intX < (tarX-24) Then //向右二段跳
                 consecutiveTimes = 0 //启动降落判断
                 cY = intY
                 TracePrint 右跳
                 DelayRandom 15,25
                 KeyDown Right
-                DelayRandom 50,51
+                DelayRandom 54,55
                 KeyDown Space
-                DelayRandom 80,81
+                DelayRandom 96,97
                 KeyUp Space
-                DelayRandom 30,31
+                DelayRandom 39,40
                 KeyDown Space
-                DelayRandom 75,76
+                DelayRandom 126,128
                 KeyUp Space
-                DelayRandom 85,86
+                DelayRandom 83,84
                 KeyUp Right
                 DelayRandom 41,42
-                KeyDown F
-                DelayRandom 113,115
-                KeyUp F
-                DelayRandom 146,151
             Else If intX > (tarX+24) Then //向左二段跳
                 consecutiveTimes = 0 //启动降落判断
                 cY = 0
                 TracePrint 左跳
                 DelayRandom 15,25
                 KeyDown Left
-                DelayRandom 50,51
+                DelayRandom 54,55
                 KeyDown Space
-                DelayRandom 80,81
+                DelayRandom 96,97
                 KeyUp Space
-                DelayRandom 30,31
+                DelayRandom 39,40
                 KeyDown Space
-                DelayRandom 75,76
+                DelayRandom 126,128
                 KeyUp Space
-                DelayRandom 85,86
+                DelayRandom 83,84
                 KeyUp Left
                 DelayRandom 41,42
-                KeyDown F
-                DelayRandom 113,115
-                KeyUp F
-                DelayRandom 146,151
             Else If intX < (tarX-tolLoc) Then //向右走
                 KeyDown Right
             Else If intX > (tarX+tolLoc) Then //向左走
@@ -125,16 +157,24 @@ Sub Move()  //精确的移动
                     cY = intY
                     if intY > (tarY+25) Then	//>=26上跳就够不到了
                         consecutiveMax = 8 //延长一点降落判断
-                        TracePrint 钩子一次 //TODO:加个刹车
-                        KeyDown Ctrl
-                        DelayRandom 328,430
-                        KeyUp Ctrl
-                    else
-                        consecutiveMax = 6 //延长一点降落判断
-                        TracePrint 上跳一次
+                        TracePrint 钩子一次
                         KeyDown Alt
                         DelayRandom 328,430
                         KeyUp Alt
+                    else
+                        consecutiveMax = 6 //延长一点降落判断
+                        TracePrint 上跳一次
+                        KeyDown Up
+                        DelayRandom 120,122
+                        KeyDown Space
+                        DelayRandom 69,70
+                        KeyUp Space
+                        DelayRandom 36,37
+                        KeyDown Space
+                        DelayRandom 69,70
+                        KeyUp Space
+                        DelayRandom 81,82
+                        KeyUp Up
                     End If
                 else
                     yTolerance = 0
