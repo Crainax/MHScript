@@ -182,11 +182,11 @@ Sub Move()  //精确的移动
                         //Y轴也达标了,到X轴了
                         If intX < (tarX-tolerance) Then //向右小碎步
                             KeyDown Right
-                            DelayRandom 10,15
+                            DelayRandom 15,25
                             KeyUp Right
                         Else If intX > (tarX+tolerance) Then //向左小碎步
                             KeyDown Left
-                            DelayRandom 10,15
+                            DelayRandom 15,25
                             KeyUp Left
                         else
                             Exit Sub
