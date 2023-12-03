@@ -175,6 +175,11 @@ Sub Move()  //精确的移动
                         KeyUp Space
                         DelayRandom 81,82
                         KeyUp Up
+                        DelayRandom 44,48
+                        KeyDown S
+                        DelayRandom 124,126
+                        KeyUp S
+                        DelayRandom 52,53
                     End If
                 else
                     yTolerance = 0
