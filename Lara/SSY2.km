@@ -178,75 +178,75 @@ Sub on_timer4 //查地图轮,每3秒一次
 EndSub
 
 Sub SpellList() //随便扔技能
- FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Spider.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then //找蜘蛛
-            KeyDown H
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Spider.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then //找蜘蛛
+        KeyDown H
+        DelayRandom 105,107
+        KeyUp H
+        DelayRandom 929,939
+    else
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Lieyang.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //找烈阳
+            KeyDown Y
             DelayRandom 105,107
-            KeyUp H
-            DelayRandom 929,939
+            KeyUp Y
+            DelayRandom 811,813
         else
-            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Lieyang.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then //找烈阳
-                KeyDown Y
-                DelayRandom 105,107
-                KeyUp Y
-                DelayRandom 811,813
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\LL_V1.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //找V1
+                KeyDown G
+                DelayRandom 123,130
+                KeyUp G
+                DelayRandom 387,400
             else
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\LL_V1.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //找V1
-                    KeyDown G
-                    DelayRandom 123,130
-                    KeyUp G
-                    DelayRandom 387,400
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\LL_V2.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //找V2
+                    KeyDown C
+                    DelayRandom 152,160
+                    KeyUp C
+                    DelayRandom 822,912
                 else
-                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\LL_V2.bmp",000000,1.00,0,intX,intY
-                    if intX >= 0 Then //找V2
-                        KeyDown C
-                        DelayRandom 152,160
-                        KeyUp C
-                        DelayRandom 822,912
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\LL_V3.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then //找V3
+                        KeyDown V
+                        DelayRandom 123,130
+                        KeyUp V
+                        DelayRandom 899,909
                     else
-                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\LL_V3.bmp",000000,1.00,0,intX,intY
-                        if intX >= 0 Then //找V3
-                            KeyDown V
-                            DelayRandom 123,130
-                            KeyUp V
-                            DelayRandom 899,909
+                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\LL_V4.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //找V4
+                            KeyDown B
+                            DelayRandom 105,107
+                            KeyUp B
+                            DelayRandom 712,780
                         else
-                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\LL_V4.bmp",000000,1.00,0,intX,intY
-                            if intX >= 0 Then //找V4
-                                KeyDown B
-                                DelayRandom 105,107
-                                KeyUp B
-                                DelayRandom 712,780
+                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\GelanBless.bmp",000000,1.00,0,intX,intY
+                            if intX >= 0 Then //找女神祝福
+                                KeyDown 5
+                                DelayRandom 134,142
+                                KeyUp 5
+                                DelayRandom 512,519
                             else
-                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\GelanBless.bmp",000000,1.00,0,intX,intY
-                                if intX >= 0 Then //找女神祝福
-                                    KeyDown 5
-                                    DelayRandom 134,142
-                                    KeyUp 5
-                                    DelayRandom 512,519
-                                else
-                                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Wugong.bmp",000000,1.00,0,intX,intY
-                                    if intX >= 0 Then //找武公
-                                        KeyDown 4
-                                        DelayRandom 105,107
-                                        KeyUp 4
-                                        DelayRandom 899,909
-                                    else //什么都没有就普攻一下
-                                        KeyDown F
-                                        DelayRandom 811,892
-                                        KeyUp F
-                                        DelayRandom 246,249
-                                    End If
+                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Wugong.bmp",000000,1.00,0,intX,intY
+                                if intX >= 0 Then //找武公
+                                    KeyDown 4
+                                    DelayRandom 105,107
+                                    KeyUp 4
+                                    DelayRandom 899,909
+                                else //什么都没有就普攻一下
+                                    KeyDown F
+                                    DelayRandom 811,892
+                                    KeyUp F
+                                    DelayRandom 246,249
                                 End If
                             End If
                         End If
                     End If
                 End If
-
             End If
+
         End If
+    End If
 End Sub
 
 //分辨率初始化
