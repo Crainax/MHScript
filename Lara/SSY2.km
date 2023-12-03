@@ -161,7 +161,7 @@ Sub on_timer4 //查地图轮,每3秒一次
         tarX       = intX
         tarY       = intY
         tolerance  = 2
-        yTolerance = 2
+        yTolerance = 3
         Call Move()
         //暂停脚本
         Beep 1000,200

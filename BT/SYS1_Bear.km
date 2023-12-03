@@ -158,7 +158,7 @@ Sub on_timer4 //查地图轮,每10秒一次
         tarX       = intX
         tarY       = intY
         tolerance  = 2
-        yTolerance = 2     //Y容忍可以多一点
+        yTolerance = 3     //Y容忍可以多一点
         Call Move_Bear()
         //暂停脚本
         Beep 1000,200
