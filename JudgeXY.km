@@ -7,7 +7,7 @@ Times=0
 Dim tarX,      tarY    //目标
 Dim tolerance, tolLoc  //快速移动的容差,0代表精确移动,另外个是局部变量
 
-Sub Judge() //判断人物是否在某个地点旁边,用tarXY,tolerance,tolLoc返回结果,不能嵌套move()使用,可以先使用这个再用move
+Sub Judge //判断人物是否在某个地点旁边,用tarXY,tolerance,tolLoc返回结果,不能嵌套move()使用,可以先使用这个再用move
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
     tolLoc = 0
@@ -17,6 +17,15 @@ Sub Judge() //判断人物是否在某个地点旁边,用tarXY,tolerance,tolLoc�
         if intY == tarY and intX >= (tarX - tolerance) and intX <= (tarX + tolerance) then
             tolLoc = 1
         End If
+    End If
+End Sub
+
+Sub GetPersonXY //获取角色的XY轴(如果找不到会返还-1和-1,再多判断一下)
+    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then //找到了人物才会进行下去
+        intX = intX - logoX
+        intY = intY - logoY
     End If
 End Sub
 

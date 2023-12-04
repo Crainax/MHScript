@@ -14,7 +14,7 @@ Dim V12Time,     fountainTime,     a               //冷却,
 Dim pickingTime, whichWay                          //走哪一边,捡钱冷却
 
 //左上攻击处(-38,68)  喷泉处(31,68)容忍2  下路起跳点1(-29,87)   下路起跳点2(16,87)
-//下路起跳点3(31,87)  捡钱处(-51,87)
+//下路起跳点3(31,87)  捡钱处(-60,87)
 
 Sub Move()  //精确的移动
     consecutiveTimes = -1  //初始就启用指南针判断
@@ -321,6 +321,11 @@ while 1 > 0
     if a > 58 or intX >= 0 then //可以喷泉了
         if whichWay == 0 Then //走上路过去
 
+            tarX = 31
+            tarY = 68
+            tolerance = 2
+            Call Move()
+
             whichWay = 1
         else //走下路过去
             tarX = -29
@@ -369,11 +374,6 @@ while 1 > 0
             whichWay = 0
         End If
 
-        tarX = 31
-        tarY = 68
-        tolerance = 2
-        Call Move()
-
         DelayRandom 56,58
         KeyDown Right
         DelayRandom 62,68
@@ -389,10 +389,12 @@ while 1 > 0
         DelayRandom 712,721
         fountainTime = GetTimeStamp()
 
-        tarX = 31
-        tarY = 87
-        tolerance = 4
-        Call Move()
+        If whichWay == 1 then //上面的要走下来
+            tarX = 31
+            tarY = 87
+            tolerance = 4
+            Call Move()
+        End If
 
         DelayRandom 12,13
         KeyDown Down
@@ -408,7 +410,7 @@ while 1 > 0
 
     a = GetTimeStamp() - pickingTime
     if a > 150 then //可以捡钱了
-        tarX = -51
+        tarX = -60
         tarY = 87
         tolerance = 4
         Call Move()
@@ -425,6 +427,15 @@ while 1 > 0
         if tolLoc > 0 Then //人已经在地方了
             Call Attack()
         else //前往那边
+            //防止卡到绳子上,如果检测高度不对就上走(上面的judge已经自带XY检测了)
+            if intY < 87 and intY > 68 then //绳子上
+                DelayRandom 28,30
+                KeyDown Up
+                DelayRandom 453,454
+                KeyUp Up
+                DelayRandom 32,45
+            End If
+
             tolerance = 4
             Call Move()
             DelayRandom 56,58
