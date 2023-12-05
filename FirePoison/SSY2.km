@@ -4,17 +4,16 @@ ScreenY=1440
 Times=0
 
 [Script]
-Dim x1,           x2,               y1,   y2      // 矩形区域:小地图采样点
-Dim x3,           y3,               xEnd, yEnd    // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,         tarY                            //寻位置相关:目标地点
-Dim logoX,        logoY,            intX, intY    //寻位置相关:当前地点
-Dim InfiTime,     a,                inLimit       //终极无限的补充
-Dim cY,           consecutiveTimes, stuckTimes    //用这个东西判断角色是不是没有X或Y轴变化了
-Dim UpAttackTime, leftUpTime,       leftDownTime  //各种时间间隔
-Dim tolerance,    tolLoc,           yTolerance    //快速移动的容差,0代表精确移动,另外个是局部变量
-
-// 已知映射关系(120,150)->(5,118),只是简单的加减关系,帮我映射这些点的结果:
-// (31,140)
+Dim x1,           x2,               y1,      y2       // 矩形区域:小地图采样点
+Dim x3,           y3,               xEnd,    yEnd     // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,         tarY                                //寻位置相关:目标地点
+Dim logoX,        logoY,            intX,    intY     //寻位置相关:当前地点
+Dim InfiTime,     a,                inLimit           //终极无限的补充
+Dim cY,           consecutiveTimes, stuckTimes        //用这个东西判断角色是不是没有X或Y轴变化了
+Dim UpAttackTime, leftUpTime,       leftDownTime      //各种时间间隔
+Dim stoneSteleTime                                    //各种时间间隔
+Dim tolerance,    tolLoc,           yTolerance        //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim remainder,    staticCount,      staticX, staticY  //检测余数,还有不动的计数器
 
 Sub Attack //技能循环攻击
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_V1.bmp",000000,1.00,0,intX,intY
@@ -140,6 +139,7 @@ Sub Move //精确的移动
     consecutiveTimes = -1 //初始就启用指南针判断
     stuckTimes = 0 //防卡检测初始次数为0
     cY = 0
+    KeyAllup //施放所有按键防止卡住
     while  1 > 0
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
         FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
@@ -280,32 +280,6 @@ Sub Move //精确的移动
     Wend
 End Sub
 
-Sub on_timer4 //查地图轮,每3秒一次
-    FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 then
-        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-        intX = intX - logoX
-        intY = intY - logoY - 1 //图标的对准问题
-        //找到了轮
-        tarX       = intX
-        tarY       = intY
-        tolerance  = 2
-        yTolerance = 3
-        Call Move()
-        //暂停脚本
-        Beep 1000,200
-        DelayRandom 100,120
-        Beep 1000,200
-        DelayRandom 100,120
-        Beep 1000,200
-        DelayRandom 100,120
-        Beep 1000,200
-        Pause
-    else
-    End If
-    Timer 4,1,5000 //无限循环
-EndSub
-
 Sub Judge //判断人物是否在某个地点旁边,用tarXY,tolerance,tolLoc返回结果,不能嵌套move()使用,可以先使用这个再用move
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -318,6 +292,75 @@ Sub Judge //判断人物是否在某个地点旁边,用tarXY,tolerance,tolLoc返回结果,不能嵌套
         End If
     End If
 End Sub
+
+Sub on_timer4 //查地图轮,每3秒一次
+    remainder = remainder + 1
+    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then //找到了人物才会进行下去
+        intX = intX - logoX
+        intY = intY - logoY
+    End If
+    if staticX ==  intX and staticY == intY then //如果相等就累加计数器
+        staticCount = staticCount + 1
+    else
+        staticX     = intX
+        staticY     = intY
+        staticCount = 0
+    End If
+    if staticCount >= 6 Then //
+        tarX      = -8
+        tarY      = 107
+        tolerance = 6
+        Call Judge() //人在那边吗
+        if tolLoc <= 0 then //人不在那边就当卡住
+            Beep 500,500
+            KeyAllup //施放所有按键
+        else //人是正常的
+            staticCount = 0
+        End If
+
+        // 模拟从绳子跳走(方向向左)
+        // DelayRandom 13,15
+        // KeyDown Left
+        // DelayRandom 21,22
+        // KeyDown Space
+        // DelayRandom 76,77
+        // KeyUp Space
+        // DelayRandom 44,45
+        // KeyUp Left
+        // DelayRandom 13,15
+    End If
+    if remainder%5 == 0 Then
+        FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then
+            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+            intX = intX - logoX
+            intY = intY - logoY - 1 //图标的对准问题
+            //找到了轮
+            tarX       = intX
+            tarY       = intY
+            tolerance  = 2
+            yTolerance = 3
+            Call Move()
+            //暂停脚本
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            Pause
+        else
+        End If
+    End If
+    if remainder > 5 then
+        remainder = 1
+    End If
+    Timer 4,1,1000 //无限循环
+EndSub
+
 
 //Main函数
 GetScreenResolution intX, intY
@@ -340,13 +383,14 @@ else //竖放屏幕
     xEnd = 1440
     yEnd = 2560
 End If
-inLimit      = 110                       //定义一下终极无限的冷却时间
-InfiTime     = GetTimeStamp() - inLimit  //上次终极无限的时间
-UpAttackTime = 0                         //上次上巡的时间
-leftUpTime   = GetTimeStamp() - 50       //上次左上角传送
-leftDownTime = GetTimeStamp() - 90       //上次左下角传送
-yTolerance   = 0                         //初始化
-Timer        4, 1, 3100                  //无限循环
+inLimit        = 110                       //定义一下终极无限的冷却时间
+InfiTime       = GetTimeStamp() - inLimit  //上次终极无限的时间
+UpAttackTime   = 0                         //上次上巡的时间
+stoneSteleTime = 0                         //放轮时间
+leftUpTime     = GetTimeStamp() - 50       //上次左上角传送
+leftDownTime   = GetTimeStamp() - 90       //上次左下角传送
+yTolerance     = 0                         //初始化
+Timer          4, 1, 3100                  //无限循环
 while 1 > 0
     a = GetTimeStamp() - stoneSteleTime
     if a > 570 then //可以放轮了
