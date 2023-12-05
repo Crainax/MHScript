@@ -8,12 +8,14 @@ Dim x1,    x2,    y1,        y2          // 矩形区域:小地图采样点
 Dim x3,    y3,    xEnd,      yEnd        // 2个顶点:技能区/屏幕右下角顶点
 Dim tarX,  tarY,  tolerance, yTolerance  //目标
 Dim logoX, logoY, intX,      intY        //算目的地差值
+Dim remainder                            //检测余数
 
 Sub Move  //模拟移动,不要移植这个
 	MsgBox [轮X轴 & tarX & ,轮Y轴 & tarY & ]
 End Sub
 
 Sub on_timer4 //查地图轮,每3秒一次
+    remainder = remainder + 1
     FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
     if intX >= 0 then
         FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
@@ -38,7 +40,10 @@ Sub on_timer4 //查地图轮,每3秒一次
     else
         TracePrint 没找到轮
     End If
-    Timer 4,1,5000 //无限循环
+    if remainder > 5 then
+        remainder = 1
+    End If
+    Timer 4,1,1000 //无限循环
 EndSub
 
 
@@ -62,7 +67,7 @@ else //竖放屏幕
     xEnd = 1440
     yEnd = 2560
 End If
-Timer 4,1,3100 //无限循环
+Timer 4,1,1000 //无限循环
 TracePrint 开始了哦
 while 1 > 0
     DelayRandom 500,1000
