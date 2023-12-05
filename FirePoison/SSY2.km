@@ -348,6 +348,16 @@ leftDownTime = GetTimeStamp() - 90       //上次左下角传送
 yTolerance   = 0                         //初始化
 Timer        4, 1, 3100                  //无限循环
 while 1 > 0
+    a = GetTimeStamp() - stoneSteleTime
+    if a > 570 then //可以放轮了
+        DelayRandom 56,58
+        KeyDown O
+        DelayRandom 137,139
+        KeyUp O
+        DelayRandom 736,747
+        stoneSteleTime = GetTimeStamp()
+    End If
+
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //喷泉CD好了
         a = GetTimeStamp() - leftUpTime
