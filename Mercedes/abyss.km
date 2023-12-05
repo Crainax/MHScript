@@ -404,7 +404,7 @@ while 1 > 0
         KeyUp Space
         DelayRandom 453,454
         KeyUp Down
-        DelayRandom 832,845
+        DelayRandom 1032,1045
 
     End If
 
