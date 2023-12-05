@@ -71,12 +71,16 @@ Sub on_timer4 //查地图轮,每3秒一次
             intX = intX - logoX
             intY = intY - logoY - 1 //图标的对准问题
             TracePrint 找到了轮,现在自动移动中
-            //找到了轮
-            tarX       = intX
-            tarY       = intY
-            tolerance  = 2
-            yTolerance = 3
+            staticX     = tarX (导航前先记录一下老坐标,然后再恢复,复用staticX)
+            staticY     = tarY
+            staticCount = 0
+            tarX        = intX
+            tarY        = intY
+            tolerance   = 2
+            yTolerance  = 3
             Call Move()
+            tarX = staticX
+            tarY = staticY
             //暂停脚本
             Beep 1000,200
             DelayRandom 100,120

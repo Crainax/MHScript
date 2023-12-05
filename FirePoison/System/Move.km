@@ -13,44 +13,45 @@ Dim tolerance, tolLoc,           yTolerance  //快速移动的容差,0代表精确移动,另外
 
 //左上传送点(-96,90),喷泉点(-81,104),左下传送点(-73,118),右下传送点(5,118),右上传送点(29,88),右下捡钱点(48,118),普攻(-8,107),上巡(-8,79),测试上瞬(15,68),测试上瞬(-58,90),左下捡钱(-98,118)
 
+Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
+    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
 
-Sub Move() //精确的移动
+    if intX < 0 Then //人物跑到了边界  处理一下
+        KeyDown Left
+        DelayRandom 200,250
+        KeyUp Left
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then //左移了还是没找到,就右移
+            KeyDown Right
+            DelayRandom 200,250
+            KeyUp Right
+            FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        End if
+    End if
+
+    intX = intX - logoX
+    intY = intY - logoY
+End Sub
+
+Sub Move //精确的移动
     consecutiveTimes = -1 //初始就启用指南针判断
     stuckTimes = 0 //防卡检测初始次数为0
     cY = 0
+    KeyAllup //施放所有按键防止卡住
     while  1 > 0
-        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
 
-        if intX < 0 Then //人物跑到了边界  处理一下
-            TracePrint 没找到人,开始左右移自测 & intX &, & intY
-            KeyDown Left
-            DelayRandom 200,250
-            KeyUp Left
-            FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-            if intX < 0 Then //左移了还是没找到,就右移
-                KeyDown Right
-                DelayRandom 200,250
-                KeyUp Right
-                FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-            End if
-        End if
-
-        intX = intX - logoX
-        intY = intY - logoY
+        Call GetXY()
 
         if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
             if intY == cY Then //Y轴没变化了
                 consecutiveTimes = consecutiveTimes + 1
-                TracePrint 降落判断: & consecutiveTimes
                 if consecutiveTimes >= 8 Then
                     consecutiveTimes	= -1	//判断为已经落地
-                    TracePrint 判断已经落地
                 End If
             else
                 cY = intY
                 consecutiveTimes = 0
-                TracePrint 降落判断: & consecutiveTimes
             End If
         else //继续根据
             if tolerance > 4 Then
@@ -65,6 +66,7 @@ Sub Move() //精确的移动
                 DelayRandom 68,69
                 KeyUp LShift
                 DelayRandom 212,233
+                KeyUp Right
             Else If intX > (tarX+12) Then //向左瞬
                 KeyDown Left
                 DelayRandom 12,13
@@ -72,13 +74,16 @@ Sub Move() //精确的移动
                 DelayRandom 68,69
                 KeyUp LShift
                 DelayRandom 212,233
+                KeyUp Left
             Else If intX < (tarX-tolLoc) Then //向右走
                 KeyDown Right
+                DelayRandom 230,260
+                KeyUp Right
             Else If intX > (tarX+tolLoc) Then //向左走
                 KeyDown Left
-            else //到Y方向的了
-                KeyUp Right
+                DelayRandom 230,260
                 KeyUp Left
+            else //到Y方向的了
                 If intY < (tarY - yTolerance) Then //如果人在目标之上,就下瞬(Y轴是用相反比较符)
                     KeyUp Up
                     If stuckTimes < 5 Then //普通下瞬
@@ -134,24 +139,30 @@ Sub Move() //精确的移动
                         DelayRandom 32,33
                     End If
                 else //Y轴搞定了,到容忍度的X轴了,前提是不在空中
-                    KeyUp Down
-                    KeyUp Up
+                    KeyAllup
                     consecutiveTimes = -1 //这一步已经不需要监控Y轴卡住了
                     yTolerance = 0
-                    TracePrint Y轴到了
                     if tolerance < 4 Then //容忍度小于4还是要小碎步
                         //Y轴也达标了,到X轴了
-                        If intX < (tarX-tolerance) Then //向右小碎步
-                            KeyDown Right
-                            DelayRandom 10,15
-                            KeyUp Right
-                        Else If intX > (tarX+tolerance) Then //向左小碎步
-                            KeyDown Left
-                            DelayRandom 10,15
-                            KeyUp Left
-                        else
-                            Exit Sub
-                        End If
+                        //循环几次,如果都不行,就直接退出子程序防止太久
+                        for 10
+                            If intX < (tarX-tolerance) Then //向右小碎步
+                                tolLoc = (tarX - tolerance - intX) * 14
+                                KeyDown Right
+                                Delay tolLoc
+                                KeyUp Right
+                            Else If intX > (tarX+tolerance) Then //向左小碎步
+                                tolLoc = (intX - tarX - tolerance) * 14
+                                KeyDown Left
+                                Delay tolLoc
+                                KeyUp Left
+                            else
+                                Exit Sub
+                            End If
+
+                            Call GetXY() //更新人物坐标
+                        Next
+                        Exit Sub //次数到了直接结束
                     else //容忍度大于等于4可以直接结束
                         Exit Sub
                     End If
@@ -195,38 +206,10 @@ TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance
 Call Move()
 TracePrint 到了
 
-tarX      = 5
+tarX      = -73
 tarY      = 118
-tolerance = 4
+tolerance = 0
 TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance
 Call Move() //回去一波右下角放
 TracePrint 到了
-KeyDown Left
-DelayRandom 123,130
-KeyUp Left
-DelayRandom 348,352
-KeyDown A
-DelayRandom 130,132
-KeyUp A
-DelayRandom 405,413
-
-tarX      = -8
-tarY      = 107
-tolerance = 6
-TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance
-Call Move()
-TracePrint 到了
-
-DelayRandom 56,58
-KeyDown F
-DelayRandom 1322,1336
-KeyUp F
-DelayRandom 413,418
-tarX      = -8
-tarY      = 79
-tolerance = 6
-TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance
-Call Move()
-TracePrint 到了
-
 MsgBox 测试结束
