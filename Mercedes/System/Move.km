@@ -43,6 +43,11 @@ Sub Move()  //精确的移动
                 KeyDown Alt
                 DelayRandom 258,282
                 KeyUp Alt
+                DelayRandom 100,110
+                KeyDown S
+                DelayRandom 97,98
+                KeyUp S
+                DelayRandom 165,167
                 Hooking = 0
             End If
             if intY == cY Then //Y轴没变化了
@@ -179,13 +184,14 @@ Sub Move()  //精确的移动
                 Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上跳(Y轴是用相反比较符)
                     consecutiveTimes = 0 //启动降落判断
                     cY = intY
-                    if intY > (tarY+28) Then	//>=28上跳就够不到了
+                    if intY > (tarY+28) or intY <= (tarY+19) Then	//太高或矮距离就钩子
                         consecutiveMax = 8 //延长一点降落判断
+                        Hooking = 1
                         TracePrint 钩子一次
                         KeyDown Alt
                         DelayRandom 328,430
                         KeyUp Alt
-                    else if intY > (tarY+19) then //中等距离上跳
+                    else //中等距离上跳
                         consecutiveMax = 6 //延长一点降落判断
                         TracePrint 上跳一次
                         KeyDown Up
@@ -204,13 +210,6 @@ Sub Move()  //精确的移动
                         DelayRandom 124,126
                         KeyUp S
                         DelayRandom 52,53
-                    else //小距离刹车钩子
-                        consecutiveMax = 8 //延长一点降落判断
-                        TracePrint 刹车钩
-                        Hooking = 1
-                        KeyDown Alt
-                        DelayRandom 328,430
-                        KeyUp Alt
                     End If
                 else
                     yTolerance = 0

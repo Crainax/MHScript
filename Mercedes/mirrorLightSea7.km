@@ -15,7 +15,8 @@ Dim pickingTime                                    //捡钱冷却
 Dim remainder, staticCount,      staticX, staticY  //检测余数,还有不动的计数器
 
 
-//左喷泉点(-63,84)  放技能点(9,102)  捡钱右下(45,115)  捡钱右上(45,79) 测试的最高跳(-6,85)
+//左喷泉点(-63,84)  放技能点(10,102)  捡钱右下(45,115)  捡钱右上(45,79) 测试的最高跳(-6,85)
+//辅助点:技能点左上一层(-6,85),左上两层(-6,75)
 
 
 Sub Move()  //精确的移动
@@ -26,7 +27,6 @@ Sub Move()  //精确的移动
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
 
         if intX < 0 Then //人物跑到了边界  处理一下
-            TracePrint 没找到人,开始左右移自测
             KeyDown Left
             DelayRandom 200,250
             KeyUp Left
@@ -46,6 +46,11 @@ Sub Move()  //精确的移动
                 KeyDown Alt
                 DelayRandom 258,282
                 KeyUp Alt
+                DelayRandom 100,110
+                KeyDown S
+                DelayRandom 97,98
+                KeyUp S
+                DelayRandom 165,167
                 Hooking = 0
             End If
             if intY == cY Then //Y轴没变化了
@@ -229,8 +234,6 @@ Sub Move()  //精确的移动
     Wend
 End Sub
 
-
-
 Sub on_timer4 //查地图轮,每3秒一次
     remainder = remainder + 1
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
@@ -249,7 +252,7 @@ Sub on_timer4 //查地图轮,每3秒一次
     if staticCount >= 6 Then //
         Beep 500,500
         KeyAllup //施放所有按键并重启
-        //模拟从绳子跳走
+        // RestartScript //重启 和上面二选一即可
         DelayRandom 13,15
         KeyDown Right
         DelayRandom 21,22
@@ -266,12 +269,16 @@ Sub on_timer4 //查地图轮,每3秒一次
             FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
             intX = intX - logoX
             intY = intY - logoY - 1 //图标的对准问题
-            //找到了轮
-            tarX       = intX
-            tarY       = intY
-            tolerance  = 2
-            yTolerance = 3
+            staticX     = tarX //(导航前先记录一下老坐标,然后再恢复,复用staticX)
+            staticY     = tarY
+            staticCount = 0
+            tarX        = intX
+            tarY        = intY
+            tolerance   = 2
+            yTolerance  = 3
             Call Move()
+            tarX = staticX
+            tarY = staticY
             //暂停脚本
             Beep 1000,200
             DelayRandom 100,120
@@ -471,7 +478,6 @@ while 1 > 0
     if a > 88 then //可以技能了
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Mercedes\V1.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then //找C
-            TracePrint 找到C
             KeyDown C
             DelayRandom 905,907
             KeyUp C
@@ -480,14 +486,12 @@ while 1 > 0
         else
             FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Mercedes\V2.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then //找B
-                TracePrint 找到B
                 KeyDown B
                 DelayRandom 105,107
                 KeyUp B
                 DelayRandom 929,939
                 V12Time = GetTimeStamp()
             else
-                TracePrint 沒找到
             End If
         End If
 
@@ -514,6 +518,11 @@ while 1 > 0
         KeyUp Down
         DelayRandom 712,721
         fountainTime = GetTimeStamp()
+
+        tarX = -6
+        tarY = 85
+        tolerance = 4
+        Call Move() //来左上层这里好一些
     End If
 
     a = GetTimeStamp() - pickingTime
@@ -527,21 +536,56 @@ while 1 > 0
         tolerance = 4  //再去右上角
         Call Move()
         pickingTime = GetTimeStamp()
+
+        tarX = -6
+        tarY = 85
+        tolerance = 4
+        Call Move() //来左上层这里好一些
     else
-        tarX = 9
+        tarX = 10
         tarY = 102
         tolerance = 6
         Call Judge() //判断位置
         if tolLoc > 0 Then //人已经在地方了
             Call Attack()
         else //前往那边
-            tolerance = 4
-            Call Move()
-            DelayRandom 56,58
-            KeyDown Right
-            DelayRandom 56,58
-            KeyUp Right
-            DelayRandom 13,14
+            tarX = -6
+            tarY = 85
+            tolerance = 10
+            Call Judge() //看下人在左上辅助层吗
+            if tolLoc > 0 then //如果在辅助层
+                DelayRandom 15,20
+                KeyDown Right
+                DelayRandom 45,50
+                KeyUp Right
+                DelayRandom 78,80
+                KeyDown Down
+                DelayRandom 119,121
+                KeyDown Space
+                DelayRandom 143,145
+                KeyUp Down
+                DelayRandom 23,24
+                KeyUp Space
+                DelayRandom 306,310
+                KeyDown Right
+                DelayRandom 31,32
+                KeyDown Space
+                DelayRandom 113,115
+                KeyUp Space
+                DelayRandom 112,114
+                KeyUp Right
+                DelayRandom 378,380
+            else
+                tarX = 10
+                tarY = 102
+                tolerance = 4
+                Call Move()
+                DelayRandom 56,58
+                KeyDown Right
+                DelayRandom 56,58
+                KeyUp Right
+                DelayRandom 13,14
+            End If
         End If
     End If
 Wend
