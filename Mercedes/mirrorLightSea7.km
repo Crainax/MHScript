@@ -4,19 +4,19 @@ ScreenY=2560
 Times=0
 
 [Script]
-Dim x1,        x2,               y1,      y2       // 矩形区域:小地图采样点
-Dim x3,        y3,               xEnd,    yEnd     // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,      tarY,             Hooking           //目标
-Dim logoX,     logoY,            intX,    intY     //算目的地差值
-Dim cY,        consecutiveTimes, consecutiveMax    //用这个东西判断角色是不是没有X或Y轴变化了
-Dim tolerance, tolLoc,           yTolerance        //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim V12Time,   fountainTime,     a                 //冷却,
-Dim pickingTime                                    //捡钱冷却
-Dim remainder, staticCount,      staticX, staticY  //检测余数,还有不动的计数器
+Dim x1,          x2,               y1,      y2       // 矩形区域:小地图采样点
+Dim x3,          y3,               xEnd,    yEnd     // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,        tarY,             Hooking           //目标
+Dim logoX,       logoY,            intX,    intY     //算目的地差值
+Dim cY,          consecutiveTimes, consecutiveMax    //用这个东西判断角色是不是没有X或Y轴变化了
+Dim tolerance,   tolLoc,           yTolerance        //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim V12Time,     fountainTime,     a                 //冷却,
+Dim pickingTime, alterFountTime                      //捡钱冷却
+Dim remainder,   staticCount,      staticX, staticY  //检测余数,还有不动的计数器
 
 
 //左喷泉点(-63,84)  放技能点(10,102)  捡钱右下(45,115)  捡钱右上(45,79) 测试的最高跳(-6,85)
-//辅助点:技能点左上一层(-6,85),左上两层(-6,75)
+//辅助点:技能点左上一层(-6,85),左上两层(-6,75),撿錢最高点(40,66),喷泉最下面的可选路(-58,115)
 
 
 Sub Move()  //精确的移动
@@ -313,137 +313,317 @@ End Sub
 Sub Attack //放技能攻击
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Mercedes\spear.bmp",000000,1.00,0,intX,intY	//找图
     if intX >= 0 Then //起手枪,然后连招
-        DelayRandom 352,356
-        KeyDown D
-        DelayRandom 119,121
-        KeyUp D
-        DelayRandom 141,143
-        KeyDown S
-        DelayRandom 76,77
-        KeyUp S
-        DelayRandom 38,39
-        KeyDown S
-        DelayRandom 82,83
-        KeyUp S
-        DelayRandom 38,39
-        KeyDown S
-        DelayRandom 82,83
-        KeyUp S
-        DelayRandom 38,39
-        KeyDown S
-        DelayRandom 82,83
-        KeyUp S
-        DelayRandom 30,31
-        KeyDown S
-        DelayRandom 90,91
-        KeyUp S
-        DelayRandom 68,69
-        KeyDown A
-        DelayRandom 82,83
-        KeyUp A
-        DelayRandom 23,24
-        KeyDown A
-        DelayRandom 75,76
-        KeyUp A
-        DelayRandom 30,31
-        KeyDown A
-        DelayRandom 67,68
-        KeyUp A
-        DelayRandom 38,39
-        KeyDown A
-        DelayRandom 82,83
-        KeyUp A
-        DelayRandom 30,31
-        KeyDown A
-        DelayRandom 68,69
-        KeyUp A
-        DelayRandom 36,37
-        KeyDown S
-        DelayRandom 69,70
-        KeyUp S
-        DelayRandom 37,38
-        KeyDown S
-        DelayRandom 84,85
-        KeyUp S
-        DelayRandom 29,30
-        KeyDown S
-        DelayRandom 90,91
-        KeyUp S
-        DelayRandom 22,23
-        KeyDown S
-        DelayRandom 98,99
-        KeyUp S
-        DelayRandom 23,24
-        KeyDown S
-        DelayRandom 113,115
-        KeyUp S
-        DelayRandom 6,7
-        KeyDown S
-        DelayRandom 53,54
-        KeyUp S
-        DelayRandom 45,46
-        KeyDown D
-        DelayRandom 60,61
-        KeyUp D
-        DelayRandom 30,31
-        KeyDown D
-        DelayRandom 66,67
-        KeyUp D
-        DelayRandom 31,32
-        KeyDown D
-        DelayRandom 83,84
-        KeyUp D
-        DelayRandom 36,37
-        KeyDown D
-        DelayRandom 84,85
-        KeyUp D
-        DelayRandom 30,31
-        KeyDown D
-        DelayRandom 90,91
-        KeyUp D
-        DelayRandom 45,46
-        KeyDown D
-        DelayRandom 7,8
-        KeyDown S
-        DelayRandom 46,47
-        KeyUp D
-        DelayRandom 22,23
-        KeyUp S
-        DelayRandom 30,31
-        KeyDown S
-        DelayRandom 90,91
-        KeyUp S
-        DelayRandom 30,31
-        KeyDown S
-        DelayRandom 84,85
-        KeyUp S
-        DelayRandom 36,37
-        KeyDown S
-        DelayRandom 90,91
-        KeyUp S
-        DelayRandom 30,31
-        KeyDown S
-        DelayRandom 98,99
-        KeyUp S
-        DelayRandom 7,8
-        KeyDown F
-        DelayRandom 97,98
-        KeyUp F
-        DelayRandom 53,54
-        KeyDown F
-        DelayRandom 67,68
-        KeyUp F
-        DelayRandom 472,480
+        a=random(1,4)
+        if a == 1 then
+            DelayRandom 86,91
+            KeyDown Space
+            DelayRandom 135,137
+            KeyUp Space
+            DelayRandom 135,137
+            KeyDown D
+            DelayRandom 89,90
+            KeyUp D
+            DelayRandom 31,32
+            KeyDown D
+            DelayRandom 83,84
+            KeyUp D
+            DelayRandom 30,31
+            KeyDown D
+            DelayRandom 112,114
+            KeyUp D
+            DelayRandom 69,70
+            KeyDown A
+            DelayRandom 74,75
+            KeyUp A
+            DelayRandom 37,38
+            KeyDown A
+            DelayRandom 75,76
+            KeyUp A
+            DelayRandom 45,46
+            KeyDown A
+            DelayRandom 75,76
+            KeyUp A
+            DelayRandom 38,39
+            KeyDown A
+            DelayRandom 75,76
+            KeyUp A
+            DelayRandom 37,38
+            KeyDown A
+            DelayRandom 98,99
+            KeyUp A
+            DelayRandom 75,76
+            KeyDown S
+            DelayRandom 97,98
+            KeyUp S
+            DelayRandom 30,31
+            KeyDown S
+            DelayRandom 75,76
+            KeyUp S
+            DelayRandom 45,46
+            KeyDown S
+            DelayRandom 75,76
+            KeyUp S
+            DelayRandom 38,39
+            KeyDown S
+            DelayRandom 105,107
+            KeyUp S
+            DelayRandom 7,8
+            KeyDown S
+            DelayRandom 90,91
+            KeyUp S
+            DelayRandom 39,40
+            KeyDown S
+            DelayRandom 81,82
+            KeyUp S
+            DelayRandom 149,151
+            KeyDown F
+            DelayRandom 121,123
+            KeyUp F
+            DelayRandom 401,405
+        else if a == 2 then
+            DelayRandom 94,99
+            KeyDown Up
+            DelayRandom 151,153
+            KeyDown Space
+            DelayRandom 97,98
+            KeyUp Space
+            DelayRandom 46,47
+            KeyDown Space
+            DelayRandom 126,128
+            KeyUp Space
+            DelayRandom 196,198
+            KeyDown A
+            DelayRandom 119,121
+            KeyUp A
+            DelayRandom 30,31
+            KeyDown A
+            DelayRandom 120,122
+            KeyUp A
+            DelayRandom 75,76
+            KeyDown S
+            DelayRandom 120,122
+            KeyUp S
+            DelayRandom 60,61
+            KeyDown S
+            DelayRandom 69,70
+            KeyUp S
+            DelayRandom 44,45
+            KeyDown S
+            DelayRandom 67,68
+            KeyUp S
+            DelayRandom 45,46
+            KeyDown S
+            DelayRandom 83,84
+            KeyUp S
+            DelayRandom 31,32
+            KeyDown S
+            DelayRandom 90,91
+            KeyUp S
+            DelayRandom 29,30
+            KeyDown D
+            DelayRandom 82,83
+            KeyUp D
+            DelayRandom 30,31
+            KeyDown D
+            DelayRandom 83,84
+            KeyUp D
+            DelayRandom 37,38
+            KeyDown D
+            DelayRandom 76,77
+            KeyUp D
+            DelayRandom 37,38
+            KeyDown D
+            DelayRandom 90,91
+            KeyUp D
+            DelayRandom 37,38
+            KeyDown D
+            DelayRandom 83,84
+            KeyUp D
+            DelayRandom 45,46
+            KeyDown S
+            DelayRandom 75,76
+            KeyUp S
+            DelayRandom 46,47
+            KeyDown S
+            DelayRandom 74,75
+            KeyUp S
+            DelayRandom 30,31
+            KeyDown S
+            DelayRandom 90,91
+            KeyUp S
+            DelayRandom 37,38
+            KeyDown S
+            DelayRandom 84,85
+            KeyUp S
+            DelayRandom 36,37
+            KeyDown S
+            DelayRandom 83,84
+            KeyUp S
+            DelayRandom 37,38
+            KeyDown S
+            DelayRandom 105,107
+            KeyUp S
+            DelayRandom 53,54
+            KeyDown F
+            DelayRandom 105,107
+            KeyUp F
+            DelayRandom 52,53
+            KeyDown F
+            DelayRandom 120,122
+            KeyUp F
+            DelayRandom 488,493
+            KeyUp Up
+            DelayRandom 410,420
+        else
+            DelayRandom 352,356
+            KeyDown D
+            DelayRandom 119,121
+            KeyUp D
+            DelayRandom 141,143
+            KeyDown S
+            DelayRandom 76,77
+            KeyUp S
+            DelayRandom 38,39
+            KeyDown S
+            DelayRandom 82,83
+            KeyUp S
+            DelayRandom 38,39
+            KeyDown S
+            DelayRandom 82,83
+            KeyUp S
+            DelayRandom 38,39
+            KeyDown S
+            DelayRandom 82,83
+            KeyUp S
+            DelayRandom 30,31
+            KeyDown S
+            DelayRandom 90,91
+            KeyUp S
+            DelayRandom 68,69
+            KeyDown A
+            DelayRandom 82,83
+            KeyUp A
+            DelayRandom 23,24
+            KeyDown A
+            DelayRandom 75,76
+            KeyUp A
+            DelayRandom 30,31
+            KeyDown A
+            DelayRandom 67,68
+            KeyUp A
+            DelayRandom 38,39
+            KeyDown A
+            DelayRandom 82,83
+            KeyUp A
+            DelayRandom 30,31
+            KeyDown A
+            DelayRandom 68,69
+            KeyUp A
+            DelayRandom 36,37
+            KeyDown S
+            DelayRandom 69,70
+            KeyUp S
+            DelayRandom 37,38
+            KeyDown S
+            DelayRandom 84,85
+            KeyUp S
+            DelayRandom 29,30
+            KeyDown S
+            DelayRandom 90,91
+            KeyUp S
+            DelayRandom 22,23
+            KeyDown S
+            DelayRandom 98,99
+            KeyUp S
+            DelayRandom 23,24
+            KeyDown S
+            DelayRandom 113,115
+            KeyUp S
+            DelayRandom 6,7
+            KeyDown S
+            DelayRandom 53,54
+            KeyUp S
+            DelayRandom 45,46
+            KeyDown D
+            DelayRandom 60,61
+            KeyUp D
+            DelayRandom 30,31
+            KeyDown D
+            DelayRandom 66,67
+            KeyUp D
+            DelayRandom 31,32
+            KeyDown D
+            DelayRandom 83,84
+            KeyUp D
+            DelayRandom 36,37
+            KeyDown D
+            DelayRandom 84,85
+            KeyUp D
+            DelayRandom 30,31
+            KeyDown D
+            DelayRandom 90,91
+            KeyUp D
+            DelayRandom 45,46
+            KeyDown D
+            DelayRandom 7,8
+            KeyDown S
+            DelayRandom 46,47
+            KeyUp D
+            DelayRandom 22,23
+            KeyUp S
+            DelayRandom 30,31
+            KeyDown S
+            DelayRandom 90,91
+            KeyUp S
+            DelayRandom 30,31
+            KeyDown S
+            DelayRandom 84,85
+            KeyUp S
+            DelayRandom 36,37
+            KeyDown S
+            DelayRandom 90,91
+            KeyUp S
+            DelayRandom 30,31
+            KeyDown S
+            DelayRandom 98,99
+            KeyUp S
+            DelayRandom 7,8
+            KeyDown F
+            DelayRandom 97,98
+            KeyUp F
+            DelayRandom 53,54
+            KeyDown F
+            DelayRandom 67,68
+            KeyUp F
+            DelayRandom 472,480
+        End If
     else //跳A
-        DelayRandom 121,124
-        KeyDown Space
-        DelayRandom 83,84
-        KeyUp Space
-        DelayRandom 170,172
-        KeyDown S
-        DelayRandom 98,99
-        KeyUp S
-        DelayRandom 772,780
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Mercedes\angle.bmp",000000,1.00,0,intX,intY	//找图
+        if intX >= 0 Then //跳天使
+            DelayRandom 321,324
+            KeyDown Space
+            DelayRandom 136,138
+            KeyUp Space
+            DelayRandom 127,129
+            KeyDown S
+            DelayRandom 142,144
+            KeyUp S
+            DelayRandom 225,228
+            KeyDown F
+            DelayRandom 150,152
+            KeyUp F
+            DelayRandom 636,640
+        Else
+            DelayRandom 121,124
+            KeyDown Space
+            DelayRandom 83,84
+            KeyUp Space
+            DelayRandom 170,172
+            KeyDown S
+            DelayRandom 98,99
+            KeyUp S
+            DelayRandom 772,780
+        End If
     End If
 End Sub
 
@@ -467,11 +647,12 @@ else //竖放屏幕
     xEnd = 1440
     yEnd = 2560
 End If
-V12Time      = 0               //上次风的时间
-fountainTime = 0               //上次喷泉的时间
-pickingTime  = GetTimeStamp()  //上次捡钱的时间
-yTolerance   = 0               //初始化
-Timer        4, 1, 3100        //无限循环解轮
+V12Time        = 0                //上次风的时间
+fountainTime   = 0                //上次喷泉的时间
+alterFountTime = GetTimeStamp()  //另一条喷泉路
+pickingTime    = GetTimeStamp()   //上次捡钱的时间
+yTolerance     = 0                //初始化
+Timer          4, 1, 3100         //无限循环解轮
 while 1 > 0
 
     a = GetTimeStamp() - V12Time
@@ -500,6 +681,16 @@ while 1 > 0
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
     a = GetTimeStamp() - fountainTime
     if a > 56 or intX >= 0 then //可以喷泉了
+
+        a = GetTimeStamp() - alterFountTime
+        if a > 120 then //走另一条路
+            tarX = -63
+            tarY = 115
+            tolerance = 4
+            Call Move()
+            alterFountTime = GetTimeStamp()
+        End if
+
         tarX = -63
         tarY = 84
         tolerance = 4
@@ -519,10 +710,27 @@ while 1 > 0
         DelayRandom 712,721
         fountainTime = GetTimeStamp()
 
-        tarX = -6
-        tarY = 85
-        tolerance = 4
-        Call Move() //来左上层这里好一些
+        DelayRandom 15,25
+        KeyDown Right
+        DelayRandom 97,98
+        KeyDown Space
+        DelayRandom 68,69
+        KeyUp Space
+        DelayRandom 45,46
+        KeyDown Space
+        DelayRandom 89,90
+        KeyUp Space
+        DelayRandom 53,54
+        KeyDown S
+        DelayRandom 97,98
+        KeyUp S
+        DelayRandom 165,167
+        KeyDown G
+        DelayRandom 89,90
+        KeyUp G
+        DelayRandom 700,708
+        KeyUp Right
+        DelayRandom 41,42
     End If
 
     a = GetTimeStamp() - pickingTime
@@ -532,7 +740,7 @@ while 1 > 0
         tarY = 115
         tolerance = 4  //先去右下角
         Call Move()
-        tarY = 79
+        tarY = 66
         tolerance = 4  //再去右上角
         Call Move()
         pickingTime = GetTimeStamp()
@@ -552,8 +760,10 @@ while 1 > 0
             tarX = -6
             tarY = 85
             tolerance = 10
-            Call Judge() //看下人在左上辅助层吗
-            if tolLoc > 0 then //如果在辅助层
+            Call Judge() //看下人在左上辅助层(一)吗
+            if tolLoc > 0 then //如果在辅助层(一)
+                tolerance = 4
+                Call Move()
                 DelayRandom 15,20
                 KeyDown Right
                 DelayRandom 45,50
@@ -576,15 +786,53 @@ while 1 > 0
                 KeyUp Right
                 DelayRandom 378,380
             else
-                tarX = 10
-                tarY = 102
-                tolerance = 4
-                Call Move()
-                DelayRandom 56,58
-                KeyDown Right
-                DelayRandom 56,58
-                KeyUp Right
-                DelayRandom 13,14
+                tarX = -6
+                tarY = 75
+                tolerance = 10
+                Call Judge() //看下人在左上辅助层(二)吗
+                if tolLoc > 0 then //如果在辅助层(二)
+                    tolerance = 4
+                    Call Move()
+                    DelayRandom 15,20
+                    KeyDown Right
+                    DelayRandom 45,50
+                    KeyUp Right
+                    DelayRandom 78,80
+                    KeyDown Down
+                    DelayRandom 82,83
+                    KeyDown Space
+                    DelayRandom 135,137
+                    KeyUp Space
+                    DelayRandom 181,183
+                    KeyUp Down
+                    DelayRandom 517,523
+                    KeyDown Down
+                    DelayRandom 119,121
+                    KeyDown Space
+                    DelayRandom 143,145
+                    KeyUp Down
+                    DelayRandom 23,24
+                    KeyUp Space
+                    DelayRandom 306,310
+                    KeyDown Right
+                    DelayRandom 31,32
+                    KeyDown Space
+                    DelayRandom 113,115
+                    KeyUp Space
+                    DelayRandom 112,114
+                    KeyUp Right
+                    DelayRandom 378,380
+                else
+                    tarX = 10
+                    tarY = 102
+                    tolerance = 4
+                    Call Move()
+                    DelayRandom 56,58
+                    KeyDown Right
+                    DelayRandom 56,58
+                    KeyUp Right
+                    DelayRandom 13,14
+                End If
             End If
         End If
     End If
