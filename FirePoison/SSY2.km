@@ -335,17 +335,6 @@ Sub on_timer4 //查地图轮,每3秒一次
         else //人是正常的
             staticCount = 0
         End If
-
-        // 模拟从绳子跳走(方向向左)
-        // DelayRandom 13,15
-        // KeyDown Left
-        // DelayRandom 21,22
-        // KeyDown Space
-        // DelayRandom 76,77
-        // KeyUp Space
-        // DelayRandom 44,45
-        // KeyUp Left
-        // DelayRandom 13,15
     End If
     if remainder%5 == 0 Then
         FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY

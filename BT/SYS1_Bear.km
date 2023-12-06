@@ -4,43 +4,48 @@ ScreenY=2560
 Times=0
 
 [Script]
-Dim x1,             x2,               y1,   y2        // 矩形区域:小地图采样点
-Dim x3,             y3,               xEnd, yEnd      // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,           tarY                              //目标
-Dim logoX,          logoY,            intX, intY      //算目的地差值
-Dim tolerance,      yTolerance                        //快速移动的容差
-Dim FartOK,         Hooking                           //熊屁的计时器冷却,钩子中判断
-Dim cY,             consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X或Y轴变化了
-Dim tolLoc,         a,                currentState    //冷却和状态相关
-Dim stoneSteleTime, pickingTime,      boboTime        //冷却
+Dim x1,             x2,               y1,      y2       // 矩形区域:小地图采样点
+Dim x3,             y3,               xEnd,    yEnd     // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,           tarY                                //目标
+Dim logoX,          logoY,            intX,    intY     //算目的地差值
+Dim tolerance,      yTolerance                          //快速移动的容差
+Dim FartOK,         Hooking                             //熊屁的计时器冷却,钩子中判断
+Dim cY,             consecutiveTimes, consecutiveMax    //用这个东西判断角色是不是没有X或Y轴变化了
+Dim tolLoc,         a,                currentState      //冷却和状态相关
+Dim stoneSteleTime, pickingTime,      boboTime          //冷却
+Dim remainder,      staticCount,      staticX, staticY  //检测余数,还有不动的计数器
 
 
 Sub on_timer1 //熊屁计时器
     FartOK = 1
 EndSub
 
+Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
+    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+
+    if intX < 0 Then //人物跑到了边界  处理一下
+        KeyDown Left
+        DelayRandom 200,250
+        KeyUp Left
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then //左移了还是没找到,就右移
+            KeyDown Right
+            DelayRandom 200,250
+            KeyUp Right
+            FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        End if
+    End if
+
+    intX = intX - logoX
+    intY = intY - logoY
+End Sub
+
 Sub Move_Bear  //熊形态的移动
     consecutiveTimes = -1  //初始就启用指南针判断
     consecutiveMax   = 4   //降落默认值为4
     while  1 > 0
-        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-
-        if intX < 0 Then //人物跑到了边界  处理一下
-            KeyDown Left
-            DelayRandom 200,250
-            KeyUp Left
-            FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-            if intX < 0 Then //左移了还是没找到,就右移
-                KeyDown Right
-                DelayRandom 200,250
-                KeyUp Right
-                FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-            End if
-        End if
-
-        intX = intX - logoX
-        intY = intY - logoY
+        Call GetXY()
         if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
             if Hooking > 0 and intY <= tarY Then //钩子的判断刹车
                 KeyDown Alt
@@ -126,18 +131,24 @@ Sub Move_Bear  //熊形态的移动
                 else
                     yTolerance = 0 //重置Y容忍,默认为0
                     if tolerance < 4 Then //容忍度小于4还是要小碎步
-                        //Y轴也达标了,到X轴了
-                        If intX < (tarX-tolerance) Then //向右小碎步
-                            KeyDown Right
-                            DelayRandom 10,15
-                            KeyUp Right
-                        Else If intX > (tarX+tolerance) Then //向左小碎步
-                            KeyDown Left
-                            DelayRandom 10,15
-                            KeyUp Left
-                        else
-                            Exit Sub
-                        End If
+                        for 10
+                            If intX < (tarX-tolerance) Then //向右小碎步
+                                tolLoc = (tarX - tolerance - intX) * 14
+                                KeyDown Right
+                                Delay tolLoc
+                                KeyUp Right
+                            Else If intX > (tarX+tolerance) Then //向左小碎步
+                                tolLoc = (intX - tarX - tolerance) * 14
+                                KeyDown Left
+                                Delay tolLoc
+                                KeyUp Left
+                            else
+                                Exit Sub
+                            End If
+
+                            Call GetXY() //更新人物坐标
+                        Next
+                        Exit Sub //次数到了直接结束
                     else //容忍度大于等于4可以直接结束
                         Exit Sub
                     End If
@@ -148,30 +159,57 @@ Sub Move_Bear  //熊形态的移动
     Wend
 End Sub
 
-Sub on_timer4 //查地图轮,每10秒一次
-    FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 then
-        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+Sub on_timer4 //查地图轮,每3秒一次
+    remainder = remainder + 1
+    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then //找到了人物才会进行下去
         intX = intX - logoX
-        intY = intY - logoY - 1
-        //找到了轮
-        tarX       = intX
-        tarY       = intY
-        tolerance  = 2
-        yTolerance = 3     //Y容忍可以多一点
-        Call Move_Bear()
-        //暂停脚本
-        Beep 1000,200
-        DelayRandom 100,120
-        Beep 1000,200
-        DelayRandom 100,120
-        Beep 1000,200
-        DelayRandom 100,120
-        Beep 1000,200
-        Pause
-    else
+        intY = intY - logoY
     End If
-    Timer 4,1,5000 //无限循环
+    if staticX ==  intX and staticY == intY then //如果相等就累加计数器
+        staticCount = staticCount + 1
+    else
+        staticX     = intX
+        staticY     = intY
+        staticCount = 0
+    End If
+    if staticCount >= 6 Then //
+        Beep 500,500
+        KeyAllup //施放所有按键并重启
+    End If
+    if remainder%5 == 0 Then
+        FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then
+            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+            intX = intX - logoX
+            intY = intY - logoY - 1 //图标的对准问题
+            staticX     = tarX //(导航前先记录一下老坐标,然后再恢复,复用staticX)
+            staticY     = tarY
+            staticCount = 0
+            tarX        = intX
+            tarY        = intY
+            tolerance   = 2
+            yTolerance  = 3
+            Call Move()
+            tarX = staticX
+            tarY = staticY
+            //暂停脚本
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            Pause
+        else
+        End If
+    End If
+    if remainder > 5 then
+        remainder = 1
+    End If
+    Timer 4,1,1000 //无限循环
 EndSub
 
 Sub Judge //判断人物是否在某个地点旁边,用tarXY,tolerance,tolLoc返回结果,不能嵌套move()使用,可以先使用这个再用move

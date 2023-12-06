@@ -11,32 +11,32 @@ Dim logoX,     logoY,            intX,    intY     //算目的地差值
 Dim cY,        consecutiveTimes, consecutiveMax    //用这个东西判断角色是不是没有X或Y轴变化了
 Dim tolerance, tolLoc,           yTolerance        //快速移动的容差,0代表精确移动,另外个是局部变量
 
+Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
+    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
 
-//目前已经算出一个二段跳能跳32的X轴(平地)
+    if intX < 0 Then //人物跑到了边界  处理一下
+        KeyDown Left
+        DelayRandom 200,250
+        KeyUp Left
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then //左移了还是没找到,就右移
+            KeyDown Right
+            DelayRandom 200,250
+            KeyUp Right
+            FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        End if
+    End if
+
+    intX = intX - logoX
+    intY = intY - logoY
+End Sub
 
 Sub Move()  //精确的移动
     consecutiveTimes = -1  //初始就启用指南针判断
     consecutiveMax   = 3   //降落默认值为4
     while  1 > 0
-        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-
-        if intX < 0 Then //人物跑到了边界  处理一下
-            TracePrint 没找到人,开始左右移自测
-            KeyDown Left
-            DelayRandom 200,250
-            KeyUp Left
-            FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-            if intX < 0 Then //左移了还是没找到,就右移
-                KeyDown Right
-                DelayRandom 200,250
-                KeyUp Right
-                FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-            End if
-        End if
-
-        intX = intX - logoX
-        intY = intY - logoY
+        Call GetXY()
         if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
             if Hooking > 0 and intY <= tarY Then //钩子的判断刹车
                 TracePrint 钩子刹车
@@ -214,18 +214,24 @@ Sub Move()  //精确的移动
                 else
                     yTolerance = 0
                     if tolerance < 4 Then //容忍度小于4还是要小碎步
-                        //Y轴也达标了,到X轴了
-                        If intX < (tarX-tolerance) Then //向右小碎步
-                            KeyDown Right
-                            DelayRandom 15,25
-                            KeyUp Right
-                        Else If intX > (tarX+tolerance) Then //向左小碎步
-                            KeyDown Left
-                            DelayRandom 15,25
-                            KeyUp Left
-                        else
-                            Exit Sub
-                        End If
+                        for 10
+                            If intX < (tarX-tolerance) Then //向右小碎步
+                                tolLoc = (tarX - tolerance - intX) * 14
+                                KeyDown Right
+                                Delay tolLoc
+                                KeyUp Right
+                            Else If intX > (tarX+tolerance) Then //向左小碎步
+                                tolLoc = (intX - tarX - tolerance) * 14
+                                KeyDown Left
+                                Delay tolLoc
+                                KeyUp Left
+                            else
+                                Exit Sub
+                            End If
+
+                            Call GetXY() //更新人物坐标
+                        Next
+                        Exit Sub //次数到了直接结束
                     else //容忍度大于等于4可以直接结束
                         Exit Sub
                     End If

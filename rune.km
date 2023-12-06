@@ -14,15 +14,6 @@ Sub Move  //模拟移动,不要移植这个
 	MsgBox [轮X轴 & tarX & ,轮Y轴 & tarY & ]
 End Sub
 
-Sub GetPersonXY //获取角色的XY轴(如果找不到会返还-1和-1,再多判断一下)
-    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then //找到了人物才会进行下去
-        intX = intX - logoX
-        intY = intY - logoY
-    End If
-End Sub
-
 Sub on_timer4 //查地图轮,每3秒一次
     remainder = remainder + 1
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
