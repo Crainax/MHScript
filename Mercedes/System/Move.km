@@ -10,6 +10,7 @@ Dim tarX,      tarY,             Hooking           //目标
 Dim logoX,     logoY,            intX,    intY     //算目的地差值
 Dim cY,        consecutiveTimes, consecutiveMax    //用这个东西判断角色是不是没有X或Y轴变化了
 Dim tolerance, tolLoc,           yTolerance        //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim staticCount, staticX,          staticY         //防卡计数器
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -32,13 +33,52 @@ Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     intY = intY - logoY
 End Sub
 
+Sub AntiJam //一般跟随GetXY后用
+    if staticX ==  intX and staticY == intY then //如果相等就累加计数器
+        staticCount = staticCount + 1
+    else
+        staticX     = intX
+        staticY     = intY
+        staticCount = 0
+    End If
+    if staticCount >= 3 Then //
+        if intY == 102 and intX < 10+6 and intX > 10-6 Then //白名单
+            staticCount = 0
+            Exit Sub
+        End If
+
+        Beep 500,500
+        KeyAllup //施放所有按键并重启
+        // RestartScript //重启 和上面二选一即可
+        // 模拟从绳子跳走
+        DelayRandom 13,15
+        KeyDown Up
+        DelayRandom 120,122
+        KeyDown Space
+        DelayRandom 69,70
+        KeyUp Space
+        DelayRandom 36,37
+        KeyDown Space
+        DelayRandom 69,70
+        KeyUp Space
+        DelayRandom 81,82
+        KeyUp Up
+        DelayRandom 44,48
+        KeyDown S
+        DelayRandom 124,126
+        KeyUp S
+        DelayRandom 52,53
+
+    End If
+End Sub
+
 Sub Move()  //精确的移动
     consecutiveTimes = -1  //初始就启用指南针判断
     consecutiveMax   = 3   //降落默认值为4
     while  1 > 0
         Call GetXY()
         if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
-            if Hooking > 0 and intY <= tarY Then //钩子的判断刹车
+            if Hooking > 0 and intY <= tarY-3 Then //钩子的判断刹车
                 TracePrint 钩子刹车
                 KeyDown Alt
                 DelayRandom 258,282
@@ -64,6 +104,7 @@ Sub Move()  //精确的移动
                 TracePrint 降落判断: & consecutiveTimes
             End If
         else //继续根据
+            Call AntiJam()
             if tolerance > 4 Then
                 tolLoc = tolerance
             else  //速走的默认为4
@@ -163,11 +204,13 @@ Sub Move()  //精确的移动
                 DelayRandom 41,42
             Else If intX < (tarX-tolLoc) Then //向右走
                 KeyDown Right
+                DelayRandom 230,260
+                KeyUp Right
             Else If intX > (tarX+tolLoc) Then //向左走
                 KeyDown Left
-            else
-                KeyUp Right
+                DelayRandom 230,260
                 KeyUp Left
+            else
                 If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
                     consecutiveTimes = 0 //启动降落判断
                     cY = intY
