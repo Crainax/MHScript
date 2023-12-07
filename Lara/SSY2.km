@@ -73,7 +73,7 @@ Sub Move()  //精确的移动
     while  1 > 0
         Call GetXY()
         if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
-            if Hooking > 0 and intY <= tarY - 5 Then //钩子的判断刹车
+            if Hooking > 0 and intY <= tarY - 3 Then //钩子的判断刹车
                 KeyDown Ctrl
                 DelayRandom 258,282
                 KeyUp Ctrl

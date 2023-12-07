@@ -49,10 +49,10 @@ Sub AntiJam //一般跟随GetXY后用
         staticY     = intY
         staticCount = 0
     End If
-    if staticCount >= 3 Then //
+    if staticCount >= 5 Then //
         // if intY == 107 and intX < -8+6 and intX > -8-6 Then //白名单
             // staticCount = 0
-            // Exit Sub
+            // Exit Sub111
         // End If
 
         Beep 500,500
@@ -79,7 +79,7 @@ Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题)
         Call GetXY()
 
         if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
-            if Hooking > 0 and intY <= tarY - 5 Then //钩子的判断刹车
+            if Hooking > 0 and intY <= tarY - 3 Then //钩子的判断刹车
                 KeyDown Alt
                 DelayRandom 258,282
                 KeyUp Alt
@@ -536,7 +536,7 @@ while 1 > 0
         else if a > 130 then //去捡钱点
             currentState = 1 //下一步去左下角
         else //直接去熊屁点1
-            tarX      = -38
+            tarX      = -35
             tarY      = 108
             tolerance = 4
             Call Move_Bear()

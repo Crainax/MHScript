@@ -167,7 +167,7 @@ Sub Move_Bild //鸟形态的地面移动
                     KeyUp LShift
                 End If
             End If
-            if Hooking > 0 and intY <= tarY - 5 Then //钩子的判断刹车
+            if Hooking > 0 and intY <= tarY - 3 Then //钩子的判断刹车
                 TracePrint 钩子刹车
                 KeyDown Alt
                 DelayRandom 258,282
@@ -377,7 +377,7 @@ Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题)
         Call GetXY()
 
         if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
-            if Hooking > 0 and intY <= tarY - 5 Then //钩子的判断刹车
+            if Hooking > 0 and intY <= tarY - 3 Then //钩子的判断刹车
                 TracePrint 钩子刹车
                 KeyDown Alt
                 DelayRandom 258,282
