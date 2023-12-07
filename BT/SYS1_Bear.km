@@ -47,7 +47,7 @@ Sub Move_Bear  //熊形态的移动
     while  1 > 0
         Call GetXY()
         if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
-            if Hooking > 0 and intY <= tarY Then //钩子的判断刹车
+            if Hooking > 0 and intY <= tarY - 5 Then //钩子的判断刹车
                 KeyDown Alt
                 DelayRandom 258,282
                 KeyUp Alt
@@ -103,11 +103,13 @@ Sub Move_Bear  //熊形态的移动
                 DelayRandom 41,42
             Else If intX < (tarX-tolLoc) Then //向右走
                 KeyDown Right
+                DelayRandom 230,260
+                KeyUp Right
             Else If intX > (tarX+tolLoc) Then //向左走
                 KeyDown Left
-            else
-                KeyUp Right
+                DelayRandom 230,260
                 KeyUp Left
+            else
                 If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
                     consecutiveTimes = 0 //启动降落判断
                     cY = intY
@@ -161,23 +163,23 @@ End Sub
 
 Sub on_timer4 //查地图轮,每3秒一次
     remainder = remainder + 1
-    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then //找到了人物才会进行下去
-        intX = intX - logoX
-        intY = intY - logoY
-    End If
-    if staticX ==  intX and staticY == intY then //如果相等就累加计数器
-        staticCount = staticCount + 1
-    else
-        staticX     = intX
-        staticY     = intY
-        staticCount = 0
-    End If
-    if staticCount >= 6 Then //
-        Beep 500,500
-        KeyAllup //施放所有按键并重启
-    End If
+    // FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+    // FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    // if intX >= 0 Then //找到了人物才会进行下去
+        // intX = intX - logoX
+        // intY = intY - logoY
+    // End If
+    // if staticX ==  intX and staticY == intY then //如果相等就累加计数器
+        // staticCount = staticCount + 1
+    // else
+        // staticX     = intX
+        // staticY     = intY
+        // staticCount = 0
+    // End If
+    // if staticCount >= 6 Then //
+        // Beep 500,500
+        // KeyAllup //施放所有按键并重启
+    // End If
     if remainder%5 == 0 Then
         FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
         if intX >= 0 then
@@ -191,7 +193,7 @@ Sub on_timer4 //查地图轮,每3秒一次
             tarY        = intY
             tolerance   = 2
             yTolerance  = 3
-            Call Move()
+            Call Move_Bear()
             tarX = staticX
             tarY = staticY
             //暂停脚本
@@ -206,7 +208,7 @@ Sub on_timer4 //查地图轮,每3秒一次
         else
         End If
     End If
-    if remainder > 5 then
+    if remainder >= 5 then
         remainder = 1
     End If
     Timer 4,1,1000 //无限循环
@@ -422,23 +424,33 @@ while 1 > 0
         KeyUp Left
         DelayRandom 12,14
         Call Fart()
-        tarX      = -1
+
+        DelayRandom 50,62
+        KeyDown Right
+        DelayRandom 383,387
+        KeyDown Space
+        DelayRandom 76,77
+        KeyUp Space
+        DelayRandom 32,33
+        KeyDown Space
+        DelayRandom 87,88
+        KeyUp Space
+        DelayRandom 714,722
+        KeyDown Space
+        DelayRandom 72,73
+        KeyUp Space
+        DelayRandom 62,63
+        KeyDown Space
+        DelayRandom 61,62
+        KeyUp Space
+        DelayRandom 729,737
+        KeyUp Right
+        DelayRandom 50,62
+
+        tarX      = 18
         tarY      = 108
         tolerance = 4
         Call Move_Bear()
-        DelayRandom 15,25
-        KeyDown Right
-        DelayRandom 95,96
-        KeyDown Space
-        DelayRandom 64,65
-        KeyUp Space
-        DelayRandom 119,121
-        KeyDown Space
-        DelayRandom 97,98
-        KeyUp Space
-        DelayRandom 42,43
-        KeyUp Right
-        DelayRandom 41,42
         currentState = 5 //分支汇流
     End If
 
@@ -482,36 +494,33 @@ while 1 > 0
             tarY      = 74
             tolerance = 4
             Call Move_Bear()
-            DelayRandom 15,25
+
+            DelayRandom 101,110
             KeyDown Left
-            DelayRandom 95,96
+            DelayRandom 154,156
             KeyDown Space
-            DelayRandom 64,65
+            DelayRandom 94,95
             KeyUp Space
-            DelayRandom 119,121
+            DelayRandom 197,199
             KeyDown Space
-            DelayRandom 97,98
+            DelayRandom 116,118
             KeyUp Space
-            DelayRandom 42,43
+            DelayRandom 122,124
             KeyUp Left
-            DelayRandom 41,42
-            tarX      = -33
-            tarY      = 80
-            tolerance = 4
-            Call Move_Bear()
-            DelayRandom 15,25
+            DelayRandom 638,645
             KeyDown Left
-            DelayRandom 95,96
+            DelayRandom 557,563
             KeyDown Space
-            DelayRandom 64,65
+            DelayRandom 82,83
             KeyUp Space
-            DelayRandom 119,121
+            DelayRandom 160,162
             KeyDown Space
-            DelayRandom 97,98
+            DelayRandom 83,84
             KeyUp Space
-            DelayRandom 42,43
+            DelayRandom 106,108
             KeyUp Left
-            DelayRandom 741,742
+            DelayRandom 253,274
+
             currentState = 0
         else if a > 130 then //去捡钱点
             currentState = 1 //下一步去左下角

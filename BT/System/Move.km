@@ -244,13 +244,15 @@ Sub Move_Bild //鸟形态的地面移动
                 DelayRandom 85,86
                 KeyUp Left
                 DelayRandom 146,151
-            Else If intX < (tarX-temp) Then //向右走
+            Else If intX < (tarX-tolLoc) Then //向右走
                 KeyDown Right
-            Else If intX > (tarX+temp) Then //向左走
-                KeyDown Left
-            else
+                DelayRandom 230,260
                 KeyUp Right
+            Else If intX > (tarX+tolLoc) Then //向左走
+                KeyDown Left
+                DelayRandom 230,260
                 KeyUp Left
+            else
                 If intY < tarY Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
                     consecutiveTimes = 0 //启动降落判断
                     cY = intY
@@ -341,7 +343,7 @@ Sub Move_Bear  //熊形态的移动
     while  1 > 0
         Call GetXY()
         if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
-            if Hooking > 0 and intY <= tarY Then //钩子的判断刹车
+            if Hooking > 0 and intY <= tarY - 5 Then //钩子的判断刹车
                 TracePrint 钩子刹车
                 KeyDown Alt
                 DelayRandom 258,282
@@ -403,11 +405,13 @@ Sub Move_Bear  //熊形态的移动
                 DelayRandom 41,42
             Else If intX < (tarX-tolLoc) Then //向右走
                 KeyDown Right
+                DelayRandom 230,260
+                KeyUp Right
             Else If intX > (tarX+tolLoc) Then //向左走
                 KeyDown Left
-            else
-                KeyUp Right
+                DelayRandom 230,260
                 KeyUp Left
+            else
                 If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
                     consecutiveTimes = 0 //启动降落判断
                     cY = intY
