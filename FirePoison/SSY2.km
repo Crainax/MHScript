@@ -4,16 +4,18 @@ ScreenY=1440
 Times=0
 
 [Script]
-Dim x1,           x2,               y1,      y2       // 矩形区域:小地图采样点
-Dim x3,           y3,               xEnd,    yEnd     // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,         tarY                                //寻位置相关:目标地点
-Dim logoX,        logoY,            intX,    intY     //寻位置相关:当前地点
-Dim InfiTime,     a,                inLimit           //终极无限的补充
-Dim cY,           consecutiveTimes, stuckTimes        //用这个东西判断角色是不是没有X或Y轴变化了
-Dim UpAttackTime, leftUpTime,       leftDownTime      //各种时间间隔
-Dim stoneSteleTime                                    //各种时间间隔
-Dim tolerance,    tolLoc,           yTolerance        //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim remainder,    staticCount,      staticX, staticY  //检测余数,还有不动的计数器
+Dim x1,           x2,               y1,   y2      // 矩形区域:小地图采样点
+Dim x3,           y3,               xEnd, yEnd    // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,         tarY                            //寻位置相关:目标地点
+Dim logoX,        logoY,            intX, intY    //寻位置相关:当前地点
+Dim InfiTime,     a,                inLimit       //终极无限的补充
+Dim cY,           consecutiveTimes, stuckTimes    //用这个东西判断角色是不是没有X或Y轴变化了
+Dim UpAttackTime, leftUpTime,       leftDownTime  //各种时间间隔
+Dim stoneSteleTime                                //各种时间间隔
+Dim tolerance,    tolLoc,           yTolerance    //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim staticCount,  staticX,          staticY       //防卡计数器
+Dim SavedX,       SavedY                          //保存一下临时处理的XY
+
 
 Sub Attack //技能循环攻击
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_V1.bmp",000000,1.00,0,intX,intY
@@ -156,6 +158,37 @@ Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     intY = intY - logoY
 End Sub
 
+Sub AntiJam //一般跟随GetXY后用
+    if staticX ==  intX and staticY == intY then //如果相等就累加计数器
+        staticCount = staticCount + 1
+    else
+        staticX     = intX
+        staticY     = intY
+        staticCount = 0
+    End If
+    if staticCount >= 3 Then //
+        if intY == 107 and intX < -8+6 and intX > -8-6 Then //白名单
+            staticCount = 0
+            Exit Sub
+        End If
+
+        Beep 500,500
+        KeyAllup //施放所有按键并重启
+        // RestartScript //重启 和上面二选一即可
+        // 模拟从绳子跳走
+        DelayRandom 13,15
+        KeyDown Right
+        DelayRandom 21,22
+        KeyDown Space
+        DelayRandom 76,77
+        KeyUp Space
+        DelayRandom 44,45
+        KeyUp Right
+        DelayRandom 13,15
+
+    End If
+End Sub
+
 Sub Move //精确的移动
     consecutiveTimes = -1 //初始就启用指南针判断
     stuckTimes = 0 //防卡检测初始次数为0
@@ -182,6 +215,7 @@ Sub Move //精确的移动
                 tolLoc = 4
             End If
             if intX < (tarX-12) Then //右瞬:这里的shit必须要抬起来 不然好像下面会出问题
+                Call AntiJam()
                 KeyDown Right
                 DelayRandom 12,13
                 KeyDown LShift
@@ -190,6 +224,7 @@ Sub Move //精确的移动
                 DelayRandom 212,233
                 KeyUp Right
             Else If intX > (tarX+12) Then //向左瞬
+                Call AntiJam()
                 KeyDown Left
                 DelayRandom 12,13
                 KeyDown LShift
@@ -198,10 +233,12 @@ Sub Move //精确的移动
                 DelayRandom 212,233
                 KeyUp Left
             Else If intX < (tarX-tolLoc) Then //向右走
+                Call AntiJam()
                 KeyDown Right
                 DelayRandom 230,260
                 KeyUp Right
             Else If intX > (tarX+tolLoc) Then //向左走
+                Call AntiJam()
                 KeyDown Left
                 DelayRandom 230,260
                 KeyUp Left
@@ -310,65 +347,34 @@ Sub Judge //判断人物是否在某个地点旁边,用tarXY,tolerance,tolLoc返回结果,不能嵌套
 End Sub
 
 Sub on_timer4 //查地图轮,每3秒一次
-    remainder = remainder + 1
-    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then //找到了人物才会进行下去
+
+    FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 then
+        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
         intX = intX - logoX
-        intY = intY - logoY
-    End If
-    if staticX ==  intX and staticY == intY then //如果相等就累加计数器
-        staticCount = staticCount + 1
+        intY = intY - logoY - 1 //图标的对准问题
+        SavedX     = tarX  //(导航前先记录一下老坐标,然后再恢复,复用SavedX)
+        SavedY     = tarY
+        tarX       = intX
+        tarY       = intY
+        tolerance  = 2
+        yTolerance = 3
+        KeyAllup //防错误
+        Call Move()
+        tarX = SavedX
+        tarY = SavedY
+        //暂停脚本
+        Beep 1000,200
+        DelayRandom 100,120
+        Beep 1000,200
+        DelayRandom 100,120
+        Beep 1000,200
+        DelayRandom 100,120
+        Beep 1000,200
+        Pause
     else
-        staticX     = intX
-        staticY     = intY
-        staticCount = 0
     End If
-    if staticCount >= 6 Then //
-        tarX      = -8
-        tarY      = 107
-        tolerance = 6
-        Call Judge() //人在那边吗
-        if tolLoc <= 0 then //人不在那边就当卡住
-            Beep 500,500
-            RestartScript //重启
-        else //人是正常的
-            staticCount = 0
-        End If
-    End If
-    if remainder%5 == 0 Then
-        FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 then
-            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-            intX = intX - logoX
-            intY = intY - logoY - 1 //图标的对准问题
-            //找到了轮
-            staticX     = tarX //(导航前先记录一下老坐标,然后再恢复,复用staticX)
-            staticY     = tarY
-            staticCount = 0
-            tarX        = intX
-            tarY        = intY
-            tolerance   = 2
-            yTolerance  = 3
-            Call Move()
-            tarX = staticX
-            tarY = staticY
-            //暂停脚本
-            Beep 1000,200
-            DelayRandom 100,120
-            Beep 1000,200
-            DelayRandom 100,120
-            Beep 1000,200
-            DelayRandom 100,120
-            Beep 1000,200
-            Pause
-        else
-        End If
-    End If
-    if remainder > 5 then
-        remainder = 1
-    End If
-    Timer 4,1,1000 //无限循环
+    Timer 4,1,5000 //无限循环
 EndSub
 
 
