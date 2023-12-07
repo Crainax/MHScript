@@ -4,91 +4,45 @@ ScreenY=1440
 Times=0
 
 [Script]
-Dim x1,        x2,          y1,        y2          // 矩形区域:小地图采样点
-Dim x3,        y3,          xEnd,      yEnd        // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,      tarY,        tolerance, yTolerance  //目标
-Dim logoX,     logoY,       intX,      intY        //算目的地差值
-Dim remainder, staticCount, staticX,   staticY     //检测余数,还有不动的计数器
+Dim x1,     x2,    y1,        y2          // 矩形区域:小地图采样点
+Dim x3,     y3,    xEnd,      yEnd        // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,   tarY,  tolerance, yTolerance  //目标
+Dim logoX,  logoY, intX,      intY        //算目的地差值
+Dim SavedX, SavedY                        //保存一下临时处理的XY
 
 Sub Move  //模拟移动,不要移植这个
 	MsgBox [轮X轴 & tarX & ,轮Y轴 & tarY & ]
 End Sub
 
 Sub on_timer4 //查地图轮,每3秒一次
-    remainder = remainder + 1
-    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then //找到了人物才会进行下去
-        intX = intX - logoX
-        intY = intY - logoY
-    End If
-    if staticX ==  intX and staticY == intY then //如果相等就累加计数器
-        staticCount = staticCount + 1
-    else
-        staticX     = intX
-        staticY     = intY
-        staticCount = 0
-    End If
-    if staticCount >= 6 Then //
-        // tarX      = -8 //白名单位置
-        // tarY      = 107
-        // tolerance = 6
-        // Call Judge() //人在那边吗
-        // if tolLoc <= 0 then //人不在那边就当卡住
-            // Beep 500,500
-            // RestartScript //重启
-        // else //人是正常的
-            // staticCount = 0
-        // End If
 
-        Beep 500,500
-        KeyAllup //施放所有按键并重启
-        // RestartScript //重启 和上面二选一即可
-        // 模拟从绳子跳走
-        // DelayRandom 13,15
-        // KeyDown Right
-        // DelayRandom 21,22
-        // KeyDown Space
-        // DelayRandom 76,77
-        // KeyUp Space
-        // DelayRandom 44,45
-        // KeyUp Right
-        // DelayRandom 13,15
+    FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 then
+        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+        intX = intX - logoX
+        intY = intY - logoY - 1 //图标的对准问题
+        SavedX     = tarX  //(导航前先记录一下老坐标,然后再恢复,复用SavedX)
+        SavedY     = tarY
+        tarX       = intX
+        tarY       = intY
+        tolerance  = 2
+        yTolerance = 3
+        KeyAllup //防错误
+        Call Move()
+        tarX = SavedX
+        tarY = SavedY
+        //暂停脚本
+        Beep 1000,200
+        DelayRandom 100,120
+        Beep 1000,200
+        DelayRandom 100,120
+        Beep 1000,200
+        DelayRandom 100,120
+        Beep 1000,200
+        Pause
+    else
     End If
-    if remainder%5 == 0 Then
-        FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 then
-            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-            intX = intX - logoX
-            intY = intY - logoY - 1 //图标的对准问题
-            TracePrint 找到了轮,现在自动移动中
-            staticX     = tarX //(导航前先记录一下老坐标,然后再恢复,复用staticX)
-            staticY     = tarY
-            staticCount = 0
-            tarX        = intX
-            tarY        = intY
-            tolerance   = 2
-            yTolerance  = 3
-            Call Move()
-            tarX = staticX
-            tarY = staticY
-            //暂停脚本
-            Beep 1000,200
-            DelayRandom 100,120
-            Beep 1000,200
-            DelayRandom 100,120
-            Beep 1000,200
-            DelayRandom 100,120
-            Beep 1000,200
-            Pause
-        else
-            TracePrint 没找到轮
-        End If
-    End If
-    if remainder > 5 then
-        remainder = 1
-    End If
-    Timer 4,1,1000 //无限循环
+    Timer 4,1,5000 //无限循环
 EndSub
 
 

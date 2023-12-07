@@ -4,14 +4,15 @@ ScreenY=2560
 Times=0
 
 [Script]
-Dim x1,        x2,               y1,   y2        // 矩形区域:小地图采样点
-Dim x3,        y3,               xEnd, yEnd      // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,      tarY                              //目标
-Dim logoX,     logoY,            intX, intY      //算目的地差值
-Dim DashCool,  tolLoc                            //冲刺冷却
-Dim tolerance, temp,             yTolerance      //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim cY,        consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X或Y轴变化了
-Dim Hooking,   gliding                           //钩子中(方便中途刹车)/滑翔中
+Dim x1,          x2,               y1,   y2        // 矩形区域:小地图采样点
+Dim x3,          y3,               xEnd, yEnd      // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,        tarY                              //目标
+Dim logoX,       logoY,            intX, intY      //算目的地差值
+Dim DashCool,    tolLoc                            //冲刺冷却
+Dim tolerance,   temp,             yTolerance      //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim cY,          consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X或Y轴变化了
+Dim Hooking,     gliding                           //钩子中(方便中途刹车)/滑翔中
+Dim staticCount, staticX,          staticY         //防卡计数器
 
 //目前已经算出一个二段跳能跳32的X轴(平地)
 //几个测试点:轰炸点(右)-99,130    轰炸点(左)-48,129
@@ -41,6 +42,37 @@ Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
 
     intX = intX - logoX
     intY = intY - logoY
+End Sub
+
+Sub AntiJam //一般跟随GetXY后用
+    if staticX ==  intX and staticY == intY then //如果相等就累加计数器
+        staticCount = staticCount + 1
+    else
+        staticX     = intX
+        staticY     = intY
+        staticCount = 0
+    End If
+    if staticCount >= 3 Then //
+        if intY == 107 and intX < -8+6 and intX > -8-6 Then //白名单
+            staticCount = 0
+            Exit Sub
+        End If
+
+        Beep 500,500
+        //KeyAllup //施放所有按键并重启
+        // RestartScript //重启 和上面二选一即可
+        // 模拟从绳子跳走
+        DelayRandom 13,15
+        KeyDown Right
+        DelayRandom 21,22
+        KeyDown Space
+        DelayRandom 76,77
+        KeyUp Space
+        DelayRandom 44,45
+        KeyUp Right
+        DelayRandom 13,15
+
+    End If
 End Sub
 
 Sub Move_Fly  //飞行阶段的移动
@@ -135,7 +167,7 @@ Sub Move_Bild //鸟形态的地面移动
                     KeyUp LShift
                 End If
             End If
-            if Hooking > 0 and intY <= tarY Then //钩子的判断刹车
+            if Hooking > 0 and intY <= tarY - 5 Then //钩子的判断刹车
                 TracePrint 钩子刹车
                 KeyDown Alt
                 DelayRandom 258,282
@@ -161,6 +193,7 @@ Sub Move_Bild //鸟形态的地面移动
                 //TracePrint 降落判断: & consecutiveTimes
             End If
         else //继续根据
+            Call AntiJam() //防卡
             if tolerance > 4 Then
                 temp = tolerance
             else  //速走的默认为4
@@ -337,11 +370,12 @@ Sub Move_Bild //鸟形态的地面移动
     Wend
 End Sub
 
-Sub Move_Bear  //熊形态的移动
+Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题)
     consecutiveTimes = -1  //初始就启用指南针判断
     consecutiveMax   = 4   //降落默认值为4
     while  1 > 0
         Call GetXY()
+
         if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
             if Hooking > 0 and intY <= tarY - 5 Then //钩子的判断刹车
                 TracePrint 钩子刹车
@@ -364,6 +398,7 @@ Sub Move_Bear  //熊形态的移动
                 TracePrint 降落判断: & consecutiveTimes
             End If
         else //继续根据
+            Call AntiJam() //防卡
             if tolerance > 4 Then
                 tolLoc = tolerance
             else  //速走的默认为4
