@@ -4,17 +4,17 @@ ScreenY=2560
 Times=0
 
 [Script]
-Dim x1,        x2,               y1,       y2            // 矩形区域:小地图采样点
-Dim x3,        y3,               xEnd,     yEnd          // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,      tarY                                      //目标
-Dim logoX,     logoY,            intX,     intY          //算目的地差值
-Dim cY,        consecutiveTimes, consecutiveMax          //用这个东西判断角色是不是没有X或Y轴变化了
-Dim tolerance, tolLoc,           yTolerance              //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim windTime,  fireTime,         seedTime, fountainTime  //各种冷却
-Dim a,         stoneSteleTime,   pickingTime             //各种冷却
-Dim remainder, staticCount,      staticX,  staticY       //检测余数,还有不动的计数器
+Dim x1,          x2,               y1,       y2            // 矩形区域:小地图采样点
+Dim x3,          y3,               xEnd,     yEnd          // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,        tarY,             Hooking                 //目标
+Dim logoX,       logoY,            intX,     intY          //算目的地差值
+Dim cY,          consecutiveTimes, consecutiveMax          //用这个东西判断角色是不是没有X或Y轴变化了
+Dim tolerance,   tolLoc,           yTolerance              //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim windTime,    fireTime,         seedTime, fountainTime  //各种冷却
+Dim a,           stoneSteleTime,   pickingTime             //各种冷却
+Dim staticCount, staticX,          staticY                 //防卡计数器
+Dim SavedX,      SavedY                                    //保存一下临时处理的XY
 
-//几个点:喷泉点(144,120)容忍4,右下种子点(134,150)容忍8,平时站立点(85,150)容忍4,火释放点(104,125)容忍4/面向右,风(36,136),容忍4/面向左,左上传送(20,122)容忍0,左下传送(42,150),右下传送(120,150),右上传送就是喷泉点,右下角/右上角捡钱(161,150)容忍4(158,120)容忍4
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -37,12 +37,48 @@ Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     intY = intY - logoY
 End Sub
 
+Sub AntiJam //一般跟随GetXY后用
+    if staticX ==  intX and staticY == intY then //如果相等就累加计数器
+        staticCount = staticCount + 1
+    else
+        staticX     = intX
+        staticY     = intY
+        staticCount = 0
+    End If
+    if staticCount >= 3 Then //
+        if intY == 118 and intX < -30+8 and intX > -30-8 Then //白名单
+            staticCount = 0
+            Exit Sub
+        End If
+
+        Beep 500,500
+        // 模拟从绳子跳走
+        DelayRandom 13,15
+        KeyDown Right
+        DelayRandom 21,22
+        KeyDown Space
+        DelayRandom 76,77
+        KeyUp Space
+        DelayRandom 44,45
+        KeyUp Right
+        DelayRandom 13,15
+        RestartScript //重启
+    End If
+End Sub
+
 Sub Move()  //精确的移动
-    consecutiveTimes = -1  //初始就启用指南针判断
-    consecutiveMax   = 3   //降落默认值为4
+    consecutiveTimes	= -1  //初始就启用指南针判断
+    consecutiveMax		= 3   //降落默认值为4
+    Hooking				= 0 //钩子初始是关的
     while  1 > 0
         Call GetXY()
         if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
+            if Hooking > 0 and intY <= tarY - 5 Then //钩子的判断刹车
+                KeyDown Ctrl
+                DelayRandom 258,282
+                KeyUp Ctrl
+                Hooking = 0
+            End If
             if intY == cY Then //Y轴没变化了
                 consecutiveTimes = consecutiveTimes + 1
                 if consecutiveTimes >= consecutiveMax Then
@@ -54,6 +90,7 @@ Sub Move()  //精确的移动
                 consecutiveTimes = 0
             End If
         else //继续根据
+            Call AntiJam() //防卡
             if tolerance > 4 Then
                 tolLoc = tolerance
             else  //速走的默认为4
@@ -101,11 +138,13 @@ Sub Move()  //精确的移动
                 DelayRandom 146,151
             Else If intX < (tarX-tolLoc) Then //向右走
                 KeyDown Right
+                DelayRandom 230,260
+                KeyUp Right
             Else If intX > (tarX+tolLoc) Then //向左走
                 KeyDown Left
-            else
-                KeyUp Right
+                DelayRandom 230,260
                 KeyUp Left
+            else
                 If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
                     consecutiveTimes = 0 //启动降落判断
                     cY = intY
@@ -126,6 +165,7 @@ Sub Move()  //精确的移动
                         KeyDown Ctrl
                         DelayRandom 328,430
                         KeyUp Ctrl
+                        Hooking = 1 //开启钩子判断
                     else
                         consecutiveMax = 6 //延长一点降落判断
                         KeyDown Alt
@@ -164,57 +204,36 @@ Sub Move()  //精确的移动
 End Sub
 
 Sub on_timer4 //查地图轮,每3秒一次
-    remainder = remainder + 1
-    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then //找到了人物才会进行下去
+
+    FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 then
+        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
         intX = intX - logoX
-        intY = intY - logoY
-    End If
-    if staticX ==  intX and staticY == intY then //如果相等就累加计数器
-        staticCount = staticCount + 1
+        intY = intY - logoY - 1 //图标的对准问题
+        SavedX     = tarX  //(导航前先记录一下老坐标,然后再恢复,复用SavedX)
+        SavedY     = tarY
+        tarX       = intX
+        tarY       = intY
+        tolerance  = 2
+        yTolerance = 3
+        KeyAllup //防错误
+        Call Move()
+        tarX = SavedX
+        tarY = SavedY
+        //暂停脚本
+        Beep 1000,200
+        DelayRandom 100,120
+        Beep 1000,200
+        DelayRandom 100,120
+        Beep 1000,200
+        DelayRandom 100,120
+        Beep 1000,200
+        Pause
     else
-        staticX     = intX
-        staticY     = intY
-        staticCount = 0
     End If
-    if staticCount >= 6 Then //
-        Beep 500,500
-        KeyAllup //施放所有按键并重启
-    End If
-    if remainder%5 == 0 Then
-        FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 then
-            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-            intX = intX - logoX
-            intY = intY - logoY - 1 //图标的对准问题
-            staticX     = tarX //(导航前先记录一下老坐标,然后再恢复,复用staticX)
-            staticY     = tarY
-            staticCount = 0
-            tarX        = intX
-            tarY        = intY
-            tolerance   = 2
-            yTolerance  = 3
-            Call Move()
-            tarX = staticX
-            tarY = staticY
-            //暂停脚本
-            Beep 1000,200
-            DelayRandom 100,120
-            Beep 1000,200
-            DelayRandom 100,120
-            Beep 1000,200
-            DelayRandom 100,120
-            Beep 1000,200
-            Pause
-        else
-        End If
-    End If
-    if remainder > 5 then
-        remainder = 1
-    End If
-    Timer 4,1,1000 //无限循环
+    Timer 4,1,5000 //无限循环
 EndSub
+
 
 Sub SpellList() //随便扔技能
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Spider.bmp",000000,1.00,0,intX,intY

@@ -53,10 +53,10 @@ Sub AntiJam //一般跟随GetXY后用
         staticCount = 0
     End If
     if staticCount >= 3 Then //
-        if intY == 107 and intX < -8+6 and intX > -8-6 Then //白名单
-            staticCount = 0
-            Exit Sub
-        End If
+        // if intY == 107 and intX < -8+6 and intX > -8-6 Then //白名单
+            // staticCount = 0
+            // Exit Sub
+        // End If
 
         Beep 500,500
         //KeyAllup //施放所有按键并重启
