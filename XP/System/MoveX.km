@@ -11,6 +11,10 @@ Dim logoX,       logoY,            intX, intY      //算目的地差值
 Dim cY,          consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X或Y轴变化了
 Dim tolerance,   tolLoc,           yTolerance      //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim staticCount, staticX,          staticY         //防卡计数器
+Dim LEDState                                       //测试用:开大写键就是获取点位,不要切来切去的了
+
+//18,76
+//-17,140
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -98,76 +102,26 @@ Sub Move()  //精确的移动
             else  //速走的默认为4
                 tolLoc = 4
             End If
-            if intX < (tarX-36) Then //向右二段跳+普攻
-                consecutiveTimes = 0 //启动降落判断
-                cY = intY
-                TracePrint 右S跳
-                DelayRandom 15,25
-                KeyDown Right
-                DelayRandom 97,98
-                KeyDown Space
-                DelayRandom 68,69
-                KeyUp Space
-                DelayRandom 45,46
-                KeyDown Space
-                DelayRandom 89,90
-                KeyUp Space
-                DelayRandom 53,54
-                KeyDown S
-                DelayRandom 97,98
-                KeyUp S
-                DelayRandom 165,167
-                KeyDown G
-                DelayRandom 89,90
-                KeyUp G
-                DelayRandom 700,708
-                KeyUp Right
-                DelayRandom 41,42
-            Else If intX > (tarX+36) Then //向左二段跳+普攻
-                consecutiveTimes = 0 //启动降落判断
-                cY = 0
-                TracePrint 左S跳
-                DelayRandom 15,25
-                KeyDown Left
-                DelayRandom 97,98
-                KeyDown Space
-                DelayRandom 68,69
-                KeyUp Space
-                DelayRandom 45,46
-                KeyDown Space
-                DelayRandom 89,90
-                KeyUp Space
-                DelayRandom 53,54
-                KeyDown S
-                DelayRandom 97,98
-                KeyUp S
-                DelayRandom 165,167
-                KeyDown G
-                DelayRandom 89,90
-                KeyUp G
-                DelayRandom 700,708
-                KeyUp Left
-                DelayRandom 41,42
-            Else if intX < (tarX-24) Then //向右二段跳
+            if intX < (tarX-24) Then //向右二段跳
                 consecutiveTimes = 0 //启动降落判断
                 cY = intY
                 TracePrint 右跳
                 DelayRandom 15,25
                 KeyDown Right
-                DelayRandom 74,75
+                DelayRandom 75,76
                 KeyDown Space
-                DelayRandom 76,77
+                DelayRandom 67,68
                 KeyUp Space
-                DelayRandom 29,30
+                DelayRandom 23,24
                 KeyDown Space
-                DelayRandom 97,98
+                DelayRandom 105,107
                 KeyUp Space
-                DelayRandom 24,25
+                DelayRandom 52,53
+                KeyDown S
+                DelayRandom 1418,1433
+                KeyUp S
+                DelayRandom 37,38
                 KeyUp Right
-                DelayRandom 45,46
-                KeyDown G
-                DelayRandom 134,136
-                KeyUp G
                 DelayRandom 41,42
             Else If intX > (tarX+24) Then //向左二段跳
                 consecutiveTimes = 0 //启动降落判断
@@ -175,20 +129,20 @@ Sub Move()  //精确的移动
                 TracePrint 左跳
                 DelayRandom 15,25
                 KeyDown Left
-                DelayRandom 74,75
+                DelayRandom 75,76
                 KeyDown Space
-                DelayRandom 76,77
+                DelayRandom 67,68
                 KeyUp Space
-                DelayRandom 29,30
+                DelayRandom 23,24
                 KeyDown Space
-                DelayRandom 97,98
+                DelayRandom 105,107
                 KeyUp Space
-                DelayRandom 24,25
+                DelayRandom 52,53
+                KeyDown S
+                DelayRandom 1418,1433
+                KeyUp S
+                DelayRandom 37,38
                 KeyUp Left
-                DelayRandom 45,46
-                KeyDown G
-                DelayRandom 134,136
-                KeyUp G
                 DelayRandom 41,42
             Else If intX < (tarX-tolLoc) Then //向右走
                 KeyDown Right
@@ -215,33 +169,16 @@ Sub Move()  //精确的移动
                 Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上跳(Y轴是用相反比较符)
                     consecutiveTimes = 0 //启动降落判断
                     cY = intY
-                    if intY > (tarY+28) or intY <= (tarY+19) Then	//太高或矮距离就钩子
-                        consecutiveMax = 8 //延长一点降落判断
-                        Hooking = 1
-                        TracePrint 钩子一次
-                        KeyDown Alt
-                        DelayRandom 328,430
-                        KeyUp Alt
-                    else //中等距离上跳
-                        consecutiveMax = 6 //延长一点降落判断
-                        TracePrint 上跳一次
-                        KeyDown Up
-                        DelayRandom 120,122
-                        KeyDown Space
-                        DelayRandom 69,70
-                        KeyUp Space
-                        DelayRandom 36,37
-                        KeyDown Space
-                        DelayRandom 69,70
-                        KeyUp Space
-                        DelayRandom 81,82
-                        KeyUp Up
-                        DelayRandom 44,48
-                        KeyDown S
-                        DelayRandom 124,126
-                        KeyUp S
-                        DelayRandom 52,53
-                    End If
+                    consecutiveMax = 6 //延长一点降落判断
+                    TracePrint 上跳一次
+                    KeyDown Up
+                    DelayRandom 102,104
+                    KeyDown LAlt
+                    DelayRandom 150,152
+                    KeyUp LAlt
+                    DelayRandom 435,440
+                    KeyUp Up
+                    DelayRandom 52,53
                 else
                     yTolerance = 0
                     if tolerance < 4 Then //容忍度小于4还是要小碎步
@@ -287,13 +224,32 @@ else //竖放屏幕
     x2 = 300
     y2 = 1900
 End If
-tolLoc = 1
-GetFileLine tarX,Move.Conf,tolLoc		//文件查找
-tolLoc = 2
-GetFileLine tarY,Move.Conf,tolLoc		//文件查找
-tolLoc = 3
-GetFileLine tolerance,Move.Conf,tolLoc	//文件查找
-TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance
-//tolerance = 4 //容忍度,4为推荐值
-Call Move()
-MsgBox 测试结束
+
+while 1 > 0
+    LEDState = GetLED(1)
+    if LEDState == 0 then //
+        tolLoc = 1
+        GetFileLine tarX,MoveX.Conf,tolLoc		//文件查找
+        tolLoc = 2
+        GetFileLine tarY,MoveX.Conf,tolLoc		//文件查找
+        tolLoc = 3
+        GetFileLine tolerance,MoveX.Conf,tolLoc	//文件查找
+        TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance
+        //tolerance = 4 //容忍度,4为推荐值
+        Call Move()
+        MsgBox 测试结束
+    else //大写键亮的话就获取点
+        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY	//找图
+        If intX >= 0 Then
+            // TracePrint [图标X轴 & logoX & ,图标Y轴 & logoY & ],[绿点X轴 & intX & ,绿点Y轴 & intY & ]
+            // MsgBox [图标X轴 & logoX & ,图标Y轴 & logoY & ],[绿点X轴 & intX & ,绿点Y轴 & intY & ]
+            intX = intX - logoX
+            intY = intY - logoY
+            TracePrint [人物X轴 & intX & ,人物Y轴 & intY & ]
+            MsgBox [人物X轴 & intX & ,人物Y轴 & intY & ]
+        else
+            MsgBox "没找到"	 //弹窗
+        End If
+    End If
+Wend
