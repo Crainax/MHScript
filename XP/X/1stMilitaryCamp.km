@@ -6,15 +6,15 @@ Times=0
 [Script]
 Dim x1,          x2,               y1,   y2        // 矩形区域:小地图采样点
 Dim x3,          y3,               xEnd, yEnd      // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,        tarY                              //目标
+Dim tarX,        tarY,             cycle           //目标
+Dim SavedX,      SavedY                            //保存一下临时处理的XY
 Dim logoX,       logoY,            intX, intY      //算目的地差值
 Dim cY,          consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X或Y轴变化了
 Dim tolerance,   tolLoc,           yTolerance      //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim staticCount, staticX,          staticY         //防卡计数器
-Dim LEDState                                       //测试用:开大写键就是获取点位,不要切来切去的了
 
-//18,76
-//-17,140
+//(32,140) -> (-2,140) -> (-2,116) -> (20,116) -> (22,97) -> (-6,97) -> (27,76)  -> (22,97)  -> (-2,116) -> 开头
+
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -84,16 +84,13 @@ Sub Move  //精确的移动
         if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
             if intY == cY Then //Y轴没变化了
                 consecutiveTimes = consecutiveTimes + 1
-                TracePrint 降落判断: & consecutiveTimes
                 if consecutiveTimes >= consecutiveMax Then
                     consecutiveTimes	= -1	//判断为已经落地
                     consecutiveMax		= 3		//归位最大降落判断值
-                    TracePrint 判断已经落地
                 End If
             else
                 cY = intY
                 consecutiveTimes = 0
-                TracePrint 降落判断: & consecutiveTimes
             End If
         else //继续根据
             Call AntiJam()
@@ -105,7 +102,6 @@ Sub Move  //精确的移动
             if intX < (tarX-24) Then //向右二段跳
                 consecutiveTimes = 0 //启动降落判断
                 cY = intY
-                TracePrint 右跳
                 DelayRandom 15,25
                 KeyDown Right
                 DelayRandom 75,76
@@ -126,7 +122,6 @@ Sub Move  //精确的移动
             Else If intX > (tarX+24) Then //向左二段跳
                 consecutiveTimes = 0 //启动降落判断
                 cY = 0
-                TracePrint 左跳
                 DelayRandom 15,25
                 KeyDown Left
                 DelayRandom 75,76
@@ -156,7 +151,6 @@ Sub Move  //精确的移动
                 If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
                     consecutiveTimes = 0 //启动降落判断
                     cY = intY
-                    TracePrint 下跳一次
                     DelayRandom 12,13
                     KeyDown Down
                     DelayRandom 76,77
@@ -170,7 +164,6 @@ Sub Move  //精确的移动
                     consecutiveTimes = 0 //启动降落判断
                     cY = intY
                     consecutiveMax = 6 //延长一点降落判断
-                    TracePrint 上跳一次
                     KeyDown Up
                     DelayRandom 102,104
                     KeyDown LAlt
@@ -210,46 +203,98 @@ Sub Move  //精确的移动
     Wend
 End Sub
 
-//分辨率初始化
-yTolerance = 0
+Sub on_timer4 //查地图轮,每3秒一次
+
+    FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 then
+        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+        intX = intX - logoX
+        intY = intY - logoY - 1 //图标的对准问题
+        SavedX     = tarX  //(导航前先记录一下老坐标,然后再恢复,复用SavedX)
+        SavedY     = tarY
+        tarX       = intX
+        tarY       = intY
+        tolerance  = 2
+        yTolerance = 3
+        KeyAllup //防错误
+        Call Move()
+        tarX = SavedX
+        tarY = SavedY
+        //暂停脚本
+        Beep 1000,200
+        DelayRandom 100,120
+        Beep 1000,200
+        DelayRandom 100,120
+        Beep 1000,200
+        DelayRandom 100,120
+        Beep 1000,200
+        Pause
+    else
+    End If
+    Timer 4,1,5000 //无限循环
+EndSub
+
 GetScreenResolution intX, intY
 if intX > intY then //横放屏幕
     x1 = 700
     y1 = 550
     x2 = 1650
     y2 = 850
+    x3 = 1500
+    y3 = 1250
+    xEnd = 2560
+    yEnd = 1440
 else //竖放屏幕
     x1 = 0
     y1 = 1650
     x2 = 300
     y2 = 1900
+    x3 = 800
+    y3 = 2300
+    xEnd = 1440
+    yEnd = 2560
 End If
+cycle      = 0         //循环
+yTolerance = 0         //初始化
+Timer      4, 1, 3100  //无限循环解轮
 
 while 1 > 0
-    LEDState = GetLED(1)
-    if LEDState == 0 then //
-        tolLoc = 1
-        GetFileLine tarX,MoveX.Conf,tolLoc		//文件查找
-        tolLoc = 2
-        GetFileLine tarY,MoveX.Conf,tolLoc		//文件查找
-        tolLoc = 3
-        GetFileLine tolerance,MoveX.Conf,tolLoc	//文件查找
-        TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance
-        //tolerance = 4 //容忍度,4为推荐值
-        Call Move()
-        MsgBox 测试结束
-    else //大写键亮的话就获取点
-        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
-        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY	//找图
-        If intX >= 0 Then
-            // TracePrint [图标X轴 & logoX & ,图标Y轴 & logoY & ],[绿点X轴 & intX & ,绿点Y轴 & intY & ]
-            // MsgBox [图标X轴 & logoX & ,图标Y轴 & logoY & ],[绿点X轴 & intX & ,绿点Y轴 & intY & ]
-            intX = intX - logoX
-            intY = intY - logoY
-            TracePrint [人物X轴 & intX & ,人物Y轴 & intY & ]
-            MsgBox [人物X轴 & intX & ,人物Y轴 & intY & ]
-        else
-            MsgBox "没找到"	 //弹窗
-        End If
+
+    cycle = cycle + 1 //自增
+    if cycle == 1 then
+        tarX      = 32
+        tarY      = 140
+    else if cycle == 2 then
+        tarX      = -2
+        tarY      = 140
+    else if cycle == 3 then
+        tarX      = -2
+        tarY      = 116
+    else if cycle == 4 then
+        tarX      = 20
+        tarY      = 116
+    else if cycle == 5 then
+        tarX      = 22
+        tarY      = 97
+    else if cycle == 6 then
+        tarX      = -6
+        tarY      = 97
+    else if cycle == 7 then
+        tarX      = 27
+        tarY      = 76
+    else if cycle == 8 then
+        tarX      = 22
+        tarY      = 97
+    else
+        tarX      = -2
+        tarY      = 116
     End If
+
+    if cycle >= 9 then
+        cycle = 0
+    End If
+
+    tolerance = 4
+    Call Move()
+    Call Attack() //放招
 Wend
