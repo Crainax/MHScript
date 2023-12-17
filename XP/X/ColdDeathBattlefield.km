@@ -14,7 +14,7 @@ Dim tolerance,   tolLoc,           yTolerance      //¿ìËÙÒÆ¶¯µÄÈÝ²î,0´ú±í¾«È·ÒÆ¶
 Dim staticCount, staticX,          staticY         //·À¿¨¼ÆÊýÆ÷
 Dim cycle,       facing                            //Ñ­»·ºÍÃæÏò
 
-//(20,163)->(-16,152)->(4,141)->(41,130)->(9,118)->(-29,111)->(-1,96)->(34,88)
+//(-59,111)ÓÒ->(-26,115)ÓÒ->(-26,92)ÓÒ->(-26,77)×ó->(-67,81)ÓÒ->(-26,77)ÓÒ->(-26,58)ÓÒ->(9,58)×ó->(9,58)×ó->(9,77)ÓÒ->(53,81)×ó->(9,77)×ó->(9,92)×ó->(41,111)×ó->(-10,115)×ó
 
 
 Sub GetXY //»ñÈ¡½ÇÉ«µÄXYÖá(Èç¹ûÕÒ²»µ½»á×óÓÒÒÆ¶¯)
@@ -219,24 +219,27 @@ Sub Attack //¹¥»÷
                 KeyUp 1
                 DelayRandom 510,519
             else
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\X_A.bmp",000000,1.00,0,intX,intY
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\X_F.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then //
-                    KeyDown A
+                    KeyDown F
                     DelayRandom 220,251
-                    KeyUp A
-                    DelayRandom 1110,1219
+                    KeyUp F
+                    DelayRandom 810,819
                 else
-                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\X_D.bmp",000000,1.00,0,intX,intY
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\X_A.bmp",000000,1.00,0,intX,intY
                     if intX >= 0 Then //
-                        KeyDown D
+                        KeyDown A
                         DelayRandom 220,251
-                        KeyUp D
-                        DelayRandom 810,819
-                    // else
-                        // KeyDown S
-                        // DelayRandom 1200,1351
-                        // KeyUp S
-                        // DelayRandom 210,319
+                        KeyUp A
+                        DelayRandom 1110,1219
+                    else
+                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\X_D.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //
+                            KeyDown D
+                            DelayRandom 220,251
+                            KeyUp D
+                            DelayRandom 810,819
+                        End If
                     End If
                 End If
             End If
@@ -300,44 +303,68 @@ yTolerance = 0         //³õÊ¼»¯
 Timer      4, 1, 3100  //ÎÞÏÞÑ­»·½âÂÖ
 
 while 1 > 0
-//(20,163)->(-16,152)->(4,141)->(41,130)->(9,118)->(-29,111)->(-1,96)->(34,88)
+//(-59,111)ÓÒ->(-26,115)ÓÒ->(-26,92)ÓÒ->(-26,77)×ó->(-67,81)ÓÒ->(-26,77)ÓÒ->(-26,58)ÓÒ->(9,58)×ó->(9,77)ÓÒ->(53,81)×ó->(9,77)×ó->(9,92)×ó->(41,111)×ó->(-10,115)×ó
 
     cycle = cycle + 1 //×ÔÔö
     if cycle == 1 then
-        tarX	= 20
-        tarY	= 163
-        facing	= 0
-    else if cycle == 2 then
-        tarX	= -16
-        tarY	= 152
-        facing	= 1
-    else if cycle == 3 then
-        tarX	= 4
-        tarY	= 141
-        facing	= 1
-    else if cycle == 4 then
-        tarX	= 41
-        tarY	= 130
-        facing	= 0
-    else if cycle == 5 then
-        tarX	= 9
-        tarY	= 118
-        facing	= 0
-    else if cycle == 6 then
-        tarX	= -29
+        tarX	= -59
         tarY	= 111
         facing	= 1
-    else if cycle == 7 then
-        tarX	= -1
-        tarY	= 96
+    else if cycle == 2 then
+        tarX	= -26
+        tarY	= 115
         facing	= 1
+    else if cycle == 3 then
+        tarX	= -26
+        tarY	= 92
+        facing	= 1
+    else if cycle == 4 then
+        tarX	= -26
+        tarY	= 77
+        facing	= 0
+    else if cycle == 5 then
+        tarX	= -67
+        tarY	= 81
+        facing	= 1
+    else if cycle == 6 then
+        tarX	= -26
+        tarY	= 77
+        facing	= 1
+    else if cycle == 7 then
+        tarX	= -26
+        tarY	= 58
+        facing	= 1
+    else if cycle == 8 then
+        tarX	= 9
+        tarY	= 58
+        facing	= 0
+    else if cycle == 9 then
+        tarX	= 9
+        tarY	= 77
+        facing	= 1
+    else if cycle == 10 then
+        tarX	= 53
+        tarY	= 81
+        facing	= 0
+    else if cycle == 11 then
+        tarX	= 9
+        tarY	= 77
+        facing	= 0
+    else if cycle == 12 then
+        tarX	= 9
+        tarY	= 92
+        facing	= 0
+    else if cycle == 13 then
+        tarX	= 41
+        tarY	= 111
+        facing	= 0
     else
-        tarX	= 34
-        tarY	= 88
+        tarX	= -10
+        tarY	= 115
         facing	= 0
     End If
 
-    if cycle >= 8 then
+    if cycle >= 14 then
         cycle = 0
     End If
 
