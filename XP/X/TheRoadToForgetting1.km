@@ -94,43 +94,85 @@ Sub Move  //精确的移动
             if intX < (tarX-16) Then //向右二段跳
                 consecutiveTimes = 0 //启动降落判断
                 cY = intY
-                DelayRandom 15,25
-                KeyDown Right
-                DelayRandom 75,76
-                KeyDown Space
-                DelayRandom 67,68
-                KeyUp Space
-                DelayRandom 23,24
-                KeyDown Space
-                DelayRandom 105,107
-                KeyUp Space
-                DelayRandom 52,53
-                KeyDown S
-                DelayRandom 1418,1433
-                KeyUp S
-                DelayRandom 37,38
-                KeyUp Right
-                DelayRandom 41,42
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\X_Dark.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //愤怒好了
+                    DelayRandom 15,25
+                    KeyDown Right
+                    DelayRandom 225,228
+                    KeyDown Space
+                    DelayRandom 120,122
+                    KeyUp Space
+                    DelayRandom 67,68
+                    KeyDown Space
+                    DelayRandom 74,75
+                    KeyUp Space
+                    DelayRandom 128,130
+                    KeyUp Right
+                    DelayRandom 8,9
+                    KeyDown S
+                    DelayRandom 803,812
+                    KeyUp S
+                    DelayRandom 382,386
+                else //愤怒没好
+                    DelayRandom 15,25
+                    KeyDown Right
+                    DelayRandom 75,76
+                    KeyDown Space
+                    DelayRandom 67,68
+                    KeyUp Space
+                    DelayRandom 23,24
+                    KeyDown Space
+                    DelayRandom 105,107
+                    KeyUp Space
+                    DelayRandom 52,53
+                    KeyDown S
+                    DelayRandom 1418,1433
+                    KeyUp S
+                    DelayRandom 37,38
+                    KeyUp Right
+                    DelayRandom 41,42
+                End If
             Else If intX > (tarX+16) Then //向左二段跳
                 consecutiveTimes = 0 //启动降落判断
                 cY = 0
-                DelayRandom 15,25
-                KeyDown Left
-                DelayRandom 75,76
-                KeyDown Space
-                DelayRandom 67,68
-                KeyUp Space
-                DelayRandom 23,24
-                KeyDown Space
-                DelayRandom 105,107
-                KeyUp Space
-                DelayRandom 52,53
-                KeyDown S
-                DelayRandom 1418,1433
-                KeyUp S
-                DelayRandom 37,38
-                KeyUp Left
-                DelayRandom 41,42
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\X_Dark.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //愤怒好了
+                    DelayRandom 15,25
+                    KeyDown Left
+                    DelayRandom 225,228
+                    KeyDown Space
+                    DelayRandom 120,122
+                    KeyUp Space
+                    DelayRandom 67,68
+                    KeyDown Space
+                    DelayRandom 74,75
+                    KeyUp Space
+                    DelayRandom 128,130
+                    KeyUp Left
+                    DelayRandom 8,9
+                    KeyDown S
+                    DelayRandom 803,812
+                    KeyUp S
+                    DelayRandom 382,386
+                else //愤怒没好
+                    DelayRandom 15,25
+                    KeyDown Left
+                    DelayRandom 75,76
+                    KeyDown Space
+                    DelayRandom 67,68
+                    KeyUp Space
+                    DelayRandom 23,24
+                    KeyDown Space
+                    DelayRandom 105,107
+                    KeyUp Space
+                    DelayRandom 52,53
+                    KeyDown S
+                    DelayRandom 1418,1433
+                    KeyUp S
+                    DelayRandom 37,38
+                    KeyUp Left
+                    DelayRandom 41,42
+                End If
             Else If intX < (tarX-tolLoc) Then //向右走
                 KeyDown Right
                 DelayRandom 230,260
@@ -218,6 +260,13 @@ Sub Attack //攻击
             DelayRandom 272,275
             KeyUp 2
             DelayRandom 1541,1557
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\X_3.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //
+                KeyDown 3
+                DelayRandom 216,219
+                KeyUp 3
+                DelayRandom 1094,1105
+            End If
         else
             FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\X_G.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then //
@@ -233,19 +282,27 @@ Sub Attack //攻击
                     KeyUp F
                     DelayRandom 1210,1219
                 else
-                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\X_A.bmp",000000,1.00,0,intX,intY
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\X_W.bmp",000000,1.00,0,intX,intY
                     if intX >= 0 Then //
-                        KeyDown A
+                        KeyDown W
                         DelayRandom 220,251
-                        KeyUp A
+                        KeyUp W
                         DelayRandom 1110,1219
                     else
-                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\X_D.bmp",000000,1.00,0,intX,intY
+                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\X_A.bmp",000000,1.00,0,intX,intY
                         if intX >= 0 Then //
-                            KeyDown D
+                            KeyDown A
                             DelayRandom 220,251
-                            KeyUp D
-                            DelayRandom 810,819
+                            KeyUp A
+                            DelayRandom 1110,1219
+                        else
+                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\X_D.bmp",000000,1.00,0,intX,intY
+                            if intX >= 0 Then //
+                                KeyDown D
+                                DelayRandom 220,251
+                                KeyUp D
+                                DelayRandom 810,819
+                            End If
                         End If
                     End If
                 End If
