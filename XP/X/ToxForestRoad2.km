@@ -414,6 +414,10 @@ while 1 > 0
         facing	= 0
     End If
 
+    if cycle >= 8 then
+        cycle = 0
+    End If
+
     tolerance = 4 //
     yTolerance = 4 //
     Call Move()
