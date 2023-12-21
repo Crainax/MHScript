@@ -104,7 +104,47 @@ Sub Move  //精确的移动
             End If
             //左右一个alt键可以跳23
             //左右一个连打可以跳34
-            if intX < (tarX-16) Then //向右小按alt
+            if intX < (tarX-26) Then //跳打形式
+                consecutiveTimes = 0 //启动降落判断
+                cY = intY
+                TracePrint 右跳打
+                DelayRandom 12,14
+                KeyDown Right
+                DelayRandom 79,80
+                KeyDown Space
+                DelayRandom 64,65
+                KeyUp Space
+                DelayRandom 60,61
+                KeyDown Space
+                DelayRandom 55,56
+                KeyUp Right
+                DelayRandom 16,17
+                KeyUp Space
+                DelayRandom 116,118
+                KeyDown S
+                DelayRandom 1375,1389
+                KeyUp S
+            else if intX > (tarX+26) Then //跳打形式
+                consecutiveTimes = 0 //启动降落判断
+                cY = intY
+                TracePrint 右跳打
+                DelayRandom 12,14
+                KeyDown Left
+                DelayRandom 79,80
+                KeyDown Space
+                DelayRandom 64,65
+                KeyUp Space
+                DelayRandom 60,61
+                KeyDown Space
+                DelayRandom 55,56
+                KeyUp Left
+                DelayRandom 16,17
+                KeyUp Space
+                DelayRandom 116,118
+                KeyDown S
+                DelayRandom 1375,1389
+                KeyUp S
+            else if intX < (tarX-16) Then //向右小按alt
                 consecutiveTimes = 0 //启动降落判断
                 cY = intY
                 TracePrint 右跳
@@ -162,7 +202,9 @@ Sub Move  //精确的移动
                     KeyUp Right
                     DelayRandom 12,14
                     KeyDown LAlt
-                    DelayRandom 400,410 //34的高度(400)  perY:12,max = 166(达不到)
+                    tolLoc = (intY - tarY - yTolerance) * 26
+                    TracePrint tolLoc & 秒
+                    Delay tolLoc //34的高度(400)  perY:26,max = 166(达不到)
                     KeyUp LAlt
                     DelayRandom 36,37
                     KeyDown Left
