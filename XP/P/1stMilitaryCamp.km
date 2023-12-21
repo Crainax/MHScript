@@ -185,8 +185,8 @@ Sub Move  //精确的移动
                     KeyUp Right
                     DelayRandom 12,14
                     KeyDown LAlt
-                    tolLoc = (intY - tarY - yTolerance) * 26
-                    Delay tolLoc //34的高度(400)  perY:26,max = 166(达不到)
+                    tolLoc = (intY - tarY - yTolerance) * 28
+                    Delay tolLoc //34的高度(400)  perY:28,max = 166(达不到)
                     KeyUp LAlt
                     DelayRandom 36,37
                     KeyDown Left
