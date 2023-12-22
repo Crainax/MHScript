@@ -1,0 +1,12 @@
+DelayRandom 569,575
+KeyDown E
+DelayRandom 462,467
+KeyUp E
+DelayRandom 2159,2181
+KeyDown 1
+DelayRandom 250,253
+KeyUp 1
+DelayRandom 1660,1677
+KeyDown Q
+DelayRandom 101,103
+KeyUp Q

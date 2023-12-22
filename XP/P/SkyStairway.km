@@ -1,0 +1,399 @@
+[General]
+ScreenX=1440
+ScreenY=2560
+Times=0
+
+[Script]
+Dim x1,          x2,               y1,   y2        // 矩形区域:小地图采样点
+Dim x3,          y3,               xEnd, yEnd      // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,        tarY                              //目标
+Dim SavedX,      SavedY                            //保存一下临时处理的XY
+Dim logoX,       logoY,            intX, intY      //算目的地差值
+Dim cY,          consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X或Y轴变化了
+Dim tolerance,   tolLoc,           yTolerance      //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim staticCount, staticX,          staticY         //防卡计数器
+Dim cycle,       facing                            //循环和面向
+
+//(27,88)L->(-29,111)R->(40,130)L->(-16,152)R->(22,163)L
+
+Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
+    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+
+    if intX < 0 Then //人物跑到了边界  处理一下
+        KeyDown Left
+        DelayRandom 200,250
+        KeyUp Left
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then //左移了还是没找到,就右移
+            KeyDown Right
+            DelayRandom 200,250
+            KeyUp Right
+            FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        End if
+    End if
+
+    intX = intX - logoX
+    intY = intY - logoY
+End Sub
+
+Sub AntiJam //一般跟随GetXY后用
+    if staticX ==  intX and staticY == intY then //如果相等就累加计数器
+        staticCount = staticCount + 1
+    else
+        staticX     = intX
+        staticY     = intY
+        staticCount = 0
+    End If
+    if staticCount >= 4 Then //
+        if intY == 102 and intX < 10+6 and intX > 10-6 Then //白名单
+            staticCount = 0
+            Exit Sub
+        End If
+
+        Beep 500,500
+        KeyAllup //施放所有按键并重启
+        // RestartScript //重启 和上面二选一即可
+        // 模拟从绳子跳走
+        DelayRandom 13,15
+        KeyDown Right
+        DelayRandom 21,22
+        KeyDown Space
+        DelayRandom 76,77
+        KeyUp Space
+        DelayRandom 44,45
+        KeyUp Right
+        DelayRandom 13,15
+
+    End If
+End Sub
+
+Sub Move  //精确的移动
+    consecutiveTimes = -1  //初始就启用指南针判断
+    consecutiveMax   = 5   //降落默认值为4
+    while  1 > 0
+        Call GetXY()
+        if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
+            if intY == cY Then //Y轴没变化了
+                consecutiveTimes = consecutiveTimes + 1
+                if consecutiveTimes >= consecutiveMax Then
+                    consecutiveTimes	= -1	//判断为已经落地
+                    consecutiveMax		= 5		//归位最大降落判断值
+                End If
+            else
+                cY = intY
+                consecutiveTimes = 0
+            End If
+        else //继续根据
+            Call AntiJam()
+            if tolerance > 4 Then
+                tolLoc = tolerance
+            else  //速走的默认为4
+                tolLoc = 4
+            End If
+            //左右一个alt键可以跳23
+            //左右一个连打可以跳34
+            if intX < (tarX-26) Then //跳打形式
+                consecutiveTimes = 0 //启动降落判断
+                cY = intY
+                DelayRandom 12,14
+                KeyDown Right
+                DelayRandom 79,80
+                KeyDown Space
+                DelayRandom 64,65
+                KeyUp Space
+                DelayRandom 60,61
+                KeyDown Space
+                DelayRandom 55,56
+                KeyUp Right
+                DelayRandom 16,17
+                KeyUp Space
+                DelayRandom 116,118
+                KeyDown S
+                DelayRandom 1375,1389
+                KeyUp S
+            else if intX > (tarX+26) Then //跳打形式
+                consecutiveTimes = 0 //启动降落判断
+                cY = intY
+                DelayRandom 12,14
+                KeyDown Left
+                DelayRandom 79,80
+                KeyDown Space
+                DelayRandom 64,65
+                KeyUp Space
+                DelayRandom 60,61
+                KeyDown Space
+                DelayRandom 55,56
+                KeyUp Left
+                DelayRandom 16,17
+                KeyUp Space
+                DelayRandom 116,118
+                KeyDown S
+                DelayRandom 1375,1389
+                KeyUp S
+            else if intX < (tarX-16) Then //向右小按alt
+                consecutiveTimes = 0 //启动降落判断
+                cY = intY
+                DelayRandom 12,14
+                KeyDown Right
+                DelayRandom 122,125
+                KeyDown Alt
+                DelayRandom 130,160
+                KeyUp Alt
+                DelayRandom 22,23
+                KeyUp Right
+            Else If intX > (tarX+16) Then //向左小按alt
+                consecutiveTimes = 0 //启动降落判断
+                cY = intY
+                DelayRandom 12,14
+                KeyDown Left
+                DelayRandom 122,125
+                KeyDown Alt
+                DelayRandom 130,160
+                KeyUp Alt
+                DelayRandom 22,23
+                KeyUp Left
+            Else If intX < (tarX-tolLoc) Then //向右走
+                KeyDown Right
+                DelayRandom 230,260
+                KeyUp Right
+            Else If intX > (tarX+tolLoc) Then //向左走
+                KeyDown Left
+                DelayRandom 230,260
+                KeyUp Left
+            else
+                If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
+                    consecutiveTimes = 0 //启动降落判断
+                    consecutiveMax = 6 //延长一点降落判断
+                    cY = intY
+                    DelayRandom 12,13
+                    KeyDown Down
+                    DelayRandom 76,77
+                    KeyDown Space
+                    DelayRandom 128,130
+                    KeyUp Space
+                    DelayRandom 453,454
+                    KeyUp Down
+                    DelayRandom 32,33
+                Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上跳(Y轴是用相反比较符)
+                    consecutiveTimes = 0 //启动降落判断
+                    cY = intY
+                    consecutiveMax = 6 //延长一点降落判断
+                    DelayRandom 12,14
+                    KeyDown Right
+                    DelayRandom 42,47
+                    KeyUp Right
+                    DelayRandom 12,14
+                    KeyDown LAlt
+                    tolLoc = (intY - tarY - yTolerance) * 28
+                    Delay tolLoc //34的高度(400)  perY:28,max = 166(达不到)
+                    KeyUp LAlt
+                    DelayRandom 36,37
+                    KeyDown Left
+                    DelayRandom 52,53
+                    KeyDown Right
+                    DelayRandom 47,48
+                    KeyDown Up
+                    DelayRandom 51,52
+                    KeyUp Up
+                    DelayRandom 238,241
+                    KeyUp Right
+                    DelayRandom 22,23
+                    KeyUp Left //34
+                else
+                    yTolerance = 0
+                    if tolerance < 4 Then //容忍度小于4还是要小碎步
+                        for 10
+                            If intX < (tarX-tolerance) Then //向右小碎步
+                                tolLoc = (tarX - tolerance - intX) * 14
+                                KeyDown Right
+                                Delay tolLoc
+                                KeyUp Right
+                            Else If intX > (tarX+tolerance) Then //向左小碎步
+                                tolLoc = (intX - tarX - tolerance) * 14
+                                KeyDown Left
+                                Delay tolLoc
+                                KeyUp Left
+                            else
+                                Exit Sub
+                            End If
+
+                            Call GetXY() //更新人物坐标
+                        Next
+                        Exit Sub //次数到了直接结束
+                    else //容忍度大于等于4可以直接结束
+                        Exit Sub
+                    End If
+                End If
+            End If
+        End If
+        Delay 5
+    Wend
+End Sub
+
+Sub Attack //攻击
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_E.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then //
+        KeyDown E
+        DelayRandom 462,467
+        KeyUp E
+        DelayRandom 2159,2181
+        KeyDown 1
+        DelayRandom 250,253
+        KeyUp 1
+        DelayRandom 1660,1677
+    else
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_W.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //
+            KeyDown Down
+            DelayRandom 110,112
+            KeyDown W
+            DelayRandom 168,170
+            KeyUp W
+            DelayRandom 467,472
+            KeyUp Down
+        else
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_A.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //
+                DelayRandom 102,124
+                KeyDown A
+                DelayRandom 238,241
+                KeyDown Right
+                DelayRandom 1159,1171
+                KeyDown Left
+                DelayRandom 78,79
+                KeyUp Right
+                DelayRandom 1870,1889
+                KeyUp Left
+                DelayRandom 2,3
+                KeyDown Right
+                DelayRandom 1280,1293
+                KeyDown Left
+                DelayRandom 46,47
+                KeyUp Right
+                DelayRandom 754,762
+                KeyUp Left
+                DelayRandom 1,2
+                KeyDown Right
+                DelayRandom 193,195
+                KeyUp Right
+                DelayRandom 75,76
+                KeyUp A
+            else
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_D.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //
+                    KeyDown D
+                    DelayRandom 220,251
+                    KeyUp D
+                    DelayRandom 810,819
+                End If
+            End If
+        End If
+    End If
+End Sub
+
+Sub on_timer4 //查地图轮,每3秒一次
+
+    FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 then
+        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+        intX = intX - logoX
+        intY = intY - logoY - 1 //图标的对准问题
+        SavedX     = tarX  //(导航前先记录一下老坐标,然后再恢复,复用SavedX)
+        SavedY     = tarY
+        tarX       = intX
+        tarY       = intY
+        tolerance  = 2
+        yTolerance = 3
+        KeyAllup //防错误
+        Call Move()
+        tarX = SavedX
+        tarY = SavedY
+        //暂停脚本
+        Beep 1000,200
+        DelayRandom 100,120
+        Beep 1000,200
+        DelayRandom 100,120
+        Beep 1000,200
+        DelayRandom 100,120
+        Beep 1000,200
+        Pause
+    else
+    End If
+    Timer 4,1,5000 //无限循环
+EndSub
+
+GetScreenResolution intX, intY
+if intX > intY then //横放屏幕
+    x1 = 700
+    y1 = 550
+    x2 = 1650
+    y2 = 950
+    x3 = 1500
+    y3 = 1250
+    xEnd = 2560
+    yEnd = 1440
+else //竖放屏幕
+    x1 = 0
+    y1 = 1650
+    x2 = 300
+    y2 = 2000
+    x3 = 800
+    y3 = 2300
+    xEnd = 1440
+    yEnd = 2560
+End If
+cycle      = 0         //循环
+yTolerance = 0         //初始化
+Timer      4, 1, 3100  //无限循环解轮
+
+while 1 > 0
+
+//(27,88)L->(-29,111)R->(40,130)L->(-16,152)R->(22,163)L
+
+    cycle = cycle + 1 //自增
+    if cycle == 1 then
+        tarX	= 27
+        tarY	= 88
+        facing	= 0
+    else if cycle == 2 then
+        tarX	= -29
+        tarY	= 111
+        facing	= 1
+    else if cycle == 3 then
+        tarX	= 40
+        tarY	= 130
+        facing	= 0
+    else if cycle == 4 then
+        tarX	= -16
+        tarY	= 152
+        facing	= 1
+    else
+        tarX	= 22
+        tarY	= 163
+        facing	= 0
+    End If
+
+    if cycle >= 5 then
+        cycle = 0
+    End If
+
+    tolerance = 4 //
+    yTolerance = 4 //
+    Call Move()
+    If facing == 0 then //面向左
+        DelayRandom 15,20
+        KeyDown Left
+        DelayRandom 25,30
+        KeyUp Left
+        DelayRandom 15,20
+    Else //面向右
+        DelayRandom 15,20
+        KeyDown Right
+        DelayRandom 25,30
+        KeyUp Right
+        DelayRandom 15,20
+    End If
+    Call Attack() //放招
+
+Wend
