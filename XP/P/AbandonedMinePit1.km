@@ -14,7 +14,7 @@ Dim tolerance,   tolLoc,           yTolerance      //¿ìËÙÒÆ¶¯µÄÈÝ²î,0´ú±í¾«È·ÒÆ¶
 Dim staticCount, staticX,          staticY         //·À¿¨¼ÆÊýÆ÷
 Dim cycle,       facing                            //Ñ­»·ºÍÃæÏò
 
-//(-59,111)ÓÒ->(-26,115)ÓÒ->(-26,77)×ó->(-67,81)ÓÒ->(-26,58)ÓÒ->(9,77)ÓÒ->(53,81)×ó->(9,92)×ó->(41,111)×ó->(-10,115)×ó
+//(-39,118)ÓÒ->(-39,79)ÓÒ->(16,88)ÓÒ->(37,88)×ó->(37,107)×ó->(37,122)×ó->(36,69)×ó->(-41,99)ÓÒ
 
 Sub GetXY //»ñÈ¡½ÇÉ«µÄXYÖá(Èç¹ûÕÒ²»µ½»á×óÓÒÒÆ¶¯)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -279,7 +279,7 @@ Sub Attack //¹¥»÷
                 KeyUp Down
             else
                 FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_A.bmp",000000,1.00,0,intX,intY
-                if intX >= k0 Then //
+                if intX >= 0 Then //
                     If facing == 1 then //ÏòÓÒ²ÅÏÈÓÒÔÙ×ó
                         DelayRandom 102,124
                         KeyDown A
@@ -407,52 +407,44 @@ Timer      4, 1, 3100  //ÎÞÏÞÑ­»·½âÂÖ
 
 while 1 > 0
 
-//(-59,111)ÓÒ->(-26,115)ÓÒ->(-26,77)×ó->(-67,81)ÓÒ->(-26,58)ÓÒ->(9,77)ÓÒ->(53,81)×ó->(9,92)×ó->(41,111)×ó->(-10,115)×ó
+//(-39,118)ÓÒ->(-39,79)ÓÒ->(16,88)ÓÒ->(37,88)×ó->(37,107)×ó->(37,122)×ó->(36,69)×ó->m(-41,99)ÓÒ
 
     cycle = cycle + 1 //×ÔÔö
     if cycle == 1 then
-        tarX	= -59
-        tarY	= 111
+        tarX	= -39
+        tarY	= 118
         facing	= 1
     else if cycle == 2 then
-        tarX	= -26
-        tarY	= 115
+        tarX	= -39
+        tarY	= 79
         facing	= 1
     else if cycle == 3 then
-        tarX	= -26
-        tarY	= 77
-        facing	= 0
+        tarX	= 16
+        tarY	= 88
+        facing	= 1
     else if cycle == 4 then
-        tarX	= -67
-        tarY	= 81
-        facing	= 1
+        tarX	= 37
+        tarY	= 88
+        facing	= 0
     else if cycle == 5 then
-        tarX	= -26
-        tarY	= 58
-        facing	= 1
+        tarX	= 37
+        tarY	= 107
+        facing	= 0
     else if cycle == 6 then
-        tarX	= 9
-        tarY	= 77
-        facing	= 1
+        tarX	= 37
+        tarY	= 122
+        facing	= 0
     else if cycle == 7 then
-        tarX	= 53
-        tarY	= 81
-        facing	= 0
-    else if cycle == 8 then
-        tarX	= 9
-        tarY	= 92
-        facing	= 0
-    else if cycle == 9 then
-        tarX	= 41
-        tarY	= 111
+        tarX	= 36
+        tarY	= 69
         facing	= 0
     else
-        tarX	= -10
-        tarY	= 115
-        facing	= 0
+        tarX	= -41
+        tarY	= 99
+        facing	= 1
     End If
 
-    if cycle >= 10 then
+    if cycle >= 8 then
         cycle = 0
     End If
 
