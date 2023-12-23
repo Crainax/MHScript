@@ -38,7 +38,7 @@ Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
 End Sub
 
 Sub AntiJam //一般跟随GetXY后用
-    if staticX ==  intX or staticY == intY then //如果相等就累加计数器(有一个不变就是卡了)
+    if staticX ==  intX and staticY == intY then //如果相等就累加计数器(有一个不变就是卡了)
         staticCount = staticCount + 1
     else
         staticX     = intX
@@ -279,7 +279,7 @@ Sub Attack //攻击
                 KeyUp Down
             else
                 FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_A.bmp",000000,1.00,0,intX,intY
-                if intX >= k0 Then //
+                if intX >= 0 Then //
                     If facing == 1 then //向右才先右再左
                         DelayRandom 102,124
                         KeyDown A

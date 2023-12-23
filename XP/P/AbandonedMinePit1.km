@@ -38,7 +38,7 @@ Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
 End Sub
 
 Sub AntiJam //一般跟随GetXY后用
-    if staticX ==  intX or staticY == intY then //如果相等就累加计数器(有一个不变就是卡了)
+    if GetKeyState(55) or staticX ==  intX and staticY == intY then //如果相等就累加计数器(有一个不变就是卡了)
         staticCount = staticCount + 1
     else
         staticX     = intX
@@ -47,7 +47,7 @@ Sub AntiJam //一般跟随GetXY后用
     End If
     if staticCount >= 8 Then //
 
-        // Beep 500,500
+        Beep 500,500
         KeyAllup //施放所有按键并重启
         // RestartScript //重启 和上面二选一即可
         // 模拟从绳子跳走
@@ -204,6 +204,11 @@ Sub Move  //精确的移动
                     DelayRandom 12,14
                     KeyDown LAlt
                     tolLoc = (intY - tarY - yTolerance) * 28
+                    if tolLoc > 2000 Then
+                        tolLoc = 2000
+                    Else If tolLoc < 0 Then
+                        tolLoc = 1
+                    End If
                     Delay tolLoc //34的高度(400)  perY:28,max = 166(达不到)
                     KeyUp LAlt
                     DelayRandom 36,37
@@ -267,6 +272,10 @@ Sub Attack //攻击
             DelayRandom 250,253
             KeyUp 1
             DelayRandom 1660,1677
+            KeyDown 2
+            DelayRandom 272,275
+            KeyUp 2
+            DelayRandom 1541,1557
         else
             FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_W.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then //
@@ -278,71 +287,79 @@ Sub Attack //攻击
                 DelayRandom 467,472
                 KeyUp Down
             else
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_A.bmp",000000,1.00,0,intX,intY
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_R.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then //
-                    If facing == 1 then //向右才先右再左
-                        DelayRandom 102,124
-                        KeyDown A
-                        DelayRandom 238,241
-                        KeyDown Right
-                        DelayRandom 1559,1571
-                        KeyDown Left
-                        DelayRandom 78,79
-                        KeyUp Right
-                        DelayRandom 1470,1489
-                        KeyUp Left
-                        DelayRandom 2,3
-                        KeyDown Right
-                        DelayRandom 1080,1093
-                        KeyDown Left
-                        DelayRandom 46,47
-                        KeyUp Right
-                        DelayRandom 1054,1062
-                        KeyUp Left
-                        DelayRandom 1,2
-                        KeyDown Right
-                        DelayRandom 193,195
-                        KeyUp Right
-                        DelayRandom 75,76
-                        KeyUp A
-                    else
-                        DelayRandom 102,124
-                        KeyDown A
-                        DelayRandom 238,241
-                        KeyDown Left
-                        DelayRandom 1559,1571
-                        KeyDown Right
-                        DelayRandom 78,79
-                        KeyUp Left
-                        DelayRandom 1470,1489
-                        KeyUp Right
-                        DelayRandom 2,3
-                        KeyDown Left
-                        DelayRandom 1080,1093
-                        KeyDown Right
-                        DelayRandom 46,47
-                        KeyUp Left
-                        DelayRandom 1054,1062
-                        KeyUp Right
-                        DelayRandom 1,2
-                        KeyDown Left
-                        DelayRandom 193,195
-                        KeyUp Left
-                        DelayRandom 75,76
-                        KeyUp A
-                    End If
+                    KeyDown R
+                    DelayRandom 479,484
+                    KeyUp R
+                    DelayRandom 555,561
                 else
-                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_D.bmp",000000,1.00,0,intX,intY
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_A.bmp",000000,1.00,0,intX,intY
                     if intX >= 0 Then //
-                        KeyDown D
-                        DelayRandom 220,251
-                        KeyUp D
-                        DelayRandom 810,819
+                        If facing == 1 then //向右才先右再左
+                            DelayRandom 102,124
+                            KeyDown A
+                            DelayRandom 238,241
+                            KeyDown Right
+                            DelayRandom 1559,1571
+                            KeyDown Left
+                            DelayRandom 78,79
+                            KeyUp Right
+                            DelayRandom 1470,1489
+                            KeyUp Left
+                            DelayRandom 2,3
+                            KeyDown Right
+                            DelayRandom 1080,1093
+                            KeyDown Left
+                            DelayRandom 46,47
+                            KeyUp Right
+                            DelayRandom 1054,1062
+                            KeyUp Left
+                            DelayRandom 1,2
+                            KeyDown Right
+                            DelayRandom 193,195
+                            KeyUp Right
+                            DelayRandom 75,76
+                            KeyUp A
+                        else
+                            DelayRandom 102,124
+                            KeyDown A
+                            DelayRandom 238,241
+                            KeyDown Left
+                            DelayRandom 1559,1571
+                            KeyDown Right
+                            DelayRandom 78,79
+                            KeyUp Left
+                            DelayRandom 1470,1489
+                            KeyUp Right
+                            DelayRandom 2,3
+                            KeyDown Left
+                            DelayRandom 1080,1093
+                            KeyDown Right
+                            DelayRandom 46,47
+                            KeyUp Left
+                            DelayRandom 1054,1062
+                            KeyUp Right
+                            DelayRandom 1,2
+                            KeyDown Left
+                            DelayRandom 193,195
+                            KeyUp Left
+                            DelayRandom 75,76
+                            KeyUp A
+                        End If
                     else
-                        KeyDown Q
-                        DelayRandom 479,484
-                        KeyUp Q
-                        DelayRandom 555,561
+                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_D.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //
+                            KeyDown D
+                            DelayRandom 220,251
+                            KeyUp D
+                            DelayRandom 810,819
+                        else
+                            KeyDown Q
+                            DelayRandom 479,484
+                            KeyUp Q
+                            DelayRandom 555,561
+                        End If
                     End If
                 End If
             End If
