@@ -14,7 +14,7 @@ Dim tolerance,   tolLoc,           yTolerance      //¿ìËÙÒÆ¶¯µÄÈÝ²î,0´ú±í¾«È·ÒÆ¶
 Dim staticCount, staticX,          staticY         //·À¿¨¼ÆÊýÆ÷
 Dim cycle,       facing                            //Ñ­»·ºÍÃæÏò
 
-//(-27,113)ÓÒ->(8,113)ÓÒ->(42,113)×ó->(42,91)×ó->(-4,91)×ó->(-4,68)ÓÒ->(38,68)×ó,ÈÝÈÌ0,°´ÉÏ
+//(-27,113)ÓÒ->(8,113)ÓÒ->(42,113)×ó->(42,91)×ó->(42,68)×ó->(-4,68)ÓÒ->(-4,91)ÓÒ+×ó
 
 Sub GetXY //»ñÈ¡½ÇÉ«µÄXYÖá(Èç¹ûÕÒ²»µ½»á×óÓÒÒÆ¶¯)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -444,7 +444,7 @@ Timer      4, 1, 3100  //ÎÞÏÞÑ­»·½âÂÖ
 
 while 1 > 0
 
-//(-27,113)ÓÒ->(8,113)ÓÒ->(42,113)×ó->(42,91)×ó->(-4,91)×ó->(-4,68)ÓÒ->(38,68)×ó,ÈÝÈÌ0,°´ÉÏ
+//(-27,113)ÓÒ->(8,113)ÓÒ->(42,113)×ó->(42,91)×ó->(42,68)×ó->(-4,68)ÓÒ->(-4,91)ÓÒ+×ó
 
     cycle = cycle + 1 //×ÔÔö
     if cycle == 1 then
@@ -464,45 +464,43 @@ while 1 > 0
         tarY	= 91
         facing	= 0
     else if cycle == 5 then
-        tarX	= -4
-        tarY	= 91
+        tarX	= 42
+        tarY	= 68
         facing	= 0
     else if cycle == 6 then
         tarX	= -4
         tarY	= 68
         facing	= 1
+    else if cycle == 7 then
+        tarX	= -4
+        tarY	= 91
+        facing	= 1
     else
-        tarX	= 38
-        tarY	= 68
+        tarX	= -4
+        tarY	= 91
         facing	= 0
     End If
 
-    if cycle >= 7 then
+    if cycle >= 8 then
         cycle = 0
-        tolerance = 0 //×îºóÒ»¸öÈÝÈÌÎª0
-        Call Move()
-        DelayRandom 38,40
-        KeyDown Up
-        DelayRandom 158,160
-        KeyUp Up
-        DelayRandom 512,534
-    else
-        tolerance = 4 //
-        Call Move()
-        If facing == 0 then //ÃæÏò×ó
-            DelayRandom 15,20
-            KeyDown Left
-            DelayRandom 25,30
-            KeyUp Left
-            DelayRandom 15,20
-        Else //ÃæÏòÓÒ
-            DelayRandom 15,20
-            KeyDown Right
-            DelayRandom 25,30
-            KeyUp Right
-            DelayRandom 15,20
-        End If
-        Call Attack() //·ÅÕÐ
     End If
+
+    tolerance = 4 //
+    yTolerance = 4 //
+    Call Move()
+    If facing == 0 then //ÃæÏò×ó
+        DelayRandom 15,20
+        KeyDown Left
+        DelayRandom 25,30
+        KeyUp Left
+        DelayRandom 15,20
+    Else //ÃæÏòÓÒ
+        DelayRandom 15,20
+        KeyDown Right
+        DelayRandom 25,30
+        KeyUp Right
+        DelayRandom 15,20
+    End If
+    Call Attack() //·ÅÕÐ
 
 Wend
