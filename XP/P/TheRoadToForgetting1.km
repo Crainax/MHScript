@@ -265,17 +265,21 @@ Sub Attack //攻击
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_E.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then //
             KeyDown E
-            DelayRandom 462,467
+            DelayRandom 136,138
             KeyUp E
-            DelayRandom 2159,2181
+            DelayRandom 2434,2454
             KeyDown 1
-            DelayRandom 250,253
+            DelayRandom 169,171
             KeyUp 1
-            DelayRandom 1660,1677
+            DelayRandom 2215,2238
             KeyDown 2
-            DelayRandom 272,275
+            DelayRandom 154,156
             KeyUp 2
-            DelayRandom 1541,1557
+            DelayRandom 2091,2112
+            KeyDown 3
+            DelayRandom 227,230
+            KeyUp 3
+            DelayRandom 1538,1558
         else
             FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_W.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then //
@@ -287,78 +291,94 @@ Sub Attack //攻击
                 DelayRandom 467,472
                 KeyUp Down
             else
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_R.bmp",000000,1.00,0,intX,intY
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_Z.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then //
-                    KeyDown R
+                    KeyDown Z
                     DelayRandom 479,484
-                    KeyUp R
+                    KeyUp Z
                     DelayRandom 555,561
                 else
-                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_A.bmp",000000,1.00,0,intX,intY
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_G.bmp",000000,1.00,0,intX,intY
                     if intX >= 0 Then //
-                        If facing == 1 then //向右才先右再左
-                            DelayRandom 102,124
-                            KeyDown A
-                            DelayRandom 238,241
-                            KeyDown Right
-                            DelayRandom 1559,1571
-                            KeyDown Left
-                            DelayRandom 78,79
-                            KeyUp Right
-                            DelayRandom 1470,1489
-                            KeyUp Left
-                            DelayRandom 2,3
-                            KeyDown Right
-                            DelayRandom 1080,1093
-                            KeyDown Left
-                            DelayRandom 46,47
-                            KeyUp Right
-                            DelayRandom 1054,1062
-                            KeyUp Left
-                            DelayRandom 1,2
-                            KeyDown Right
-                            DelayRandom 193,195
-                            KeyUp Right
-                            DelayRandom 75,76
-                            KeyUp A
-                        else
-                            DelayRandom 102,124
-                            KeyDown A
-                            DelayRandom 238,241
-                            KeyDown Left
-                            DelayRandom 1559,1571
-                            KeyDown Right
-                            DelayRandom 78,79
-                            KeyUp Left
-                            DelayRandom 1470,1489
-                            KeyUp Right
-                            DelayRandom 2,3
-                            KeyDown Left
-                            DelayRandom 1080,1093
-                            KeyDown Right
-                            DelayRandom 46,47
-                            KeyUp Left
-                            DelayRandom 1054,1062
-                            KeyUp Right
-                            DelayRandom 1,2
-                            KeyDown Left
-                            DelayRandom 193,195
-                            KeyUp Left
-                            DelayRandom 75,76
-                            KeyUp A
-                        End If
+                        KeyDown G
+                        DelayRandom 479,484
+                        KeyUp G
+                        DelayRandom 555,561
                     else
-                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_D.bmp",000000,1.00,0,intX,intY
+                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_R.bmp",000000,1.00,0,intX,intY
                         if intX >= 0 Then //
-                            KeyDown D
-                            DelayRandom 220,251
-                            KeyUp D
-                            DelayRandom 810,819
-                        else
-                            KeyDown Q
+                            KeyDown R
                             DelayRandom 479,484
-                            KeyUp Q
+                            KeyUp R
                             DelayRandom 555,561
+                        else
+                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_A.bmp",000000,1.00,0,intX,intY
+                            if intX >= 0 Then //
+                                If facing == 1 then //向右才先右再左
+                                    DelayRandom 102,124
+                                    KeyDown A
+                                    DelayRandom 238,241
+                                    KeyDown Right
+                                    DelayRandom 1559,1571
+                                    KeyDown Left
+                                    DelayRandom 78,79
+                                    KeyUp Right
+                                    DelayRandom 1470,1489
+                                    KeyUp Left
+                                    DelayRandom 2,3
+                                    KeyDown Right
+                                    DelayRandom 1080,1093
+                                    KeyDown Left
+                                    DelayRandom 46,47
+                                    KeyUp Right
+                                    DelayRandom 1054,1062
+                                    KeyUp Left
+                                    DelayRandom 1,2
+                                    KeyDown Right
+                                    DelayRandom 193,195
+                                    KeyUp Right
+                                    DelayRandom 75,76
+                                    KeyUp A
+                                else
+                                    DelayRandom 102,124
+                                    KeyDown A
+                                    DelayRandom 238,241
+                                    KeyDown Left
+                                    DelayRandom 1559,1571
+                                    KeyDown Right
+                                    DelayRandom 78,79
+                                    KeyUp Left
+                                    DelayRandom 1470,1489
+                                    KeyUp Right
+                                    DelayRandom 2,3
+                                    KeyDown Left
+                                    DelayRandom 1080,1093
+                                    KeyDown Right
+                                    DelayRandom 46,47
+                                    KeyUp Left
+                                    DelayRandom 1054,1062
+                                    KeyUp Right
+                                    DelayRandom 1,2
+                                    KeyDown Left
+                                    DelayRandom 193,195
+                                    KeyUp Left
+                                    DelayRandom 75,76
+                                    KeyUp A
+                                End If
+                            else
+                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_D.bmp",000000,1.00,0,intX,intY
+                                if intX >= 0 Then //
+                                    KeyDown D
+                                    DelayRandom 220,251
+                                    KeyUp D
+                                    DelayRandom 810,819
+                                else
+                                    KeyDown Q
+                                    DelayRandom 479,484
+                                    KeyUp Q
+                                    DelayRandom 555,561
+                                End If
+                            End If
                         End If
                     End If
                 End If
