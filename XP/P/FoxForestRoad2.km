@@ -280,6 +280,13 @@ Sub Attack //¹¥»÷
             DelayRandom 227,230
             KeyUp 3
             DelayRandom 1538,1558
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_4.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //
+                KeyDown 4
+                DelayRandom 227,230
+                KeyUp 4
+                DelayRandom 1538,1558
+            End If
         else
             FindPic x3,y3,xEnd,yEnd,"E:\MHImg\XxP\P_W.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then //
