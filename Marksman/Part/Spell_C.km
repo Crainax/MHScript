@@ -1,0 +1,12 @@
+DelayRandom 488,493
+KeyDown C
+DelayRandom 630,637
+KeyUp C
+DelayRandom 1180,1192
+KeyDown C
+DelayRandom 1008,1019
+KeyUp C
+DelayRandom 571,577
+KeyDown C
+DelayRandom 4741,4789
+KeyUp C
