@@ -619,79 +619,23 @@ else //竖放屏幕
     yEnd = 2560
 End If
 
-PearlTime        = GetTimeStamp()  //上次放宝珠的时间
-SummonTime       = 0               //上次放召唤物的时间
-TransmissionTime = 0               //上次放传送点的时间
-TransmissionTime = 0               //上次放吸怪点的时间
-fountainTime     = 0               //上次喷泉的时间
-pickingTime      = GetTimeStamp()  //上次捡钱的时间
-yTolerance       = 0               //初始化Y容忍
-Timer            4, 1, 3100        //无限循环解轮
+PearlTime          = GetTimeStamp()  //上次放宝珠的时间
+SummonTime         = 0               //上次放召唤物的时间
+TransmissionTime   = 0               //上次放传送点的时间
+monsterSuctionTime = 0               //上次放吸怪点的时间
+fountainTime       = 0               //上次喷泉的时间
+pickingTime        = GetTimeStamp()  //上次捡钱的时间
+yTolerance         = 0               //初始化Y容忍
+Timer              4, 1, 3100        //无限循环解轮
 while 1 > 0
 
-    a = GetTimeStamp() - V12Time
-    if a > 88 then //可以技能了
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Mercedes\V1.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then //找C
-            KeyDown C
-            DelayRandom 905,907
-            KeyUp C
-            DelayRandom 129,139
-            V12Time = GetTimeStamp()
-        else
-            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Mercedes\V2.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then //找B
-                KeyDown B
-                DelayRandom 105,107
-                KeyUp B
-                DelayRandom 929,939
-                V12Time = GetTimeStamp()
-            else
-            End If
-        End If
 
-    End If
 
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
     a = GetTimeStamp() - fountainTime
     if a > 56 or intX >= 0 then //可以喷泉了
-
-        a = GetTimeStamp() - alterFountTime
-        if a > 120 then //走另一条路
-
-            tarX = 10
-            tarY = 102
-            tolerance = 6
-            Call Judge()
-            if tolLoc > 0 then //在平面上就左跳一次
-                DelayRandom 15,25
-                KeyDown Left
-                DelayRandom 74,75
-                KeyDown Space
-                DelayRandom 76,77
-                KeyUp Space
-                DelayRandom 29,30
-                KeyDown Space
-                DelayRandom 97,98
-                KeyUp Space
-                DelayRandom 24,25
-                KeyUp Left
-                DelayRandom 45,46
-                KeyDown G
-                DelayRandom 134,136
-                KeyUp G
-                DelayRandom 41,42
-            EndIf
-
-            tarX = -63
-            tarY = 115
-            tolerance = 4
-            Call Move()
-            alterFountTime = GetTimeStamp()
-        End if
-
-        tarX = -63
-        tarY = 84
+        tarX = -49
+        tarY = 78
         tolerance = 4
         Call Move()
         DelayRandom 56,58
@@ -708,153 +652,83 @@ while 1 > 0
         KeyUp Down
         DelayRandom 712,721
         fountainTime = GetTimeStamp()
-
-        DelayRandom 15,25
-        KeyDown Right
-        DelayRandom 97,98
-        KeyDown Space
-        DelayRandom 68,69
-        KeyUp Space
-        DelayRandom 45,46
-        KeyDown Space
-        DelayRandom 89,90
-        KeyUp Space
-        DelayRandom 53,54
-        KeyDown S
-        DelayRandom 97,98
-        KeyUp S
-        DelayRandom 165,167
-        KeyDown G
-        DelayRandom 89,90
-        KeyUp G
-        DelayRandom 700,708
-        KeyUp Right
-        DelayRandom 41,42
-    End If
-
-    a = GetTimeStamp() - pickingTime
-    if a > 150 then //可以捡钱了
-
-        tarX = 10
-        tarY = 102
-        tolerance = 6
-        Call Judge()
-        if tolLoc > 0 then //在平面上就右跳一次
-            DelayRandom 15,25
-            KeyDown Right
-            DelayRandom 74,75
-            KeyDown Space
-            DelayRandom 76,77
-            KeyUp Space
-            DelayRandom 29,30
-            KeyDown Space
-            DelayRandom 97,98
-            KeyUp Space
-            DelayRandom 24,25
-            KeyUp Right
-            DelayRandom 45,46
-            KeyDown G
-            DelayRandom 134,136
-            KeyUp G
-            DelayRandom 41,42
-        EndIf
-
-        tarX = 45
-        tarY = 115
-        tolerance = 4  //先去右下角
-        Call Move()
-        tarY = 66
-        tolerance = 4  //再去右上角
-        Call Move()
-        pickingTime = GetTimeStamp()
-
-        tarX = -6
-        tarY = 85
-        tolerance = 4
-        Call Move() //来左上层这里好一些
     else
-        tarX = 10
-        tarY = 102
-        tolerance = 6
-        Call Judge() //判断位置
-        if tolLoc > 0 Then //人已经在地方了
-            Call Attack()
-        else //前往那边
-            tarX = -6
-            tarY = 85
-            tolerance = 10
-            Call Judge() //看下人在左上辅助层(一)吗
-            if tolLoc > 0 then //如果在辅助层(一)
+
+    a = GetTimeStamp() - PearlTime
+    if a > 148 then //可以放宝珠
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\LCD.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //
+            KeyDown 2
+            DelayRandom 105,107
+            KeyUp 2
+            DelayRandom 929,939
+            PearlTime = GetTimeStamp()
+        End If
+    else
+        a = GetTimeStamp() - SummonTime
+        if a > 210 then //召唤
+            KeyDown Q
+            DelayRandom 105,107
+            KeyUp Q
+            DelayRandom 1329,1439
+            SummonTime = GetTimeStamp()
+        else
+            a = GetTimeStamp() - monsterSuctionTime
+            if a > 28 then //放小黑洞
+                tarX = 50
+                tarY = 78 //todo:要改
                 tolerance = 4
                 Call Move()
-                DelayRandom 15,20
-                KeyDown Right
-                DelayRandom 45,50
-                KeyUp Right
-                DelayRandom 78,80
-                KeyDown Down
-                DelayRandom 119,121
-                KeyDown Space
-                DelayRandom 143,145
-                KeyUp Down
-                DelayRandom 23,24
-                KeyUp Space
-                DelayRandom 306,310
-                KeyDown Right
-                DelayRandom 31,32
-                KeyDown Space
-                DelayRandom 113,115
-                KeyUp Space
-                DelayRandom 112,114
-                KeyUp Right
-                DelayRandom 378,380
+                KeyDown Left
+                DelayRandom 42,48
+                KeyUp Left
+                DelayRandom 56,69
+                KeyDown W
+                DelayRandom 105,107
+                KeyUp W
+                DelayRandom 729,789
+                monsterSuctionTime = GetTimeStamp()
             else
-                tarX = -6
-                tarY = 75
-                tolerance = 10
-                Call Judge() //看下人在左上辅助层(二)吗
-                if tolLoc > 0 then //如果在辅助层(二)
+                a = GetTimeStamp() - TransmissionTime
+                if a > 120 then //(传送点没施放)
+                    tarX = 50
+                    tarY = 78
                     tolerance = 4
                     Call Move()
-                    DelayRandom 15,20
-                    KeyDown Right
-                    DelayRandom 45,50
-                    KeyUp Right
-                    DelayRandom 78,80
+                    KeyDown Left
+                    DelayRandom 42,48
+                    KeyUp Left
+                    DelayRandom 56,69
                     KeyDown Down
-                    DelayRandom 82,83
-                    KeyDown Space
-                    DelayRandom 135,137
-                    KeyUp Space
-                    DelayRandom 181,183
+                    DelayRandom 95,96
+                    KeyDown 3
+                    DelayRandom 194,196
+                    KeyUp 3
+                    DelayRandom 66,67
                     KeyUp Down
-                    DelayRandom 517,523
+                    DelayRandom 712,721
+                    TransmissionTime = GetTimeStamp()
+                else if a > 30 then //传送点要更新了
+                    KeyDown 3
+                    DelayRandom 105,107
+                    KeyUp 3
+                    DelayRandom 524,537
+
+                    KeyDown Left
+                    DelayRandom 42,48
+                    KeyUp Left
+                    DelayRandom 56,69
                     KeyDown Down
-                    DelayRandom 119,121
-                    KeyDown Space
-                    DelayRandom 143,145
+                    DelayRandom 95,96
+                    KeyDown 3
+                    DelayRandom 194,196
+                    KeyUp 3
+                    DelayRandom 66,67
                     KeyUp Down
-                    DelayRandom 23,24
-                    KeyUp Space
-                    DelayRandom 306,310
-                    KeyDown Right
-                    DelayRandom 31,32
-                    KeyDown Space
-                    DelayRandom 113,115
-                    KeyUp Space
-                    DelayRandom 112,114
-                    KeyUp Right
-                    DelayRandom 378,380
+                    DelayRandom 712,721
+                    TransmissionTime = GetTimeStamp()
                 else
-                    tarX = 10
-                    tarY = 102
-                    tolerance = 4
-                    Call Move()
-                    DelayRandom 56,58
-                    KeyDown Right
-                    DelayRandom 56,58
-                    KeyUp Right
-                    DelayRandom 13,14
+                    Call Attack()
                 End If
             End If
         End If
