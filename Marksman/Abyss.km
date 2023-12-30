@@ -10,15 +10,12 @@ Dim tarX,               tarY,             Hooking, a      //目标
 Dim logoX,              logoY,            intX,    intY   //算目的地差值
 Dim cY,                 consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X或Y轴变化了
 Dim tolerance,          tolLoc,           yTolerance      //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim PearlTime,          SummonTime                        //冷却
+Dim PearlTime,          SummonTime,       HalfVTime       //冷却
 Dim monsterSuctionTime, fountainTime,     pickingTime     //冷却
 Dim staticCount,        staticX,          staticY         //防卡计数器
 Dim SavedX,             SavedY                            //保存一下临时处理的XY
 
-//喷泉(-49,78),打怪点(50,90),放黑洞点(18,78)
-
-//左喷泉点(-63,84)  放技能点(10,102)  捡钱右下(45,115)  捡钱右上(45,79) 测试的最高跳(-6,85)
-//辅助点:技能点左上一层(-6,85),左上两层(-6,75),撿錢最高点(40,66),喷泉最下面的可选路(-58,115)
+//喷泉(-38,68),喷泉下方(-30,87),捡钱点2(-2,87),打怪点(44,72),放黑洞点(11,68),跳楼(53,87)
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -95,7 +92,7 @@ Sub Move  //精确的移动
             else  //速走的默认为4
                 tolLoc = 4
             End If
-            if intX < (tarX-12) Then //向右二段跳
+            if intX < (tarX-16) Then //向右二段跳
                 consecutiveTimes = 0 //启动降落判断
                 cY = intY
                 DelayRandom 15,25
@@ -115,7 +112,7 @@ Sub Move  //精确的移动
                 DelayRandom 63,64
                 KeyUp S
                 DelayRandom 411,416
-            Else If intX > (tarX+12) Then //向左二段跳
+            Else If intX > (tarX+16) Then //向左二段跳
                 consecutiveTimes = 0 //启动降落判断
                 cY = 0
                 DelayRandom 15,25
@@ -166,7 +163,7 @@ Sub Move  //精确的移动
                         KeyDown Alt
                         DelayRandom 328,430
                         KeyUp Alt
-                    Else if intY > (tarY+25) Then	//大上跳
+                    Else if intY > (tarY+19) Then	//大上跳
                         consecutiveMax = 6 //延长一点降落判断
                         DelayRandom 395,402
                         KeyDown Space
@@ -279,50 +276,47 @@ Sub Attack //放技能攻击
         KeyUp Z
         DelayRandom 352,356
     else //跳A
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Marksman\X.bmp",000000,1.00,0,intX,intY	//找图
-        if intX >= 0 Then //放分裂箭
-            KeyDown X
-            DelayRandom 262,265
-            KeyUp X
-            DelayRandom 851,860
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Marksman\G.bmp",000000,1.00,0,intX,intY	//找图
+        if intX >= 0 Then //放大箭
+            KeyDown G
+            DelayRandom 190,192
+            KeyUp G
+            DelayRandom 820,829
         else
-            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Marksman\G.bmp",000000,1.00,0,intX,intY	//找图
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Marksman\A.bmp",000000,1.00,0,intX,intY	//找图
             if intX >= 0 Then //放大箭
-                KeyDown G
-                DelayRandom 190,192
-                KeyUp G
-                DelayRandom 820,829
+                KeyDown A
+                DelayRandom 482,487
+                KeyDown S
+                DelayRandom 348,352
+                KeyUp S
+                DelayRandom 435,440
+                KeyDown S
+                DelayRandom 285,288
+                KeyUp S
+                DelayRandom 475,480
+                KeyUp A
+                DelayRandom 955,965
             else
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Marksman\A.bmp",000000,1.00,0,intX,intY	//找图
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Marksman\D.bmp",000000,1.00,0,intX,intY	//找图
                 if intX >= 0 Then //放大箭
-                    KeyDown A
-                    DelayRandom 482,487
-                    KeyDown S
-                    DelayRandom 348,352
-                    KeyUp S
-                    DelayRandom 435,440
-                    KeyDown S
-                    DelayRandom 285,288
-                    KeyUp S
-                    DelayRandom 475,480
-                    KeyUp A
-                    DelayRandom 955,965
+                    KeyDown D
+                    DelayRandom 1186,1198
+                    KeyUp D
                 else
-                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Marksman\D.bmp",000000,1.00,0,intX,intY	//找图
-                    if intX >= 0 Then //放大箭
-                        KeyDown D
-                        DelayRandom 1186,1198
-                        KeyUp D
-                    else
-                        KeyDown Space
-                        DelayRandom 95,96
-                        KeyUp Space
-                        DelayRandom 160,162
-                        KeyDown S
-                        DelayRandom 104,106
-                        KeyUp S
-                        DelayRandom 671,678
-                    End If
+                    //KeyDown Space
+                    //DelayRandom 95,96
+                    //KeyUp Space
+                    //DelayRandom 160,162
+                    //KeyDown S
+                    //DelayRandom 104,106
+                    //KeyUp S
+                    //DelayRandom 671,678
+
+                    KeyDown S
+                    DelayRandom 359,365
+                    KeyUp S
+                    DelayRandom 671,678
                 End If
             End If
         End If
@@ -354,20 +348,45 @@ PearlTime          = GetTimeStamp()  //上次放宝珠的时间
 SummonTime         = 0               //上次放召唤物的时间
 monsterSuctionTime = 0               //上次放吸怪点的时间
 fountainTime       = 0               //上次喷泉的时间
+HalfVTime          = 0               //上次放指定技能的时间
 pickingTime        = GetTimeStamp()  //上次捡钱的时间
 yTolerance         = 0               //初始化Y容忍
 Timer              4, 1, 3100        //无限循环解轮
 while 1 > 0
 
-
+//喷泉(-38,68),喷泉下方(-30,87),捡钱点2(-2,87),打怪点(44,72),放黑洞点(11,68),跳楼(53,87)
 
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
     a = GetTimeStamp() - fountainTime
     if a > 56 or intX >= 0 then //可以喷泉了
-        tarX = -49
-        tarY = 78
+
+        tarX = 47
+        tarY = 72
+        tolerance = 6
+        Call Judge()
+        If tolLoc > 0 Then //刷怪点过去
+            tarX = 53
+            tarY = 87
+            tolerance = 4
+            Call Move()
+
+            //再跳楼
+            DelayRandom 72,76
+            KeyDown Down
+            DelayRandom 104,106
+            KeyDown Space
+            DelayRandom 133,135
+            KeyUp Space
+            DelayRandom 100,102
+            KeyUp Down
+            DelayRandom 825,834
+        End If
+
+        tarX = -38
+        tarY = 68
         tolerance = 4
         Call Move()
+
         DelayRandom 56,58
         KeyDown Right
         DelayRandom 62,68
@@ -382,6 +401,71 @@ while 1 > 0
         KeyUp Down
         DelayRandom 712,721
         fountainTime = GetTimeStamp()
+
+        //捡钱时间
+        a = GetTimeStamp() - pickingTime
+        if a > 120 then //捡钱
+            tarX = -30
+            tarY = 87
+            tolerance = 4
+            Call Move()
+
+            tarX = -2
+            Call Move()
+
+            DelayRandom 134,141
+            KeyDown Right
+            DelayRandom 111,113
+            KeyDown Space
+            DelayRandom 91,92
+            KeyUp Space
+            DelayRandom 16,17
+            KeyDown S
+            DelayRandom 69,70
+            KeyUp Right
+            DelayRandom 62,63
+            KeyUp S
+            DelayRandom 990,1000
+            KeyDown Right
+            DelayRandom 815,824
+            KeyUp Right
+            DelayRandom 300,304
+            KeyDown Space
+            DelayRandom 110,112
+            KeyUp Space
+            DelayRandom 145,147
+            KeyDown S
+            DelayRandom 100,102
+            KeyUp S
+            DelayRandom 920,930
+            KeyDown Right
+            DelayRandom 88,89
+            KeyUp Right
+
+            pickingTime = GetTimeStamp()
+        else
+
+        End If
+    End If
+
+    a = GetTimeStamp() - HalfVTime
+    if a > 60 then //可以技能了
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Marksman\X.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //找X
+            KeyDown X
+            DelayRandom 262,265
+            KeyUp X
+            DelayRandom 851,860
+        else
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Marksman\E.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //找E
+                KeyDown E
+                DelayRandom 262,265
+                KeyUp E
+                DelayRandom 851,860
+            End If
+        End If
+        HalfVTime = GetTimeStamp()
     End If
 
     a = GetTimeStamp() - PearlTime
@@ -405,8 +489,8 @@ while 1 > 0
         else
             a = GetTimeStamp() - monsterSuctionTime
             if a > 28 then //放小黑洞
-                tarX = 18
-                tarY = 78
+                tarX = 11
+                tarY = 68
                 tolerance = 4
                 Call Move()
                 KeyDown Left
@@ -419,8 +503,8 @@ while 1 > 0
                 DelayRandom 929,989
                 monsterSuctionTime = GetTimeStamp()
             else
-                tarX = 50
-                tarY = 90
+                tarX = 44
+                tarY = 72
                 tolerance = 4
                 Call Judge()
                 if tolLoc <= 0 then //如果不在打怪点
@@ -455,5 +539,6 @@ while 1 > 0
             End If
         End If
     End If
+
 Wend
 

@@ -91,7 +91,7 @@ Sub Move  //精确的移动
             else  //速走的默认为4
                 tolLoc = 4
             End If
-            if intX < (tarX-12) Then //向右二段跳
+            if intX < (tarX-16) Then //向右二段跳
                 consecutiveTimes = 0 //启动降落判断
                 cY = intY
                 TracePrint 右跳
@@ -112,7 +112,7 @@ Sub Move  //精确的移动
                 DelayRandom 63,64
                 KeyUp S
                 DelayRandom 411,416
-            Else If intX > (tarX+12) Then //向左二段跳
+            Else If intX > (tarX+16) Then //向左二段跳
                 consecutiveTimes = 0 //启动降落判断
                 cY = 0
                 TracePrint 左跳
