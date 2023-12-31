@@ -166,7 +166,7 @@ Sub Move  //精确的移动
                         KeyDown Alt
                         DelayRandom 328,430
                         KeyUp Alt
-                    Else if intY > (tarY+19) Then	//大上跳
+                    Else if intY > (tarY+14) Then	//大上跳
                         consecutiveMax = 6 //延长一点降落判断
                         TracePrint 上跳一次
                         DelayRandom 395,402

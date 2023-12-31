@@ -15,7 +15,7 @@ Dim monsterSuctionTime, fountainTime,     pickingTime     //冷却
 Dim staticCount,        staticX,          staticY         //防卡计数器
 Dim SavedX,             SavedY                            //保存一下临时处理的XY
 
-//喷泉(-38,68),喷泉下方(-30,87),捡钱点2(-2,87),打怪点(44,72),放黑洞点(11,68),跳楼(53,87)
+//喷泉(-38,68),喷泉下方(-30,87),捡钱点2(-2,87),打怪点(47,72),放黑洞点(11,68),跳楼(53,87)
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -163,7 +163,7 @@ Sub Move  //精确的移动
                         KeyDown Alt
                         DelayRandom 328,430
                         KeyUp Alt
-                    Else if intY > (tarY+19) Then	//大上跳
+                    Else if intY > (tarY+14) Then	//大上跳
                         consecutiveMax = 6 //延长一点降落判断
                         DelayRandom 395,402
                         KeyDown Space
@@ -427,7 +427,7 @@ while 1 > 0
             KeyUp S
             DelayRandom 990,1000
             KeyDown Right
-            DelayRandom 815,824
+            DelayRandom 615,624
             KeyUp Right
             DelayRandom 300,304
             KeyDown Space
@@ -503,7 +503,7 @@ while 1 > 0
                 DelayRandom 929,989
                 monsterSuctionTime = GetTimeStamp()
             else
-                tarX = 44
+                tarX = 47
                 tarY = 72
                 tolerance = 4
                 Call Judge()
