@@ -12,11 +12,12 @@ Dim cY,                 consecutiveTimes, consecutiveMax  //用这个东西判断角色是
 Dim tolerance,          tolLoc,           yTolerance      //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim PearlTime,          SummonTime,       HalfVTime       //冷却
 Dim monsterSuctionTime, fountainTime,     pickingTime     //冷却
+Dim pickingTime2                                          //冷却
 Dim staticCount,        staticX,          staticY         //防卡计数器
 Dim SavedX,             SavedY                            //保存一下临时处理的XY
 Dim RotaCount,          Rotation                          //左右开弓
 
-//喷泉(33,73),打怪点(-10,104),捡钱(-54,115)再上跳
+//喷泉(33,73),打怪点(-6,104),捡钱(-54,115)再上跳
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -76,6 +77,12 @@ Sub Move  //精确的移动
     while  1 > 0
         Call GetXY()
         if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
+            if Hooking > 0 and intY <= tarY - 3 Then //钩子的判断刹车
+                KeyDown Alt
+                DelayRandom 258,282
+                KeyUp Alt
+                Hooking = 0
+            End If
             if intY == cY Then //Y轴没变化了
                 consecutiveTimes = consecutiveTimes + 1
                 if consecutiveTimes >= consecutiveMax Then
@@ -368,29 +375,38 @@ else //竖放屏幕
     yEnd = 2560
 End If
 
-PearlTime          = GetTimeStamp()  //上次放宝珠的时间
-SummonTime         = 0               //上次放召唤物的时间
-monsterSuctionTime = 0               //上次放吸怪点的时间
-fountainTime       = 0               //上次喷泉的时间
-HalfVTime          = 0               //上次放指定技能的时间
-pickingTime        = GetTimeStamp()  //上次捡钱的时间
-yTolerance         = 0               //初始化Y容忍
-RotaCount          = 0               //面向修改
-Rotation           = 0               //面向修改
-Timer              4, 1, 3100        //无限循环解轮
+PearlTime          = GetTimeStamp()      //上次放宝珠的时间
+SummonTime         = 0                   //上次放召唤物的时间
+monsterSuctionTime = 0                   //上次放吸怪点的时间
+fountainTime       = 0                   //上次喷泉的时间
+HalfVTime          = 0                   //上次放指定技能的时间
+pickingTime        = GetTimeStamp()      //上次捡钱的时间
+pickingTime2       = GetTimeStamp() -60  //喷泉下面捡钱时间
+yTolerance         = 0                   //初始化Y容忍
+RotaCount          = 0                   //面向修改
+Rotation           = 0                   //面向修改
+Timer              4, 1, 3100            //无限循环解轮
 while 1 > 0
 
-//喷泉(33,73),打怪点(-10,104),捡钱(-54,115)再上跳
+//喷泉(33,73),打怪点(-6,104),捡钱(-54,115)再上跳,喷泉最下面(33,115)
 
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
     a = GetTimeStamp() - fountainTime
     if a > 56 or intX >= 0 then //可以喷泉了
 
         tarX = 33
-        tarY = 73
+        tarY = 115
         tolerance = 4
         Call Move()
+        DelayRandom 56,69
+        KeyDown Left
+        DelayRandom 42,48
+        KeyUp Left
+        DelayRandom 56,69
+        Call Attack()
 
+        tarY = 73
+        Call Move()
         DelayRandom 56,58
         KeyDown Right
         DelayRandom 62,68
@@ -415,7 +431,12 @@ while 1 > 0
         tarY = 115
         tolerance = 4
         Call Move()
-
+        DelayRandom 56,69
+        KeyDown Right
+        DelayRandom 42,48
+        KeyUp Right
+        DelayRandom 56,69
+        Call Attack()
         DelayRandom 395,402
         KeyDown Space
         DelayRandom 83,84
@@ -432,6 +453,7 @@ while 1 > 0
 
         pickingTime = GetTimeStamp()
     else
+
         a = GetTimeStamp() - HalfVTime
         if a > 60 then //可以技能了
             FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Marksman\X.bmp",000000,1.00,0,intX,intY
@@ -471,67 +493,52 @@ while 1 > 0
                 DelayRandom 1329,1439
                 SummonTime = GetTimeStamp()
             else
-                a = GetTimeStamp() - monsterSuctionTime
-                if a > 28 then //放小黑洞
-                    tarX = -10
-                    tarY = 104
-                    tolerance = 4
+                tarX = -6
+                tarY = 104
+                tolerance = 4
+                Call Judge()
+                if tolLoc <= 0 then //如果不在打怪点
+                    DelayRandom 178,185
+                    KeyDown 3
+                    DelayRandom 105,107
+                    KeyUp 3
+                    DelayRandom 524,537
+                    Call Judge()
                     if tolLoc <= 0 then //如果不在打怪点
                         Call Move()
-                        KeyDown Left
+                        KeyDown Right
                         DelayRandom 42,48
-                        KeyUp Left
+                        KeyUp Right
+                        DelayRandom 56,69
+                        KeyDown Down
+                        DelayRandom 95,96
+                        KeyDown 3
+                        DelayRandom 194,196
+                        KeyUp 3
+                        DelayRandom 66,67
+                        KeyUp Down
+                        DelayRandom 712,721
+                    else
+                        if Rotation == 1 then //
+                            KeyDown Left
+                            DelayRandom 42,48
+                            KeyUp Left
+                        else
+                            KeyDown Right
+                            DelayRandom 42,48
+                            KeyUp Right
+                        End If
                     End If
+                End If
+                a = GetTimeStamp() - monsterSuctionTime
+                if a > 28 then //放小黑洞
                     DelayRandom 56,69
                     KeyDown W
                     DelayRandom 105,107
                     KeyUp W
                     DelayRandom 929,989
                     monsterSuctionTime = GetTimeStamp()
-                else
-                    tarX = -10
-                    tarY = 104
-                    tolerance = 4
-                    Call Judge()
-                    if tolLoc <= 0 then //如果不在打怪点
-                        DelayRandom 178,185
-                        KeyDown 3
-                        DelayRandom 105,107
-                        KeyUp 3
-                        DelayRandom 524,537
-                        Call Judge()
-                        if tolLoc <= 0 then //如果不在打怪点
-                            Call Move()
-                            if Rotation == 1 then //
-                                KeyDown Left
-                                DelayRandom 42,48
-                                KeyUp Left
-                            else
-                                KeyDown Right
-                                DelayRandom 42,48
-                                KeyUp Right
-                            End If
-                            DelayRandom 56,69
-                            KeyDown Down
-                            DelayRandom 95,96
-                            KeyDown 3
-                            DelayRandom 194,196
-                            KeyUp 3
-                            DelayRandom 66,67
-                            KeyUp Down
-                            DelayRandom 712,721
-                        else
-                            if Rotation == 1 then //
-                                KeyDown Left
-                                DelayRandom 42,48
-                                KeyUp Left
-                            else
-                                KeyDown Right
-                                DelayRandom 42,48
-                                KeyUp Right
-                            End If
-                        End If
-                    End If
+                else //打怪
                     Call Attack()
                 End If
             End If
