@@ -1,0 +1,8 @@
+DelayRandom 218,221
+KeyDown Z
+DelayRandom 111,113
+KeyUp Z
+DelayRandom 618,625
+KeyDown Left
+DelayRandom 61,62
+KeyUp Left
