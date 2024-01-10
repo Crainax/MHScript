@@ -15,6 +15,7 @@ Dim tolLoc,         a,                currentState    //冷却和状态相关
 Dim stoneSteleTime, pickingTime,      boboTime        //冷却
 Dim staticCount,    staticX,          staticY         //防卡计数器
 Dim SavedX,         SavedY                            //保存一下临时处理的XY
+Dim RuneCooldown                                      //找轮间隔
 
 //跳楼初始化点(-79,80)
 //熊屁1(-55,80)
@@ -64,7 +65,7 @@ Sub AntiJam //一般跟随GetXY后用
         // End If
 
         Beep 500,500
-        //KeyAllup //施放所有按键并重启
+        KeyAllup //施放所有按键并重启
         // RestartScript //重启 和上面二选一即可
         // 模拟从绳子跳走
         DelayRandom 13,15
@@ -204,33 +205,37 @@ End Sub
 
 Sub on_timer4 //查地图轮,每3秒一次
 
-    FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 then
-        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-        intX = intX - logoX
-        intY = intY - logoY - 1 //图标的对准问题
-        SavedX     = tarX  //(导航前先记录一下老坐标,然后再恢复,复用SavedX)
-        SavedY     = tarY
-        tarX       = intX
-        tarY       = intY
-        tolerance  = 2
-        yTolerance = 3
-        KeyAllup //防错误
-        Call Move_Bear()
-        tarX = SavedX
-        tarY = SavedY
-        //暂停脚本
-        Beep 1000,200
-        DelayRandom 100,120
-        Beep 1000,200
-        DelayRandom 100,120
-        Beep 1000,200
-        DelayRandom 100,120
-        Beep 1000,200
-        Pause
-    else
+    a = GetTimeStamp() - RuneCooldown
+    if a > 600 then //可以放轮了
+        FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then
+            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+            intX = intX - logoX
+            intY = intY - logoY - 1 //图标的对准问题
+            SavedX     = tarX  //(导航前先记录一下老坐标,然后再恢复,复用SavedX)
+            SavedY     = tarY
+            tarX       = intX
+            tarY       = intY
+            tolerance  = 2
+            yTolerance = 3
+            KeyAllup //防错误
+            Call Move_Bear()
+            tarX = SavedX
+            tarY = SavedY
+            //暂停脚本
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            Pause
+            RuneCooldown = GetTimeStamp()
+        else
+        End If
+        Timer 4,1,5000 //无限循环
     End If
-    Timer 4,1,5000 //无限循环
 EndSub
 
 Sub Judge //判断人物是否在某个地点旁边,用tarXY,tolerance,tolLoc返回结果,不能嵌套move()使用,可以先使用这个再用move
@@ -273,7 +278,7 @@ End Sub
 Sub Fart //放熊屁,CD没好就放其他技能
     while 1 > 0
 
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\Old\W.bmp",000000,1.00,0,intX,intY	//找V2
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\Old\W2.bmp",000000,1.00,0,intX,intY	//找V2
         if intX >= 0 Then //找到V2就放,瞬手的事
             KeyDown W
             DelayRandom 122,124
@@ -389,11 +394,13 @@ while 1 > 0
         tarY      = 103
         tolerance = 4
         Call Move_Bear()
+        currentState = 2
     End If
 
-    tarX      = -1
-    tarY      = 103
-    tolerance = 6
+    tarX       = -1
+    tarY       = 103
+    tolerance  = 6
+    yTolerance = 4
     Call Judge() //判断位置是否在跳楼
     if tolLoc > 0 or currentState == 2 Then //人在左下,看下是捡钱还是熊屁1
 
@@ -401,8 +408,7 @@ while 1 > 0
         if intX >= 0 then //可以喷泉了,就去上面
             currentState = 0 //无论找没找到喷泉下一步都是去左下角
         else
-            Call Fart() //放个屁后跳下去
-            DelayRandom 45,50
+            DelayRandom 145,150
             KeyDown Down
             DelayRandom 62,63
             KeyDown Space
@@ -411,8 +417,82 @@ while 1 > 0
             DelayRandom 45,46
             KeyUp Down
             DelayRandom 854,863
+            currentState = 3
+        End If
+    End If
+
+    if currentState == 3 Then //跳楼完毕
+
+
+        tarX       = -79
+        tarY       = 80
+        tolerance  = 4
+        Call Judge() //判断位置是否在跳楼
+        If tolLoc > 0 Then
+            DelayRandom 94,97
+            KeyDown Right
+            DelayRandom 79,80
+            KeyDown Space
+            DelayRandom 56,57
+            KeyUp Space
+            DelayRandom 52,53
+            KeyDown Space
+            DelayRandom 62,63
+            KeyUp Space
+            DelayRandom 359,363
+            KeyUp Right
+            DelayRandom 524,530
+        else
+            tarX      = -55
+            tarY      = 80
+            tolerance = 4
+            Call Move_Bear()
         End If
 
+        Call Fart()
+        currentState = 4 //分支汇流
+    End If
+
+    if currentState == 4 Then //开放熊屁2
+        tarX      = -55
+        tarY      = 92
+        tolerance = 4
+        Call Move_Bear()
+        currentState = 5 //分支汇流
+    End If
+
+    if currentState == 5 Then //开放熊屁3
+        Call Fart()
+
+        tarX      = -55
+        tarY      = 103
+        tolerance = 4
+        Call Move_Bear()
+        currentState = 6 //分支汇流
+    End If
+
+
+    tarX      = -55
+    tarY      = 103
+    tolerance = 6
+    yTolerance = 4
+    Call Judge() //判断位置是否在左下角
+    if tolLoc > 0 or currentState == 6 Then //到了下面
+        Call Fart()
+
+        DelayRandom 194,197
+        KeyDown Right
+        DelayRandom 79,80
+        KeyDown Space
+        DelayRandom 56,57
+        KeyUp Space
+        DelayRandom 52,53
+        KeyDown Space
+        DelayRandom 62,63
+        KeyUp Space
+        DelayRandom 359,363
+        KeyUp Right
+        DelayRandom 524,530
 
         a = GetTimeStamp() - boboTime
         if a > 55 and tolLoc > 0 then //放个小波波
@@ -424,149 +504,12 @@ while 1 > 0
             boboTime = GetTimeStamp()
         End If
 
-
-        a = GetTimeStamp() - pickingTime
-        if a > 130 then //可以捡钱了,捡前钱先放个屁
-            Call Fart()
-            tarX = -58
-            tarY = 122
-            tolerance = 4
-            Call Move_Bear()
-            pickingTime = GetTimeStamp()
-            currentState = 4
-        else //去真正的熊屁点
-            DelayRandom 15,25
-            KeyDown Right
-            DelayRandom 95,96
-            KeyDown Space
-            DelayRandom 64,65
-            KeyUp Space
-            DelayRandom 119,121
-            KeyDown Space
-            DelayRandom 97,98
-            KeyUp Space
-            DelayRandom 42,43
-            KeyUp Right
-            DelayRandom 41,42
-
-            currentState = 3
-        End If
-
-    End If
-
-    if currentState == 3 Then //熊屁1地点到了+接下来去熊屁2(先走到临界点再跳一波,不麻烦)
-        KeyDown Left
-        DelayRandom 62,65
-        KeyUp Left
-        DelayRandom 12,14
-        Call Fart()
-
-        DelayRandom 50,62
-        KeyDown Right
-        DelayRandom 383,387
-        KeyDown Space
-        DelayRandom 76,77
-        KeyUp Space
-        DelayRandom 32,33
-        KeyDown Space
-        DelayRandom 87,88
-        KeyUp Space
-        DelayRandom 714,722
-        KeyDown Space
-        DelayRandom 72,73
-        KeyUp Space
-        DelayRandom 62,63
-        KeyDown Space
-        DelayRandom 61,62
-        KeyUp Space
-        DelayRandom 729,737
-        KeyUp Right
-        DelayRandom 50,62
-
-        tarX      = 18
-        tarY      = 108
+        tarX      = -1
+        tarY      = 103
         tolerance = 4
         Call Move_Bear()
-        currentState = 5 //分支汇流
-    End If
-
-    if currentState == 4 Then //最下面一层捡钱中(如果自动寻路表现不好就再用录制吧)
-        tarX      = 18
-        tarY      = 108
-        tolerance = 4
-        Call Move_Bear()
-        currentState = 5 //分支汇流
-    End If
-
-    tarX      = 18
-    tarY      = 108
-    tolerance = 6
-    Call Judge()
-    if tolLoc > 0 or currentState == 5 Then //开放熊屁2
-        KeyDown Left
-        DelayRandom 35,40
-        KeyUp Left
-        DelayRandom 16,18
         Call Fart()
-        tarX      = 18
-        tarY      = 74
-        tolerance = 4
-        Call Move_Bear() //前往熊屁3地点
-        currentState = 6 //开始去熊屁3
-    End If
-
-    tarX      = 18
-    tarY      = 74
-    tolerance = 6
-    Call Judge()
-    if tolLoc > 0 or currentState == 6 Then //在熊屁3地点
-        Call Fart()
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
-        a = GetTimeStamp() - pickingTime
-
-        if intX >= 0 then //可以喷泉了
-            //先10,74 左跳,再 -33,80 左跳
-            tarX      = 10
-            tarY      = 74
-            tolerance = 4
-            Call Move_Bear()
-
-            DelayRandom 101,110
-            KeyDown Left
-            DelayRandom 154,156
-            KeyDown Space
-            DelayRandom 94,95
-            KeyUp Space
-            DelayRandom 197,199
-            KeyDown Space
-            DelayRandom 116,118
-            KeyUp Space
-            DelayRandom 122,124
-            KeyUp Left
-            DelayRandom 638,645
-            KeyDown Left
-            DelayRandom 557,563
-            KeyDown Space
-            DelayRandom 82,83
-            KeyUp Space
-            DelayRandom 160,162
-            KeyDown Space
-            DelayRandom 83,84
-            KeyUp Space
-            DelayRandom 106,108
-            KeyUp Left
-            DelayRandom 253,274
-
-            currentState = 0
-        else if a > 130 then //去捡钱点
-            currentState = 1 //下一步去左下角
-        else //直接去熊屁点1
-            tarX      = -35
-            tarY      = 108
-            tolerance = 4
-            Call Move_Bear()
-            currentState = 3 //不绕远路了  直接熊屁点1
-        End If
+        currentState = 2
     End If
 
     if currentState < 0 or currentState > 6 Then
