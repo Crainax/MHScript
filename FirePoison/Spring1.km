@@ -4,54 +4,54 @@ ScreenY=1440
 Times=0
 
 [Script]
-Dim x1,           x2,               y1,   y2    // 矩形区域:小地图采样点
-Dim x3,           y3,               xEnd, yEnd  // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,         tarY                          //寻位置相关:目标地点
-Dim logoX,        logoY,            intX, intY  //寻位置相关:当前地点
-Dim InfiTime,     a,                inLimit     //终极无限的补充
-Dim cY,           consecutiveTimes, stuckTimes  //用这个东西判断角色是不是没有X或Y轴变化了
-Dim pickingTime1, pickingTime2                  //各种时间间隔
-Dim stoneSteleTime                              //各种时间间隔
-Dim tolerance,    tolLoc,           yTolerance  //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim staticCount,  staticX,          staticY     //防卡计数器
-Dim SavedX,       SavedY                        //保存一下临时处理的XY
+Dim x1,             x2,               y1,   y2    // 矩形区域:小地图采样点
+Dim x3,             y3,               xEnd, yEnd  // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,           tarY                          //寻位置相关:目标地点
+Dim logoX,          logoY,            intX, intY  //寻位置相关:当前地点
+Dim InfiTime,       a,                inLimit     //终极无限的补充
+Dim cY,             consecutiveTimes, stuckTimes  //用这个东西判断角色是不是没有X或Y轴变化了
+Dim pickingTime1,   pickingTime2                  //各种时间间隔
+Dim stoneSteleTime, fountainTime                  //各种时间间隔
+Dim tolerance,      tolLoc,           yTolerance  //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim staticCount,    staticX,          staticY     //防卡计数器
+Dim SavedX,         SavedY                        //保存一下临时处理的XY
 
-//喷泉点(xp1,yp1)  右放,可以停一下捡钱
-//领域点(xp2,yp2)  放波领域,站A点偏右,Y容忍4
-//平A点(xp3,yp3)
-//左边捡钱点(xp4,yp4)  捡完后
-//右边捡钱点(xp5,yp5)  只有在放完喷泉后才会过去捡
+//喷泉点(1,81)  右放,可以停一下捡钱
+//领域点(-18,103)  放波领域,站A点偏右,Y容忍4
+//平A点(-47,92)
+//左边捡钱点(-82,92)  捡完后
+//右边捡钱点(20,103)  只有在放完喷泉后才会过去捡
 
 Sub Attack //技能循环攻击
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_V1.bmp",000000,1.00,0,intX,intY
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\Q.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //V1技能好了
         KeyDown Q
         DelayRandom 135,137
         KeyUp Q
         DelayRandom 735,743
     else
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_V2.bmp",000000,1.00,0,intX,intY
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\W.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then //V2技能好了
             KeyDown W
             DelayRandom 120,122
             KeyUp W
             DelayRandom 610,619
         else
-            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_V4.bmp",000000,1.00,0,intX,intY
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\S.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then //V4技能好了
                 KeyDown S
                 DelayRandom 110,119
                 KeyUp S
                 DelayRandom 807,816
             else
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_Stone.bmp",000000,1.00,0,intX,intY
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\B.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then //流星技能好了
                     KeyDown B
                     DelayRandom 141,143
                     KeyUp B
                     DelayRandom 841,849
                 else
-                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_V3.bmp",000000,1.00,0,intX,intY
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\V.bmp",000000,1.00,0,intX,intY
                     if intX >= 0 Then //V3技能好了
                         KeyDown E
                         DelayRandom 185,187
@@ -62,14 +62,14 @@ Sub Attack //技能循环攻击
                         KeyUp V
                         DelayRandom 835,844
                     else
-                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_Blue.bmp",000000,1.00,0,intX,intY
+                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\Z.bmp",000000,1.00,0,intX,intY
                         if intX >= 0 Then //蓝焰斩技能好了
                             KeyDown Z
                             DelayRandom 177,182
                             KeyUp Z
                             DelayRandom 786,798
                         else
-                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BigBless.bmp",000000,1.00,0,intX,intY
+                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\5A.bmp",000000,1.00,0,intX,intY
                             if intX >= 0 Then //补充个大祝福
                                 KeyDown 5
                                 DelayRandom 134,142
@@ -90,21 +90,21 @@ Sub Attack //技能循环攻击
 End Sub
 
 Sub Spell //蜘蛛,烈阳,武公
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Spider.bmp",000000,1.00,0,intX,intY
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\H.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //找蜘蛛
         KeyDown H
         DelayRandom 105,107
         KeyUp H
         DelayRandom 929,939
     else
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Lieyang.bmp",000000,1.00,0,intX,intY
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Y.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then //找烈阳
             KeyDown Y
             DelayRandom 105,107
             KeyUp Y
             DelayRandom 811,813
         else
-            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Wugong.bmp",000000,1.00,0,intX,intY
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\4.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then //找武公
                 KeyDown 4
                 DelayRandom 105,107
@@ -120,7 +120,7 @@ End Sub
 Sub Infinite //判断是否要补充终极无限了
     a = GetTimeStamp() - InfiTime
     if a > inLimit then //该补充了
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_Infi1.bmp",000000,1.00,0,intX,intY
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\InfiR.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then //R位置的终极无限
             DelayRandom 400,410
             KeyDown R
@@ -129,7 +129,7 @@ Sub Infinite //判断是否要补充终极无限了
             DelayRandom 578,584
             InfiTime = GetTimeStamp()
         else
-            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_Infi2.bmp",000000,1.00,0,intX,intY
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\InfiG.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then //`位置的终极无限
                 DelayRandom 400,410
                 KeyDown `
@@ -173,7 +173,7 @@ Sub AntiJam //一般跟随GetXY后用
     End If
     if staticCount >= 3 Then //
 
-        if intY == yp3 and intX < xp3+6 and intX > xp3-6 Then //白名单
+        if intY == 92 and intX < -47+6 and intX > -47-6 Then //白名单
             staticCount = 0
             Exit Sub
         End If
@@ -408,8 +408,9 @@ End If
 inLimit        = 110                       //定义一下终极无限的冷却时间
 InfiTime       = GetTimeStamp() - inLimit  //上次终极无限的时间
 stoneSteleTime = 0                         //放轮时间
-pickingTime1   = GetTimeStamp() - 120      //上次捡钱左
-pickingTime2   = GetTimeStamp() - 75       //上次捡钱右
+fountainTime   = 0                         //喷泉时间
+pickingTime1   = GetTimeStamp() - 30       //上次捡钱左
+pickingTime2   = GetTimeStamp() - 45       //上次捡钱右
 yTolerance     = 0                         //初始化
 Timer          4, 1, 3100                  //无限循环
 while 1 > 0
@@ -423,11 +424,11 @@ while 1 > 0
         stoneSteleTime = GetTimeStamp()
     End If
 
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1.bmp",000000,1.00,0,intX,intY
     a = GetTimeStamp() - fountainTime
     if a > 55 or intX >= 0 then //可以喷泉了
-        tarX = xp1
-        tarY = yp1
+        tarX = 1
+        tarY = 81
         tolerance = 4
         Call Move()
         DelayRandom 56,58
@@ -450,8 +451,8 @@ while 1 > 0
 
         a = GetTimeStamp() - pickingTime2
         if a > 124 then //捡钱
-            tarX         = xp5
-            tarY         = yp5
+            tarX         = 20
+            tarY         = 103
             tolerance    = 4
             yTolerance   = 4
             Call Move()
@@ -461,8 +462,8 @@ while 1 > 0
         End If
 
         //前往领域点
-        tarX       = xp2
-        tarY       = yp2
+        tarX       = -18
+        tarY       = 103
         tolerance  = 4
         yTolerance = 4
         Call Move() //回去一波右下角放
@@ -479,8 +480,8 @@ while 1 > 0
 
         a = GetTimeStamp() - pickingTime1
         if a > 123 then //向上走
-            tarX      = xp4
-            tarY      = yp4
+            tarX      = -82
+            tarY      = 92
             tolerance = 6
             Call Move()
             Call Attack()
@@ -488,8 +489,8 @@ while 1 > 0
             pickingTime1 = GetTimeStamp()
         else
 
-            tarX      = xp3
-            tarY      = yp3
+            tarX      = -47
+            tarY      = 92
             tolerance = 4
             Call Judge() //人在那边吗
             if tolLoc <= 0 then //人不在那边先回去
