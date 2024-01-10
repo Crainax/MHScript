@@ -13,6 +13,7 @@ Dim tolerance,   temp,             yTolerance      //¿ìËÙÒÆ¶¯µÄÈİ²î,0´ú±í¾«È·ÒÆ¶
 Dim cY,          consecutiveTimes, consecutiveMax  //ÓÃÕâ¸ö¶«Î÷ÅĞ¶Ï½ÇÉ«ÊÇ²»ÊÇÃ»ÓĞX»òYÖá±ä»¯ÁË
 Dim Hooking,     gliding                           //¹³×ÓÖĞ(·½±ãÖĞÍ¾É²³µ)/»¬ÏèÖĞ
 Dim staticCount, staticX,          staticY         //·À¿¨¼ÆÊıÆ÷
+Dim LEDState                                       //²âÊÔÎ»ÖÃ
 
 //Ä¿Ç°ÒÑ¾­Ëã³öÒ»¸ö¶ş¶ÎÌøÄÜÌø32µÄXÖá(Æ½µØ)
 //¼¸¸ö²âÊÔµã:ºäÕ¨µã(ÓÒ)-99,130    ºäÕ¨µã(×ó)-48,129
@@ -520,14 +521,33 @@ else //Êú·ÅÆÁÄ»
     xEnd = 1440
     yEnd = 2560
 End If
-temp = 1
-GetFileLine tarX,Move.Conf,temp		//ÎÄ¼ş²éÕÒ
-temp = 2
-GetFileLine tarY,Move.Conf,temp		//ÎÄ¼ş²éÕÒ
-temp = 3
-GetFileLine tolerance,Move.Conf,temp	//ÎÄ¼ş²éÕÒ
-TracePrint Ç°Íù[ & tarX & , & tarY & ],ÈİÈÌ¶È & tolerance
-//Call Move_Fly()
-//Call Move_Bild()
-Call Move_Bear()
-MsgBox µ½´ïÄ¿µÄ[ & tarX & , & tarY & ],ÈİÈÌ¶È & tolerance
+while 1 > 0
+    LEDState = GetLED(1)
+    if LEDState == 0 then //
+        tolLoc = 1
+        GetFileLine tarX,Move.Conf,tolLoc		//ÎÄ¼ş²éÕÒ
+        tolLoc = 2
+        GetFileLine tarY,Move.Conf,tolLoc		//ÎÄ¼ş²éÕÒ
+        tolLoc = 3
+        GetFileLine tolerance,Move.Conf,tolLoc	//ÎÄ¼ş²éÕÒ
+        TracePrint Ç°Íù[ & tarX & , & tarY & ],ÈİÈÌ¶È & tolerance
+        //tolerance = 4 //ÈİÈÌ¶È,4ÎªÍÆ¼öÖµ
+        //Call Move_Fly()
+        //Call Move_Bild()
+        Call Move_Bear()
+        MsgBox ²âÊÔ½áÊø
+    else //´óĞ´¼üÁÁµÄ»°¾Í»ñÈ¡µã
+        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//ÕÒÍ¼
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY	//ÕÒÍ¼
+        If intX >= 0 Then
+            // TracePrint [Í¼±êXÖá & logoX & ,Í¼±êYÖá & logoY & ],[ÂÌµãXÖá & intX & ,ÂÌµãYÖá & intY & ]
+            // MsgBox [Í¼±êXÖá & logoX & ,Í¼±êYÖá & logoY & ],[ÂÌµãXÖá & intX & ,ÂÌµãYÖá & intY & ]
+            intX = intX - logoX
+            intY = intY - logoY
+            TracePrint [ÈËÎïXÖá & intX & ,ÈËÎïYÖá & intY & ]
+            MsgBox [ÈËÎïXÖá & intX & ,ÈËÎïYÖá & intY & ]
+        else
+            MsgBox "Ã»ÕÒµ½"	 //µ¯´°
+        End If
+    End If
+Wend

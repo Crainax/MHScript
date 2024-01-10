@@ -4,22 +4,22 @@ ScreenY=1440
 Times=0
 
 [Script]
-Dim x1,             x2,               y1,   y2    // 矩形区域:小地图采样点
-Dim x3,             y3,               xEnd, yEnd  // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,           tarY                          //寻位置相关:目标地点
-Dim logoX,          logoY,            intX, intY  //寻位置相关:当前地点
-Dim InfiTime,       a,                inLimit     //终极无限的补充
-Dim cY,             consecutiveTimes, stuckTimes  //用这个东西判断角色是不是没有X或Y轴变化了
-Dim pickingTime1,   pickingTime2                  //各种时间间隔
-Dim stoneSteleTime, fountainTime                  //各种时间间隔
-Dim tolerance,      tolLoc,           yTolerance  //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim staticCount,    staticX,          staticY     //防卡计数器
-Dim SavedX,         SavedY                        //保存一下临时处理的XY
+Dim x1,             x2,               y1,   y2      // 矩形区域:小地图采样点
+Dim x3,             y3,               xEnd, yEnd    // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,           tarY                            //寻位置相关:目标地点
+Dim logoX,          logoY,            intX, intY    //寻位置相关:当前地点
+Dim InfiTime,       a,                inLimit       //终极无限的补充
+Dim cY,             consecutiveTimes, stuckTimes    //用这个东西判断角色是不是没有X或Y轴变化了
+Dim pickingTime1,   pickingTime2                    //各种时间间隔
+Dim stoneSteleTime, fountainTime,     RuneCooldown  //各种时间间隔
+Dim tolerance,      tolLoc,           yTolerance    //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim staticCount,    staticX,          staticY       //防卡计数器
+Dim SavedX,         SavedY                          //保存一下临时处理的XY
 
 //喷泉点(1,81)  右放,可以停一下捡钱
 //领域点(-18,103)  放波领域,站A点偏右,Y容忍4
 //平A点(-47,92)
-//左边捡钱点(-82,92)  捡完后
+//左边捡钱点(-77,92)  捡完后(-77,80)
 //右边捡钱点(20,103)  只有在放完喷泉后才会过去捡
 
 Sub Attack //技能循环攻击
@@ -144,7 +144,7 @@ End Sub
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",00 0000,1.00,0,logoX,logoY
 
     if intX < 0 Then //人物跑到了边界  处理一下
         KeyDown Left
@@ -354,33 +354,37 @@ End Sub
 
 Sub on_timer4 //查地图轮,每3秒一次
 
-    FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 then
-        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-        intX = intX - logoX
-        intY = intY - logoY - 1 //图标的对准问题
-        SavedX     = tarX  //(导航前先记录一下老坐标,然后再恢复,复用SavedX)
-        SavedY     = tarY
-        tarX       = intX
-        tarY       = intY
-        tolerance  = 2
-        yTolerance = 3
-        KeyAllup //防错误
-        Call Move()
-        tarX = SavedX
-        tarY = SavedY
-        //暂停脚本
-        Beep 1000,200
-        DelayRandom 100,120
-        Beep 1000,200
-        DelayRandom 100,120
-        Beep 1000,200
-        DelayRandom 100,120
-        Beep 1000,200
-        Pause
-    else
+    a = GetTimeStamp() - RuneCooldown
+    if a > 600 then //可以放轮了
+        FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then
+            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+            intX = intX - logoX
+            intY = intY - logoY - 1 //图标的对准问题
+            SavedX     = tarX  //(导航前先记录一下老坐标,然后再恢复,复用SavedX)
+            SavedY     = tarY
+            tarX       = intX
+            tarY       = intY
+            tolerance  = 2
+            yTolerance = 3
+            KeyAllup //防错误
+            Call Move()
+            tarX = SavedX
+            tarY = SavedY
+            //暂停脚本
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            Pause
+            RuneCooldown = GetTimeStamp()
+        else
+        End If
+        Timer 4,1,5000 //无限循环
     End If
-    Timer 4,1,5000 //无限循环
 EndSub
 
 
@@ -407,6 +411,7 @@ else //竖放屏幕
 End If
 inLimit        = 110                       //定义一下终极无限的冷却时间
 InfiTime       = GetTimeStamp() - inLimit  //上次终极无限的时间
+RuneCooldown   = 0                         //解轮时间
 stoneSteleTime = 0                         //放轮时间
 fountainTime   = 0                         //喷泉时间
 pickingTime1   = GetTimeStamp() - 30       //上次捡钱左
@@ -480,9 +485,13 @@ while 1 > 0
 
         a = GetTimeStamp() - pickingTime1
         if a > 123 then //向上走
-            tarX      = -82
+            tarX      = -77
             tarY      = 92
             tolerance = 6
+            Call Move()
+            Call Attack()
+            DelayRandom 712,750
+            tarY      = 80
             Call Move()
             Call Attack()
             DelayRandom 712,750

@@ -12,6 +12,7 @@ Dim cY,          consecutiveTimes, consecutiveMax          //ÓÃÕâ¸ö¶«Î÷ÅĞ¶Ï½ÇÉ«Ê
 Dim tolerance,   tolLoc,           yTolerance              //¿ìËÙÒÆ¶¯µÄÈİ²î,0´ú±í¾«È·ÒÆ¶¯,ÁíÍâ¸öÊÇ¾Ö²¿±äÁ¿
 Dim windTime,    fireTime,         seedTime, fountainTime  //¸÷ÖÖÀäÈ´
 Dim a,           stoneSteleTime,   pickingTime             //¸÷ÖÖÀäÈ´
+Dim RuneCooldown                                           //¸÷ÖÖÀäÈ´
 Dim staticCount, staticX,          staticY                 //·À¿¨¼ÆÊıÆ÷
 Dim SavedX,      SavedY                                    //±£´æÒ»ÏÂÁÙÊ±´¦ÀíµÄXY
 
@@ -211,33 +212,37 @@ End Sub
 
 Sub on_timer4 //²éµØÍ¼ÂÖ,Ã¿3ÃëÒ»´Î
 
-    FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 then
-        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-        intX = intX - logoX
-        intY = intY - logoY - 1 //Í¼±êµÄ¶Ô×¼ÎÊÌâ
-        SavedX     = tarX  //(µ¼º½Ç°ÏÈ¼ÇÂ¼Ò»ÏÂÀÏ×ø±ê,È»ºóÔÙ»Ö¸´,¸´ÓÃSavedX)
-        SavedY     = tarY
-        tarX       = intX
-        tarY       = intY
-        tolerance  = 2
-        yTolerance = 3
-        KeyAllup //·À´íÎó
-        Call Move()
-        tarX = SavedX
-        tarY = SavedY
-        //ÔİÍ£½Å±¾
-        Beep 1000,200
-        DelayRandom 100,120
-        Beep 1000,200
-        DelayRandom 100,120
-        Beep 1000,200
-        DelayRandom 100,120
-        Beep 1000,200
-        Pause
-    else
+    a = GetTimeStamp() - RuneCooldown
+    if a > 600 then //¿ÉÒÔ·ÅÂÖÁË
+        FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then
+            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+            intX = intX - logoX
+            intY = intY - logoY - 1 //Í¼±êµÄ¶Ô×¼ÎÊÌâ
+            SavedX     = tarX  //(µ¼º½Ç°ÏÈ¼ÇÂ¼Ò»ÏÂÀÏ×ø±ê,È»ºóÔÙ»Ö¸´,¸´ÓÃSavedX)
+            SavedY     = tarY
+            tarX       = intX
+            tarY       = intY
+            tolerance  = 2
+            yTolerance = 3
+            KeyAllup //·À´íÎó
+            Call Move()
+            tarX = SavedX
+            tarY = SavedY
+            //ÔİÍ£½Å±¾
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            Pause
+            RuneCooldown = GetTimeStamp()
+        else
+        End If
+        Timer 4,1,5000 //ÎŞÏŞÑ­»·
     End If
-    Timer 4,1,5000 //ÎŞÏŞÑ­»·
 EndSub
 
 
@@ -339,6 +344,7 @@ windTime       = 0               //ÉÏ´Î·çµÄÊ±¼ä
 fireTime       = 0               //ÉÏ´Î»ğµÄÊ±¼ä
 seedTime       = 0               //ÉÏ´ÎÖÖ×ÓµÄÊ±¼ä
 fountainTime   = 0               //ÉÏ´ÎÅçÈªµÄÊ±¼ä
+RuneCooldown   = 0               //½âÂÖÀäÈ´
 stoneSteleTime = 0               //ÉÏ´ÎÂÖ»ØµÄÊ±¼ä
 pickingTime    = GetTimeStamp()  //ÉÏ´Î¼ñÇ®µÄÊ±¼ä
 yTolerance     = 0               //³õÊ¼»¯

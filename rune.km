@@ -9,6 +9,7 @@ Dim x3,     y3,    xEnd,      yEnd        // 2个顶点:技能区/屏幕右下角顶点
 Dim tarX,   tarY,  tolerance, yTolerance  //目标
 Dim logoX,  logoY, intX,      intY        //算目的地差值
 Dim SavedX, SavedY                        //保存一下临时处理的XY
+Dim RuneCooldown                          //找轮间隔
 
 Sub Move  //模拟移动,不要移植这个
 	MsgBox [轮X轴 & tarX & ,轮Y轴 & tarY & ]
@@ -16,33 +17,37 @@ End Sub
 
 Sub on_timer4 //查地图轮,每3秒一次
 
-    FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 then
-        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-        intX = intX - logoX
-        intY = intY - logoY - 1 //图标的对准问题
-        SavedX     = tarX  //(导航前先记录一下老坐标,然后再恢复,复用SavedX)
-        SavedY     = tarY
-        tarX       = intX
-        tarY       = intY
-        tolerance  = 2
-        yTolerance = 3
-        KeyAllup //防错误
-        Call Move()
-        tarX = SavedX
-        tarY = SavedY
-        //暂停脚本
-        Beep 1000,200
-        DelayRandom 100,120
-        Beep 1000,200
-        DelayRandom 100,120
-        Beep 1000,200
-        DelayRandom 100,120
-        Beep 1000,200
-        Pause
-    else
+    a = GetTimeStamp() - RuneCooldown
+    if a > 600 then //可以放轮了
+        FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then
+            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+            intX = intX - logoX
+            intY = intY - logoY - 1 //图标的对准问题
+            SavedX     = tarX  //(导航前先记录一下老坐标,然后再恢复,复用SavedX)
+            SavedY     = tarY
+            tarX       = intX
+            tarY       = intY
+            tolerance  = 2
+            yTolerance = 3
+            KeyAllup //防错误
+            Call Move()
+            tarX = SavedX
+            tarY = SavedY
+            //暂停脚本
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            Pause
+            RuneCooldown = GetTimeStamp()
+        else
+        End If
+        Timer 4,1,5000 //无限循环
     End If
-    Timer 4,1,5000 //无限循环
 EndSub
 
 
@@ -66,6 +71,7 @@ else //竖放屏幕
     xEnd = 1440
     yEnd = 2560
 End If
+RuneCooldown = 0
 Timer 4,1,1000 //无限循环
 TracePrint 开始了哦
 while 1 > 0
