@@ -15,12 +15,12 @@ Dim a,           stoneSteleTime,   pickingTime             //各种冷却
 Dim staticCount, staticX,          staticY                 //防卡计数器
 Dim SavedX,      SavedY                                    //保存一下临时处理的XY
 
-//左边喷泉点(xp1,yp1)  右边点向左放
-//中间放风点(xp2,xp2) Y容忍4
-//右间放水点(xp3,xp3)
-//种子点(xp4,xp4) Y容忍4
-//平A点(xp5,xp5) Y容忍4
-//捡钱点(xp6,xp6)
+//左边喷泉点(-79,92)  右边点向左放
+//中间放风点(-50,103) Y容忍4
+//右间放水点(-1,81)
+//种子点(14,103) Y容忍4
+//平A点(-9,103) Y容忍4
+//捡钱点(xp6,yp6)
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -52,7 +52,7 @@ Sub AntiJam //一般跟随GetXY后用
         staticCount = 0
     End If
     if staticCount >= 3 Then //
-        if intY < yp5+4 and intY > yp5-4 and intX < xp5+8 and intX > xp5-8 Then //白名单
+        if intY < 103+4 and intY > 103-4 and intX < -9+8 and intX > -9-8 Then //白名单
             staticCount = 0
             Exit Sub
         End If
@@ -242,56 +242,56 @@ EndSub
 
 
 Sub SpellList() //随便扔技能
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Spider.bmp",000000,1.00,0,intX,intY
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\H.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //找蜘蛛
         KeyDown H
         DelayRandom 105,107
         KeyUp H
         DelayRandom 929,939
     else
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Lieyang.bmp",000000,1.00,0,intX,intY
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Y.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then //找烈阳
             KeyDown Y
             DelayRandom 105,107
             KeyUp Y
             DelayRandom 811,813
         else
-            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\LL_V1.bmp",000000,1.00,0,intX,intY
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\G.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then //找V1
                 KeyDown G
                 DelayRandom 123,130
                 KeyUp G
                 DelayRandom 387,400
             else
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\LL_V2.bmp",000000,1.00,0,intX,intY
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\C.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then //找V2
                     KeyDown C
                     DelayRandom 152,160
                     KeyUp C
                     DelayRandom 822,912
                 else
-                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\LL_V3.bmp",000000,1.00,0,intX,intY
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\V.bmp",000000,1.00,0,intX,intY
                     if intX >= 0 Then //找V3
                         KeyDown V
                         DelayRandom 123,130
                         KeyUp V
                         DelayRandom 899,909
                     else
-                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\LL_V4.bmp",000000,1.00,0,intX,intY
+                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\B.bmp",000000,1.00,0,intX,intY
                         if intX >= 0 Then //找V4
                             KeyDown B
                             DelayRandom 105,107
                             KeyUp B
                             DelayRandom 712,780
                         else
-                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\GelanBless.bmp",000000,1.00,0,intX,intY
+                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\5G.bmp",000000,1.00,0,intX,intY
                             if intX >= 0 Then //找女神祝福
                                 KeyDown 5
                                 DelayRandom 134,142
                                 KeyUp 5
                                 DelayRandom 512,519
                             else
-                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Wugong.bmp",000000,1.00,0,intX,intY
+                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\4.bmp",000000,1.00,0,intX,intY
                                 if intX >= 0 Then //找武公
                                     KeyDown 4
                                     DelayRandom 105,107
@@ -344,11 +344,11 @@ pickingTime    = GetTimeStamp()  //上次捡钱的时间
 yTolerance     = 0               //初始化
 Timer          4, 1, 3100        //无限循环解轮
 while 1 > 0
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Water.bmp",000000,1.00,0,intX,intY
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1.bmp",000000,1.00,0,intX,intY
     a = GetTimeStamp() - fountainTime
     if a > 55 or intX >= 0 then //可以喷泉了
-        tarX = xp1
-        tarY = yp1
+        tarX = -79
+        tarY = 92
         tolerance = 4
         Call Move()
         DelayRandom 56,58
@@ -378,9 +378,9 @@ while 1 > 0
     End If
 
     a = GetTimeStamp() - windTime
-    if a > 15 then //可以放风了
-        tarX       = xp2
-        tarY       = yp2
+    if a > 14 then //可以放风了
+        tarX       = -50
+        tarY       = 103
         tolerance  = 4
         yTolerance = 4
         Call Move()
@@ -405,9 +405,9 @@ while 1 > 0
     End If
 
     a = GetTimeStamp() - fireTime
-    if a > 15 then //可以放水了
-        tarX = xp3
-        tarY = yp3
+    if a > 14 then //可以放水了
+        tarX = -1
+        tarY = 81
         tolerance = 4
         Call Move()
         DelayRandom 56,58
@@ -423,17 +423,17 @@ while 1 > 0
         DelayRandom 97,100
         KeyUp S
         DelayRandom 494,500
-        KeyDown Right
+        KeyDown Left
         DelayRandom 138,143
-        KeyUp Right
+        KeyUp Left
         DelayRandom 352,375
         fireTime = GetTimeStamp()
     else
 
         // a = GetTimeStamp() - pickingTime
         // if a > 120 then //可以捡钱了
-            // tarX = 43
-            // tarY = 88
+            // tarX = xp6
+            // tarY = yp6
             // tolerance = 4
             // Call Move()
             // DelayRandom 56,58
@@ -446,8 +446,8 @@ while 1 > 0
 
             a = GetTimeStamp() - seedTime
             if a > 14 then //可以放种子了
-                tarX       = xp4
-                tarY       = yp4
+                tarX       = 14
+                tarY       = 103
                 yTolerance = 4
                 tolerance  = 8
                 Call Move()
@@ -462,8 +462,8 @@ while 1 > 0
                 DelayRandom 455,469
                 seedTime = GetTimeStamp()
             else //前往牛马地方放技能
-                tarX       = xp5
-                tarY       = yp5
+                tarX       = -9
+                tarY       = 103
                 yTolerance = 4
                 tolerance  = 8
                 Call Move()
