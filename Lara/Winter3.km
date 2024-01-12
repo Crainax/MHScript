@@ -4,17 +4,17 @@ ScreenY=2560
 Times=0
 
 [Script]
-Dim x1,          x2,               y1,       y2            // 矩形区域:小地图采样点
-Dim x3,          y3,               xEnd,     yEnd          // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,        tarY,             Hooking                 //目标
-Dim logoX,       logoY,            intX,     intY          //算目的地差值
-Dim cY,          consecutiveTimes, consecutiveMax          //用这个东西判断角色是不是没有X或Y轴变化了
-Dim tolerance,   tolLoc,           yTolerance              //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim windTime,    fireTime,         seedTime, fountainTime  //各种冷却
-Dim a,           stoneSteleTime,   pickingTime             //各种冷却
-Dim RuneCooldown                                           //各种冷却
-Dim staticCount, staticX,          staticY                 //防卡计数器
-Dim SavedX,      SavedY                                    //保存一下临时处理的XY
+Dim x1,           x2,               y1,       y2            // 矩形区域:小地图采样点
+Dim x3,           y3,               xEnd,     yEnd          // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,         tarY,             Hooking                 //目标
+Dim logoX,        logoY,            intX,     intY          //算目的地差值
+Dim cY,           consecutiveTimes, consecutiveMax          //用这个东西判断角色是不是没有X或Y轴变化了
+Dim tolerance,    tolLoc,           yTolerance              //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim ReleaseTime1, ReleaseTime2,     seedTime, fountainTime  //各种冷却
+Dim a,            stoneSteleTime,   pickingTime             //各种冷却
+Dim RuneCooldown                                            //各种冷却
+Dim staticCount,  staticX,          staticY                 //防卡计数器
+Dim SavedX,       SavedY                                    //保存一下临时处理的XY
 
 //左边喷泉点(29,84)  右边点向左放
 //左间放火点(-72,114) Y容忍4
@@ -341,8 +341,8 @@ else //竖放屏幕
     xEnd = 1440
     yEnd = 2560
 End If
-windTime       = 0               //上次风的时间
-fireTime       = 0               //上次火的时间
+ReleaseTime1   = 0               //施放冷却1
+ReleaseTime2   = 0               //施放冷却2
 seedTime       = 0               //上次种子的时间
 fountainTime   = 0               //上次喷泉的时间
 RuneCooldown   = 0               //解轮冷却
@@ -351,7 +351,7 @@ pickingTime    = GetTimeStamp()  //上次捡钱的时间
 yTolerance     = 0               //初始化
 Timer          4, 1, 3100        //无限循环解轮
 while 1 > 0
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1.bmp",000000,1.00,0,intX,intY
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
     a = GetTimeStamp() - fountainTime
     if a > 55 or intX >= 0 then //可以喷泉了
         tarX = 29
@@ -363,13 +363,9 @@ while 1 > 0
         DelayRandom 62,68
         KeyUp Left
         DelayRandom 106,109
-        KeyDown Down
-        DelayRandom 95,96
         KeyDown 1
         DelayRandom 194,196
         KeyUp 1
-        DelayRandom 66,67
-        KeyUp Down
         DelayRandom 712,721
         fountainTime = GetTimeStamp()
     End If
@@ -383,35 +379,9 @@ while 1 > 0
         DelayRandom 736,747
         stoneSteleTime = GetTimeStamp()
     End If
-
-    a = GetTimeStamp() - windTime
-    if a > 13 then //可以放火了
-        tarX       = -72
-        tarY       = 114
-        tolerance  = 4
-        yTolerance = 4
-        Call Move()
-        DelayRandom 56,58
-        KeyDown Left
-        DelayRandom 114,118
-        KeyUp Left
-        DelayRandom 386,398
-        KeyDown A
-        DelayRandom 137,142
-        KeyUp A
-        DelayRandom 249,257
-        KeyDown S
-        DelayRandom 140,145
-        KeyUp S
-        DelayRandom 460,486
-        KeyDown Up
-        DelayRandom 90,94
-        KeyUp Up
-        DelayRandom 253,258
-        windTime = GetTimeStamp()
-    End If
-
-    a = GetTimeStamp() - fireTime
+    //todo:跳楼法回左边
+    //todo:渐近法移动
+    a = GetTimeStamp() - ReleaseTime1
     if a > 13 then //可以放水了
         tarX = -47
         tarY = 84
@@ -419,22 +389,49 @@ while 1 > 0
         Call Move()
         DelayRandom 56,58
         KeyDown Left
-        DelayRandom 116,120
+        DelayRandom 121,123
         KeyUp Left
-        DelayRandom 184,190
+        DelayRandom 120,122
         KeyDown A
-        DelayRandom 135,140
+        DelayRandom 119,121
         KeyUp A
-        DelayRandom 239,247
+        DelayRandom 142,144
         KeyDown S
-        DelayRandom 97,100
+        DelayRandom 150,152
         KeyUp S
-        DelayRandom 494,500
+        DelayRandom 525,531
         KeyDown Left
-        DelayRandom 138,143
+        DelayRandom 121,123
         KeyUp Left
-        DelayRandom 352,375
-        fireTime = GetTimeStamp()
+        DelayRandom 457,462
+        ReleaseTime1 = GetTimeStamp()
+    End If
+
+    a = GetTimeStamp() - ReleaseTime2
+    if a > 13 then //可以放火了
+        tarX       = -72
+        tarY       = 114
+        tolerance  = 4
+        // yTolerance = 4
+        Call Move()
+        DelayRandom 56,58
+        KeyDown Left
+        DelayRandom 121,123
+        KeyUp Left
+        DelayRandom 120,122
+        KeyDown A
+        DelayRandom 119,121
+        KeyUp A
+        DelayRandom 142,144
+        KeyDown S
+        DelayRandom 150,152
+        KeyUp S
+        DelayRandom 525,531
+        KeyDown Up
+        DelayRandom 121,123
+        KeyUp Up
+        DelayRandom 457,462
+        ReleaseTime2 = GetTimeStamp()
     else
 
         // a = GetTimeStamp() - pickingTime
@@ -455,7 +452,7 @@ while 1 > 0
             if a > 14 then //可以放种子了
                 tarX       = 16
                 tarY       = 114
-                yTolerance = 4
+                // yTolerance = 4
                 tolerance  = 8
                 Call Move()
                 DelayRandom 56,58
@@ -471,7 +468,7 @@ while 1 > 0
             else //前往牛马地方放技能
                 tarX       = -27
                 tarY       = 114
-                yTolerance = 4
+                // yTolerance = 4
                 tolerance  = 8
                 Call Move()
                 DelayRandom 56,58
