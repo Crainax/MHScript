@@ -411,34 +411,34 @@ Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题)
                 TracePrint 右跳
                 DelayRandom 15,25
                 KeyDown Right
-                DelayRandom 95,96
+                DelayRandom 96,97
                 KeyDown Space
-                DelayRandom 64,65
+                DelayRandom 44,45
                 KeyUp Space
-                DelayRandom 119,121
+                DelayRandom 71,72
                 KeyDown Space
-                DelayRandom 97,98
+                DelayRandom 62,63
                 KeyUp Space
-                DelayRandom 42,43
+                DelayRandom 267,270
                 KeyUp Right
-                DelayRandom 41,42
+                DelayRandom 319,323
             Else If intX > (tarX+24) Then //向左二段跳
                 consecutiveTimes = 0 //启动降落判断
                 cY = 0
                 TracePrint 左跳
                 DelayRandom 15,25
                 KeyDown Left
-                DelayRandom 95,96
+                DelayRandom 96,97
                 KeyDown Space
-                DelayRandom 64,65
+                DelayRandom 44,45
                 KeyUp Space
-                DelayRandom 119,121
+                DelayRandom 71,72
                 KeyDown Space
-                DelayRandom 97,98
+                DelayRandom 62,63
                 KeyUp Space
-                DelayRandom 42,43
+                DelayRandom 267,270
                 KeyUp Left
-                DelayRandom 41,42
+                DelayRandom 319,323
             Else If intX < (tarX-tolLoc) Then //向右走
                 KeyDown Right
                 DelayRandom 230,260
