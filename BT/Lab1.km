@@ -17,12 +17,12 @@ Dim staticCount,    staticX,          staticY         //防卡计数器
 Dim SavedX,         SavedY                            //保存一下临时处理的XY
 Dim RuneCooldown                                      //找轮间隔
 
-//熊屁1(xp1,yp1) 顶楼的
-//熊屁2(xp1,yp2)
-//熊屁3(xp2,yp2)
-//喷泉点(xp3,yp2)
-//小波波(xp2,yp3)
-//捡钱点(xp1,yp4)
+//熊屁1(-38,68) 顶楼的
+//熊屁2(-38,95)
+//熊屁3(-4,95)
+//喷泉点(22,95)
+//小波波(-4,68)
+//捡钱点(-38,109)
 
 Sub on_timer1 //熊屁计时器
     FartOK = 1
@@ -253,8 +253,27 @@ End Sub
 Sub FindFountain //寻找喷泉并放喷泉(要求状态是0)
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1.bmp",000000,1.00,0,intX,intY
     if intX >= 0 then //可以喷泉了
-        tarX = xp3
-        tarY = yp2
+        tarX      = -4
+        tarY      = 95
+        tolerance = 4
+        Call Judge() //判断位置是否在熊屁3
+        if tolLoc > 0 Then //现在人在屁3,直接右跳
+            DelayRandom 96,105
+            KeyDown Right
+            DelayRandom 96,97
+            KeyDown Space
+            DelayRandom 44,45
+            KeyUp Space
+            DelayRandom 71,72
+            KeyDown Space
+            DelayRandom 62,63
+            KeyUp Space
+            DelayRandom 267,270
+            KeyUp Right
+            DelayRandom 419,423
+        End If
+        tarX = 22
+        tarY = 95
         tolerance = 4
         Call Move_Bear()
         DelayRandom 56,58
@@ -384,15 +403,27 @@ while 1 > 0
         call FindFountain() //找喷泉,找到就扔
     End If
 
-    tarX      = xp3
-    tarY      = yp2
+    tarX      = 22
+    tarY      = 95
     tolerance = 4
     Call Judge() //判断位置是否在喷泉
     if tolLoc > 0 Then //现在人在喷泉地,左跳去熊屁3
-        //todo:左跳去熊屁
+        DelayRandom 96,105
+        KeyDown Left
+        DelayRandom 96,97
+        KeyDown Space
+        DelayRandom 44,45
+        KeyUp Space
+        DelayRandom 71,72
+        KeyDown Space
+        DelayRandom 62,63
+        KeyUp Space
+        DelayRandom 267,270
+        KeyUp Left
+        DelayRandom 419,423
     else if currentState == 1 Then //不在噴泉,直接去熊屁3
-        tarX      = xp2
-        tarY      = yp2
+        tarX      = -4
+        tarY      = 95
         tolerance = 4
         Call Move_Bear()
         currentState = 2
@@ -401,8 +432,8 @@ while 1 > 0
     //这里一般就是到了熊屁3的点
     a = GetTimeStamp() - boboTime
     if a > 55 then //到了小波波时间了
-        tarX       = xp2
-        tarY       = yp3
+        tarX       = -4
+        tarY       = 68
         tolerance  = 4
         Call Move_Bear() //判断位置是否在熊屁3
 
@@ -415,8 +446,8 @@ while 1 > 0
     End If
 
     if currentState == 2 Then //前往熊屁1
-        tarX       = xp1
-        tarY       = yp1
+        tarX       = -38
+        tarY       = 68
         tolerance  = 4
         Call Move_Bear()
         Call Fart()
@@ -425,8 +456,8 @@ while 1 > 0
     End If
 
     if currentState == 3 Then //前往熊屁2
-        tarX       = xp1
-        tarY       = yp2
+        tarX       = -38
+        tarY       = 95
         tolerance  = 4
         Call Move_Bear()
         Call Fart()
@@ -434,31 +465,42 @@ while 1 > 0
         currentState = 4
     End If
 
-    tarX       = xp1
-    tarY       = yp2
+    tarX       = -38
+    tarY       = 95
     tolerance  = 4
     Call Judge()
     if tolLoc > 0 or currentState == 4 Then //现在人在熊屁2
         a = GetTimeStamp() - pickingTime
         if a > 55 then //到了捡钱时间
-            tarX       = xp1
-            tarY       = yp4
+            tarX       = -38
+            tarY       = 109
             tolerance  = 4
             Call Move_Bear()
             pickingTime = GetTimeStamp()
 
         else tolLoc > 0 then
-            //todo:右跳过去熊屁3
+            DelayRandom 54,55
+            KeyDown Right
+            DelayRandom 95,96
+            KeyDown Space
+            DelayRandom 54,55
+            KeyUp Space
+            DelayRandom 78,79
+            KeyDown Space
+            DelayRandom 53,54
+            KeyUp Space
+            DelayRandom 1062,1073
+            KeyUp Right
         End If
 
-        tarX       = xp2
-        tarY       = yp2
+        tarX       = -4
+        tarY       = 95
         tolerance  = 4
         Call Move_Bear()
         DelayRandom 55,60
         Call Fart()
         DelayRandom 98,107
-
+        currentState = 0
     End If
 
     if currentState < 0 or currentState > 4 Then
