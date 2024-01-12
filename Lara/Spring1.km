@@ -269,7 +269,7 @@ Sub SpellList() //ÀÊ±„»”ººƒ‹
                 KeyUp G
                 DelayRandom 387,400
             else
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\C.bmp",000000,1.00,0,intX,intY
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\C2.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then //’“V2
                     KeyDown C
                     DelayRandom 152,160
