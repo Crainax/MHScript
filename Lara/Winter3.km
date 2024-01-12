@@ -211,6 +211,19 @@ Sub Move()  //精确的移动
     Wend
 End Sub
 
+Sub Judge //判断人物是否在某个地点旁边,用tarXY,tolerance,tolLoc返回结果,不能嵌套move()使用,可以先使用这个再用move
+    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    tolLoc = 0
+    if intX >= 0 Then //找到了人物才会进行下去
+        intX = intX - logoX
+        intY = intY - logoY
+        if intY == tarY and intX >= (tarX - tolerance) and intX <= (tarX + tolerance) then
+            tolLoc = 1
+        End If
+    End If
+End Sub
+
 Sub on_timer4 //查地图轮,每3秒一次
 
     a = GetTimeStamp() - RuneCooldown
@@ -319,6 +332,36 @@ Sub SpellList() //随便扔技能
     End If
 End Sub
 
+Sub JumpWater //跳河
+    Call GetXY()
+    if intX < tarX - 20 or intX > tarX + 20 then //X轴偏远才跳河
+        if intY >= 100 and intY < 114 Then //可以跳河的地方
+            DelayRandom 73,80
+            tarX = intX
+            tarY = 114
+            tolerance = 4
+            Call Move()
+        End If
+
+        if intY == 114 Then //开跳
+            DelayRandom 73,80
+            KeyDown Down
+            DelayRandom 119,121
+            KeyDown Space
+            DelayRandom 120,122
+            KeyUp Space
+            DelayRandom 38,39
+            KeyUp Down
+            DelayRandom 877,886
+        End If
+
+        tarX = -82
+        tarY = 84
+        tolerance = 3
+        Call Judge() //顺便帮判断一下是否成功
+    End If
+End Sub
+
 //分辨率初始化
 
 GetScreenResolution intX, intY
@@ -354,6 +397,15 @@ while 1 > 0
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
     a = GetTimeStamp() - fountainTime
     if a > 55 or intX >= 0 then //可以喷泉了
+        tarX = 29 //跳河判断
+        Call JumpWater()
+        If tolLoc > 0 then //跳楼法成功了
+            DelayRandom 87,92
+            KeyDown Up
+            DelayRandom 120,122
+            KeyUp Up
+            DelayRandom 231,234
+        End If
         tarX = 29
         tarY = 84
         tolerance = 4
@@ -379,18 +431,20 @@ while 1 > 0
         DelayRandom 736,747
         stoneSteleTime = GetTimeStamp()
     End If
-    //todo:跳楼法回左边
+
     //todo:渐近法移动
     a = GetTimeStamp() - ReleaseTime1
     if a > 13 then //可以放水了
+        tarX = -47 //这样判断是否要跳河
+        Call JumpWater()
         tarX = -47
         tarY = 84
         tolerance = 4
         Call Move()
         DelayRandom 56,58
-        KeyDown Left
+        KeyDown Right
         DelayRandom 121,123
-        KeyUp Left
+        KeyUp Right
         DelayRandom 120,122
         KeyDown A
         DelayRandom 119,121
@@ -409,6 +463,8 @@ while 1 > 0
 
     a = GetTimeStamp() - ReleaseTime2
     if a > 13 then //可以放火了
+        tarX       = -72 //跳河X轴判断
+        Call JumpWater()
         tarX       = -72
         tarY       = 114
         tolerance  = 4
