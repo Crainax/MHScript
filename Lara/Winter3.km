@@ -74,7 +74,7 @@ Sub AntiJam //一般跟随GetXY后用
     End If
 End Sub
 
-Sub Move()  //精确的移动
+Sub Move()  //精确的移动Ver2.0
     consecutiveTimes	= -1  //初始就启用指南针判断
     consecutiveMax		= 3   //降落默认值为4
     Hooking				= 0 //钩子初始是关的
@@ -146,11 +146,11 @@ Sub Move()  //精确的移动
                 DelayRandom 146,151
             Else If intX < (tarX-tolLoc) Then //向右走
                 KeyDown Right
-                DelayRandom 230,260
+                Delay (tarX - tolLoc - intX) * 52
                 KeyUp Right
             Else If intX > (tarX+tolLoc) Then //向左走
                 KeyDown Left
-                DelayRandom 230,260
+                Delay (intX - tarX - tolLoc) * 52
                 KeyUp Left
             else
                 If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
@@ -185,14 +185,12 @@ Sub Move()  //精确的移动
                     if tolerance < 4 Then //容忍度小于4还是要小碎步
                         for 10
                             If intX < (tarX-tolerance) Then //向右小碎步
-                                tolLoc = (tarX - tolerance - intX) * 14
                                 KeyDown Right
-                                Delay tolLoc
+                                Delay (tarX - tolerance - intX) * 14
                                 KeyUp Right
                             Else If intX > (tarX+tolerance) Then //向左小碎步
-                                tolLoc = (intX - tarX - tolerance) * 14
                                 KeyDown Left
-                                Delay tolLoc
+                                Delay (intX - tarX - tolerance) * 14
                                 KeyUp Left
                             else
                                 Exit Sub
