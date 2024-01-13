@@ -10,15 +10,15 @@ Dim tarX,           tarY                            //寻位置相关:目标地点
 Dim logoX,          logoY,            intX, intY    //寻位置相关:当前地点
 Dim InfiTime,       a,                inLimit       //终极无限的补充
 Dim cY,             consecutiveTimes, stuckTimes    //用这个东西判断角色是不是没有X或Y轴变化了
-Dim pickingTime1,   pickingTime2                    //各种时间间隔
 Dim stoneSteleTime, fountainTime,     RuneCooldown  //各种时间间隔
+Dim SpellTime,      cycleCount                      //技能间隔
 Dim tolerance,      tolLoc,           yTolerance    //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim staticCount,    staticX,          staticY       //防卡计数器
 Dim SavedX,         SavedY                          //保存一下临时处理的XY
 
-//喷泉点(24,82)  左放,可以停一下捡钱
+//喷泉点(26,82)  左放,可以停一下捡钱
 //领域点(9,111)  放波领域,站A点偏右,Y容忍4
-//平A点(-60,98)
+//平A点(-52,98) (-52,85) (-34,98)
 //跳楼Y轴 85
 
 Sub Attack //技能循环攻击
@@ -388,7 +388,7 @@ EndSub
 
 Sub JumpWater //跳河
     Call GetXY()
-    if intX < tarX - 20 or intX > tarX + 20 then //X轴偏远才跳河
+    if intX < tarX - 45 or intX > tarX + 45 then //X轴偏远才跳河
         if intY >= 85 and intY < 111 Then //可以跳河的地方
             DelayRandom 73,80
             tarX = intX
@@ -442,8 +442,8 @@ InfiTime       = GetTimeStamp() - inLimit  //上次终极无限的时间
 RuneCooldown   = 0                         //解轮时间
 stoneSteleTime = 0                         //放轮时间
 fountainTime   = 0                         //喷泉时间
-pickingTime1   = GetTimeStamp() - 30       //上次捡钱左
-pickingTime2   = GetTimeStamp() - 45       //上次捡钱右
+SpellTime      = 0                         //喷泉时间
+cycleCount     = 0                         //喷泉时间
 yTolerance     = 0                         //初始化
 Timer          4, 1, 3100                  //无限循环
 while 1 > 0
@@ -459,8 +459,8 @@ while 1 > 0
 
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
     a = GetTimeStamp() - fountainTime
-    if a > 55 or intX >= 0 then //可以喷泉了
-        tarX = 24 //跳河判断
+    if a > 55 and intX >= 0 then //可以喷泉了
+        tarX = 26 //跳河判断
         Call JumpWater()
         If tolLoc > 0 then //跳楼法成功了
             DelayRandom 87,92
@@ -469,7 +469,7 @@ while 1 > 0
             KeyUp Up
             DelayRandom 231,234
         End If
-        tarX = 24
+        tarX = 26
         tarY = 82
         tolerance = 4
         Call Move()
@@ -485,14 +485,14 @@ while 1 > 0
         fountainTime = GetTimeStamp()
 
         Call Infinite() //终极无限判断
-        Call Spell() //放武公
 
         //前往领域点
-        tarX      = 24
+        tarX      = 26
         tarY      = 111
         tolerance = 4
         Call Move()
-        tarX       = 9
+        Call Spell() //放武公
+        tarX       = 7
         tarY       = 111
         tolerance  = 4
         // yTolerance = 4
@@ -522,8 +522,13 @@ while 1 > 0
             // pickingTime1 = GetTimeStamp()
         // else
 
-            tarX      = -60
-            tarY      = 98
+            if cycleCount == 0 then
+                tarX      = -52
+                tarY      = 98
+            else
+                tarX      = -34
+                tarY      = 98
+            End If
             tolerance = 4
             Call Judge() //人在那边吗
             if tolLoc <= 0 then //人不在那边先回去
@@ -532,12 +537,21 @@ while 1 > 0
             End If
 
             //原地放招
-            DelayRandom 55,62
-            KeyDown F
-            DelayRandom 1500,2000
-            KeyUp F
-            DelayRandom 255,262
-            Call Attack()
+            a = GetTimeStamp() - SpellTime
+            if a > 3 then //放技能
+                Call Attack()
+                SpellTime = GetTimeStamp()
+                cycleCount = cycleCount + 1
+                if cycleCount > 1 then //3个地方循环走
+                    cycleCount = 0
+                End If
+            else
+                DelayRandom 55,62
+                KeyDown F
+                DelayRandom 800,1200
+                KeyUp F
+                DelayRandom 255,262
+            End If
         //End If
 
         Call Infinite() //终极无限判断
