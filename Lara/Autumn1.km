@@ -16,11 +16,11 @@ Dim RuneCooldown                                            //各种冷却
 Dim staticCount,  staticX,          staticY                 //防卡计数器
 Dim SavedX,       SavedY                                    //保存一下临时处理的XY
 
-//左边喷泉点(29,84)  右边点向左放
-//左间放火点(-72,114) Y容忍4
-//左间放水点(-47,84)
-//种子点(16,114) Y容忍4
-//平A点(-27,114) Y容忍4
+//喷泉点(19,99)  向右
+//左间放火点(-27,99) 向右
+//左间放水点(-60,85) 向右,多走一点
+//种子点(-33,112) Y容忍4
+//跳楼Y: 99
 //捡钱点(xp6,yp6)
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
@@ -53,10 +53,10 @@ Sub AntiJam //一般跟随GetXY后用
         staticCount = 0
     End If
     if staticCount >= 3 Then //
-        if intY < 114+4 and intY > 114-4 and intX < -27+8 and intX > -27-8 Then //白名单
-            staticCount = 0
-            Exit Sub
-        End If
+        // if intY < 114+4 and intY > 114-4 and intX < -27+8 and intX > -27-8 Then //白名单
+            // staticCount = 0
+            // Exit Sub
+        // End If
 
         Beep 500,500
         KeyAllup //施放所有按键
@@ -333,15 +333,15 @@ End Sub
 Sub JumpWater //跳河
     Call GetXY()
     if intX < tarX - 20 or intX > tarX + 20 then //X轴偏远才跳河
-        if intY >= 100 and intY < 114 Then //可以跳河的地方
+        // if intY >= 100 and intY < 114 Then //可以跳河的地方
             DelayRandom 73,80
             tarX = intX
-            tarY = 114
+            tarY = 112
             tolerance = 4
             Call Move()
-        End If
+        // End If
 
-        if intY == 114 Then //开跳
+        if intY == 112 Then //开跳
             DelayRandom 73,80
             KeyDown Down
             DelayRandom 119,121
@@ -353,8 +353,8 @@ Sub JumpWater //跳河
             DelayRandom 877,886
         End If
 
-        tarX = -82
-        tarY = 84
+        tarX = -60
+        tarY = 85
         tolerance = 3
         Call Judge() //顺便帮判断一下是否成功
     End If
@@ -395,23 +395,14 @@ while 1 > 0
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
     a = GetTimeStamp() - fountainTime
     if a > 55 or intX >= 0 then //可以喷泉了
-        tarX = 29 //跳河判断
-        Call JumpWater()
-        If tolLoc > 0 then //跳楼法成功了
-            DelayRandom 87,92
-            KeyDown Up
-            DelayRandom 120,122
-            KeyUp Up
-            DelayRandom 231,234
-        End If
-        tarX = 29
-        tarY = 84
+        tarX = 19
+        tarY = 99
         tolerance = 4
         Call Move()
         DelayRandom 56,58
-        KeyDown Left
+        KeyDown Right
         DelayRandom 62,68
-        KeyUp Left
+        KeyUp Right
         DelayRandom 106,109
         KeyDown 1
         DelayRandom 194,196
@@ -431,16 +422,16 @@ while 1 > 0
     End If
 
     a = GetTimeStamp() - ReleaseTime1
-    if a > 13 then //可以放水了
-        tarX = -47 //这样判断是否要跳河
-        Call JumpWater()
-        tarX = -47
-        tarY = 84
+    if a > 12 then //可以放水了
+        tarX = -60 //这样判断是否要跳河
+        Call JumpWater() //无条件Y跳河
+        tarX = -60
+        tarY = 85
         tolerance = 4
         Call Move()
         DelayRandom 56,58
         KeyDown Right
-        DelayRandom 121,123
+        DelayRandom 151,153
         KeyUp Right
         DelayRandom 120,122
         KeyDown A
@@ -459,18 +450,15 @@ while 1 > 0
     End If
 
     a = GetTimeStamp() - ReleaseTime2
-    if a > 13 then //可以放火了
-        tarX       = -72 //跳河X轴判断
-        Call JumpWater()
-        tarX       = -72
-        tarY       = 114
+    if a > 12 then //可以放火了
+        tarX       = -27
+        tarY       = 99
         tolerance  = 4
-        // yTolerance = 4
         Call Move()
         DelayRandom 56,58
-        KeyDown Left
-        DelayRandom 121,123
-        KeyUp Left
+        KeyDown Right
+        DelayRandom 91,93
+        KeyUp Right
         DelayRandom 120,122
         KeyDown A
         DelayRandom 119,121
@@ -486,26 +474,10 @@ while 1 > 0
         DelayRandom 457,462
         ReleaseTime2 = GetTimeStamp()
     else
-
-        // a = GetTimeStamp() - pickingTime
-        // if a > 120 then //可以捡钱了
-            // tarX = xp6
-            // tarY = yp6
-            // tolerance = 4
-            // Call Move()
-            // DelayRandom 56,58
-            // KeyDown F
-            // DelayRandom 600,800
-            // KeyUp F
-            // DelayRandom 455,469
-            // pickingTime = GetTimeStamp()
-        // else
-
             a = GetTimeStamp() - seedTime
             if a > 14 then //可以放种子了
-                tarX       = 16
-                tarY       = 114
-                // yTolerance = 4
+                tarX       = -33
+                tarY       = 112
                 tolerance  = 8
                 Call Move()
                 DelayRandom 56,58
@@ -519,16 +491,36 @@ while 1 > 0
                 DelayRandom 455,469
                 seedTime = GetTimeStamp()
             else //前往牛马地方放技能
-                tarX       = -27
-                tarY       = 114
-                // yTolerance = 4
-                tolerance  = 8
+
+                a=random(1,3)
+                if a == 1 then //去盲点捡钱吧
+                    tarX       = -60
+                    tarY       = 112
+                    tolerance  = 8
+                else
+                    tarX       = 19
+                    tarY       = 112
+                    tolerance  = 8
+                End If
                 Call Move()
+
+                Call GetXY() //判断人物X轴决定面向
+                if intX > 0 Then
+                    DelayRandom 42,45
+                    KeyDown Left
+                    DelayRandom 22,28
+                    KeyUp Left
+                else
+                    DelayRandom 42,45
+                    KeyDown Right
+                    DelayRandom 22,28
+                    KeyUp Right
+                End If
+
                 DelayRandom 56,58
                 Call SpellList()
                 DelayRandom 155,169
             End If
-        // End If
 
     End If
 
