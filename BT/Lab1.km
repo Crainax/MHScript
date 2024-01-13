@@ -17,12 +17,12 @@ Dim staticCount,    staticX,          staticY         //防卡计数器
 Dim SavedX,         SavedY                            //保存一下临时处理的XY
 Dim RuneCooldown                                      //找轮间隔
 
-//熊屁1(-38,68) 顶楼的
-//熊屁2(-38,95)
+//熊屁1(-40,68) 顶楼的
+//熊屁2(-40,95)
 //熊屁3(-4,95)
 //喷泉点(22,95)
 //小波波(-4,68)
-//捡钱点(-38,109)
+//捡钱点(-40,109)
 
 Sub on_timer1 //熊屁计时器
     FartOK = 1
@@ -405,7 +405,7 @@ while 1 > 0
 
     tarX      = 22
     tarY      = 95
-    tolerance = 4
+    tolerance = 6
     Call Judge() //判断位置是否在喷泉
     if tolLoc > 0 Then //现在人在喷泉地,左跳去熊屁3
         DelayRandom 96,105
@@ -429,24 +429,33 @@ while 1 > 0
         currentState = 2
     End If
 
-    //这里一般就是到了熊屁3的点
-    a = GetTimeStamp() - boboTime
-    if a > 55 then //到了小波波时间了
-        tarX       = -4
-        tarY       = 68
-        tolerance  = 4
-        Call Move_Bear() //判断位置是否在熊屁3
+    tarX      = -4
+    tarY      = 95
+    tolerance = 6
+    Call Judge() //判断位置是否在熊屁3
+    if tolLoc > 0 then
+        //这里一般就是到了熊屁3的点
+        a = GetTimeStamp() - boboTime
+        if a > 55 then //到了小波波时间了
+            tarX       = -4
+            tarY       = 68
+            tolerance  = 4
+            Call Move_Bear() //判断位置是否在熊屁3
 
-        DelayRandom 123,135
-        KeyDown E
-        DelayRandom 152,160
-        KeyUp E
-        DelayRandom 701,720
-        boboTime = GetTimeStamp()
+            DelayRandom 123,135
+            KeyDown E
+            DelayRandom 152,160
+            KeyUp E
+            DelayRandom 701,720
+            boboTime = GetTimeStamp()
+
+            //放完小波波直接去熊屁1
+            currentState = 2
+        End If
     End If
 
     if currentState == 2 Then //前往熊屁1
-        tarX       = -38
+        tarX       = -40
         tarY       = 68
         tolerance  = 4
         Call Move_Bear()
@@ -456,7 +465,7 @@ while 1 > 0
     End If
 
     if currentState == 3 Then //前往熊屁2
-        tarX       = -38
+        tarX       = -40
         tarY       = 95
         tolerance  = 4
         Call Move_Bear()
@@ -464,22 +473,23 @@ while 1 > 0
         DelayRandom 98,107
         currentState = 4
     End If
-
-    tarX       = -38
+    //todo:掀桌判断屁CD
+    //todo:空中轮
+    tarX       = -40
     tarY       = 95
-    tolerance  = 4
+    tolerance  = 6
     Call Judge()
     if tolLoc > 0 or currentState == 4 Then //现在人在熊屁2
         a = GetTimeStamp() - pickingTime
         if a > 55 then //到了捡钱时间
-            tarX       = -38
+            tarX       = -40
             tarY       = 109
             tolerance  = 4
             Call Move_Bear()
             pickingTime = GetTimeStamp()
 
         else tolLoc > 0 then
-            DelayRandom 54,55
+            DelayRandom 94,100
             KeyDown Right
             DelayRandom 95,96
             KeyDown Space
