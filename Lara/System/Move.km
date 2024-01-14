@@ -65,7 +65,7 @@ Sub AntiJam //一般跟随GetXY后用
     End If
 End Sub
 
-Sub Move()  //精确的移动:Ver2.0
+Sub Move()  //精确的移动:Ver2.1 跳A顺便用技能CGHY
     consecutiveTimes	= -1  //初始就启用指南针判断
     consecutiveMax		= 3   //降落默认值为4
     Hooking				= 0 //钩子初始是关的
@@ -103,44 +103,212 @@ Sub Move()  //精确的移动:Ver2.0
                 consecutiveTimes = 0 //启动降落判断
                 cY = intY
                 TracePrint 右跳
-                DelayRandom 15,25
-                KeyDown Right
-                DelayRandom 50,51
-                KeyDown Space
-                DelayRandom 80,81
-                KeyUp Space
-                DelayRandom 30,31
-                KeyDown Space
-                DelayRandom 75,76
-                KeyUp Space
-                DelayRandom 85,86
-                KeyUp Right
-                DelayRandom 41,42
-                KeyDown F
-                DelayRandom 113,115
-                KeyUp F
-                DelayRandom 146,151
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\G.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //找G
+                    DelayRandom 15,25
+                    KeyDown Right
+                    DelayRandom 89,90
+                    KeyDown Space
+                    DelayRandom 75,76
+                    KeyUp Space
+                    DelayRandom 53,54
+                    KeyDown Space
+                    DelayRandom 83,84
+                    KeyUp Space
+                    DelayRandom 149,151
+                    KeyDown G
+                    DelayRandom 121,123
+                    KeyUp G
+                    DelayRandom 53,54
+                    KeyUp Right
+                    DelayRandom 623,630
+                else
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\C2.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then //找V2
+                        DelayRandom 15,25
+                        KeyDown Right
+                        DelayRandom 86,87
+                        KeyDown Space
+                        DelayRandom 98,99
+                        KeyUp Space
+                        DelayRandom 22,23
+                        KeyDown Space
+                        DelayRandom 97,98
+                        KeyUp Space
+                        DelayRandom 150,152
+                        KeyDown C
+                        DelayRandom 98,99
+                        KeyUp C
+                        DelayRandom 83,84
+                        KeyUp Right
+                        DelayRandom 465,470
+                    else
+                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\H.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //找蜘蛛
+                            DelayRandom 15,25
+                            KeyDown Right
+                            DelayRandom 99,100
+                            KeyDown Space
+                            DelayRandom 89,90
+                            KeyUp Space
+                            DelayRandom 36,37
+                            KeyDown Space
+                            DelayRandom 106,108
+                            KeyUp Space
+                            DelayRandom 175,177
+                            KeyDown H
+                            DelayRandom 155,157
+                            KeyUp H
+                            DelayRandom 23,24
+                            KeyUp Right
+                            DelayRandom 682,689
+                        else
+                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Y.bmp",000000,1.00,0,intX,intY
+                            if intX >= 0 Then //找烈阳
+                                DelayRandom 15,25
+                                KeyDown Right
+                                DelayRandom 82,83
+                                KeyDown Space
+                                DelayRandom 90,91
+                                KeyUp Space
+                                DelayRandom 30,31
+                                KeyDown Space
+                                DelayRandom 106,108
+                                KeyUp Space
+                                DelayRandom 172,174
+                                KeyDown Y
+                                DelayRandom 127,129
+                                KeyUp Y
+                                DelayRandom 90,91
+                                KeyUp Right
+                                DelayRandom 699,706
+                            else
+                                DelayRandom 15,25
+                                KeyDown Right
+                                DelayRandom 50,51
+                                KeyDown Space
+                                DelayRandom 80,81
+                                KeyUp Space
+                                DelayRandom 30,31
+                                KeyDown Space
+                                DelayRandom 75,76
+                                KeyUp Space
+                                DelayRandom 85,86
+                                KeyUp Right
+                                DelayRandom 41,42
+                                KeyDown F
+                                DelayRandom 113,115
+                                KeyUp F
+                                DelayRandom 146,151
+                            End If
+                        End If
+                    End If
+                End If
             Else If intX > (tarX+24) Then //向左二段跳
                 consecutiveTimes = 0 //启动降落判断
                 cY = 0
                 TracePrint 左跳
-                DelayRandom 15,25
-                KeyDown Left
-                DelayRandom 50,51
-                KeyDown Space
-                DelayRandom 80,81
-                KeyUp Space
-                DelayRandom 30,31
-                KeyDown Space
-                DelayRandom 75,76
-                KeyUp Space
-                DelayRandom 85,86
-                KeyUp Left
-                DelayRandom 41,42
-                KeyDown F
-                DelayRandom 113,115
-                KeyUp F
-                DelayRandom 146,151
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\G.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //找G
+                    DelayRandom 15,25
+                    KeyDown Left
+                    DelayRandom 89,90
+                    KeyDown Space
+                    DelayRandom 75,76
+                    KeyUp Space
+                    DelayRandom 53,54
+                    KeyDown Space
+                    DelayRandom 83,84
+                    KeyUp Space
+                    DelayRandom 149,151
+                    KeyDown G
+                    DelayRandom 121,123
+                    KeyUp G
+                    DelayRandom 53,54
+                    KeyUp Left
+                    DelayRandom 623,630
+                else
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\C2.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then //找V2
+                        DelayRandom 15,25
+                        KeyDown Left
+                        DelayRandom 86,87
+                        KeyDown Space
+                        DelayRandom 98,99
+                        KeyUp Space
+                        DelayRandom 22,23
+                        KeyDown Space
+                        DelayRandom 97,98
+                        KeyUp Space
+                        DelayRandom 150,152
+                        KeyDown C
+                        DelayRandom 98,99
+                        KeyUp C
+                        DelayRandom 83,84
+                        KeyUp Left
+                        DelayRandom 465,470
+                    else
+                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\H.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //找蜘蛛
+                            DelayRandom 15,25
+                            KeyDown Left
+                            DelayRandom 99,100
+                            KeyDown Space
+                            DelayRandom 89,90
+                            KeyUp Space
+                            DelayRandom 36,37
+                            KeyDown Space
+                            DelayRandom 106,108
+                            KeyUp Space
+                            DelayRandom 175,177
+                            KeyDown H
+                            DelayRandom 155,157
+                            KeyUp H
+                            DelayRandom 23,24
+                            KeyUp Left
+                            DelayRandom 682,689
+                        else
+                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Y.bmp",000000,1.00,0,intX,intY
+                            if intX >= 0 Then //找烈阳
+                                DelayRandom 15,25
+                                KeyDown Left
+                                DelayRandom 82,83
+                                KeyDown Space
+                                DelayRandom 90,91
+                                KeyUp Space
+                                DelayRandom 30,31
+                                KeyDown Space
+                                DelayRandom 106,108
+                                KeyUp Space
+                                DelayRandom 172,174
+                                KeyDown Y
+                                DelayRandom 127,129
+                                KeyUp Y
+                                DelayRandom 90,91
+                                KeyUp Left
+                                DelayRandom 699,706
+                            else
+                                DelayRandom 15,25
+                                KeyDown Left
+                                DelayRandom 50,51
+                                KeyDown Space
+                                DelayRandom 80,81
+                                KeyUp Space
+                                DelayRandom 30,31
+                                KeyDown Space
+                                DelayRandom 75,76
+                                KeyUp Space
+                                DelayRandom 85,86
+                                KeyUp Left
+                                DelayRandom 41,42
+                                KeyDown F
+                                DelayRandom 113,115
+                                KeyUp F
+                                DelayRandom 146,151
+                            End If
+                        End If
+                    End If
+                End If
             Else If intX < (tarX-tolLoc) Then //向右走
                 KeyDown Right
                 Delay (tarX - tolLoc - intX) * 52
