@@ -15,10 +15,11 @@ Dim a,            stoneSteleTime,   pickingTime     //各种冷却
 Dim RuneCooldown, seedTime1,        seedTime2       //各种冷却
 Dim staticCount,  staticX,          staticY         //防卡计数器
 Dim SavedX,       SavedY                            //保存一下临时处理的XY
+Dim min,          minType                           //最近的位置
 
-//喷泉点(19,99)  向右
-//左间放火点(-27,99) 向右
-//左间放水点(-60,85) 向右,多走一点
+//喷泉点(37,82)  向右
+//左间放点(-61,111) 向l
+//左间放点(-60,85) 向右,多走一点
 //种子点(-33,112) Y容忍4
 //跳楼Y: 99
 //捡钱点(xp6,yp6)
@@ -257,7 +258,6 @@ Sub on_timer4 //查地图轮,每3秒一次
     End If
 EndSub
 
-
 Sub SpellList() //随便扔技能
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\H.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //找蜘蛛
@@ -330,18 +330,18 @@ Sub SpellList() //随便扔技能
     End If
 End Sub
 
-Sub JumpWater //跳河
+Sub JumpWater //跳河(X轴大條件,Y有条件)
     Call GetXY()
     if intX < tarX - 20 or intX > tarX + 20 then //X轴偏远才跳河
-        // if intY >= 100 and intY < 114 Then //可以跳河的地方
+        if intY > 85 and intY <= 111 Then //可以跳河的地方
             DelayRandom 73,80
             tarX = intX
-            tarY = 112
+            tarY = 111
             tolerance = 4
             Call Move()
-        // End If
+        End If
 
-        if intY == 112 Then //开跳
+        if intY == 111 Then //开跳
             DelayRandom 73,80
             KeyDown Down
             DelayRandom 119,121
@@ -353,7 +353,7 @@ Sub JumpWater //跳河
             DelayRandom 877,886
         End If
 
-        tarX = -60
+        tarX = -79
         tarY = 85
         tolerance = 3
         Call Judge() //顺便帮判断一下是否成功
@@ -361,50 +361,80 @@ Sub JumpWater //跳河
 End Sub
 
 Sub PreMove //提前移动到特定地点
-    min = GetTimeStamp() - fountainTime - 55
+    min = fountainTime + 55
     minType = 0 //默认喷泉
-    if min > GetTimeStamp() - ReleaseTime1 - 12 then
-        min = GetTimeStamp() - ReleaseTime1 - 12
+    if min > ReleaseTime1 + 13 then
+        min = ReleaseTime1 + 13
         minType = 1
-    end
-    if min > GetTimeStamp() - ReleaseTime2 - 12 then
-        min = GetTimeStamp() - ReleaseTime2 - 12
+    end if
+    if min > ReleaseTime2 + 13 then
+        min = ReleaseTime2 + 13
         minType = 2
-    end
-    if min > GetTimeStamp() - seedTime1 - 16 then
-        min = GetTimeStamp() - seedTime1 - 16
+    end if
+    if min > seedTime1 + 20 then
+        min = seedTime1 + 20
         minType = 3
-    end
-    if min > GetTimeStamp() - seedTime2 - 16 then
-        min = GetTimeStamp() - seedTime2 - 16
+    end if
+    if min > seedTime2 + 20 then
+        min = seedTime2 + 20
         minType = 4
-    end
+    end if
 
     if minType = 0 then
-        tarX = 19
-        tarY = 99
+        tarX = 37 //跳河判断
+        Call JumpWater()
+        If tolLoc > 0 then //跳楼法成功了
+            DelayRandom 87,92
+            KeyDown Up
+            DelayRandom 120,122
+            KeyUp Up
+            DelayRandom 231,234
+        End If
+        tarX = 37
+        tarY = 82
         tolerance = 4
         Call Move()
     else if minType = 1 then
-        tarX = -60 //这样判断是否要跳河
+        tarX = -66 //这样判断是否要跳河
         Call JumpWater() //无条件Y跳河
-        tarX = -60
-        tarY = 85
+        tarX = -66
+        tarY = 98
         tolerance = 4
         Call Move()
     else if minType = 2 then
-        tarX       = -27
-        tarY       = 99
+        tarX       = -26
+        tarY       = 111
         tolerance  = 4
         Call Move()
     else if minType = 3 then
-        tarX       = -33
-        tarY       = 112
+        tarX       = 37
+        Call JumpWater()
+        // If tolLoc > 0 then //跳楼法成功了
+            // DelayRandom 87,92
+            // KeyDown Up
+            // DelayRandom 120,122
+            // KeyUp Up
+            // DelayRandom 231,234
+        // End If
+        tarX       = 37
+        tarY       = 111
         tolerance  = 6
         Call Move()
     else if minType = 4 then
-        tarX       = -60
-        tarY       = 112
+        tarX       = -65
+        Call JumpWater()
+        If tolLoc > 0 then //跳楼法成功了
+            KeyDown Right
+            DelayRandom 448,453
+            KeyUp Right
+            DelayRandom 150,152
+            KeyDown LAlt
+            DelayRandom 135,137
+            KeyUp LAlt
+            DelayRandom 1170,1182
+        End If
+        tarX       = -65
+        tarY       = 69
         tolerance  = 6
         Call Move()
     End If
@@ -446,14 +476,23 @@ while 1 > 0
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
     a = GetTimeStamp() - fountainTime
     if a > 55 or intX >= 0 then //可以喷泉了
-        tarX = 19
-        tarY = 99
+        tarX = 37 //跳河判断
+        Call JumpWater()
+        If tolLoc > 0 then //跳楼法成功了
+            DelayRandom 87,92
+            KeyDown Up
+            DelayRandom 120,122
+            KeyUp Up
+            DelayRandom 231,234
+        End If
+        tarX = 37
+        tarY = 82
         tolerance = 4
         Call Move()
         DelayRandom 56,58
-        KeyDown Right
+        KeyDown Left
         DelayRandom 62,68
-        KeyUp Right
+        KeyUp Left
         DelayRandom 106,109
         KeyDown 1
         DelayRandom 194,196
@@ -472,125 +511,136 @@ while 1 > 0
         stoneSteleTime = GetTimeStamp()
     End If
 
-    a = GetTimeStamp() - ReleaseTime1
-    if a > 12 then //可以放水了
-        tarX = -60 //这样判断是否要跳河
-        Call JumpWater() //无条件Y跳河
-        tarX = -60
-        tarY = 85
-        tolerance = 4
-        Call Move()
-        DelayRandom 56,58
-        KeyDown Right
-        DelayRandom 151,153
-        KeyUp Right
-        DelayRandom 120,122
-        KeyDown A
-        DelayRandom 119,121
-        KeyUp A
-        DelayRandom 142,144
-        KeyDown S
-        DelayRandom 150,152
-        KeyUp S
-        DelayRandom 525,531
-        KeyDown Left
-        DelayRandom 121,123
-        KeyUp Left
-        DelayRandom 457,462
-        ReleaseTime1 = GetTimeStamp()
-    End If
 
-    a = GetTimeStamp() - ReleaseTime2
-    if a > 12 then //可以放火了
-        tarX       = -27
-        tarY       = 99
-        tolerance  = 4
+    a = GetTimeStamp() - seedTime1
+    if a > 20 then //可以放种子了
+        tarX       = 37
+        Call JumpWater()
+        If tolLoc > 0 then //跳楼法成功了
+            DelayRandom 87,92
+            KeyDown Up
+            DelayRandom 120,122
+            KeyUp Up
+            DelayRandom 231,234
+        End If
+        tarX       = 37
+        tarY       = 111
+        tolerance  = 6
         Call Move()
         DelayRandom 56,58
-        KeyDown Right
-        DelayRandom 91,93
-        KeyUp Right
+        KeyDown `
         DelayRandom 120,122
-        KeyDown A
-        DelayRandom 119,121
-        KeyUp A
-        DelayRandom 142,144
-        KeyDown S
-        DelayRandom 150,152
-        KeyUp S
-        DelayRandom 525,531
-        KeyDown Up
-        DelayRandom 121,123
-        KeyUp Up
-        DelayRandom 457,462
-        ReleaseTime2 = GetTimeStamp()
+        KeyUp `
+        DelayRandom 510,516
+        KeyDown `
+        DelayRandom 135,137
+        KeyUp `
+        DelayRandom 450,455
+        seedTime1 = GetTimeStamp()
     else
-        a = GetTimeStamp() - seedTime1
-        if a > 16 then //可以放种子了
-            tarX       = -33
-            tarY       = 112
-            tolerance  = 6
+        a = GetTimeStamp() - ReleaseTime2
+        if a > 13 then //可以放火了
+            tarX       = -26
+            tarY       = 111
+            tolerance  = 4
             Call Move()
             DelayRandom 56,58
-            KeyDown `
+            KeyDown Right
+            DelayRandom 91,93
+            KeyUp Right
             DelayRandom 120,122
-            KeyUp `
-            DelayRandom 510,516
-            KeyDown `
-            DelayRandom 135,137
-            KeyUp `
-            DelayRandom 450,455
-            seedTime1 = GetTimeStamp()
+            KeyDown A
+            DelayRandom 119,121
+            KeyUp A
+            DelayRandom 142,144
+            KeyDown S
+            DelayRandom 150,152
+            KeyUp S
+            DelayRandom 525,531
+            KeyDown Up
+            DelayRandom 121,123
+            KeyUp Up
+            DelayRandom 457,462
+            ReleaseTime2 = GetTimeStamp()
         else //前往牛马地方放技能
-            a = GetTimeStamp() - seedTime2
-            if a > 16 then //可以放种子了
-                tarX       = -60
-                tarY       = 112
-                tolerance  = 6
+            a = GetTimeStamp() - ReleaseTime1
+            if a > 13 then //可以放水了
+                tarX = -66 //这样判断是否要跳河
+                Call JumpWater() //无条件Y跳河
+                tarX = -66
+                tarY = 98
+                tolerance = 4
                 Call Move()
                 DelayRandom 56,58
-                KeyDown `
+                KeyDown Right
+                DelayRandom 151,153
+                KeyUp Right
                 DelayRandom 120,122
-                KeyUp `
-                DelayRandom 510,516
-                KeyDown `
-                DelayRandom 135,137
-                KeyUp `
-                DelayRandom 450,455
-                seedTime2 = GetTimeStamp()
+                KeyDown A
+                DelayRandom 119,121
+                KeyUp A
+                DelayRandom 142,144
+                KeyDown S
+                DelayRandom 150,152
+                KeyUp S
+                DelayRandom 525,531
+                KeyDown Left
+                DelayRandom 121,123
+                KeyUp Left
+                DelayRandom 457,462
+                ReleaseTime1 = GetTimeStamp()
             else //前往牛马地方放技能
-
-                a=random(1,3)
-                if a == 1 then //去盲点捡钱吧
-                    tarX       = -60
-                    tarY       = 112
-                    tolerance  = 8
+                a = GetTimeStamp() - seedTime2
+                if a > 20 then //可以放种子了
+                    tarX       = -65
+                    Call JumpWater()
+                    // If tolLoc > 0 then //跳楼法成功了
+                        // KeyDown Right
+                        // DelayRandom 448,453
+                        // KeyUp Right
+                        // DelayRandom 150,152
+                        // KeyDown LAlt
+                        // DelayRandom 135,137
+                        // KeyUp LAlt
+                        // DelayRandom 1270,1282
+                    // End If
+                    tarX       = -65
+                    tarY       = 69
+                    tolerance  = 6
+                    Call Move()
+                    DelayRandom 56,58
+                    KeyDown `
+                    DelayRandom 120,122
+                    KeyUp `
+                    DelayRandom 510,516
+                    KeyDown `
+                    DelayRandom 135,137
+                    KeyUp `
+                    DelayRandom 450,455
+                    seedTime2 = GetTimeStamp()
                 else
-                    tarX       = 19
-                    tarY       = 112
-                    tolerance  = 8
-                End If
-                Call Move()
 
-                Call GetXY() //判断人物X轴决定面向
-                if intX > 0 Then
-                    DelayRandom 42,45
-                    KeyDown Left
-                    DelayRandom 22,28
-                    KeyUp Left
-                else
-                    DelayRandom 42,45
-                    KeyDown Right
-                    DelayRandom 22,28
-                    KeyUp Right
-                End If
+                    Call PreMove()
 
-                DelayRandom 56,58
-                Call SpellList()
-                DelayRandom 155,169
+                    Call GetXY() //判断人物X轴决定面向
+                    if intX > 0 Then
+                        DelayRandom 42,45
+                        KeyDown Left
+                        DelayRandom 22,28
+                        KeyUp Left
+                    else
+                        DelayRandom 42,45
+                        KeyDown Right
+                        DelayRandom 22,28
+                        KeyUp Right
+                    End If
+
+                    DelayRandom 56,58
+                    Call SpellList()
+                    DelayRandom 155,169
+                End If
             End If
         End If
-
     End If
 
 
