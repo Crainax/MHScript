@@ -9,54 +9,54 @@ Dim x3,        x4,               y3,   y4        // 2个顶点:技能区/蘑菇公主
 Dim xEnd,      yEnd                              //屏幕右下角顶点
 Dim intX, intY  //寻位置相关:当前地点
 Dim iTime,a,inLimit
-Sub Attack() //技能循环攻击
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_V1.bmp",000000,1.00,0,intX,intY
+Sub Attack //技能循环攻击v2.0
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\Q.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //V1技能好了
         KeyDown Q
         DelayRandom 135,137
         KeyUp Q
         DelayRandom 735,743
     else
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_V2.bmp",000000,1.00,0,intX,intY
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\W.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then //V2技能好了
             KeyDown W
             DelayRandom 120,122
             KeyUp W
             DelayRandom 610,619
         else
-            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_V4.bmp",000000,1.00,0,intX,intY
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\V.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then //V4技能好了
-                KeyDown S
-                DelayRandom 110,119
-                KeyUp S
-                DelayRandom 807,816
+                KeyDown E
+                DelayRandom 185,187
+                KeyUp E
+                DelayRandom 670,677
+                KeyDown V
+                DelayRandom 145,147
+                KeyUp V
+                DelayRandom 835,844
             else
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_Stone.bmp",000000,1.00,0,intX,intY
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\B.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then //流星技能好了
                     KeyDown B
                     DelayRandom 141,143
                     KeyUp B
                     DelayRandom 841,849
                 else
-                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_V3.bmp",000000,1.00,0,intX,intY
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\S.bmp",000000,1.00,0,intX,intY
                     if intX >= 0 Then //V3技能好了
-                        KeyDown E
-                        DelayRandom 185,187
-                        KeyUp E
-                        DelayRandom 670,677
-                        KeyDown V
-                        DelayRandom 145,147
-                        KeyUp V
-                        DelayRandom 835,844
+                        KeyDown S
+                        DelayRandom 110,119
+                        KeyUp S
+                        DelayRandom 807,816
                     else
-                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\HD_Blue.bmp",000000,1.00,0,intX,intY
+                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\Z.bmp",000000,1.00,0,intX,intY
                         if intX >= 0 Then //蓝焰斩技能好了
                             KeyDown Z
                             DelayRandom 177,182
                             KeyUp Z
                             DelayRandom 786,798
                         else
-                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BigBless.bmp",000000,1.00,0,intX,intY
+                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\5A.bmp",000000,1.00,0,intX,intY
                             if intX >= 0 Then //补充个大祝福
                                 KeyDown 5
                                 DelayRandom 134,142

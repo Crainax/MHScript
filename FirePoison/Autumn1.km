@@ -21,7 +21,7 @@ Dim SavedX,         SavedY                          //保存一下临时处理的XY
 //平A点(-52,98) (-52,85) (-34,98)
 //跳楼Y轴 85
 
-Sub Attack //技能循环攻击
+Sub Attack //技能循环攻击v2.0
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\Q.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //V1技能好了
         KeyDown Q
@@ -463,6 +463,7 @@ RuneCooldown   = 0                         //解轮时间
 stoneSteleTime = 0                         //放轮时间
 fountainTime   = 0                         //喷泉时间
 SpellTime      = 0                         //喷泉时间
+AuraTime       = 0                         //喷泉时间
 cycleCount     = 0                         //喷泉时间
 yTolerance     = 0                         //初始化
 Timer          4, 1, 3100                  //无限循环
