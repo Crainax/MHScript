@@ -33,7 +33,7 @@ else //йЗ╥ефад╩
 End If
 while 1>0
 
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Fly.bmp",000000,1.00,0,intX,intY
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\Old\EB.bmp",000000,1.00,0,intX,intY
     if intX >= 0 then
 
         KeyDown E
@@ -113,14 +113,14 @@ while 1>0
         KeyUp E
 
     else //╡╩дэ╥иты╥еп║╪╪дэ
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_V1.bmp",000000,1.00,0,mX,mY	//урV1
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\Old\Q.bmp",000000,1.00,0,mX,mY	//урV1
         if mX >= 0 Then
             KeyDown Q
             DelayRandom 111,113
             KeyUp Q
             DelayRandom 714,722
         End If
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_V2.bmp",000000,1.00,0,mX,mY	//урV2
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\Old\W2.bmp",000000,1.00,0,mX,mY	//урV2
         if mX >= 0 Then
             KeyDown W
             DelayRandom 122,124
@@ -128,21 +128,21 @@ while 1>0
             DelayRandom 402,412
         End If
 
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Spider.bmp",000000,1.00,0,mX,mY
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\H.bmp",000000,1.00,0,mX,mY
         if mX >= 0 Then //урж╘жК
             KeyDown H
             DelayRandom 105,107
             KeyUp H
             DelayRandom 929,939
         else
-            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Lieyang.bmp",000000,1.00,0,mX,mY
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Y.bmp",000000,1.00,0,mX,mY
             if mX >= 0 Then //ураряТ
                 KeyDown Y
                 DelayRandom 105,107
                 KeyUp Y
                 DelayRandom 811,813
             else
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Whister.bmp",000000,1.00,0,mX,mY
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\Old\C.bmp",000000,1.00,0,mX,mY
                 if mX >= 0 Then //уризвс
                     KeyDown 5
                     DelayRandom 105,107
@@ -157,7 +157,7 @@ while 1>0
                     KeyUp C
                     DelayRandom 879,891
                 else
-                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\BT_Water.bmp",000000,1.00,0,mX,mY
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1.bmp",000000,1.00,0,mX,mY
                     if mX >= 0 Then //уреГх╙
                         KeyDown 1
                         DelayRandom 105,107

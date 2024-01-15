@@ -343,13 +343,13 @@ Sub Fart //放熊屁,CD没好就放其他技能
                         KeyUp C
                         DelayRandom 879,891
                     else
-                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\Old\V.bmp",000000,1.00,0,intX,intY
-                        if intX >= 0 Then //找打翻
-                            KeyDown V
-                            DelayRandom 105,107
-                            KeyUp V
-                            DelayRandom 1529,1639
-                        End If
+                        // FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\Old\V.bmp",000000,1.00,0,intX,intY
+                        // if intX >= 0 Then //找打翻
+                            // KeyDown V
+                            // DelayRandom 105,107
+                            // KeyUp V
+                            // DelayRandom 1529,1639
+                        // End If
                     End If
 
                 End If
