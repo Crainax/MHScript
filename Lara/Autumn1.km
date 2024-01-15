@@ -427,7 +427,7 @@ Sub on_timer4 //查地图轮,每3秒一次
     End If
 EndSub
 
-Sub SpellList() //随便扔技能 V2.1 匹配跳着放技能
+Sub SpellList() //随便扔技能 V2.2 最后一步不平A改随机施放
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\V.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //找V3
         KeyDown V
@@ -455,11 +455,23 @@ Sub SpellList() //随便扔技能 V2.1 匹配跳着放技能
                     DelayRandom 105,107
                     KeyUp 4
                     DelayRandom 899,909
-                else //什么都没有就普攻一下
-                    KeyDown F
-                    DelayRandom 811,892
-                    KeyUp F
-                    DelayRandom 246,249
+                else //什么都没有就随机瞬移释放
+                    KeyDown LShift
+                    DelayRandom 120,122
+                    KeyUp LShift
+                    DelayRandom 495,500
+                    KeyDown E
+                    DelayRandom 135,137
+                    KeyUp E
+                    DelayRandom 263,266
+                    KeyDown Right
+                    DelayRandom 105,107
+                    KeyUp Right
+                    DelayRandom 239,242
+                    KeyDown S
+                    DelayRandom 144,146
+                    KeyUp S
+                    DelayRandom 456,461
                 End If
             End If
         End If
@@ -511,10 +523,10 @@ Sub PreMove //提前移动到特定地点
         min = seedTime1 + 18
         minType = 3
     end if
-    if min > seedTime2 + 18 then
-        min = seedTime2 + 18
-        minType = 4
-    end if
+    // if min > seedTime2 + 18 then
+        // min = seedTime2 + 18
+        // minType = 4
+    // end if
 
     if minType = 0 then
         tarX = 19
@@ -538,11 +550,11 @@ Sub PreMove //提前移动到特定地点
         tarY       = 112
         tolerance  = 6
         Call Move()
-    else if minType = 4 then
-        tarX       = -60
-        tarY       = 112
-        tolerance  = 6
-        Call Move()
+    // else if minType = 4 then
+        // tarX       = -60
+        // tarY       = 112
+        // tolerance  = 6
+        // Call Move()
     End If
 End Sub
 
@@ -610,7 +622,7 @@ while 1 > 0
     End If
 
     a = GetTimeStamp() - ReleaseTime1
-    if a > 12 then //可以放水了
+    if a > 13 then //可以放水了
         tarX = -60 //这样判断是否要跳河
         Call JumpWater() //无条件Y跳河
         tarX = -60
@@ -638,7 +650,7 @@ while 1 > 0
     End If
 
     a = GetTimeStamp() - ReleaseTime2
-    if a > 12 then //可以放火了
+    if a > 13 then //可以放火了
         tarX       = -27
         tarY       = 99
         tolerance  = 4
@@ -686,20 +698,27 @@ while 1 > 0
                 DelayRandom 135,137
                 KeyUp `
                 DelayRandom 450,455
+                tarX       = -60
+                Call Move()
+                DelayRandom 56,58
+                KeyDown `
+                DelayRandom 120,122
+                KeyUp `
+                DelayRandom 510,516
                 seedTime1 = GetTimeStamp()
-            else //前往牛马地方放技能
-                a = GetTimeStamp() - seedTime2
-                if a > 18 then //可以放种子了
-                    tarX       = -60
-                    tarY       = 112
-                    tolerance  = 6
-                    Call Move()
-                    DelayRandom 56,58
-                    KeyDown `
-                    DelayRandom 120,122
-                    KeyUp `
-                    DelayRandom 510,516
-                    seedTime2 = GetTimeStamp()
+            // else //前往牛马地方放技能
+                // a = GetTimeStamp() - seedTime2
+                // if a > 18 then //可以放种子了
+                    // tarX       = -60
+                    // tarY       = 112
+                    // tolerance  = 6
+                    // Call Move()
+                    // DelayRandom 56,58
+                    // KeyDown `
+                    // DelayRandom 120,122
+                    // KeyUp `
+                    // DelayRandom 510,516
+                    // seedTime2 = GetTimeStamp()
                 else //前往牛马地方放技能
 
                     Call PreMove()
@@ -721,7 +740,7 @@ while 1 > 0
                     Call SpellList()
                     DelayRandom 155,169
                 End If
-            End If
+            // End If
         End If
 
     End If
