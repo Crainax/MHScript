@@ -643,7 +643,7 @@ while 1 > 0
     End If
 
     a = GetTimeStamp() - ReleaseTime1
-    if a > 13 then //可以放水了
+    if a > 13 then //释放1 Ver2.0 提速
         tarX = -60 //这样判断是否要跳河
         Call JumpWater() //无条件Y跳河
         tarX = -60
@@ -655,26 +655,26 @@ while 1 > 0
         End If
         DelayRandom 56,58
         KeyDown Right
-        DelayRandom 151,153
+        DelayRandom 91,93
         KeyUp Right
-        DelayRandom 120,122
+        DelayRandom 32,33
         KeyDown A
-        DelayRandom 119,121
+        DelayRandom 136,138
         KeyUp A
-        DelayRandom 142,144
+        DelayRandom 165,167
         KeyDown S
-        DelayRandom 150,152
+        DelayRandom 119,121
         KeyUp S
-        DelayRandom 525,531
+        DelayRandom 248,251
         KeyDown Left
-        DelayRandom 121,123
+        DelayRandom 106,108
         KeyUp Left
-        DelayRandom 457,462
+        DelayRandom 342,347
         ReleaseTime1 = GetTimeStamp()
     End If
 
     a = GetTimeStamp() - ReleaseTime2
-    if a > 13 then //可以放火了
+    if a > 13 then //释放2 Ver2.0 提速
         tarX       = -27
         tarY       = 99
         tolerance  = 4
@@ -686,19 +686,19 @@ while 1 > 0
         KeyDown Right
         DelayRandom 91,93
         KeyUp Right
-        DelayRandom 120,122
+        DelayRandom 32,33
         KeyDown A
-        DelayRandom 119,121
+        DelayRandom 136,138
         KeyUp A
-        DelayRandom 142,144
+        DelayRandom 165,167
         KeyDown S
-        DelayRandom 150,152
+        DelayRandom 119,121
         KeyUp S
-        DelayRandom 525,531
+        DelayRandom 248,251
         KeyDown Right
-        DelayRandom 121,123
+        DelayRandom 106,108
         KeyUp Right
-        DelayRandom 457,462
+        DelayRandom 342,347
         ReleaseTime2 = GetTimeStamp()
     else
         a = GetTimeStamp() - ReleaseTime3
@@ -711,7 +711,7 @@ while 1 > 0
             ReleaseTime3 = GetTimeStamp()
         else
             a = GetTimeStamp() - seedTime1
-            if a > 18 then //可以放种子了
+            if a > 18 then //可以放种子了 Ver2.0 丝滑连招
                 tarX       = -33
                 tarY       = 112
                 tolerance  = 6
@@ -721,20 +721,25 @@ while 1 > 0
                 End If
                 DelayRandom 56,58
                 KeyDown `
-                DelayRandom 120,122
+                DelayRandom 929,939
                 KeyUp `
-                DelayRandom 510,516
+                DelayRandom 309,313
+                KeyDown Left
+                DelayRandom 67,68
+                KeyDown Space
+                DelayRandom 90,91
+                KeyUp Space
+                DelayRandom 30,31
+                KeyDown Space
+                DelayRandom 90,91
+                KeyUp Space
+                DelayRandom 233,236
+                KeyUp Left
+                DelayRandom 576,582
                 KeyDown `
-                DelayRandom 135,137
+                DelayRandom 200,204
                 KeyUp `
-                DelayRandom 450,455
-                tarX       = -60
-                Call Move()
-                DelayRandom 56,58
-                KeyDown `
-                DelayRandom 120,122
-                KeyUp `
-                DelayRandom 510,516
+                DelayRandom 425,431
                 seedTime1 = GetTimeStamp()
             else //前往牛马地方放技能
 

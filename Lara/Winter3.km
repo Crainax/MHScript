@@ -4,17 +4,18 @@ ScreenY=2560
 Times=0
 
 [Script]
-Dim x1,           x2,               y1,       y2            // 矩形区域:小地图采样点
-Dim x3,           y3,               xEnd,     yEnd          // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,         tarY,             Hooking                 //目标
-Dim logoX,        logoY,            intX,     intY          //算目的地差值
-Dim cY,           consecutiveTimes, consecutiveMax          //用这个东西判断角色是不是没有X或Y轴变化了
-Dim tolerance,    tolLoc,           yTolerance              //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim ReleaseTime1, ReleaseTime2,     seedTime, fountainTime  //各种冷却
-Dim a,            stoneSteleTime,   pickingTime             //各种冷却
-Dim RuneCooldown                                            //各种冷却
-Dim staticCount,  staticX,          staticY                 //防卡计数器
-Dim SavedX,       SavedY                                    //保存一下临时处理的XY
+Dim x1,           x2,               y1,   y2        // 矩形区域:小地图采样点
+Dim x3,           y3,               xEnd, yEnd      // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,         tarY,             Hooking         //目标
+Dim logoX,        logoY,            intX, intY      //算目的地差值
+Dim cY,           consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X或Y轴变化了
+Dim tolerance,    tolLoc,           yTolerance      //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim ReleaseTime1, ReleaseTime2,     ReleaseTime3    //各种冷却
+Dim a,            stoneSteleTime,   fountainTime    //各种冷却
+Dim RuneCooldown, seedTime1,        seedTime2       //各种冷却
+Dim staticCount,  staticX,          staticY         //防卡计数器
+Dim SavedX,       SavedY                            //保存一下临时处理的XY
+Dim min,          minType                           //预移动
 
 //左边喷泉点(29,84)  右边点向左放
 //左间放火点(-72,114) Y容忍4
@@ -425,8 +426,7 @@ Sub on_timer4 //查地图轮,每3秒一次
     End If
 EndSub
 
-
-Sub SpellList() //随便扔技能 V2.1 匹配跳着放技能
+Sub SpellList() //随便扔技能 V2.3 随机点判断是否瞬移
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\V.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //找V3
         KeyDown V
@@ -454,11 +454,34 @@ Sub SpellList() //随便扔技能 V2.1 匹配跳着放技能
                     DelayRandom 105,107
                     KeyUp 4
                     DelayRandom 899,909
-                else //什么都没有就普攻一下
-                    KeyDown F
-                    DelayRandom 811,892
-                    KeyUp F
-                    DelayRandom 246,249
+                else //什么都没有就随机瞬移释放
+                    Call GetXY()
+                    SavedX = intX
+                    SavedY = intY
+                    KeyDown LShift
+                    DelayRandom 128,130
+                    KeyUp LShift
+                    DelayRandom 437,442
+                    Call GetXY()
+                    if SavedX == intX and SavedY == intY then //人物没变就不要施放了,平A就行
+                        KeyDown F
+                        DelayRandom 112,114
+                        KeyUp F
+                        DelayRandom 479,484
+                    else
+                        KeyDown E
+                        DelayRandom 136,138
+                        KeyUp E
+                        DelayRandom 82,83
+                        KeyDown Up
+                        DelayRandom 120,122
+                        KeyUp Up
+                        DelayRandom 187,189
+                        KeyDown S
+                        DelayRandom 83,84
+                        KeyUp S
+                        DelayRandom 456,461
+                    End If
                 End If
             End If
         End If
@@ -495,8 +518,70 @@ Sub JumpWater //跳河
     End If
 End Sub
 
-//分辨率初始化
+Sub PreMove //提前移动到特定地点 Ver2.0 提前移动先judge,不然怕重复移动
+    min = fountainTime + 55
+    minType = 0 //默认喷泉
+    if min > ReleaseTime1 + 13 then
+        min = ReleaseTime1 + 13
+        minType = 1
+    end if
+    if min > ReleaseTime2 + 13 then
+        min = ReleaseTime2 + 13
+        minType = 2
+    end if
+    if min > seedTime1 + 18 then
+        min = seedTime1 + 18
+        minType = 3
+    end if
 
+    if minType = 0 then
+        tarX = 29 //跳河判断
+        Call JumpWater()
+        If tolLoc > 0 then //跳楼法成功了
+            DelayRandom 87,92
+            KeyDown Up
+            DelayRandom 120,122
+            KeyUp Up
+            DelayRandom 231,234
+        End If
+        tarX = 29
+        tarY = 84
+        tolerance = 4
+        Call Judge()
+        if tolLoc <= 0 then
+            Call Move()
+        End If
+    else if minType = 1 then
+        tarX = -47 //这样判断是否要跳河
+        Call JumpWater()
+        tarX = -47
+        tarY = 84
+        tolerance = 4
+        Call Judge()
+        if tolLoc <= 0 then
+            Call Move()
+        End If
+    else if minType = 2 then
+        tarX       = -72 //跳河X轴判断
+        Call JumpWater()
+        tarX       = -72
+        tarY       = 114
+        tolerance  = 4
+        if tolLoc <= 0 then
+            Call Move()
+        End If
+    else if minType = 3 then
+        tarX       = -16
+        tarY       = 114
+        tolerance  = 6
+        Call Judge()
+        if tolLoc <= 0 then
+            Call Move()
+        End If
+    End If
+End Sub
+
+//分辨率初始化
 GetScreenResolution intX, intY
 if intX > intY then //横放屏幕
     x1 = 700
@@ -517,15 +602,14 @@ else //竖放屏幕
     xEnd = 1440
     yEnd = 2560
 End If
-ReleaseTime1   = 0               //施放冷却1
-ReleaseTime2   = 0               //施放冷却2
-seedTime       = 0               //上次种子的时间
-fountainTime   = 0               //上次喷泉的时间
-RuneCooldown   = 0               //解轮冷却
-stoneSteleTime = 0               //上次轮回的时间
-pickingTime    = GetTimeStamp()  //上次捡钱的时间
-yTolerance     = 0               //初始化
-Timer          4, 1, 3100        //无限循环解轮
+ReleaseTime1   = 0         //施放冷却1
+ReleaseTime2   = 0         //施放冷却2
+seedTime1      = 0         //上次种子的时间
+fountainTime   = 0         //上次喷泉的时间
+RuneCooldown   = 0         //解轮冷却
+stoneSteleTime = 0         //上次轮回的时间
+yTolerance     = 0         //初始化
+Timer          4, 1, 3100  //无限循环解轮
 while 1 > 0
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
     a = GetTimeStamp() - fountainTime
@@ -566,7 +650,7 @@ while 1 > 0
     End If
 
     a = GetTimeStamp() - ReleaseTime1
-    if a > 13 then //可以放水了
+    if a > 13 then //施放1 Ver2.0
         tarX = -47 //这样判断是否要跳河
         Call JumpWater()
         tarX = -47
@@ -575,95 +659,88 @@ while 1 > 0
         Call Move()
         DelayRandom 56,58
         KeyDown Right
-        DelayRandom 121,123
+        DelayRandom 91,93
         KeyUp Right
-        DelayRandom 120,122
+        DelayRandom 32,33
         KeyDown A
-        DelayRandom 119,121
+        DelayRandom 136,138
         KeyUp A
-        DelayRandom 142,144
+        DelayRandom 165,167
         KeyDown S
-        DelayRandom 150,152
+        DelayRandom 119,121
         KeyUp S
-        DelayRandom 525,531
+        DelayRandom 248,251
         KeyDown Left
-        DelayRandom 121,123
+        DelayRandom 106,108
         KeyUp Left
-        DelayRandom 457,462
+        DelayRandom 342,347
         ReleaseTime1 = GetTimeStamp()
     End If
 
     a = GetTimeStamp() - ReleaseTime2
-    if a > 13 then //可以放火了
+    if a > 13 then //施放2 Ver2.0
         tarX       = -72 //跳河X轴判断
         Call JumpWater()
         tarX       = -72
         tarY       = 114
         tolerance  = 4
-        // yTolerance = 4
         Call Move()
         DelayRandom 56,58
-        KeyDown Left
-        DelayRandom 121,123
-        KeyUp Left
-        DelayRandom 120,122
+        KeyDown left
+        DelayRandom 91,93
+        KeyUp left
+        DelayRandom 32,33
         KeyDown A
-        DelayRandom 119,121
+        DelayRandom 136,138
         KeyUp A
-        DelayRandom 142,144
+        DelayRandom 165,167
         KeyDown S
-        DelayRandom 150,152
+        DelayRandom 119,121
         KeyUp S
-        DelayRandom 525,531
-        KeyDown Up
-        DelayRandom 121,123
-        KeyUp Up
-        DelayRandom 457,462
+        DelayRandom 248,251
+        KeyDown Right
+        DelayRandom 106,108
+        KeyUp Right
+        DelayRandom 342,347
         ReleaseTime2 = GetTimeStamp()
     else
-
-        // a = GetTimeStamp() - pickingTime
-        // if a > 120 then //可以捡钱了
-            // tarX = xp6
-            // tarY = yp6
-            // tolerance = 4
-            // Call Move()
-            // DelayRandom 56,58
-            // KeyDown F
-            // DelayRandom 600,800
-            // KeyUp F
-            // DelayRandom 455,469
-            // pickingTime = GetTimeStamp()
-        // else
-
-            a = GetTimeStamp() - seedTime
-            if a > 14 then //可以放种子了
-                tarX       = 16
-                tarY       = 114
-                // yTolerance = 4
-                tolerance  = 8
+        a = GetTimeStamp() - seedTime1
+        if a > 18 then //可以放种子了 Ver2.0
+            tarX       = -16
+            tarY       = 114
+            tolerance  = 6
+            Call Judge()
+            if tolLoc <= 0 then
                 Call Move()
-                DelayRandom 56,58
-                KeyDown Down
-                DelayRandom 95,98
-                KeyDown `
-                DelayRandom 251,259
-                KeyUp `
-                DelayRandom 119,123
-                KeyUp Down
-                DelayRandom 455,469
-                seedTime = GetTimeStamp()
-            else //前往牛马地方放技能
-                tarX       = -27
-                tarY       = 114
-                // yTolerance = 4
-                tolerance  = 8
-                Call Move()
-                DelayRandom 56,58
-                Call SpellList()
-                DelayRandom 155,169
             End If
-        // End If
+            DelayRandom 56,58
+            KeyDown `
+            DelayRandom 929,939
+            KeyUp `
+            DelayRandom 309,313
+            KeyDown Right
+            DelayRandom 67,68
+            KeyDown Space
+            DelayRandom 90,91
+            KeyUp Space
+            DelayRandom 30,31
+            KeyDown Space
+            DelayRandom 90,91
+            KeyUp Space
+            DelayRandom 233,236
+            KeyUp Right
+            DelayRandom 576,582
+            KeyDown `
+            DelayRandom 200,204
+            KeyUp `
+            DelayRandom 425,431
+            seedTime1 = GetTimeStamp()
+        else //前往牛马地方放技能
+            Call PreMove()
+            DelayRandom 56,58
+            Call SpellList()
+            DelayRandom 155,169
+        End If
 
     End If
 
