@@ -21,7 +21,7 @@ Dim SavedX,         SavedY                          //保存一下临时处理的XY
 //平A点(-52,98) (-52,85) (-34,98)
 //跳楼Y轴 85
 
-Sub Attack //技能循环攻击
+Sub Attack //技能循环攻击v2.0
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\Q.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //V1技能好了
         KeyDown Q
@@ -36,12 +36,16 @@ Sub Attack //技能循环攻击
             KeyUp W
             DelayRandom 610,619
         else
-            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\S.bmp",000000,1.00,0,intX,intY
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\V.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then //V4技能好了
-                KeyDown S
-                DelayRandom 110,119
-                KeyUp S
-                DelayRandom 807,816
+                KeyDown E
+                DelayRandom 185,187
+                KeyUp E
+                DelayRandom 670,677
+                KeyDown V
+                DelayRandom 145,147
+                KeyUp V
+                DelayRandom 835,844
             else
                 FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\B.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then //流星技能好了
@@ -50,16 +54,12 @@ Sub Attack //技能循环攻击
                     KeyUp B
                     DelayRandom 841,849
                 else
-                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\V.bmp",000000,1.00,0,intX,intY
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\S.bmp",000000,1.00,0,intX,intY
                     if intX >= 0 Then //V3技能好了
-                        KeyDown E
-                        DelayRandom 185,187
-                        KeyUp E
-                        DelayRandom 670,677
-                        KeyDown V
-                        DelayRandom 145,147
-                        KeyUp V
-                        DelayRandom 835,844
+                        KeyDown S
+                        DelayRandom 110,119
+                        KeyUp S
+                        DelayRandom 807,816
                     else
                         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\Z.bmp",000000,1.00,0,intX,intY
                         if intX >= 0 Then //蓝焰斩技能好了
@@ -171,11 +171,6 @@ Sub AntiJam //一般跟随GetXY后用
         staticCount = 0
     End If
     if staticCount >= 3 Then //
-
-        if intY == 92 and intX < -47+6 and intX > -47-6 Then //白名单
-            staticCount = 0
-            Exit Sub
-        End If
 
         Beep 500,500
         KeyAllup //施放所有按键并重启
@@ -507,52 +502,36 @@ while 1 > 0
         DelayRandom 405,413
     else
 
-        // a = GetTimeStamp() - pickingTime1
-        // if a > 123 then //向上走
-            // tarX      = -77
-            // tarY      = 92
-            // tolerance = 6
-            // Call Move()
-            // Call Attack()
-            // DelayRandom 712,750
-            // tarY      = 80
-            // Call Move()
-            // Call Attack()
-            // DelayRandom 712,750
-            // pickingTime1 = GetTimeStamp()
-        // else
+        if cycleCount == 0 then
+            tarX      = -52
+            tarY      = 98
+        else
+            tarX      = -34
+            tarY      = 98
+        End If
+        tolerance = 4
+        Call Judge() //人在那边吗
+        if tolLoc <= 0 then //人不在那边先回去
+            Call JumpWater()
+            Call Move()
+        End If
 
-            if cycleCount == 0 then
-                tarX      = -52
-                tarY      = 98
-            else
-                tarX      = -34
-                tarY      = 98
+        //原地放招
+        a = GetTimeStamp() - SpellTime
+        if a > 3 then //放技能
+            Call Attack()
+            SpellTime = GetTimeStamp()
+            cycleCount = cycleCount + 1
+            if cycleCount > 1 then //3个地方循环走
+                cycleCount = 0
             End If
-            tolerance = 4
-            Call Judge() //人在那边吗
-            if tolLoc <= 0 then //人不在那边先回去
-                Call JumpWater()
-                Call Move()
-            End If
-
-            //原地放招
-            a = GetTimeStamp() - SpellTime
-            if a > 3 then //放技能
-                Call Attack()
-                SpellTime = GetTimeStamp()
-                cycleCount = cycleCount + 1
-                if cycleCount > 1 then //3个地方循环走
-                    cycleCount = 0
-                End If
-            else
-                DelayRandom 55,62
-                KeyDown F
-                DelayRandom 800,1200
-                KeyUp F
-                DelayRandom 255,262
-            End If
-        //End If
+        else
+            DelayRandom 55,62
+            KeyDown F
+            DelayRandom 800,1200
+            KeyUp F
+            DelayRandom 255,262
+        End If
 
         Call Infinite() //终极无限判断
         DelayRandom 300,303
