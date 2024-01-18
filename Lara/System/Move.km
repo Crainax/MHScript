@@ -65,7 +65,7 @@ Sub AntiJam //一般跟随GetXY后用
     End If
 End Sub
 
-Sub Move()  //精确的移动:Ver2.1 跳A顺便用技能CGHY
+Sub Move()  //精确的移动:Ver2.4 下跳引入新机制,修正BUG
     consecutiveTimes	= -1  //初始就启用指南针判断
     consecutiveMax		= 3   //降落默认值为4
     Hooking				= 0 //钩子初始是关的
@@ -73,7 +73,6 @@ Sub Move()  //精确的移动:Ver2.1 跳A顺便用技能CGHY
         Call GetXY()
         if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
             if Hooking > 0 and intY <= tarY - 3 Then //钩子的判断刹车
-                TracePrint 钩子刹车
                 KeyDown Ctrl
                 DelayRandom 258,282
                 KeyUp Ctrl
@@ -81,16 +80,13 @@ Sub Move()  //精确的移动:Ver2.1 跳A顺便用技能CGHY
             End If
             if intY == cY Then //Y轴没变化了
                 consecutiveTimes = consecutiveTimes + 1
-                TracePrint 降落判断: & consecutiveTimes
                 if consecutiveTimes >= consecutiveMax Then
                     consecutiveTimes	= -1	//判断为已经落地
                     consecutiveMax		= 3		//归位最大降落判断值
-                    TracePrint 判断已经落地
                 End If
             else
                 cY = intY
                 consecutiveTimes = 0
-                TracePrint 降落判断: & consecutiveTimes
             End If
         else //继续根据
             Call AntiJam() //防卡
@@ -320,42 +316,42 @@ Sub Move()  //精确的移动:Ver2.1 跳A顺便用技能CGHY
             else
                 If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
                     consecutiveTimes = 0 //启动降落判断
+                    consecutiveMax = 8 //延长一点降落判断
                     cY = intY
                     TracePrint 下跳一次
-                    DelayRandom 12,13
                     KeyDown Down
-                    DelayRandom 76,77
-                    KeyDown Space
-                    DelayRandom 128,130
-                    KeyUp Space
-                    DelayRandom 453,454
-                    KeyUp Down
-                    DelayRandom 32,33
-
-                    KeyDown Down
+                    Delay 5
                     KeyDown Space
                     while 1 > 0
                         Call GetXY()
-                        if intY >= tarY - 5 then //接近目标点也停止
-                            TracePrint 接近停止
+                        if intY >= tarY - 12 then //接近目标点也停止
+                            TracePrint 接近停止[人 & intY &][目标 & tarY &]
                             consecutiveTimes = 0
+                            KeyUp Space
                             Delay 5
+                            KeyUp Down
+                            Delay 150
                             break
                         else if intY == cY Then //Y轴没变化了
                             consecutiveTimes = consecutiveTimes + 1
-                            if consecutiveTimes >= 5 Then
+                            TracePrint 停止检测[人 & intY &][上一次 & cY &], &consecutiveTimes
+                            if consecutiveTimes >= 15 Then
                                 consecutiveTimes	= -1 //结束循环了
+                                TracePrint 停止出去
+                                KeyUp Space
+                                Delay 5
+                                KeyUp Down
+                            Delay 150
                                 break
                             End If
                         else
                             cY = intY
                             consecutiveTimes = 0
                         End If
-                        Delay 5
+                        Delay 1
                     Wend
                     Delay 5
-                    KeyUp Space
-                    KeyUp Down
+                    KeyAllup
                 Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上跳(Y轴是用相反比较符)
                     consecutiveTimes = 0 //启动降落判断
                     cY = intY
