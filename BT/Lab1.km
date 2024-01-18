@@ -383,7 +383,7 @@ End If
 stoneSteleTime = 0                    //上次轮回的时间
 pickingTime    = GetTimeStamp()       //上次捡钱的时间
 boboTime       = GetTimeStamp() - 40  //上次放小波波的时间
-RuneCooldown   = 0                    //上次放小波波的时间
+RuneCooldown   = 0                    //解轮CD
 currentState   = -1                   //初始状态不要去放喷泉
 FartOK         = 0                    //熊屁当前可放
 yTolerance     = 0                    //初始化容忍
@@ -409,19 +409,78 @@ while 1 > 0
     tolerance = 6
     Call Judge() //判断位置是否在喷泉
     if tolLoc > 0 Then //现在人在喷泉地,左跳去熊屁3
-        DelayRandom 96,105
-        KeyDown Left
-        DelayRandom 96,97
-        KeyDown Space
-        DelayRandom 44,45
-        KeyUp Space
-        DelayRandom 71,72
-        KeyDown Space
-        DelayRandom 62,63
-        KeyUp Space
-        DelayRandom 267,270
-        KeyUp Left
-        DelayRandom 419,423
+        // a = GetTimeStamp() - pickingTime
+        // if a > 75 then //到了捡钱时间
+            tarX       = 22
+            tarY       = 109
+            tolerance  = 4
+            Call Move_Bear()
+            DelayRandom 96,97
+            KeyDown Left
+            DelayRandom 209,212
+            KeyDown Space
+            DelayRandom 110,112
+            KeyUp Space
+            DelayRandom 127,129
+            KeyDown Space
+            DelayRandom 104,106
+            KeyUp Space
+            DelayRandom 689,696
+            KeyDown Space
+            DelayRandom 80,81
+            KeyUp Space
+            DelayRandom 202,205
+            KeyDown Space
+            DelayRandom 93,94
+            KeyUp Space
+            DelayRandom 806,815
+            KeyDown Space
+            DelayRandom 102,104
+            KeyUp Space
+            DelayRandom 186,188
+            KeyDown Space
+            DelayRandom 105,107
+            KeyUp Space
+            DelayRandom 1043,1054
+            KeyUp Left
+            pickingTime = GetTimeStamp()
+            tarX       = -65
+            tarY       = 109
+            tolerance  = 4
+            Call Move_Bear()
+            DelayRandom 96,97
+            KeyDown LAlt
+            DelayRandom 101,103
+            KeyUp LAlt
+            DelayRandom 1072,1083
+            KeyDown Right
+            DelayRandom 59,60
+            KeyDown Space
+            DelayRandom 46,47
+            KeyUp Space
+            DelayRandom 61,62
+            KeyDown Space
+            DelayRandom 62,63
+            KeyUp Space
+            DelayRandom 112,114
+            KeyUp Right
+            DelayRandom 729,737
+            currentState = 2
+        // else
+            // DelayRandom 96,105
+            // KeyDown Left
+            // DelayRandom 96,97
+            // KeyDown Space
+            // DelayRandom 44,45
+            // KeyUp Space
+            // DelayRandom 71,72
+            // KeyDown Space
+            // DelayRandom 62,63
+            // KeyUp Space
+            // DelayRandom 267,270
+            // KeyUp Left
+            // DelayRandom 419,423
+        // End If
     else if currentState == 1 Then //不在噴泉,直接去熊屁3
         tarX      = -4
         tarY      = 95
@@ -481,15 +540,8 @@ while 1 > 0
     tolerance  = 6
     Call Judge()
     if tolLoc > 0 or currentState == 4 Then //现在人在熊屁2
-        a = GetTimeStamp() - pickingTime
-        if a > 55 then //到了捡钱时间
-            tarX       = -40
-            tarY       = 109
-            tolerance  = 4
-            Call Move_Bear()
-            pickingTime = GetTimeStamp()
 
-        else tolLoc > 0 then
+        if tolLoc > 0 then
             DelayRandom 94,100
             KeyDown Right
             DelayRandom 95,96
