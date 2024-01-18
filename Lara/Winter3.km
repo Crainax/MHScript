@@ -715,7 +715,7 @@ while 1 > 0
             End If
             DelayRandom 56,58
             KeyDown `
-            DelayRandom 929,939
+            DelayRandom 829,839
             KeyUp `
             DelayRandom 309,313
             KeyDown Right

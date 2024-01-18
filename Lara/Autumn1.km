@@ -535,8 +535,8 @@ Sub PreMove //提前移动到特定地点 Ver2.0 提前移动先judge,不然怕重复移动
         min = ReleaseTime2 + 13
         minType = 2
     end if
-    if min > seedTime1 + 18 then
-        min = seedTime1 + 18
+    if min > seedTime1 + 17 then
+        min = seedTime1 + 17
         minType = 3
     end if
 
@@ -711,7 +711,7 @@ while 1 > 0
             ReleaseTime3 = GetTimeStamp()
         else
             a = GetTimeStamp() - seedTime1
-            if a > 18 then //可以放种子了 Ver2.0 丝滑连招
+            if a > 17 then //可以放种子了 Ver2.0 丝滑连招
                 tarX       = -33
                 tarY       = 112
                 tolerance  = 6
@@ -721,7 +721,7 @@ while 1 > 0
                 End If
                 DelayRandom 56,58
                 KeyDown `
-                DelayRandom 929,939
+                DelayRandom 829,839
                 KeyUp `
                 DelayRandom 309,313
                 KeyDown Left

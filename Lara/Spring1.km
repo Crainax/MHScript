@@ -426,8 +426,7 @@ Sub on_timer4 //查地图轮,每3秒一次
     End If
 EndSub
 
-
-Sub SpellList() //随便扔技能 V2.2 最后一步不平A改随机施放
+Sub SpellList() //随便扔技能 V2.3 随机点判断是否瞬移
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\V.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //找V3
         KeyDown V
@@ -456,22 +455,33 @@ Sub SpellList() //随便扔技能 V2.2 最后一步不平A改随机施放
                     KeyUp 4
                     DelayRandom 899,909
                 else //什么都没有就随机瞬移释放
+                    Call GetXY()
+                    SavedX = intX
+                    SavedY = intY
                     KeyDown LShift
-                    DelayRandom 120,122
+                    DelayRandom 128,130
                     KeyUp LShift
-                    DelayRandom 495,500
-                    KeyDown E
-                    DelayRandom 135,137
-                    KeyUp E
-                    DelayRandom 263,266
-                    KeyDown Up
-                    DelayRandom 105,107
-                    KeyUp Up
-                    DelayRandom 239,242
-                    KeyDown S
-                    DelayRandom 144,146
-                    KeyUp S
-                    DelayRandom 456,461
+                    DelayRandom 437,442
+                    Call GetXY()
+                    if SavedX == intX and SavedY == intY then //人物没变就不要施放了,平A就行
+                        KeyDown F
+                        DelayRandom 112,114
+                        KeyUp F
+                        DelayRandom 479,484
+                    else
+                        KeyDown E
+                        DelayRandom 136,138
+                        KeyUp E
+                        DelayRandom 82,83
+                        KeyDown Up
+                        DelayRandom 120,122
+                        KeyUp Up
+                        DelayRandom 187,189
+                        KeyDown S
+                        DelayRandom 83,84
+                        KeyUp S
+                        DelayRandom 456,461
+                    End If
                 End If
             End If
         End If
@@ -530,12 +540,18 @@ Sub PreMove //提前移动到特定地点
         tarX = -79
         tarY = 92
         tolerance = 4
-        Call Move()
+        Call Judge()
+        if tolLoc <= 0 then
+            Call Move()
+        End If
     else if minType = 1 then
         tarX       = -50
         tarY       = 103
         tolerance  = 4
-        Call Move()
+        Call Judge()
+        if tolLoc <= 0 then
+            Call Move()
+        End If
     else if minType = 2 then
         tarX = -1
         Call JumpWater()
@@ -549,12 +565,18 @@ Sub PreMove //提前移动到特定地点
         tarX = -1
         tarY = 81
         tolerance = 4
-        Call Move()
+        Call Judge()
+        if tolLoc <= 0 then
+            Call Move()
+        End If
     else if minType = 3 then
         tarX       = -1
         tarY       = 103
         tolerance  = 6
-        Call Move()
+        Call Judge()
+        if tolLoc <= 0 then
+            Call Move()
+        End If
     End If
 End Sub
 //分辨率初始化
@@ -620,7 +642,7 @@ while 1 > 0
     End If
 
     a = GetTimeStamp() - ReleaseTime1
-    if a > 13 then //可以放风了
+    if a > 13 then //释放1 Ver2.0 提速
         tarX       = -50
         tarY       = 103
         tolerance  = 4
@@ -629,24 +651,24 @@ while 1 > 0
         KeyDown Left
         DelayRandom 91,93
         KeyUp Left
-        DelayRandom 120,122
+        DelayRandom 32,33
         KeyDown A
-        DelayRandom 119,121
+        DelayRandom 136,138
         KeyUp A
-        DelayRandom 142,144
+        DelayRandom 165,167
         KeyDown S
-        DelayRandom 150,152
+        DelayRandom 119,121
         KeyUp S
-        DelayRandom 525,531
+        DelayRandom 248,251
         KeyDown Right
-        DelayRandom 121,123
+        DelayRandom 106,108
         KeyUp Right
-        DelayRandom 457,462
+        DelayRandom 342,347
         ReleaseTime1 = GetTimeStamp()
     End If
 
     a = GetTimeStamp() - ReleaseTime2
-    if a > 13 then //可以放水了
+    if a > 13 then //释放1 Ver2.0 提速
         tarX = -1
         Call JumpWater()
         if tolLoc > 0 then //跳河成功
@@ -664,43 +686,48 @@ while 1 > 0
         KeyDown Right
         DelayRandom 91,93
         KeyUp Right
-        DelayRandom 120,122
+        DelayRandom 32,33
         KeyDown A
-        DelayRandom 119,121
+        DelayRandom 136,138
         KeyUp A
-        DelayRandom 142,144
+        DelayRandom 165,167
         KeyDown S
-        DelayRandom 150,152
+        DelayRandom 119,121
         KeyUp S
-        DelayRandom 525,531
+        DelayRandom 248,251
         KeyDown Left
-        DelayRandom 121,123
+        DelayRandom 106,108
         KeyUp Left
-        DelayRandom 457,462
+        DelayRandom 342,347
         ReleaseTime2 = GetTimeStamp()
     else
         a = GetTimeStamp() - seedTime1
-        if a > 17 then //可以放种子了
+        if a > 17 then //可以放种子了 Ver2.0 丝滑连招
             tarX       = -1
             tarY       = 103
             tolerance  = 6
             Call Move()
             DelayRandom 56,58
             KeyDown `
-            DelayRandom 120,122
+            DelayRandom 829,839
             KeyUp `
-            DelayRandom 510,516
+            DelayRandom 309,313
+            KeyDown Right
+            DelayRandom 67,68
+            KeyDown Space
+            DelayRandom 90,91
+            KeyUp Space
+            DelayRandom 30,31
+            KeyDown Space
+            DelayRandom 90,91
+            KeyUp Space
+            DelayRandom 233,236
+            KeyUp Right
+            DelayRandom 576,582
             KeyDown `
-            DelayRandom 135,137
+            DelayRandom 200,204
             KeyUp `
-            DelayRandom 450,455
-            tarX       = 35
-            Call Move()
-            DelayRandom 56,58
-            KeyDown `
-            DelayRandom 120,122
-            KeyUp `
-            DelayRandom 510,516
+            DelayRandom 425,431
             seedTime1 = GetTimeStamp()
         else //前往牛马地方放技能
             Call PreMove()
