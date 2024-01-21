@@ -455,32 +455,38 @@ Sub SpellList() //随便扔技能 V2.3 随机点判断是否瞬移
                     KeyUp 4
                     DelayRandom 899,909
                 else //什么都没有就随机瞬移释放
-                    Call GetXY()
-                    SavedX = intX
-                    SavedY = intY
-                    KeyDown LShift
-                    DelayRandom 128,130
-                    KeyUp LShift
-                    DelayRandom 437,442
-                    Call GetXY()
-                    if SavedX == intX and SavedY == intY then //人物没变就不要施放了,平A就行
-                        KeyDown F
-                        DelayRandom 112,114
-                        KeyUp F
-                        DelayRandom 479,484
-                    else
-                        KeyDown E
-                        DelayRandom 136,138
-                        KeyUp E
-                        DelayRandom 82,83
-                        KeyDown Up
-                        DelayRandom 120,122
-                        KeyUp Up
-                        DelayRandom 187,189
-                        KeyDown S
-                        DelayRandom 83,84
-                        KeyUp S
-                        DelayRandom 456,461
+                    tarX = 29
+                    tarY = 84
+                    tolerance = 6
+                    Call Judge()
+                    if tolLoc <= 0 then //在喷泉附近就不放了
+                        Call GetXY()
+                        SavedX = intX
+                        SavedY = intY
+                        KeyDown LShift
+                        DelayRandom 128,130
+                        KeyUp LShift
+                        DelayRandom 437,442
+                        Call GetXY()
+                        if SavedX == intX and SavedY == intY then //人物没变就不要施放了,平A就行
+                            KeyDown F
+                            DelayRandom 112,114
+                            KeyUp F
+                            DelayRandom 479,484
+                        else if
+                            KeyDown E
+                            DelayRandom 136,138
+                            KeyUp E
+                            DelayRandom 82,83
+                            KeyDown Up
+                            DelayRandom 120,122
+                            KeyUp Up
+                            DelayRandom 187,189
+                            KeyDown S
+                            DelayRandom 83,84
+                            KeyUp S
+                            DelayRandom 456,461
+                        End If
                     End If
                 End If
             End If
