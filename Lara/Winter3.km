@@ -324,6 +324,7 @@ Sub Move()  //精确的移动:Ver2.1 跳A顺便用技能CGHY
             else
                 If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
                     consecutiveTimes = 0 //启动降落判断
+                    consecutiveMax = 6 //延长一点降落判断
                     cY = intY
                     DelayRandom 12,13
                     KeyDown Down
@@ -455,12 +456,13 @@ Sub SpellList() //随便扔技能 V2.3 随机点判断是否瞬移
                     KeyUp 4
                     DelayRandom 899,909
                 else //什么都没有就随机瞬移释放
-                    tarX = 29
-                    tarY = 84
-                    tolerance = 6
-                    Call Judge()
-                    if tolLoc <= 0 then //在喷泉附近就不放了
-                        Call GetXY()
+                    Call GetXY()
+                    if intY == 84 and intX >= (29 - 6) and intX <= (29 + 6) then
+                        KeyDown F
+                        DelayRandom 112,114
+                        KeyUp F
+                        DelayRandom 479,484
+                    else
                         SavedX = intX
                         SavedY = intY
                         KeyDown LShift
@@ -473,7 +475,7 @@ Sub SpellList() //随便扔技能 V2.3 随机点判断是否瞬移
                             DelayRandom 112,114
                             KeyUp F
                             DelayRandom 479,484
-                        else if
+                        else
                             KeyDown E
                             DelayRandom 136,138
                             KeyUp E
