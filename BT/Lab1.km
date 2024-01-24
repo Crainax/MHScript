@@ -144,11 +144,11 @@ Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题)
                 DelayRandom 319,323
             Else If intX < (tarX-tolLoc) Then //向右走
                 KeyDown Right
-                DelayRandom 230,260
+                Delay (tarX - tolLoc - intX) * 52
                 KeyUp Right
             Else If intX > (tarX+tolLoc) Then //向左走
                 KeyDown Left
-                DelayRandom 230,260
+                Delay (intX - tarX - tolLoc) * 52
                 KeyUp Left
             else
                 If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
@@ -176,14 +176,12 @@ Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题)
                     if tolerance < 4 Then //容忍度小于4还是要小碎步
                         for 10
                             If intX < (tarX-tolerance) Then //向右小碎步
-                                tolLoc = (tarX - tolerance - intX) * 14
                                 KeyDown Right
-                                Delay tolLoc
+                                Delay (tarX - tolerance - intX) * 14
                                 KeyUp Right
                             Else If intX > (tarX+tolerance) Then //向左小碎步
-                                tolLoc = (intX - tarX - tolerance) * 14
                                 KeyDown Left
-                                Delay tolLoc
+                                Delay (intX - tarX - tolerance) * 14
                                 KeyUp Left
                             else
                                 Exit Sub
