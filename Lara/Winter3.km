@@ -75,7 +75,7 @@ Sub AntiJam //一般跟随GetXY后用
     End If
 End Sub
 
-Sub Move()  //精确的移动:Ver2.1 跳A顺便用技能CGHY
+Sub Move()  //精确的移动:Ver2.2 特定卡位特殊处理
     consecutiveTimes	= -1  //初始就启用指南针判断
     consecutiveMax		= 3   //降落默认值为4
     Hooking				= 0 //钩子初始是关的
@@ -98,6 +98,12 @@ Sub Move()  //精确的移动:Ver2.1 跳A顺便用技能CGHY
                 cY = intY
                 consecutiveTimes = 0
             End If
+        else if intX == -48 and intY < 100 and intY > 84 then //绳子卡住
+            DelayRandom 32,35
+            KeyDown Up
+            DelayRandom 315,440
+            KeyUp Up
+            DelayRandom 32,35
         else //继续根据
             Call AntiJam() //防卡
             if tolerance > 4 Then
