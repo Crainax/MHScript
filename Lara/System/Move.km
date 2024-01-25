@@ -322,6 +322,7 @@ Sub Move()  //精确的移动:Ver2.4 下跳引入新机制,修正BUG
                     KeyDown Down
                     Delay 5
                     KeyDown Space
+                    Delay (tarY - yTolerance - intY)*50 //数值慢慢算吧
                     while 1 > 0
                         Call GetXY()
                         if intY >= tarY - 12 then //接近目标点也停止
