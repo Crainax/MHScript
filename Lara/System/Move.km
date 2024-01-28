@@ -8,6 +8,7 @@ Dim x1,          x2,               y1,   y2        // 矩形区域:小地图采样点
 Dim x3,          y3,               xEnd, yEnd      // 2个顶点:技能区/屏幕右下角顶点
 Dim tarX,        tarY,             Hooking         //目标
 Dim logoX,       logoY,            intX, intY      //算目的地差值
+Dim alterX,      alterY                            //备用地点,传送门脚步开关
 Dim cY,          consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X或Y轴变化了
 Dim tolerance,   tolLoc,           yTolerance      //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim staticCount, staticX,          staticY         //防卡计数器
@@ -46,10 +47,6 @@ Sub AntiJam //一般跟随GetXY后用
         staticCount = 0
     End If
     if staticCount >= 3 Then //
-        // if intY == 107 and intX < -8+6 and intX > -8-6 Then //白名单
-            // staticCount = 0
-            // Exit Sub
-        // End If
 
         Beep 500,500
         // 模拟从绳子跳走
@@ -89,6 +86,9 @@ Sub Move()  //精确的移动:Ver2.4 下跳引入新机制,修正BUG
                 cY = intY
                 consecutiveTimes = 0
             End If
+        else if alterY > 0 then//备用地点启用条件是Y大于0吧
+            alterX = 0
+            alterY = 0
         else //继续根据
             Call AntiJam() //防卡
             if tolerance > 4 Then
@@ -352,26 +352,71 @@ Sub Move()  //精确的移动:Ver2.4 下跳引入新机制,修正BUG
                     End If
                 else
                     yTolerance = 0
-                    if tolerance < 4 Then //容忍度小于4还是要小碎步
-                        for 10
-                            If intX < (tarX-tolerance) Then //向右小碎步
-                                KeyDown Right
-                                Delay (tarX - tolerance - intX) * 14
-                                KeyUp Right
-                            Else If intX > (tarX+tolerance) Then //向左小碎步
-                                KeyDown Left
-                                Delay (intX - tarX - tolerance) * 14
-                                KeyUp Left
-                            else
-                                Exit Sub
-                            End If
+                    if tolerance == 0 then //传送门型
+                        TracePrint 传送一发
+                        If intX < (tarX-tolerance) Then //向右小碎步
+                            TracePrint 按压左
+                            KeyDown Right
+                        Else If intX > (tarX+tolerance) Then //向左小碎步
+                            TracePrint 按压左
+                            KeyDown Left
+                        else //直接按上
+                            DelayRandom 45,52
+                            KeyDown Up
+                            DelayRandom 120,122
+                            KeyUp Up
+                            DelayRandom 231,234
+                            alterX    = 0
+                            alterY    = 0
+                            tolerance = 0
+                            Exit Sub
+                        End If
+                        Delay 32
+                        KeyDown Up
+                        while 1 > 0
+                            Call GetXY()
 
-                            Call GetXY() //更新人物坐标
-                        Next
-                        Exit Sub //次数到了直接结束
-                    else //容忍度大于等于4可以直接结束
-                        Exit Sub
-                    End If
+                            if intX >= (alterX-8) and intX <= (alterX+8) and intY >= (alterY-8) and intY <= (alterY+3) then //到了传送后的地点
+                                TracePrint 到达目的地
+                                Delay 32
+                                KeyAllup
+                                alterX    = 0
+                                alterY    = 0
+                                tolerance = 0
+                                Exit Sub
+                            else if intX < (tarX-8) or intX > (tarX+8) then //离目标太远也停止
+                                TracePrint 超距重来
+                                break
+                            End If
+                            Delay 1
+                        Wend
+                        Delay 32
+                        KeyAllup
+
+                    else //非传送门
+                        if tolerance < 4 Then //容忍度小于4还是要小碎步
+                            for 10
+                                If intX < (tarX-tolerance) Then //向右小碎步
+                                    KeyDown Right
+                                    Delay (tarX - tolerance - intX) * 14
+                                    KeyUp Right
+                                Else If intX > (tarX+tolerance) Then //向左小碎步
+                                    KeyDown Left
+                                    Delay (intX - tarX - tolerance) * 14
+                                    KeyUp Left
+                                else
+                                    Exit Sub
+                                End If
+
+                                Call GetXY() //更新人物坐标
+                            Next
+                            Exit Sub //次数到了直接结束
+                        else //容忍度大于等于4可以直接结束
+                            Exit Sub
+                        End If
+                    End if
+
+
                 End If
             End If
         End If
@@ -400,6 +445,8 @@ else //竖放屏幕
     xEnd = 1440
     yEnd = 2560
 End If
+alterX     = 0  //备用地点
+alterY     = 0  //备用地点
 while 1 > 0
     LEDState = GetLED(1)
     if LEDState == 0 then //
@@ -409,7 +456,11 @@ while 1 > 0
         GetFileLine tarY,Move.Conf,tolLoc		//文件查找
         tolLoc = 3
         GetFileLine tolerance,Move.Conf,tolLoc	//文件查找
-        TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance
+        tolLoc = 4
+        GetFileLine alterX,Move.Conf,tolLoc	//文件查找
+        tolLoc = 5
+        GetFileLine alterY,Move.Conf,tolLoc	//文件查找
+        TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance & ,传送[ & alterX & , & alterY & ]
         //tolerance = 4 //容忍度,4为推荐值
         Call Move()
         MsgBox 测试结束
