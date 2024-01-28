@@ -63,7 +63,7 @@ Sub AntiJam //一般跟随GetXY后用
     End If
 End Sub
 
-Sub Move()  //精确的移动:Ver2.4 下跳引入新机制,修正BUG
+Sub Move()  //精确的移动:Ver2.5 0容忍加了新办法
     consecutiveTimes	= -1  //初始就启用指南针判断
     consecutiveMax		= 3   //降落默认值为4
     Hooking				= 0 //钩子初始是关的
@@ -86,9 +86,6 @@ Sub Move()  //精确的移动:Ver2.4 下跳引入新机制,修正BUG
                 cY = intY
                 consecutiveTimes = 0
             End If
-        else if alterY > 0 then//备用地点启用条件是Y大于0吧
-            alterX = 0
-            alterY = 0
         else //继续根据
             Call AntiJam() //防卡
             if tolerance > 4 Then
@@ -354,12 +351,78 @@ Sub Move()  //精确的移动:Ver2.4 下跳引入新机制,修正BUG
                     yTolerance = 0
                     if tolerance == 0 then //传送门型
                         TracePrint 传送一发
-                        If intX < (tarX-tolerance) Then //向右小碎步
-                            TracePrint 按压左
+                        // If intX < tarX Then //向右小碎步
+                            // DelayRandom 45,52
+                            // KeyDown Right
+                            // DelayRandom 72,73
+                            // KeyDown Up
+                            // DelayRandom 536,548
+                            // KeyUp Right
+                            // DelayRandom 51,53
+                            // KeyUp Up
+                            // DelayRandom 11,12
+                        // Else If intX > tarX Then //向左小碎步
+                            // DelayRandom 45,52
+                            // KeyDown Left
+                            // DelayRandom 72,73
+                            // KeyDown Up
+                            // DelayRandom 536,548
+                            // KeyUp Left
+                            // DelayRandom 51,53
+                            // KeyUp Up
+                            // DelayRandom 11,12
+                        If intX < tarX Then //向右小碎步
+                            DelayRandom 45,52
                             KeyDown Right
-                        Else If intX > (tarX+tolerance) Then //向左小碎步
-                            TracePrint 按压左
+                            DelayRandom 98,99
+                            KeyDown Up
+                            DelayRandom 104,106
+                            KeyUp Up
+                            DelayRandom 56,57
+                            KeyDown Up
+                            DelayRandom 63,64
+                            KeyUp Up
+                            DelayRandom 50,51
+                            KeyDown Up
+                            DelayRandom 70,71
+                            KeyUp Up
+                            DelayRandom 37,38
+                            KeyDown Up
+                            DelayRandom 77,78
+                            KeyUp Up
+                            DelayRandom 37,38
+                            KeyDown Up
+                            DelayRandom 82,83
+                            KeyUp Up
+                            DelayRandom 38,39
+                            KeyUp Right
+                            DelayRandom 11,12
+                        Else If intX > tarX Then //向左小碎步
+                            DelayRandom 45,52
                             KeyDown Left
+                            DelayRandom 98,99
+                            KeyDown Up
+                            DelayRandom 104,106
+                            KeyUp Up
+                            DelayRandom 56,57
+                            KeyDown Up
+                            DelayRandom 63,64
+                            KeyUp Up
+                            DelayRandom 50,51
+                            KeyDown Up
+                            DelayRandom 70,71
+                            KeyUp Up
+                            DelayRandom 37,38
+                            KeyDown Up
+                            DelayRandom 77,78
+                            KeyUp Up
+                            DelayRandom 37,38
+                            KeyDown Up
+                            DelayRandom 82,83
+                            KeyUp Up
+                            DelayRandom 38,39
+                            KeyUp Left
+                            DelayRandom 11,12
                         else //直接按上
                             DelayRandom 45,52
                             KeyDown Up
@@ -368,31 +431,18 @@ Sub Move()  //精确的移动:Ver2.4 下跳引入新机制,修正BUG
                             DelayRandom 231,234
                             alterX    = 0
                             alterY    = 0
-                            tolerance = 0
                             Exit Sub
                         End If
-                        Delay 32
-                        KeyDown Up
-                        while 1 > 0
-                            Call GetXY()
-
-                            if intX >= (alterX-8) and intX <= (alterX+8) and intY >= (alterY-8) and intY <= (alterY+3) then //到了传送后的地点
-                                TracePrint 到达目的地
-                                Delay 32
-                                KeyAllup
-                                alterX    = 0
-                                alterY    = 0
-                                tolerance = 0
-                                Exit Sub
-                            else if intX < (tarX-8) or intX > (tarX+8) then //离目标太远也停止
-                                TracePrint 超距重来
-                                break
-                            End If
-                            Delay 1
-                        Wend
-                        Delay 32
-                        KeyAllup
-
+                        Delay 125
+                        Call GetXY()
+                        if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
+                            TracePrint 到达目的地
+                            alterX    = 0
+                            alterY    = 0
+                            Exit Sub
+                        else
+                            TracePrint 未到达[ & intX & , & intY & ],传送[ & alterX & , & alterY & ]
+                        End if
                     else //非传送门
                         if tolerance < 4 Then //容忍度小于4还是要小碎步
                             for 10
