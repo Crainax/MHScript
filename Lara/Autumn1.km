@@ -8,6 +8,7 @@ Dim x1,           x2,               y1,   y2        // 矩形区域:小地图采样点
 Dim x3,           y3,               xEnd, yEnd      // 2个顶点:技能区/屏幕右下角顶点
 Dim tarX,         tarY,             Hooking         //目标
 Dim logoX,        logoY,            intX, intY      //算目的地差值
+Dim alterX,       alterY                            //备用地点,传送门脚步开关
 Dim cY,           consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X或Y轴变化了
 Dim tolerance,    tolLoc,           yTolerance      //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim ReleaseTime1, ReleaseTime2,     ReleaseTime3    //各种冷却
@@ -75,7 +76,7 @@ Sub AntiJam //一般跟随GetXY后用
     End If
 End Sub
 
-Sub Move()  //精确的移动:Ver2.1 跳A顺便用技能CGHY
+Sub Move()  //精确的移动:Ver2.5 0容忍加了新办法
     consecutiveTimes	= -1  //初始就启用指南针判断
     consecutiveMax		= 3   //降落默认值为4
     Hooking				= 0 //钩子初始是关的
@@ -323,17 +324,20 @@ Sub Move()  //精确的移动:Ver2.1 跳A顺便用技能CGHY
                 KeyUp Left
             else
                 If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
-                    consecutiveTimes = 0 //启动降落判断
-                    cY = intY
-                    DelayRandom 12,13
+                    // consecutiveTimes = 0 //启动降落判断
+                    // cY = intY
                     KeyDown Down
-                    DelayRandom 76,77
+                    DelayRandom 134,136
                     KeyDown Space
-                    DelayRandom 128,130
+                    if intY > (tarY - 13) //太接近就只用同一种办法
+                        DelayRandom 162,164
+                    else
+                        Delay (tarY - intY) * 49 - 520
+                    End If
                     KeyUp Space
-                    DelayRandom 453,454
+                    DelayRandom 66,67
                     KeyUp Down
-                    DelayRandom 32,33
+                    DelayRandom 548,554
                 Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上跳(Y轴是用相反比较符)
                     consecutiveTimes = 0 //启动降落判断
                     cY = intY
@@ -351,26 +355,121 @@ Sub Move()  //精确的移动:Ver2.1 跳A顺便用技能CGHY
                     End If
                 else
                     yTolerance = 0
-                    if tolerance < 4 Then //容忍度小于4还是要小碎步
-                        for 10
-                            If intX < (tarX-tolerance) Then //向右小碎步
-                                KeyDown Right
-                                Delay (tarX - tolerance - intX) * 14
-                                KeyUp Right
-                            Else If intX > (tarX+tolerance) Then //向左小碎步
-                                KeyDown Left
-                                Delay (intX - tarX - tolerance) * 14
-                                KeyUp Left
-                            else
-                                Exit Sub
-                            End If
+                    if tolerance == 0 then //传送门型
+                        // If intX < tarX Then //向右小碎步
+                            // DelayRandom 45,52
+                            // KeyDown Right
+                            // DelayRandom 72,73
+                            // KeyDown Up
+                            // DelayRandom 536,548
+                            // KeyUp Right
+                            // DelayRandom 51,53
+                            // KeyUp Up
+                            // DelayRandom 11,12
+                        // Else If intX > tarX Then //向左小碎步
+                            // DelayRandom 45,52
+                            // KeyDown Left
+                            // DelayRandom 72,73
+                            // KeyDown Up
+                            // DelayRandom 536,548
+                            // KeyUp Left
+                            // DelayRandom 51,53
+                            // KeyUp Up
+                            // DelayRandom 11,12
+                        If intX < tarX Then //向右小碎步
+                            DelayRandom 45,52
+                            KeyDown Right
+                            DelayRandom 98,99
+                            KeyDown Up
+                            DelayRandom 104,106
+                            KeyUp Up
+                            DelayRandom 56,57
+                            KeyDown Up
+                            DelayRandom 63,64
+                            KeyUp Up
+                            DelayRandom 50,51
+                            KeyDown Up
+                            DelayRandom 70,71
+                            KeyUp Up
+                            DelayRandom 37,38
+                            KeyDown Up
+                            DelayRandom 77,78
+                            KeyUp Up
+                            DelayRandom 37,38
+                            KeyDown Up
+                            DelayRandom 82,83
+                            KeyUp Up
+                            DelayRandom 38,39
+                            KeyUp Right
+                            DelayRandom 11,12
+                        Else If intX > tarX Then //向左小碎步
+                            DelayRandom 45,52
+                            KeyDown Left
+                            DelayRandom 98,99
+                            KeyDown Up
+                            DelayRandom 104,106
+                            KeyUp Up
+                            DelayRandom 56,57
+                            KeyDown Up
+                            DelayRandom 63,64
+                            KeyUp Up
+                            DelayRandom 50,51
+                            KeyDown Up
+                            DelayRandom 70,71
+                            KeyUp Up
+                            DelayRandom 37,38
+                            KeyDown Up
+                            DelayRandom 77,78
+                            KeyUp Up
+                            DelayRandom 37,38
+                            KeyDown Up
+                            DelayRandom 82,83
+                            KeyUp Up
+                            DelayRandom 38,39
+                            KeyUp Left
+                            DelayRandom 11,12
+                        else //直接按上
+                            DelayRandom 45,52
+                            KeyDown Up
+                            DelayRandom 120,122
+                            KeyUp Up
+                            DelayRandom 231,234
+                            alterX    = 0
+                            alterY    = 0
+                            Exit Sub
+                        End If
+                        Delay 125
+                        Call GetXY()
+                        if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
+                            alterX    = 0
+                            alterY    = 0
+                            Exit Sub
+                        else
+                        End if
+                    else //非传送门
+                        if tolerance < 4 Then //容忍度小于4还是要小碎步
+                            for 10
+                                If intX < (tarX-tolerance) Then //向右小碎步
+                                    KeyDown Right
+                                    Delay (tarX - tolerance - intX) * 14
+                                    KeyUp Right
+                                Else If intX > (tarX+tolerance) Then //向左小碎步
+                                    KeyDown Left
+                                    Delay (intX - tarX - tolerance) * 14
+                                    KeyUp Left
+                                else
+                                    Exit Sub
+                                End If
 
-                            Call GetXY() //更新人物坐标
-                        Next
-                        Exit Sub //次数到了直接结束
-                    else //容忍度大于等于4可以直接结束
-                        Exit Sub
-                    End If
+                                Call GetXY() //更新人物坐标
+                            Next
+                            Exit Sub //次数到了直接结束
+                        else //容忍度大于等于4可以直接结束
+                            Exit Sub
+                        End If
+                    End if
+
+
                 End If
             End If
         End If
