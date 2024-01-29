@@ -528,7 +528,11 @@ while 1 > 0
         GetFileLine tarY,Move.Conf,tolLoc		//文件查找
         tolLoc = 3
         GetFileLine tolerance,Move.Conf,tolLoc	//文件查找
-        TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance
+        tolLoc = 4
+        GetFileLine alterX,Move.Conf,tolLoc	//文件查找
+        tolLoc = 5
+        GetFileLine alterY,Move.Conf,tolLoc	//文件查找
+        TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance & ,传送[ & alterX & , & alterY & ]
         //tolerance = 4 //容忍度,4为推荐值
         //Call Move_Fly()
         //Call Move_Bild()
