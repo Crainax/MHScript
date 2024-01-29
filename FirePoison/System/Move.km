@@ -185,7 +185,7 @@ Sub AntiJam //一般跟随GetXY后用,
     End If
 End Sub
 
-Sub Move //精确的移动:V2.0
+Sub Move //精确的移动:V2.1 顶级边甩技能边移动
     consecutiveTimes = -1 //初始就启用指南针判断
     stuckTimes = 0 //防卡检测初始次数为0
     cY = 0
