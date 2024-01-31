@@ -11,6 +11,7 @@ Dim alterX,      alterY                        //备用地点,传送门脚步开关
 Dim logoX,       logoY,            intX, intY  //算目的地差值
 Dim cY,          consecutiveTimes, stuckTimes  //用这个东西判断角色是不是没有X或Y轴变化了
 Dim InfiTime,    BarlogTime,       a           //放技能时间冷却
+Dim DTime                                      //末日烈焰冷却
 Dim tolerance,   tolLoc,           yTolerance  //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim staticCount, staticX,          staticY     //防卡计数器
 Dim LEDState                                   //测试用:开大写键就是获取点位,不要切来切去的了
@@ -22,7 +23,7 @@ Sub on_timer1 //扔技能CD2秒
 EndSub
 
 
-Sub Attack //放技能,然后再瞬移 Ver2.1 配合移动
+Sub Attack //放技能,然后再瞬移(注意要先获取XY再放招)  Ver2.2 加入末日烈焰
     a = GetTimeStamp() - InfiTime
     if a > 110 then //该补充终极无限了
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\InfiR.bmp",000000,1.00,0,intX,intY
@@ -125,9 +126,17 @@ Sub Attack //放技能,然后再瞬移 Ver2.1 配合移动
                 End If
                 Timer 1,1,2000
             else
-                KeyDown F
-                DelayRandom 101,103
-                KeyUp F
+                a = GetTimeStamp() - DTime
+                if a > 2 and intY >= 85 and intY < 112 then //可以放末日了(仅限第二层)
+                    KeyDown D
+                    DelayRandom 101,103
+                    KeyUp D
+                    DTime = GetTimeStamp()
+                else //平时就放扫荡
+                    KeyDown F
+                    DelayRandom 101,103
+                    KeyUp F
+                End If
             End If
         End If
     End If
@@ -435,6 +444,7 @@ else //竖放屏幕
     yEnd = 2560
 End If
 InfiTime   = GetTimeStamp() - 110  //上次终极无限的时间
+DTime      = 0                     //上次放末日烈焰的时间
 BarlogTime = 0                     //上次召炎魔的时间
 SpellOK    = 1                     //技能冷却
 Timer 1,1,1000

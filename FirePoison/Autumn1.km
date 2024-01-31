@@ -12,7 +12,7 @@ Dim logoX,          logoY,            intX, intY    //寻位置相关:当前地点
 Dim InfiTime,       BarlogTime,       a             //放技能时间冷却
 Dim cY,             consecutiveTimes, stuckTimes    //用这个东西判断角色是不是没有X或Y轴变化了
 Dim stoneSteleTime, fountainTime,     RuneCooldown  //各种时间间隔
-Dim ChangeTime,     cycleCount,       AuraTime      //技能间隔
+Dim cycleCount,     AuraTime,         DTime         //技能间隔
 Dim tolerance,      tolLoc,           yTolerance    //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim staticCount,    staticX,          staticY       //防卡计数器
 Dim SavedX,         SavedY                          //保存一下临时处理的XY
@@ -22,7 +22,7 @@ Sub on_timer1 //扔技能CD2秒
     SpellOK = 1
 EndSub
 
-Sub Attack //放技能,然后再瞬移 Ver2.1 配合移动
+Sub Attack //放技能,然后再瞬移(注意要先获取XY再放招)  Ver2.2 加入末日烈焰
     a = GetTimeStamp() - InfiTime
     if a > 110 then //该补充终极无限了
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\InfiR.bmp",000000,1.00,0,intX,intY
@@ -125,9 +125,17 @@ Sub Attack //放技能,然后再瞬移 Ver2.1 配合移动
                 End If
                 Timer 1,1,2000
             else
-                KeyDown F
-                DelayRandom 101,103
-                KeyUp F
+                a = GetTimeStamp() - DTime
+                if a > 2 and intY >= 85 and intY < 112 then //可以放末日了(仅限第二层)
+                    KeyDown D
+                    DelayRandom 101,103
+                    KeyUp D
+                    DTime = GetTimeStamp()
+                else //平时就放扫荡
+                    KeyDown F
+                    DelayRandom 101,103
+                    KeyUp F
+                End If
             End If
         End If
     End If
@@ -512,8 +520,8 @@ SpellOK        = 1                     //技能冷却
 RuneCooldown   = 0                     //解轮时间
 stoneSteleTime = 0                     //放轮时间
 fountainTime   = 0                     //喷泉时间
-ChangeTime     = 0                     //换另一条道的时间
 AuraTime       = 0                     //领域时间
+DTime          = 0                     //末日冷却时间
 cycleCount     = 0                     //巡逻位置指针
 yTolerance     = 0                     //初始化
 Timer          4, 1, 3100              //无限循环
@@ -550,62 +558,67 @@ while 1 > 0
         a = GetTimeStamp() - AuraTime
         if a > 58 Then //前往领域点
             //前往领域点
-            tarX       = -25
+            if GetTimeStamp() % 120 < 90 then //大部分时间去右边
+                tarX		= -25
+            else //小部分时间去左边
+                tarX		= -60
+            End If
             tarY       = 112
             tolerance  = 4
             Call Move()
-            KeyDown Left
             DelayRandom 123,130
-            KeyUp Left
-            DelayRandom 348,352
             KeyDown A
             DelayRandom 130,132
             KeyUp A
             DelayRandom 405,413
             AuraTime = GetTimeStamp()
         else
-            // cycleCount = cycleCount + 1
-            // if cycleCount > 1 then //3个地方循环走
-                // cycleCount = 0
-            // End If
-
             if GetTimeStamp() % 120 < 90 then //大部分时间去右边
                 tarX		= -25
-                tarY		= 112
-                tolerance	= 4
-                Call Judge() //判断是否在底部
-                if cycleCount == 1 or tolLoc > 0 then //
-                    tarX		= -25
-                    tarY		= 85
-                    tolerance	= 4
-                    Call Move()
-                    cycleCount = 0
-                else if cycleCount == 0 then //在其他地方,先回老地方
-                    tarX		= -25
-                    tarY		= 112
-                    tolerance	= 4
-                    Call Move()
-                    cycleCount = 1
-                End If
             else //小部分时间去左边
                 tarX		= -60
+            End If
+            if cycleCount == 1 then //前往楼上
                 tarY		= 112
                 tolerance	= 4
                 Call Judge() //判断是否在底部
-                if cycleCount == 1 or tolLoc > 0 then //
-                    tarX		= -60
-                    tarY		= 85
-                    tolerance	= 4
-                    Call Move()
-                    cycleCount = 0
-                else if cycleCount == 0 then //在其他地方,先回老地方
-                    tarX		= -60
-                    tarY		= 112
-                    tolerance	= 4
-                    Call Move()
-                    cycleCount = 1
+                if tolLoc <= 0 then //如果不在底部就先换个面向
+                    DelayRandom 22,25
+                    if GetTimeStamp() % 120 < 90 then //向左
+                        KeyDown Left
+                        DelayRandom 42,46
+                        KeyUp Left
+                    else //向右
+                        KeyDown Right
+                        DelayRandom 42,46
+                        KeyUp Right
+                    End If
+                    DelayRandom 22,23
                 End If
-            End If //面向问题:放领域不要转方向
+                tarY		= 85
+                Call Move()
+                cycleCount = 0
+            else if cycleCount == 0 then //在其他地方,先回老地方
+                tarY		= 85
+                tolerance	= 4
+                Call Judge() //判断位置
+                if tolLoc <= 0 then //如果不在底部就先换个面向
+                    DelayRandom 22,25
+                    if GetTimeStamp() % 120 < 90 then //向左
+                        KeyDown Left
+                        DelayRandom 42,46
+                        KeyUp Left
+                    else //向右
+                        KeyDown Right
+                        DelayRandom 42,46
+                        KeyUp Right
+                    End If
+                    DelayRandom 22,23
+                End If
+                Call Move()
+                tarY		= 112
+                cycleCount = 1
+            End If
             //放末日烈焰的间隔问题
 
         End If
