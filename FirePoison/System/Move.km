@@ -22,7 +22,7 @@ Sub on_timer1 //扔技能CD2秒
 EndSub
 
 
-Sub Attack //放技能,然后再瞬移
+Sub Attack //放技能,然后再瞬移 Ver2.1 配合移动
     a = GetTimeStamp() - InfiTime
     if a > 110 then //该补充终极无限了
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\InfiR.bmp",000000,1.00,0,intX,intY
@@ -436,6 +436,7 @@ else //竖放屏幕
 End If
 InfiTime   = GetTimeStamp() - 110  //上次终极无限的时间
 BarlogTime = 0                     //上次召炎魔的时间
+SpellOK    = 1                     //技能冷却
 Timer 1,1,1000
 while 1 > 0
     LEDState = GetLED(1)
