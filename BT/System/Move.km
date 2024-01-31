@@ -9,6 +9,7 @@ Dim x3,          y3,               xEnd, yEnd      // 2¸ö¶¥µã:¼¼ÄÜÇø/ÆÁÄ»ÓÒÏÂ½Ç¶
 Dim tarX,        tarY                              //Ä¿±ê
 Dim logoX,       logoY,            intX, intY      //ËãÄ¿µÄµØ²îÖµ
 Dim DashCool,    tolLoc                            //³å´ÌÀäÈ´
+Dim alterX,      alterY                            //±¸ÓÃµØµã,´«ËÍÃÅ½Å²½¿ª¹Ø
 Dim tolerance,   temp,             yTolerance      //¿ìËÙÒÆ¶¯µÄÈİ²î,0´ú±í¾«È·ÒÆ¶¯,ÁíÍâ¸öÊÇ¾Ö²¿±äÁ¿
 Dim cY,          consecutiveTimes, consecutiveMax  //ÓÃÕâ¸ö¶«Î÷ÅĞ¶Ï½ÇÉ«ÊÇ²»ÊÇÃ»ÓĞX»òYÖá±ä»¯ÁË
 Dim Hooking,     gliding                           //¹³×ÓÖĞ(·½±ãÖĞÍ¾É²³µ)/»¬ÏèÖĞ
@@ -371,7 +372,7 @@ Sub Move_Bild //ÄñĞÎÌ¬µÄµØÃæÒÆ¶¯
     Wend
 End Sub
 
-Sub Move_Bear  //ĞÜĞÎÌ¬µÄÒÆ¶¯(½â¾öÁË¿¨Éş×ÓµÄÎÊÌâ)
+Sub Move_Bear  //ĞÜĞÎÌ¬µÄÒÆ¶¯(½â¾öÁË¿¨Éş×ÓµÄÎÊÌâ) v2.1Í¬²½¸ú½øÏÂÌøºÍ´«ËÍÃÅ¸Ä¶¯
     consecutiveTimes = -1  //³õÊ¼¾ÍÆôÓÃÖ¸ÄÏÕëÅĞ¶Ï
     consecutiveMax   = 4   //½µÂäÄ¬ÈÏÖµÎª4
     while  1 > 0
@@ -449,18 +450,19 @@ Sub Move_Bear  //ĞÜĞÎÌ¬µÄÒÆ¶¯(½â¾öÁË¿¨Éş×ÓµÄÎÊÌâ)
                 KeyUp Left
             else
                 If intY < (tarY - yTolerance) Then //Èç¹ûÈËÔÚÄ¿±êÖ®ÉÏ,¾ÍÏÂÌø(YÖáÊÇÓÃÏà·´±È½Ï·û)
-                    consecutiveTimes = 0 //Æô¶¯½µÂäÅĞ¶Ï
-                    cY = intY
                     TracePrint ÏÂÌøÒ»´Î
-                    DelayRandom 12,13
                     KeyDown Down
-                    DelayRandom 76,77
+                    DelayRandom 134,136
                     KeyDown Space
-                    DelayRandom 128,130
+                    if intY > (tarY - 13) //Ì«½Ó½ü¾ÍÖ»ÓÃÍ¬Ò»ÖÖ°ì·¨
+                        DelayRandom 162,164
+                    else
+                        Delay (tarY - intY) * 49 - 520
+                    End If
                     KeyUp Space
-                    DelayRandom 453,454
+                    DelayRandom 66,67
                     KeyUp Down
-                    DelayRandom 32,33
+                    DelayRandom 548,554
                 Else If intY > (tarY + yTolerance) Then //Èç¹ûÈËÔÚÄ¿±êÖ®ÏÂ,ÉÏ¹³
                     consecutiveTimes = 0 //Æô¶¯½µÂäÅĞ¶Ï
                     cY = intY
@@ -471,27 +473,103 @@ Sub Move_Bear  //ĞÜĞÎÌ¬µÄÒÆ¶¯(½â¾öÁË¿¨Éş×ÓµÄÎÊÌâ)
                     DelayRandom 328,430
                     KeyUp Alt
                 else
-                    yTolerance = 0 //ÖØÖÃYÈİÈÌ,Ä¬ÈÏÎª0
-                    if tolerance < 4 Then //ÈİÈÌ¶ÈĞ¡ÓÚ4»¹ÊÇÒªĞ¡Ëé²½
-                        for 10
-                            If intX < (tarX-tolerance) Then //ÏòÓÒĞ¡Ëé²½
-                                KeyDown Right
-                                Delay (tarX - tolerance - intX) * 14
-                                KeyUp Right
-                            Else If intX > (tarX+tolerance) Then //Ïò×óĞ¡Ëé²½
-                                KeyDown Left
-                                Delay (intX - tarX - tolerance) * 14
-                                KeyUp Left
-                            else
-                                Exit Sub
-                            End If
+                    yTolerance = 0
+                    if tolerance == 0 then //´«ËÍÃÅĞÍ
+                        TracePrint ´«ËÍÒ»·¢
+                        If intX < tarX Then //ÏòÓÒĞ¡Ëé²½
+                            DelayRandom 45,52
+                            KeyDown Right
+                            DelayRandom 98,99
+                            KeyDown Up
+                            DelayRandom 104,106
+                            KeyUp Up
+                            DelayRandom 56,57
+                            KeyDown Up
+                            DelayRandom 63,64
+                            KeyUp Up
+                            DelayRandom 50,51
+                            KeyDown Up
+                            DelayRandom 70,71
+                            KeyUp Up
+                            DelayRandom 37,38
+                            KeyDown Up
+                            DelayRandom 77,78
+                            KeyUp Up
+                            DelayRandom 37,38
+                            KeyDown Up
+                            DelayRandom 82,83
+                            KeyUp Up
+                            DelayRandom 38,39
+                            KeyUp Right
+                            DelayRandom 11,12
+                        Else If intX > tarX Then //Ïò×óĞ¡Ëé²½
+                            DelayRandom 45,52
+                            KeyDown Left
+                            DelayRandom 98,99
+                            KeyDown Up
+                            DelayRandom 104,106
+                            KeyUp Up
+                            DelayRandom 56,57
+                            KeyDown Up
+                            DelayRandom 63,64
+                            KeyUp Up
+                            DelayRandom 50,51
+                            KeyDown Up
+                            DelayRandom 70,71
+                            KeyUp Up
+                            DelayRandom 37,38
+                            KeyDown Up
+                            DelayRandom 77,78
+                            KeyUp Up
+                            DelayRandom 37,38
+                            KeyDown Up
+                            DelayRandom 82,83
+                            KeyUp Up
+                            DelayRandom 38,39
+                            KeyUp Left
+                            DelayRandom 11,12
+                        else //Ö±½Ó°´ÉÏ
+                            DelayRandom 45,52
+                            KeyDown Up
+                            DelayRandom 120,122
+                            KeyUp Up
+                            DelayRandom 231,234
+                            alterX    = 0
+                            alterY    = 0
+                            Exit Sub
+                        End If
+                        Delay 125
+                        Call GetXY()
+                        if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //µ½ÁË´«ËÍºóµÄµØµã
+                            TracePrint µ½´ïÄ¿µÄµØ
+                            alterX    = 0
+                            alterY    = 0
+                            Exit Sub
+                        else
+                            TracePrint Î´µ½´ï[ & intX & , & intY & ],´«ËÍ[ & alterX & , & alterY & ]
+                        End if
+                    else //·Ç´«ËÍÃÅ
+                        if tolerance < 4 Then //ÈİÈÌ¶ÈĞ¡ÓÚ4»¹ÊÇÒªĞ¡Ëé²½
+                            for 10
+                                If intX < (tarX-tolerance) Then //ÏòÓÒĞ¡Ëé²½
+                                    KeyDown Right
+                                    Delay (tarX - tolerance - intX) * 14
+                                    KeyUp Right
+                                Else If intX > (tarX+tolerance) Then //Ïò×óĞ¡Ëé²½
+                                    KeyDown Left
+                                    Delay (intX - tarX - tolerance) * 14
+                                    KeyUp Left
+                                else
+                                    Exit Sub
+                                End If
 
-                            Call GetXY() //¸üĞÂÈËÎï×ø±ê
-                        Next
-                        Exit Sub //´ÎÊıµ½ÁËÖ±½Ó½áÊø
-                    else //ÈİÈÌ¶È´óÓÚµÈÓÚ4¿ÉÒÔÖ±½Ó½áÊø
-                        Exit Sub
-                    End If
+                                Call GetXY() //¸üĞÂÈËÎï×ø±ê
+                            Next
+                            Exit Sub //´ÎÊıµ½ÁËÖ±½Ó½áÊø
+                        else //ÈİÈÌ¶È´óÓÚµÈÓÚ4¿ÉÒÔÖ±½Ó½áÊø
+                            Exit Sub
+                        End If
+                    End if
                 End If
             End If
         End If
