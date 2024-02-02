@@ -126,7 +126,7 @@ Sub Attack //放技能,然后再瞬移(注意要先获取XY再放招)  Ver2.2 加入末日烈焰
                 Timer 1,1,2000
             else
                 a = GetTimeStamp() - DTime
-                if a > 2 and intY >= 85 and intY < 112 then //可以放末日了(仅限第二层)
+                if a > 2 and intY > 85 and intY < 112 then //可以放末日了(仅限第二层)
                     KeyDown D
                     DelayRandom 101,103
                     KeyUp D
@@ -561,7 +561,7 @@ while 1 > 0
             if GetTimeStamp() % 120 < 90 then //大部分时间去右边
                 tarX		= -25
             else //小部分时间去左边
-                tarX		= -60
+                tarX		= -65
             End If
             tarY       = 112
             tolerance  = 4
@@ -576,47 +576,69 @@ while 1 > 0
             if GetTimeStamp() % 120 < 90 then //大部分时间去右边
                 tarX		= -25
             else //小部分时间去左边
-                tarX		= -60
+                tarX		= -65
             End If
             if cycleCount == 1 then //前往楼上
                 tarY		= 112
                 tolerance	= 4
                 Call Judge() //判断是否在底部
                 if tolLoc <= 0 then //如果不在底部就先换个面向
+                    tarY		= 85
+                    Call Move()
                     DelayRandom 22,25
                     if GetTimeStamp() % 120 < 90 then //向左
+                        KeyDown Right
+                        DelayRandom 42,46
+                        KeyUp Right
+                        DelayRandom 22,25
                         KeyDown Left
                         DelayRandom 42,46
                         KeyUp Left
                     else //向右
+                        KeyDown Left
+                        DelayRandom 42,46
+                        KeyUp Left
+                        DelayRandom 22,25
                         KeyDown Right
                         DelayRandom 42,46
                         KeyUp Right
                     End If
                     DelayRandom 22,23
+                else
+                    tarY		= 85
+                    Call Move()
                 End If
-                tarY		= 85
-                Call Move()
                 cycleCount = 0
             else if cycleCount == 0 then //在其他地方,先回老地方
                 tarY		= 85
                 tolerance	= 4
-                Call Judge() //判断位置
+                Call Judge() //判断是否在底部
                 if tolLoc <= 0 then //如果不在底部就先换个面向
+                    tarY		= 112
+                    Call Move()
                     DelayRandom 22,25
                     if GetTimeStamp() % 120 < 90 then //向左
+                        KeyDown Right
+                        DelayRandom 42,46
+                        KeyUp Right
+                        DelayRandom 22,25
                         KeyDown Left
                         DelayRandom 42,46
                         KeyUp Left
                     else //向右
+                        KeyDown Left
+                        DelayRandom 42,46
+                        KeyUp Left
+                        DelayRandom 22,25
                         KeyDown Right
                         DelayRandom 42,46
                         KeyUp Right
                     End If
                     DelayRandom 22,23
+                else
+                    tarY		= 112
+                    Call Move()
                 End If
-                Call Move()
-                tarY		= 112
                 cycleCount = 1
             End If
             //放末日烈焰的间隔问题
