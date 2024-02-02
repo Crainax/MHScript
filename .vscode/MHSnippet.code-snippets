@@ -6,7 +6,7 @@
 	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
 	// Placeholders with the same ids are connected.
 	// Example:
-	"Print to console": {
+	"判断坐标": {
 		"prefix": "getXY",
 		"body": [
 			"call GetXY()",
@@ -15,5 +15,22 @@
             "End If"
 		],
 		"description": "判断坐标"
-	}
+	},
+	"冷却行动": {
+		"prefix": "time",
+		"body": [
+			"a = GetTimeStamp() - ${1:boboTime}",
+            "if a > ${2:55} then",
+            "	${1} = GetTimeStamp()",
+            "End If",
+		],
+		"description": "用一个参数来设定一个冷却行动"
+	},
+	"打印坐标": {
+		"prefix": "print",
+		"body": [
+            "TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance & ,传送[ & alterX & , & alterY & ]"
+		],
+		"description": "打印一个坐标"
+	},
 }

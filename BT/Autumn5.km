@@ -334,33 +334,6 @@ Sub SetFountain //寻找喷泉并放喷泉(要求状态是0)
         alterX    = -58 //传送位置
         alterY    = 94
         Call Move_Bear()
-    else if intY == 108 and intX >= (51-4) and intX <=(51+4)  then //在熊屁2处找喷泉
-        KeyDown Right
-        DelayRandom 78,79
-        KeyDown Space
-        DelayRandom 80,81
-        KeyUp Space
-        DelayRandom 77,78
-        KeyDown Space
-        DelayRandom 88,89
-        KeyUp Space
-        DelayRandom 605,612
-        KeyUp Right
-        DelayRandom 178,180
-        KeyDown Down
-        DelayRandom 153,155
-        KeyDown Space
-        DelayRandom 128,130
-        KeyUp Space
-        DelayRandom 102,104
-        KeyUp Down
-        DelayRandom 459,464
-        tarX      = 74
-        tarY      = 122
-        tolerance = 0
-        alterX    = -58 //传送位置
-        alterY    = 94
-        Call Move_Bear()
     else if intY == 122 //在最下面一层直接跳河
         KeyDown Down
         DelayRandom 62,63
@@ -582,7 +555,7 @@ while 1 > 0
 
     if currentState == 2 Then //前往熊屁1
         call GetXY()
-        if intY == 82 and intX >= (74-8) and intX <=(74+8)  then //反墙跳
+        if intY == 82 and intX >= (74-5) and intX <=(74+5)  then //反墙跳
             DelayRandom 28,29
             KeyDown Right
             DelayRandom 136,138
@@ -627,55 +600,71 @@ while 1 > 0
     tolerance  = 4
     Call Judge()
     if tolLoc > 0 or currentState == 4 Then //现在人在熊屁2
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 and tolLoc > 0 then //可以喷泉了
-            call SetFountain() //前往喷泉地
-            currentState = 1 //无论找没找到喷泉下一步都是去左下角
+        a = GetTimeStamp() - boboTime
+        if a > 55 then //到了小波波时间了,直接过去
+            if tolLoc > 0 then //现在位于熊屁2处
+                KeyDown Left //方案1:左跳过去
+                DelayRandom 144,146
+                KeyDown Space
+                DelayRandom 79,80
+                KeyUp Space
+                DelayRandom 103,105
+                KeyDown Space
+                DelayRandom 95,96
+                KeyUp Space
+                DelayRandom 573,579
+                KeyDown Space
+                DelayRandom 86,87
+                KeyUp Space
+                DelayRandom 156,158
+                KeyDown Space
+                DelayRandom 91,92
+                KeyUp Space
+                DelayRandom 1309,1323
+                KeyUp Left
+            End If
+            tarX       = -17
+            tarY       = 122
+            tolerance  = 4
+            Call Move_Bear()
+
+            DelayRandom 123,135
+            KeyDown E
+            DelayRandom 152,160
+            KeyUp E
+            DelayRandom 701,720
+            boboTime = GetTimeStamp()
+
+            //放完小波波直接左边传送门回熊屁
+            tarX      = -33
+            tarY      = 122
+            tolerance = 0
+            alterX    = 74 //传送位置
+            alterY    = 82
+            Call Move_Bear()
+            currentState = 2
         else
-            a = GetTimeStamp() - boboTime
-            if a > 55 then //到了小波波时间了,直接过去
-                if tolLoc > 0 then //现在位于熊屁2处
-                    KeyDown Left //方案1:左跳过去
-                    DelayRandom 144,146
-                    KeyDown Space
-                    DelayRandom 79,80
-                    KeyUp Space
-                    DelayRandom 103,105
-                    KeyDown Space
-                    DelayRandom 95,96
-                    KeyUp Space
-                    DelayRandom 573,579
-                    KeyDown Space
-                    DelayRandom 86,87
-                    KeyUp Space
-                    DelayRandom 156,158
-                    KeyDown Space
-                    DelayRandom 91,92
-                    KeyUp Space
-                    DelayRandom 1309,1323
-                    KeyUp Left
-                End If
-                tarX       = -17
-                tarY       = 122
-                tolerance  = 4
-                Call Move_Bear()
-
-                DelayRandom 123,135
-                KeyDown E
-                DelayRandom 152,160
-                KeyUp E
-                DelayRandom 701,720
-                boboTime = GetTimeStamp()
-
-                //放完小波波直接左边传送门回熊屁
-                tarX      = -33
-                tarY      = 122
-                tolerance = 0
-                alterX    = 74 //传送位置
-                alterY    = 82
-                Call Move_Bear()
-                currentState = 2
-            else If tolLoc > 0 then
+            a = GetTimeStamp() - pickingTime
+            if a > 120 then //捡钱时间到了
+                DelayRandom 32,35
+                KeyDown Right
+                DelayRandom 78,79
+                KeyDown Space
+                DelayRandom 70,71
+                KeyUp Space
+                DelayRandom 70,71
+                KeyDown Space
+                DelayRandom 103,105
+                KeyUp Space
+                DelayRandom 260,263
+                KeyUp Right
+                DelayRandom 261,264
+                KeyDown LAlt
+                DelayRandom 1307,1321
+                KeyUp LAlt
+                DelayRandom 277,280
+                pickingTime = GetTimeStamp()
+            else If tolLoc > 0 then //没有小波波  向上走
                 DelayRandom 89,95
                 KeyDown LAlt
                 DelayRandom 787,795
