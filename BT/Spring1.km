@@ -10,7 +10,7 @@ Dim tarX,           tarY                              //目标
 Dim alterX,         alterY                            //备用地点,传送门脚步开关
 Dim logoX,          logoY,            intX, intY      //算目的地差值
 Dim tolerance,      yTolerance                        //快速移动的容差
-Dim FartOK,         Hooking                           //熊屁的计时器冷却,钩子中判断
+Dim FartOK,         Hooking,          WhisterTime     //熊屁的计时器冷却,钩子中判断
 Dim cY,             consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X或Y轴变化了
 Dim tolLoc,         a,                currentState    //冷却和状态相关
 Dim stoneSteleTime, pickingTime,      boboTime        //冷却
@@ -343,7 +343,7 @@ Sub FindFountain //寻找喷泉并放喷泉(要求状态是0)
     currentState = 1 //无论找没找到喷泉下一步都是去左下角
 End Sub
 
-Sub Fart //放熊屁,CD没好就放其他技能
+Sub Fart //放熊屁,CD没好就放其他技能 Ver2.0引入哨子CD
     while 1 > 0
 
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\Old\W2.bmp",000000,1.00,0,intX,intY	//找V2
@@ -379,7 +379,8 @@ Sub Fart //放熊屁,CD没好就放其他技能
                     DelayRandom 811,813
                 else
                     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\Old\C.bmp",000000,1.00,0,intX,intY
-                    if intX >= 0 Then //找哨子
+                    a = GetTimeStamp() - WhisterTime
+                    if intX >= 0 and a > 160 Then //找哨子
                         KeyDown 5
                         DelayRandom 105,107
                         KeyUp 5
@@ -392,8 +393,8 @@ Sub Fart //放熊屁,CD没好就放其他技能
                         DelayRandom 214,217
                         KeyUp C
                         DelayRandom 879,891
+                        WhisterTime = GetTimeStamp()
                     End If
-
                 End If
             End If
         End If
@@ -425,6 +426,7 @@ End If
 stoneSteleTime = 0                    //上次轮回的时间
 pickingTime    = GetTimeStamp()       //上次捡钱的时间
 boboTime       = GetTimeStamp() - 40  //上次放小波波的时间
+WhisterTime    = 0                    //上次放哨子的時間,防止傻逼超越轮
 RuneCooldown   = 0                    //解轮CD
 currentState   = -1                   //初始状态不要去放喷泉
 FartOK         = 0                    //熊屁当前可放
