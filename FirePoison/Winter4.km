@@ -13,16 +13,17 @@ Dim InfiTime,       BarlogTime,       a             //放技能时间冷却
 Dim cY,             consecutiveTimes, stuckTimes    //用这个东西判断角色是不是没有X或Y轴变化了
 Dim stoneSteleTime, fountainTime,     RuneCooldown  //各种时间间隔
 Dim cycleCount,     AuraTime,         DTime         //技能间隔
+Dim pickingTime                                     //捡钱时间
 Dim tolerance,      tolLoc,           yTolerance    //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim staticCount,    staticX,          staticY       //防卡计数器
-Dim SavedX,         SavedY                          //保存一下临时处理的XY
+Dim SavedX,         SavedY,           SavedTor      //保存一下临时处理的XY
 
 
 Sub on_timer1 //扔技能CD2秒
     SpellOK = 1
 EndSub
 
-Sub Attack //放技能,然后再瞬移(注意要先获取XY再放招)  Ver2.2 加入末日烈焰
+Sub Attack //放技能,然后再瞬移(注意要先获取XY再放招)  Ver2.3 炎魔冷却拉短
     a = GetTimeStamp() - InfiTime
     if a > 110 then //该补充终极无限了
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\InfiR.bmp",000000,1.00,0,intX,intY
@@ -42,7 +43,7 @@ Sub Attack //放技能,然后再瞬移(注意要先获取XY再放招)  Ver2.2 加入末日烈焰
         End If
     else //没到终极无限
         a = GetTimeStamp() - BarlogTime
-        if a > 240 then //召唤新的炎魔
+        if a > 160 then //召唤新的炎魔
             KeyDown E
             DelayRandom 985,989
             KeyUp E
@@ -428,7 +429,7 @@ Sub Judge //判断人物是否在某个地点旁边,用tarXY,tolerance,tolLoc返回结果,不能嵌套
     End If
 End Sub
 
-Sub on_timer4 //查地图轮,每3秒一次
+Sub on_timer4 //查地图轮,每3秒一次 ver2.0不需要存储了
 
     a = GetTimeStamp() - RuneCooldown
     if a > 600 then //可以放轮了
@@ -437,16 +438,12 @@ Sub on_timer4 //查地图轮,每3秒一次
             FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
             intX = intX - logoX
             intY = intY - logoY - 1 //图标的对准问题
-            SavedX     = tarX  //(导航前先记录一下老坐标,然后再恢复,复用SavedX)
-            SavedY     = tarY
             tarX       = intX
             tarY       = intY
             tolerance  = 2
             yTolerance = 3
             KeyAllup //防错误
             Call Move()
-            tarX = SavedX
-            tarY = SavedY
             //暂停脚本
             Beep 1000,200
             DelayRandom 100,120
@@ -456,6 +453,9 @@ Sub on_timer4 //查地图轮,每3秒一次
             DelayRandom 100,120
             Beep 1000,200
             Pause
+            call GetXY()
+            tarX = intX
+            tarY = intY
             RuneCooldown = GetTimeStamp()
         else
         End If
@@ -493,6 +493,66 @@ Sub JumpWater //跳河
     End If
 End Sub
 
+Sub Navigate //引導路線
+    call GetXY()
+    if tarX <= -57 and intX >= -13 then //人在最右前往左
+        SavedX		= tarX
+        SavedY		= tarY
+        SavedTor	= tolerance
+        if intY == 120 then //直接跳河
+            DelayRandom 73,80
+            KeyDown Down
+            DelayRandom 119,121
+            KeyDown Space
+            DelayRandom 120,122
+            KeyUp Space
+            DelayRandom 38,39
+            KeyUp Down
+            DelayRandom 877,886
+        else if intY == 106 then //去右下传送门
+            tarX      = 28
+            tarY      = 120
+            tolerance = 0
+            alterX    = -89 //传送位置
+            alterY    = 91
+            Call Move()
+        else if intY < 106 //去右上传送门
+            tarX      = 39
+            tarY      = 91
+            tolerance = 0
+            alterX    = -89 //传送位置
+            alterY    = 91
+            Call Move()
+        End If
+        tarX      = SavedX
+        tarY      = SavedY
+        tolerance = SavedTor
+    Else if tarX >= -1 and intX <= -57 then //人在最右前往左
+        SavedX		= tarX
+        SavedY		= tarY
+        SavedTor	= tolerance
+        if intY >= 106 then //左下传送门
+            tarX      = -91
+            tarY      = 120
+            tolerance = 0
+            alterX    = 38 //传送位置
+            alterY    = 91
+            Call Move()
+        else
+            tarX      = -89
+            tarY      = 91
+            tolerance = 0
+            alterX    = 38 //传送位置
+            alterY    = 91
+            Call Move()
+        End If
+        tarX      = SavedX
+        tarY      = SavedY
+        tolerance = SavedTor
+    End If
+    Call Move()
+End Sub
+
 //Main函数
 GetScreenResolution intX, intY
 if intX > intY then //横放屏幕
@@ -520,6 +580,7 @@ SpellOK        = 1                     //技能冷却
 RuneCooldown   = 0                     //解轮时间
 stoneSteleTime = 0                     //放轮时间
 fountainTime   = 0                     //喷泉时间
+pickingTime    = 0                     //捡钱时间
 AuraTime       = 0                     //领域时间
 DTime          = 0                     //末日冷却时间
 cycleCount     = 0                     //巡逻位置指针
@@ -543,7 +604,7 @@ while 1 > 0
         tarX = -80
         tarY = 91
         tolerance = 4
-        Call Move() //TODO:改成navigate
+        Call Navigate()
         DelayRandom 56,58
         KeyDown Right
         DelayRandom 62,68
@@ -554,14 +615,22 @@ while 1 > 0
         KeyUp 1
         DelayRandom 712,721
         fountainTime = GetTimeStamp()
+        a = GetTimeStamp() - pickingTime
+        if a > 100 then
+            tarX = -80
+            tarY = 120
+            tolerance = 4
+            Call Move() //
+            pickingTime = GetTimeStamp()
+        End If
     else
         a = GetTimeStamp() - AuraTime
-        if a > 58 Then //前往领域点
+        if a > 55 Then //前往领域点
             //前往领域点
             tarX      = -36
             tarY      = 120
             tolerance = 6
-            Call Move()
+            Call Navigate()
             DelayRandom 123,130
             KeyDown A
             DelayRandom 130,132
@@ -569,38 +638,31 @@ while 1 > 0
             DelayRandom 405,413
             AuraTime = GetTimeStamp()
         else
-            if GetTimeStamp() % 120 < 90 then //大部分时间去右边
-                tarX		= -25
-            else //小部分时间去左边
-                tarX		= -65
-            End If
             if cycleCount == 1 then //前往楼上
                 tarX		= -11
                 tarY		= 106
-                tolerance	= 4
-                Call Move()
+                tolerance	= 6
+                Call Navigate()
             else if cycleCount == 2 then //前往楼上
                 tarX		= 12
                 tarY		= 106
-                tolerance	= 4
-                Call Move()
-            else if cycleCount == 3 then //前往楼上
+                tolerance	= 6
+                Call Navigate()
+            else if cycleCount == 3  then //前往楼上
                 tarX		= 12
                 tarY		= 91
-                tolerance	= 4
-                Call Move()
+                tolerance	= 6
+                Call Navigate()
             else
                 tarX		= 12
                 tarY		= 106
-                tolerance	= 4
-                Call Move()
+                tolerance	= 6
+                Call Navigate()
             End If
             cycleCount = cycleCount + 1
             if cycleCount > 3 then
                 cycleCount = 0
             End If
-            //放末日烈焰的间隔问题
-
         End If
 
         DelayRandom 100,103
