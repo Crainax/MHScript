@@ -15,7 +15,7 @@ Dim cY,             consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是
 Dim tolLoc,         a,                currentState    //冷却和状态相关
 Dim stoneSteleTime, pickingTime,      boboTime        //冷却
 Dim staticCount,    staticX,          staticY         //防卡计数器
-Dim SavedX,         SavedY                            //保存一下临时处理的XY
+Dim SavedX,         SavedY,           SavedTor        //保存一下临时处理的XY
 Dim RuneCooldown                                      //找轮间隔
 
 Sub on_timer1 //熊屁计时器
@@ -264,41 +264,6 @@ Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题) v2.1同步跟进下跳和传送门改动
     Wend
 End Sub
 
-Sub on_timer4 //查地图轮,每3秒一次
-
-    a = GetTimeStamp() - RuneCooldown
-    if a > 600 then //可以放轮了
-        FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 then
-            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-            intX = intX - logoX
-            intY = intY - logoY - 1 //图标的对准问题
-            SavedX     = tarX  //(导航前先记录一下老坐标,然后再恢复,复用SavedX)
-            SavedY     = tarY
-            tarX       = intX
-            tarY       = intY
-            tolerance  = 2
-            yTolerance = 3
-            KeyAllup //防错误
-            Call Move_Bear()
-            tarX = SavedX
-            tarY = SavedY
-            //暂停脚本
-            Beep 1000,200
-            DelayRandom 100,120
-            Beep 1000,200
-            DelayRandom 100,120
-            Beep 1000,200
-            DelayRandom 100,120
-            Beep 1000,200
-            Pause
-            RuneCooldown = GetTimeStamp()
-        else
-        End If
-        Timer 4,1,5000 //无限循环
-    End If
-EndSub
-
 Sub Judge //判断人物是否在某个地点旁边,用tarXY,tolerance,tolLoc返回结果,不能嵌套move()使用,可以先使用这个再用move
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -312,49 +277,242 @@ Sub Judge //判断人物是否在某个地点旁边,用tarXY,tolerance,tolLoc返回结果,不能嵌套
     End If
 End Sub
 
-Sub SetFountain //寻找喷泉并放喷泉(要求状态是0)
+Sub Navigate //引導路線
+    call GetXY()
+    if tarX <= -20 then
+        if tarY < 122 and intY == 122 //人在最下,目的在上,直接跳河
+            SavedX		= tarX
+            SavedY		= tarY
+            SavedTor	= tolerance
+            DelayRandom 73,80
+            KeyDown Down
+            DelayRandom 119,121
+            KeyDown Space
+            DelayRandom 120,122
+            KeyUp Space
+            DelayRandom 38,39
+            KeyUp Down
+            DelayRandom 877,886
+            tarX      = SavedX
+            tarY      = SavedY
+            tolerance = SavedTor
+        else if intX >= 38 then //人在最右前往左
+            SavedX		= tarX
+            SavedY		= tarY
+            SavedTor	= tolerance
+            if intY >= 108 then //跳2层河
+                DelayRandom 73,80
+                KeyDown Down
+                DelayRandom 137,139
+                KeyDown Space
+                DelayRandom 904,914
+                KeyUp Space
+                DelayRandom 27,28
+                KeyUp Down
+                DelayRandom 683,690
+            else if intY < 108 then//去右上传送门
+                if intY == 82 and intX >= (51-4) and intX <=(51+4)  then //特殊点:熊屁1
+                    KeyDown Right
+                    DelayRandom 153,155
+                    KeyDown Space
+                    DelayRandom 71,72
+                    KeyUp Space
+                    DelayRandom 70,71
+                    KeyDown Space
+                    DelayRandom 86,87
+                    KeyUp Space
+                    DelayRandom 343,347
+                    KeyUp Right
+                    DelayRandom 317,321
+                End If
+                tarX      = 74
+                tarY      = 82
+                tolerance = 0
+                alterX    = -58 //传送位置
+                alterY    = 94
+                Call Move_Bear()
+            End If
+            tarX      = SavedX
+            tarY      = SavedY
+            tolerance = SavedTor
+        End If
+    Else if tarX >= 38 and intX <= -16 then //人在最右前往左
+        SavedX		= tarX
+        SavedY		= tarY
+        SavedTor	= tolerance
+        if intY == 94 and intX >= (-46-8) and intX <=(-46+8) then //喷泉处
+            if cycle1 == 0 then //从左边过去
+                tarX      = -58
+                tarY      = 94
+                tolerance = 0
+                alterX    = 74 //传送位置
+                alterY    = 82
+                Call Move_Bear()
+            else //从下面过去(捡钱)
+                tarX      = intX
+                tarY      = 122
+                tolerance = 4
+                Call Move_Bear() //先下去再右走,不然怕绳子
+                tarX      = -33
+                tarY      = 122
+                tolerance = 0
+                alterX    = 74 //传送位置
+                alterY    = 82
+                Call Move_Bear()
+            End If
 
-    Call GetXY()
-    if intY == 82 and intX >= (51-4) and intX <=(51+4)  then //在熊屁1处到喷泉
-        KeyDown Right
-        DelayRandom 153,155
-        KeyDown Space
-        DelayRandom 71,72
-        KeyUp Space
-        DelayRandom 70,71
-        KeyDown Space
-        DelayRandom 86,87
-        KeyUp Space
-        DelayRandom 343,347
-        KeyUp Right
-        DelayRandom 317,321
-        tarX      = 74
-        tarY      = 82
-        tolerance = 0
-        alterX    = -58 //传送位置
-        alterY    = 94
-        Call Move_Bear()
-    else if intY == 122 //在最下面一层直接跳河
-        KeyDown Down
-        DelayRandom 62,63
-        KeyDown Space
-        DelayRandom 95,96
-        KeyUp Space
-        DelayRandom 45,46
-        KeyUp Down
-        DelayRandom 854,863
-    else if intX >= 35 then //右边的就走传送门
-        tarX      = 74
-        tarY      = 82
-        tolerance = 0
-        alterX    = -58 //传送位置
-        alterY    = 94
-        Call Move_Bear()
+            cycle1 = cycle1 + 1
+            if cycle1 > 1 then
+                cycle1 = 0
+            End If
+
+        else if intY >= 108 then //左下传送门
+            tarX      = -33
+            tarY      = 122
+            tolerance = 0
+            alterX    = 74 //传送位置
+            alterY    = 82
+            Call Move_Bear()
+        else //右上传送门
+            tarX      = -58
+            tarY      = 94
+            tolerance = 0
+            alterX    = 74 //传送位置
+            alterY    = 82
+            Call Move_Bear()
+        End If
+
+        if intY == 82 then //幽暗过去
+            if intX >= 64 and intX < 77 then //反墙跳
+                DelayRandom 28,29
+                KeyDown Right
+                DelayRandom 95,96
+                KeyDown Space
+                DelayRandom 63,64
+                KeyUp Right
+                DelayRandom 27,28
+                KeyDown Left
+                DelayRandom 21,22
+                KeyUp Space
+                DelayRandom 245,248
+                KeyDown Space
+                DelayRandom 111,113
+                KeyUp Space
+                DelayRandom 70,71
+                KeyUp Left
+                DelayRandom 480,485
+                KeyDown G
+                DelayRandom 102,104
+                KeyUp G
+                DelayRandom 1063,1074
+            else if intX >= 77 and intX < 90 then //正跳
+                DelayRandom 28,29
+                KeyDown Left
+                DelayRandom 102,104
+                KeyDown Space
+                DelayRandom 53,54
+                KeyUp Space
+                DelayRandom 63,64
+                KeyDown Space
+                DelayRandom 12,13
+                KeyUp Left
+                DelayRandom 70,71
+                KeyUp Space
+                DelayRandom 389,393
+                KeyDown G
+                DelayRandom 96,97
+                KeyUp G
+                DelayRandom 1004,1015
+            End If
+        End If
+
+        tarX      = SavedX
+        tarY      = SavedY
+        tolerance = SavedTor
+    else if intY == 82 and tarX == 51 then //幽暗过去
+        if intX >= 64 and intX < 77 then //反墙跳
+            DelayRandom 28,29
+            KeyDown Right
+            DelayRandom 95,96
+            KeyDown Space
+            DelayRandom 63,64
+            KeyUp Right
+            DelayRandom 27,28
+            KeyDown Left
+            DelayRandom 21,22
+            KeyUp Space
+            DelayRandom 245,248
+            KeyDown Space
+            DelayRandom 111,113
+            KeyUp Space
+            DelayRandom 70,71
+            KeyUp Left
+            DelayRandom 480,485
+            KeyDown G
+            DelayRandom 102,104
+            KeyUp G
+            DelayRandom 1063,1074
+        else if intX >= 77 and intX < 90 then //正跳
+            DelayRandom 28,29
+            KeyDown Left
+            DelayRandom 102,104
+            KeyDown Space
+            DelayRandom 53,54
+            KeyUp Space
+            DelayRandom 63,64
+            KeyDown Space
+            DelayRandom 12,13
+            KeyUp Left
+            DelayRandom 70,71
+            KeyUp Space
+            DelayRandom 389,393
+            KeyDown G
+            DelayRandom 96,97
+            KeyUp G
+            DelayRandom 1004,1015
+        End If
     End If
+    Call Move_Bear()
+End Sub
+
+Sub on_timer4 //查地图轮,每3秒一次 ver2.0不需要存储了
+    a = GetTimeStamp() - RuneCooldown
+    if a > 600 then //可以放轮了
+        FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then
+            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+            intX = intX - logoX
+            intY = intY - logoY - 1 //图标的对准问题
+            tarX       = intX
+            tarY       = intY
+            tolerance  = 2
+            yTolerance = 3
+            KeyAllup //防错误
+            Call Navigate() //解轮也走捷径
+            //暂停脚本
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            Pause
+            call GetXY()
+            tarX = intX
+            tarY = intY
+            RuneCooldown = GetTimeStamp()
+        else
+        End If
+        Timer 4,1,5000 //无限循环
+    End If
+EndSub
+
+Sub SetFountain //寻找喷泉并放喷泉(要求状态是0)
     tarX = -46
     tarY = 94
     tolerance = 4
-    Call Move_Bear()
+    Call Navigate()
     DelayRandom 56,58
     KeyDown Right
     DelayRandom 62,68
@@ -493,113 +651,30 @@ while 1 > 0
         if intX >= 0 then //可以喷泉了
             call SetFountain() //找喷泉,找到就扔
         End If
-        currentState = 1 //无论找没找到喷泉下一步都是去左下角
+        currentState = 1 //无论找没找到喷泉下一步都是去屁1
     End If
 
-    tarX      = -46
-    tarY      = 94
-    tolerance = 8
-    Call Judge() //判断位置是否在喷泉
-    if tolLoc > 0 Then //现在人在喷泉地
-        //通过传送门回去(-58,94)
-        if cycle1 == 0 then //从左边过去
-            call GetXY()
-            if intY == 94 and intX >= (-46-4) and intX <=(-46+4)  then //反墙跳
-                DelayRandom 28,29
-                KeyDown Right
-                DelayRandom 136,138
-                KeyDown Space
-                DelayRandom 103,105
-                KeyUp Space
-                DelayRandom 28,29
-                KeyUp Right
-                DelayRandom 64,65
-                KeyDown Left
-                DelayRandom 103,105
-                KeyDown Space
-                DelayRandom 86,87
-                KeyUp Space
-                DelayRandom 409,414
-                KeyUp Left
-                DelayRandom 234,237
-            End If
-            tarX      = -58
-            tarY      = 94
-            tolerance = 0
-            alterX    = 74 //传送位置
-            alterY    = 82
-            Call Move_Bear()
-        else //从下面过去(捡钱)
-            tarY      = 122
-            tolerance = 4
-            Call Move_Bear() //先下去再右走,不然怕绳子
-            tarX      = -33
-            tarY      = 122
-            tolerance = 0
-            alterX    = 74 //传送位置
-            alterY    = 82
-            Call Move_Bear()
-        End If
-
-        cycle1 = cycle1 + 1
-        if cycle1 > 1 then
-            cycle1 = 0
-        End If
-    else if currentState == 1 Then //不在噴泉,直接去熊屁1
+   if currentState == 1 Then //不在噴泉,直接去熊屁1
         tarX      = 51
         tarY      = 82
         tolerance = 2
-        Call Move_Bear()
+        Call Navigate()
+        Call Fart() //幽暗+熊屁
+        DelayRandom 98,107
         currentState = 2
     End If
 
-    if currentState == 2 Then //前往熊屁1
-        call GetXY()
-        if intY == 82 and intX >= (74-5) and intX <=(74+5)  then //反墙跳
-            DelayRandom 28,29
-            KeyDown Right
-            DelayRandom 136,138
-            KeyDown Space
-            DelayRandom 103,105
-            KeyUp Space
-            DelayRandom 28,29
-            KeyUp Right
-            DelayRandom 64,65
-            KeyDown Left
-            DelayRandom 103,105
-            KeyDown Space
-            DelayRandom 86,87
-            KeyUp Space
-            DelayRandom 409,414
-            KeyUp Left
-            DelayRandom 234,237
-        End If
-        tarX      = 51
-        tarY      = 82
-        tolerance = 2
-        Call Move_Bear()
-        // DarkNess = -1
-        Call Fart() //幽暗+熊屁
-        // DarkNess = 0
+    if currentState == 2 Then //前往熊屁2
+        tarX       = 51
+        tarY       = 108
+        tolerance  = 2 //傻逼坑了我好几次
+        Call Navigate()
+        Call Fart()
         DelayRandom 98,107
         currentState = 3
     End If
 
-    if currentState == 3 Then //前往熊屁2
-        tarX       = 51
-        tarY       = 108
-        tolerance  = 2 //傻逼坑了我好几次
-        Call Move_Bear()
-        Call Fart()
-        DelayRandom 98,107
-        currentState = 4
-    End If
-
-    tarX       = 51
-    tarY       = 108
-    tolerance  = 4
-    Call Judge()
-    if tolLoc > 0 or currentState == 4 Then //现在人在熊屁2
+    if currentState == 3 then
         a = GetTimeStamp() - boboTime
         if a > 55 then //到了小波波时间了,直接过去
             if tolLoc > 0 then //现在位于熊屁2处
@@ -626,7 +701,7 @@ while 1 > 0
             tarX       = -17
             tarY       = 122
             tolerance  = 4
-            Call Move_Bear()
+            Call Navigate()
 
             DelayRandom 123,135
             KeyDown E
@@ -642,7 +717,7 @@ while 1 > 0
             alterX    = 74 //传送位置
             alterY    = 82
             Call Move_Bear()
-            currentState = 2
+            currentState = 1
         else
             a = GetTimeStamp() - pickingTime
             if a > 120 then //捡钱时间到了
@@ -664,23 +739,26 @@ while 1 > 0
                 KeyUp LAlt
                 DelayRandom 277,280
                 pickingTime = GetTimeStamp()
-            else If tolLoc > 0 then //没有小波波  向上走
-                DelayRandom 89,95
-                KeyDown LAlt
-                DelayRandom 787,795
-                KeyUp LAlt
-                DelayRandom 84,85
-                KeyDown G
-                DelayRandom 368,372
-                KeyUp G
-                DelayRandom 740,748
+            else
+                call GetXY()
+                if intY == 108 and intX >= (51-4) and intX <=(51+4) then //
+                    DelayRandom 89,95
+                    KeyDown LAlt
+                    DelayRandom 787,795
+                    KeyUp LAlt
+                    DelayRandom 84,85
+                    KeyDown G
+                    DelayRandom 368,372
+                    KeyUp G
+                    DelayRandom 740,748
+                End If
             End If
+            currentState = 0
         End If
 
-        currentState = 0
     End If
 
-    if currentState < 0 or currentState > 4 Then
+    if currentState < 0 or currentState > 3 Then
         currentState = 0 //初始化状态为0
     End If
     Delay 5

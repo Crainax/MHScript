@@ -29,7 +29,8 @@
 	"打印坐标": {
 		"prefix": "print",
 		"body": [
-            "TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance & ,传送[ & alterX & , & alterY & ]"
+            "TracePrint 当前[ & intX & , & intY & ]前往[ & tarX & , & tarY & ]
+"
 		],
 		"description": "打印一个坐标"
 	},

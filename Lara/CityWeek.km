@@ -52,7 +52,6 @@ Sub AntiJam //一般跟随GetXY后用
             Exit Sub
         End If
 
-        Beep 500,500
         KeyAllup //施放所有按键
         // 模拟从绳子跳走
         DelayRandom 13,15
