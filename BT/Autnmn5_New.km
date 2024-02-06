@@ -13,7 +13,7 @@ Dim tolerance,      yTolerance,       DarkNess        //快速移动的容差
 Dim FartOK,         Hooking,          WhisterTime     //熊屁的计时器冷却,钩子中判断
 Dim cY,             consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X或Y轴变化了
 Dim tolLoc,         a,                currentState    //冷却和状态相关
-Dim stoneSteleTime, pickingTime,      boboTime        //冷却
+Dim stoneSteleTime, fountainTime,     boboTime        //冷却
 Dim staticCount,    staticX,          staticY         //防卡计数器
 Dim SavedX,         SavedY,           SavedTor        //保存一下临时处理的XY
 Dim RuneCooldown                                      //找轮间隔
@@ -336,70 +336,11 @@ Sub Navigate //引導路線
             tarY      = SavedY
             tolerance = SavedTor
         End If
-
-        if intY == 94 and tarX == -46 and tarY == 94 and intX >= -68 and intX < -57 then //跳过去
-            KeyDown Right
-            DelayRandom 153,155
-            KeyDown Space
-            DelayRandom 71,72
-            KeyUp Space
-            DelayRandom 70,71
-            KeyDown Space
-            DelayRandom 86,87
-            KeyUp Space
-            DelayRandom 343,347
-            KeyUp Right
-            DelayRandom 317,321
-        End If
-
     Else if tarX >= 38 and intX <= -16 then //人在最右前往左
         SavedX		= tarX
         SavedY		= tarY
         SavedTor	= tolerance
-        if intY == 94 and intX >= (-46-8) and intX <=(-46+8) then //喷泉处
-            if cycle1 == 0 then //从左边过去
-                tarX      = -58
-                tarY      = 94
-                tolerance = 0
-                alterX    = 74 //传送位置
-                alterY    = 82
-                Call Move_Bear()
-            else //从下面过去(捡钱)
-                DelayRandom 23,25
-                KeyDown Down
-                DelayRandom 109,111
-                KeyDown Space
-                DelayRandom 804,813
-                KeyUp Space
-                DelayRandom 37,38
-                KeyUp Down
-                DelayRandom 54,55
-                KeyDown Right
-                DelayRandom 145,147
-                KeyDown Space
-                DelayRandom 53,54
-                KeyUp Space
-                DelayRandom 48,49
-                KeyDown Space
-                DelayRandom 76,77
-                KeyUp Space
-                DelayRandom 12,13
-                KeyUp Right
-                DelayRandom 426,431
-                tarX      = -33
-                tarY      = 122
-                tolerance = 0
-                alterX    = 74 //传送位置
-                alterY    = 82
-                Call Move_Bear()
-            End If
-
-            cycle1 = cycle1 + 1
-            if cycle1 > 1 then
-                cycle1 = 0
-            End If
-
-        else if intY >= 108 then //左下传送门
+        if intY >= 108 then //左下传送门
             tarX      = -33
             tarY      = 122
             tolerance = 0
@@ -414,51 +355,6 @@ Sub Navigate //引導路線
             alterY    = 82
             Call Move_Bear()
         End If
-
-        if intY == 82 then //幽暗过去
-            if intX >= 64 and intX < 74 then //反墙跳
-                DelayRandom 28,29
-                KeyDown Right
-                DelayRandom 95,96
-                KeyDown Space
-                DelayRandom 63,64
-                KeyUp Right
-                DelayRandom 27,28
-                KeyDown Left
-                DelayRandom 21,22
-                KeyUp Space
-                DelayRandom 245,248
-                KeyDown Space
-                DelayRandom 111,113
-                KeyUp Space
-                DelayRandom 70,71
-                KeyUp Left
-                DelayRandom 480,485
-                KeyDown G
-                DelayRandom 102,104
-                KeyUp G
-                DelayRandom 1063,1074
-            else if intX >= 74 and intX < 90 then //正跳
-                DelayRandom 28,29
-                KeyDown Left
-                DelayRandom 102,104
-                KeyDown Space
-                DelayRandom 53,54
-                KeyUp Space
-                DelayRandom 63,64
-                KeyDown Space
-                DelayRandom 12,13
-                KeyUp Left
-                DelayRandom 70,71
-                KeyUp Space
-                DelayRandom 389,393
-                KeyDown G
-                DelayRandom 96,97
-                KeyUp G
-                DelayRandom 1004,1015
-            End If
-        End If
-
         tarX      = SavedX
         tarY      = SavedY
         tolerance = SavedTor
@@ -554,6 +450,7 @@ Sub SetFountain //寻找喷泉并放喷泉(要求状态是0)
     KeyDown 1
     DelayRandom 194,196
     KeyUp 1
+    fountainTime = GetTimeStamp()
     DelayRandom 712,721
 End Sub
 
@@ -656,17 +553,17 @@ else //竖放屏幕
     xEnd = 1440
     yEnd = 2560
 End If
-stoneSteleTime = 0                    //上次轮回的时间
-pickingTime    = GetTimeStamp()       //上次捡钱的时间
-boboTime       = GetTimeStamp() - 40  //上次放小波波的时间
-RuneCooldown   = 0                    //解轮CD
-WhisterTime    = 0                    //上次放哨子的時間,防止傻逼超越轮
-currentState   = -1                   //初始状态不要去放喷泉
-FartOK         = 0                    //熊屁当前可放
-DarkNess       = 0                    //默认幽暗是关
-cycle1         = 0                    //
-yTolerance     = 0                    //初始化容忍
-Timer          4, 1, 3100             //无限循环解符文
+stoneSteleTime = 0               //上次轮回的时间
+boboTime       = 0               //上次放小波波的时间
+RuneCooldown   = 0               //解轮CD
+WhisterTime    = 0               //上次放哨子的時間,防止傻逼超越轮
+fountainTime   = 0               //上次喷泉时间
+currentState   = -1              //初始状态不要去放喷泉
+FartOK         = 0               //熊屁当前可放
+DarkNess       = 0               //默认幽暗是关
+cycle1         = 0               //
+yTolerance     = 0               //初始化容忍
+Timer          4, 1, 3100        //无限循环解符文
 while 1 > 0
 
     a = GetTimeStamp() - stoneSteleTime
@@ -679,124 +576,93 @@ while 1 > 0
         stoneSteleTime = GetTimeStamp()
     End If
 
-    if currentState == 0 Then //第一部就是喷泉啦,没的话就直接
+    if currentState == 0 Then //喷泉->屁3的路线
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
         if intX >= 0 then //可以喷泉了
             call SetFountain() //找喷泉,找到就扔
         End If
-        currentState = 1 //无论找没找到喷泉下一步都是去屁1
+        currentState = 1 //喷泉->屁3
     End If
 
-   if currentState == 1 Then //不在噴泉,直接去熊屁1
+    if currentState == 6 Then //喷泉->左传路线
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //可以喷泉了
+            call SetFountain() //找喷泉,找到就扔
+        End If
+        currentState = 2 //喷泉->屁3
+    End If
+
+   if currentState == 1 Then //前往屁3
         tarX      = 51
         tarY      = 82
         tolerance = 2
         Call Navigate()
         Call Fart() //幽暗+熊屁
         DelayRandom 98,107
-        currentState = 2
-    End If
-
-    if currentState == 2 Then //前往熊屁2
-        call GetXY()
-        if intY == 82 and intX >= (51-3) and intX <=(51+3) then //
-            DelayRandom 23,24
-            KeyDown Down
-            DelayRandom 113,115
-            KeyDown Space
-            DelayRandom 757,765
-            KeyUp Space
-            DelayRandom 13,14
-            KeyUp Down
-            DelayRandom 673,680
-        else
-            tarX       = 51
-            tarY       = 108
-            tolerance  = 2 //傻逼坑了我好几次
-            Call Navigate()
-        End if
-        Call Fart()
-        DelayRandom 98,107
-        currentState = 3
-    End If
-
-    if currentState == 3 then
-        a = GetTimeStamp() - boboTime
-        if a > 55 then //到了小波波时间了,直接过去
-            if tolLoc > 0 then //现在位于熊屁2处
-                KeyDown Left //方案1:左跳过去
-                DelayRandom 144,146
-                KeyDown Space
-                DelayRandom 79,80
-                KeyUp Space
-                DelayRandom 103,105
-                KeyDown Space
-                DelayRandom 95,96
-                KeyUp Space
-                DelayRandom 573,579
-                KeyDown Space
-                DelayRandom 86,87
-                KeyUp Space
-                DelayRandom 156,158
-                KeyDown Space
-                DelayRandom 91,92
-                KeyUp Space
-                DelayRandom 1309,1323
-                KeyUp Left
-            End If
-            tarX       = -17
-            tarY       = 122
-            tolerance  = 4
-            Call Navigate()
-
-            DelayRandom 123,135
-            KeyDown E
-            DelayRandom 152,160
-            KeyUp E
-            DelayRandom 701,720
-            boboTime = GetTimeStamp()
-            currentState = 1
-        else
-            a = GetTimeStamp() - pickingTime
-            if a > 120 then //捡钱时间到了
-                DelayRandom 32,35
-                KeyDown Right
-                DelayRandom 78,79
-                KeyDown Space
-                DelayRandom 70,71
-                KeyUp Space
-                DelayRandom 70,71
-                KeyDown Space
-                DelayRandom 103,105
-                KeyUp Space
-                DelayRandom 260,263
-                KeyUp Right
-                DelayRandom 261,264
-                KeyDown LAlt
-                DelayRandom 1307,1321
-                KeyUp LAlt
-                DelayRandom 277,280
-                pickingTime = GetTimeStamp()
-            else
-                call GetXY()
-                if intY == 108 and intX >= (51-4) and intX <=(51+4) then //
-                    DelayRandom 89,95
-                    KeyDown LAlt
-                    DelayRandom 787,795
-                    KeyUp LAlt
-                    DelayRandom 84,85
-                    KeyDown G
-                    DelayRandom 368,372
-                    KeyUp G
-                    DelayRandom 740,748
-                End If
-            End If
-            currentState = 0
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        a = GetTimeStamp() - fountainTime
+        if intX >= 0 or a >= 47 then //另一个形态的喷泉(好了就去传送点的那个)
+            currentState = 6
+        else //回到传送点
+            currentState = 2
         End If
-
     End If
 
-    if currentState < 0 or currentState > 3 Then
+    if currentState == 2 Then //前往左传送点,然后判断去小波波处还是
+        tarX      = 51
+        tarY      = 82
+        tolerance = 2
+        Call Navigate()
+        a = GetTimeStamp() - boboTime
+        if a > 55 and GetTimeStamp() - fountainTime > 10 then //放完喷泉10秒后再冲小波波
+            currentState = 3
+        else
+            currentState = 4 //去屁1
+        End If
+    End If
+
+    if currentState == 3 then?//小波波
+        tarX       = -17
+        tarY       = 122
+        tolerance  = 4
+        Call Navigate()
+
+        DelayRandom 123,135
+        KeyDown E
+        DelayRandom 152,160
+        KeyUp E
+        DelayRandom 701,720
+        boboTime = GetTimeStamp()
+        currentState = 4 //然后去屁1
+    End If
+
+    if currentState == 4 then?//屁1
+        tarX      = 51
+        tarY      = 82
+        tolerance = 2
+        Call Navigate()
+        Call Fart() //幽暗+熊屁
+        DelayRandom 98,107
+        currentState = 5 //去屁2
+    End If
+
+    if currentState == 5 then?//屁2
+        tarX      = 51
+        tarY      = 82
+        tolerance = 2
+        Call Navigate()
+        Call Fart() //幽暗+熊屁
+        DelayRandom 98,107
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        a = GetTimeStamp() - fountainTime
+        if intX >= 0 or a >= 47 then //喷泉
+            currentState = 0
+        Else
+            currentState = 1 //去屁3
+        End If
+    End If
+
+    if currentState < 0 or currentState > 6 Then
         currentState = 0 //初始化状态为0
     End If
     Delay 5
