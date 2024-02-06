@@ -336,6 +336,22 @@ Sub Navigate //引導路線
             tarY      = SavedY
             tolerance = SavedTor
         End If
+
+        if intY == 94 and tarX == -46 and tarY == 94 and intX >= -68 and intX < -57 then //跳过去
+            KeyDown Right
+            DelayRandom 153,155
+            KeyDown Space
+            DelayRandom 71,72
+            KeyUp Space
+            DelayRandom 70,71
+            KeyDown Space
+            DelayRandom 86,87
+            KeyUp Space
+            DelayRandom 343,347
+            KeyUp Right
+            DelayRandom 317,321
+        End If
+
     Else if tarX >= 38 and intX <= -16 then //人在最右前往左
         SavedX		= tarX
         SavedY		= tarY
@@ -349,10 +365,27 @@ Sub Navigate //引導路線
                 alterY    = 82
                 Call Move_Bear()
             else //从下面过去(捡钱)
-                tarX      = intX
-                tarY      = 122
-                tolerance = 4
-                Call Move_Bear() //先下去再右走,不然怕绳子
+                DelayRandom 23,25
+                KeyDown Down
+                DelayRandom 109,111
+                KeyDown Space
+                DelayRandom 804,813
+                KeyUp Space
+                DelayRandom 37,38
+                KeyUp Down
+                DelayRandom 54,55
+                KeyDown Right
+                DelayRandom 145,147
+                KeyDown Space
+                DelayRandom 53,54
+                KeyUp Space
+                DelayRandom 48,49
+                KeyDown Space
+                DelayRandom 76,77
+                KeyUp Space
+                DelayRandom 12,13
+                KeyUp Right
+                DelayRandom 426,431
                 tarX      = -33
                 tarY      = 122
                 tolerance = 0
@@ -385,22 +418,26 @@ Sub Navigate //引導路線
         if intY == 82 then //幽暗过去
             if intX >= 64 and intX < 74 then //反墙跳
                 DelayRandom 28,29
+                KeyDown Right
+                DelayRandom 95,96
+                KeyDown Space
+                DelayRandom 63,64
+                KeyUp Right
+                DelayRandom 27,28
                 KeyDown Left
-                DelayRandom 87,88
-                KeyDown Space
-                DelayRandom 62,63
+                DelayRandom 21,22
                 KeyUp Space
-                DelayRandom 548,554
+                DelayRandom 245,248
                 KeyDown Space
-                DelayRandom 62,63
+                DelayRandom 111,113
                 KeyUp Space
-                DelayRandom 120,122
+                DelayRandom 70,71
                 KeyUp Left
-                DelayRandom 10,11
+                DelayRandom 480,485
                 KeyDown G
-                DelayRandom 127,129
+                DelayRandom 102,104
                 KeyUp G
-                DelayRandom 1005,1016
+                DelayRandom 1063,1074
             else if intX >= 74 and intX < 90 then //正跳
                 DelayRandom 28,29
                 KeyDown Left
@@ -428,22 +465,26 @@ Sub Navigate //引導路線
     else if intY == 82 and tarX == 51 then //幽暗过去
         if intX >= 64 and intX < 74 then //反墙跳
             DelayRandom 28,29
+            KeyDown Right
+            DelayRandom 95,96
+            KeyDown Space
+            DelayRandom 63,64
+            KeyUp Right
+            DelayRandom 27,28
             KeyDown Left
-            DelayRandom 87,88
-            KeyDown Space
-            DelayRandom 62,63
+            DelayRandom 21,22
             KeyUp Space
-            DelayRandom 548,554
+            DelayRandom 245,248
             KeyDown Space
-            DelayRandom 62,63
+            DelayRandom 111,113
             KeyUp Space
-            DelayRandom 120,122
+            DelayRandom 70,71
             KeyUp Left
-            DelayRandom 10,11
+            DelayRandom 480,485
             KeyDown G
-            DelayRandom 127,129
+            DelayRandom 102,104
             KeyUp G
-            DelayRandom 1005,1016
+            DelayRandom 1063,1074
         else if intX >= 74 and intX < 90 then //正跳
             DelayRandom 28,29
             KeyDown Left
