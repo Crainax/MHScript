@@ -70,7 +70,7 @@ Sub AntiJam //一般跟随GetXY后用
     End If
 End Sub
 
-Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题) v2.1同步跟进下跳和传送门改动
+Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题) v2.2下跳修正与左右移容差校正
     consecutiveTimes = -1  //初始就启用指南针判断
     consecutiveMax   = 4   //降落默认值为4
     while  1 > 0
@@ -95,10 +95,10 @@ Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题) v2.1同步跟进下跳和传送门改动
             End If
         else //继续根据
             Call AntiJam() //防卡
-            if tolerance > 4 Then
+            if tolerance > 2 Then
                 tolLoc = tolerance
-            else  //速走的默认为4
-                tolLoc = 4
+            else  //速走的默认为2
+                tolLoc = 2
             End If
             if intX < (tarX-24) Then //向右二段跳
                 consecutiveTimes = 0 //启动降落判断
@@ -383,29 +383,25 @@ Sub Navigate //引導路線
         End If
 
         if intY == 82 then //幽暗过去
-            if intX >= 64 and intX < 77 then //反墙跳
+            if intX >= 64 and intX < 74 then //反墙跳
                 DelayRandom 28,29
-                KeyDown Right
-                DelayRandom 95,96
-                KeyDown Space
-                DelayRandom 63,64
-                KeyUp Right
-                DelayRandom 27,28
                 KeyDown Left
-                DelayRandom 21,22
-                KeyUp Space
-                DelayRandom 245,248
+                DelayRandom 87,88
                 KeyDown Space
-                DelayRandom 111,113
+                DelayRandom 62,63
                 KeyUp Space
-                DelayRandom 70,71
+                DelayRandom 548,554
+                KeyDown Space
+                DelayRandom 62,63
+                KeyUp Space
+                DelayRandom 120,122
                 KeyUp Left
-                DelayRandom 480,485
+                DelayRandom 10,11
                 KeyDown G
-                DelayRandom 102,104
+                DelayRandom 127,129
                 KeyUp G
-                DelayRandom 1063,1074
-            else if intX >= 77 and intX < 90 then //正跳
+                DelayRandom 1005,1016
+            else if intX >= 74 and intX < 90 then //正跳
                 DelayRandom 28,29
                 KeyDown Left
                 DelayRandom 102,104
@@ -430,29 +426,25 @@ Sub Navigate //引導路線
         tarY      = SavedY
         tolerance = SavedTor
     else if intY == 82 and tarX == 51 then //幽暗过去
-        if intX >= 64 and intX < 77 then //反墙跳
+        if intX >= 64 and intX < 74 then //反墙跳
             DelayRandom 28,29
-            KeyDown Right
-            DelayRandom 95,96
-            KeyDown Space
-            DelayRandom 63,64
-            KeyUp Right
-            DelayRandom 27,28
             KeyDown Left
-            DelayRandom 21,22
-            KeyUp Space
-            DelayRandom 245,248
+            DelayRandom 87,88
             KeyDown Space
-            DelayRandom 111,113
+            DelayRandom 62,63
             KeyUp Space
-            DelayRandom 70,71
+            DelayRandom 548,554
+            KeyDown Space
+            DelayRandom 62,63
+            KeyUp Space
+            DelayRandom 120,122
             KeyUp Left
-            DelayRandom 480,485
+            DelayRandom 10,11
             KeyDown G
-            DelayRandom 102,104
+            DelayRandom 127,129
             KeyUp G
-            DelayRandom 1063,1074
-        else if intX >= 77 and intX < 90 then //正跳
+            DelayRandom 1005,1016
+        else if intX >= 74 and intX < 90 then //正跳
             DelayRandom 28,29
             KeyDown Left
             DelayRandom 102,104
@@ -665,10 +657,23 @@ while 1 > 0
     End If
 
     if currentState == 2 Then //前往熊屁2
-        tarX       = 51
-        tarY       = 108
-        tolerance  = 2 //傻逼坑了我好几次
-        Call Navigate()
+        call GetXY()
+        if intY == 82 and intX >= (51-3) and intX <=(51+3) then //
+            DelayRandom 23,24
+            KeyDown Down
+            DelayRandom 113,115
+            KeyDown Space
+            DelayRandom 757,765
+            KeyUp Space
+            DelayRandom 13,14
+            KeyUp Down
+            DelayRandom 673,680
+        else
+            tarX       = 51
+            tarY       = 108
+            tolerance  = 2 //傻逼坑了我好几次
+            Call Navigate()
+        End if
         Call Fart()
         DelayRandom 98,107
         currentState = 3
@@ -709,14 +714,6 @@ while 1 > 0
             KeyUp E
             DelayRandom 701,720
             boboTime = GetTimeStamp()
-
-            //放完小波波直接左边传送门回熊屁
-            tarX      = -33
-            tarY      = 122
-            tolerance = 0
-            alterX    = 74 //传送位置
-            alterY    = 82
-            Call Move_Bear()
             currentState = 1
         else
             a = GetTimeStamp() - pickingTime

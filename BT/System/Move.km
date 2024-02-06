@@ -372,7 +372,7 @@ Sub Move_Bild //鸟形态的地面移动
     Wend
 End Sub
 
-Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题) v2.1同步跟进下跳和传送门改动
+Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题) v2.2下跳修正与左右移容差校正
     consecutiveTimes = -1  //初始就启用指南针判断
     consecutiveMax   = 4   //降落默认值为4
     while  1 > 0
@@ -401,10 +401,10 @@ Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题) v2.1同步跟进下跳和传送门改动
             End If
         else //继续根据
             Call AntiJam() //防卡
-            if tolerance > 4 Then
+            if tolerance > 2 Then
                 tolLoc = tolerance
-            else  //速走的默认为4
-                tolLoc = 4
+            else  //速走的默认为2
+                tolLoc = 2
             End If
             if intX < (tarX-24) Then //向右二段跳
                 consecutiveTimes = 0 //启动降落判断
