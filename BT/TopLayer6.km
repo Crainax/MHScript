@@ -279,82 +279,51 @@ End Sub
 
 Sub Navigate //引導路線
     call GetXY()
-    if tarX <= -20 then
-        if tarY < 122 and intY == 122 //人在最下,目的在上,直接跳河
-            SavedX		= tarX
-            SavedY		= tarY
-            SavedTor	= tolerance
-            DelayRandom 73,80
-            KeyDown Down
-            DelayRandom 119,121
-            KeyDown Space
-            DelayRandom 120,122
-            KeyUp Space
-            DelayRandom 38,39
-            KeyUp Down
-            DelayRandom 877,886
-            tarX      = SavedX
-            tarY      = SavedY
-            tolerance = SavedTor
-        else if intX >= 38 then //人在最右前往左
-            SavedX		= tarX
-            SavedY		= tarY
-            SavedTor	= tolerance
-            if intY >= 108 then //跳2层河
-                DelayRandom 73,80
-                KeyDown Down
-                DelayRandom 137,139
-                KeyDown Space
-                DelayRandom 904,914
-                KeyUp Space
-                DelayRandom 27,28
-                KeyUp Down
-                DelayRandom 683,690
-            else if intY < 108 then//去右上传送门
-                if intY == 82 and intX >= (51-4) and intX <=(51+4)  then //特殊点:熊屁1
-                    KeyDown Right
-                    DelayRandom 153,155
-                    KeyDown Space
-                    DelayRandom 71,72
-                    KeyUp Space
-                    DelayRandom 70,71
-                    KeyDown Space
-                    DelayRandom 86,87
-                    KeyUp Space
-                    DelayRandom 343,347
-                    KeyUp Right
-                    DelayRandom 317,321
-                End If
-                tarX      = 74
-                tarY      = 82
-                tolerance = 0
-                alterX    = -58 //传送位置
-                alterY    = 94
-                Call Move_Bear()
-            End If
-            tarX      = SavedX
-            tarY      = SavedY
-            tolerance = SavedTor
-        End If
-    Else if tarX >= 38 and intX <= -16 then //人在最右前往左
+    if intX <= -38 and tarX >= -38 then //目的在右,人在左
         SavedX		= tarX
         SavedY		= tarY
         SavedTor	= tolerance
-        if intY >= 108 then //左下传送门
-            tarX      = -33
-            tarY      = 122
+
+        tarX      = -85
+        tarY      = 117
+        tolerance = 0
+        alterX    = 1 //传送位置
+        alterY    = 67
+        Call Move_Bear()
+
+        if tarY < 91 then //人在右上,目标在右下,再传一次(右下位置)
+            tarX      = 1
+            tarY      = 67
             tolerance = 0
-            alterX    = 74 //传送位置
-            alterY    = 82
-            Call Move_Bear()
-        else //右上传送门
-            tarX      = -58
-            tarY      = 94
-            tolerance = 0
-            alterX    = 74 //传送位置
-            alterY    = 82
+            alterX    = 1 //传送位置
+            alterY    = 115
             Call Move_Bear()
         End If
+
+        tarX      = SavedX
+        tarY      = SavedY
+        tolerance = SavedTor
+    else if tarX <= -38 and intX >= -38 then //目的在左边
+        SavedX		= tarX
+        SavedY		= tarY
+        SavedTor	= tolerance
+
+        if tarY <= 74 then //上半层,
+            tarX      = 1
+            tarY      = 67
+            tolerance = 0
+            alterX    = 1 //传送位置
+            alterY    = 115
+            Call Move_Bear()
+        End If
+
+        tarX      = 1
+        tarY      = 115
+        tolerance = 0
+        alterX    = -85 //传送位置
+        alterY    = 117
+        Call Move_Bear()
+
         tarX      = SavedX
         tarY      = SavedY
         tolerance = SavedTor
@@ -395,7 +364,7 @@ Sub on_timer4 //查地图轮,每3秒一次 ver2.0不需要存储了
     End If
 EndSub
 
-Sub Fart //放熊屁,CD没好就放其他技能 Ver2.1 引入幽暗和幽暗开关
+Sub Fart //放熊屁,CD没好就放其他技能 Ver2.2 这个有武功
     while 1 > 0
 
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\Old\W2.bmp",000000,1.00,0,intX,intY	//找V2
@@ -438,22 +407,30 @@ Sub Fart //放熊屁,CD没好就放其他技能 Ver2.1 引入幽暗和幽暗开关
                         KeyUp Y
                         DelayRandom 811,813
                     else
-                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\Old\C.bmp",000000,1.00,0,intX,intY
-                        a = GetTimeStamp() - WhisterTime
-                        if intX >= 0 and a > 160 Then //找哨子
-                            KeyDown 5
+                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\4.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //找武功
+                            KeyDown 4
                             DelayRandom 105,107
-                            KeyUp 5
-                            DelayRandom 272,284
-                            KeyDown B
-                            DelayRandom 97,99
-                            KeyUp B
-                            DelayRandom 312,324
-                            KeyDown C
-                            DelayRandom 214,217
-                            KeyUp C
-                            DelayRandom 879,891
-                            WhisterTime = GetTimeStamp()
+                            KeyUp 4
+                            DelayRandom 899,909
+                        else
+                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\Old\C.bmp",000000,1.00,0,intX,intY
+                            a = GetTimeStamp() - WhisterTime
+                            if intX >= 0 and a > 160 Then //找哨子
+                                KeyDown 5
+                                DelayRandom 105,107
+                                KeyUp 5
+                                DelayRandom 272,284
+                                KeyDown B
+                                DelayRandom 97,99
+                                KeyUp B
+                                DelayRandom 312,324
+                                KeyDown C
+                                DelayRandom 214,217
+                                KeyUp C
+                                DelayRandom 879,891
+                                WhisterTime = GetTimeStamp()
+                            End If
                         End If
                     End If
                 End If
@@ -518,8 +495,8 @@ while 1 > 0
     End If
 
     if currentState == 0 Then //喷泉->屁3的路线
-        tarX      = 51
-        tarY      = 82
+        tarX      = -85
+        tarY      = 117
         tolerance = 2
         Call Navigate()
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
@@ -539,16 +516,16 @@ while 1 > 0
     End If
 
    if currentState == 1 Then //前往屁1
-        tarX      = 51
-        tarY      = 82
-        tolerance = 2
+        tarX      = 1
+        tarY      = 67
+        tolerance = 4
         Call Navigate()
         Call Fart() //幽暗+熊屁
         DelayRandom 98,107
         a = GetTimeStamp() - boboTime
         if a > 55 then
-            tarX       = -17
-            tarY       = 122
+            tarX       = -18
+            tarY       = 85
             tolerance  = 4
             Call Navigate()
 
@@ -558,14 +535,14 @@ while 1 > 0
             KeyUp E
             DelayRandom 701,720
             boboTime = GetTimeStamp()
-            currentState = 2 //然后去屁2
         End If
+        currentState = 2 //然后去屁2
     End If
 
     if currentState == 2 then //屁2
-        tarX      = 51
-        tarY      = 82
-        tolerance = 2
+        tarX      = 1
+        tarY      = 91
+        tolerance = 4
         Call Navigate()
         Call Fart() //幽暗+熊屁
         DelayRandom 98,107
@@ -573,9 +550,9 @@ while 1 > 0
     End If
 
     if currentState == 3 then //屁3
-        tarX      = 51
-        tarY      = 82
-        tolerance = 2
+        tarX      = 1
+        tarY      = 115
+        tolerance = 4
         Call Navigate()
         Call Fart() //幽暗+熊屁
         DelayRandom 98,107
