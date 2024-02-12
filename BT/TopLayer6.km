@@ -4,19 +4,19 @@ ScreenY=2560
 Times=0
 
 [Script]
-Dim x1,             x2,               y1,   y2        // 矩形区域:小地图采样点
-Dim x3,             y3,               xEnd, yEnd      // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,           tarY                              //目标
-Dim logoX,          logoY,            intX, intY      //算目的地差值
-Dim alterX,         alterY,           cycle1          //备用地点,传送门脚步开关
-Dim tolerance,      yTolerance,       DarkNess        //快速移动的容差
-Dim FartOK,         Hooking,          WhisterTime     //熊屁的计时器冷却,钩子中判断
-Dim cY,             consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X或Y轴变化了
-Dim tolLoc,         a,                currentState    //冷却和状态相关
-Dim stoneSteleTime, fountainTime,     boboTime        //冷却
-Dim staticCount,    staticX,          staticY         //防卡计数器
-Dim SavedX,         SavedY,           SavedTor        //保存一下临时处理的XY
-Dim RuneCooldown                                      //找轮间隔
+Dim x1,             x2,               y1,       y2         // 矩形区域:小地图采样点
+Dim x3,             y3,               xEnd,     yEnd       // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,           tarY                                   //目标
+Dim logoX,          logoY,            intX,     intY       //算目的地差值
+Dim alterX,         alterY,           cycle1               //备用地点,传送门脚步开关
+Dim tolerance,      yTolerance,       DarkNess             //快速移动的容差
+Dim FartOK,         Hooking,          WhisterTime          //熊屁的计时器冷却,钩子中判断
+Dim cY,             consecutiveTimes, consecutiveMax       //用这个东西判断角色是不是没有X或Y轴变化了
+Dim tolLoc,         a,                currentState         //冷却和状态相关
+Dim stoneSteleTime, fountainTime,     boboTime             //冷却
+Dim staticCount,    staticX,          staticY              //防卡计数器
+Dim SavedX,         SavedY,           SavedTor, SavedTorY  //保存一下临时处理的XY
+Dim RuneCooldown                                           //找轮间隔
 
 Sub on_timer1 //熊屁计时器
     FartOK = 1
@@ -279,10 +279,55 @@ End Sub
 
 Sub Navigate //引導路線
     call GetXY()
-    if intX <= -38 and tarX >= -38 then //目的在右,人在左
+    if intY == 67 and intX >= (1-4) and intX <=(1+4) and tarY == 85 and tarX >= -25 and tarX <= -12 then //屁1去熊
+        DelayRandom 46,52
+        KeyDown Down
+        DelayRandom 65,66
+        KeyDown Space
+        DelayRandom 176,178
+        KeyDown Left
+        DelayRandom 12,13
+        KeyUp Space
+        DelayRandom 27,28
+        KeyUp Down
+        DelayRandom 67,68
+        KeyDown Space
+        DelayRandom 67,68
+        KeyUp Space
+        DelayRandom 54,55
+        KeyDown Space
+        DelayRandom 62,63
+        KeyUp Space
+        DelayRandom 249,252
+        KeyUp Left
+        DelayRandom 358,362
+    else if intY == 85 and intX >= -25 and intX <= -12 and tarY == 91 and tarX >= -7 and tarX <= 9 then //熊去屁2
+        DelayRandom 46,52
+        KeyDown Right
+        DelayRandom 217,220
+        KeyDown Down
+        DelayRandom 116,118
+        KeyDown Space
+        DelayRandom 121,123
+        KeyUp Space
+        DelayRandom 59,60
+        KeyUp Down
+        DelayRandom 93,94
+        KeyDown Space
+        DelayRandom 61,62
+        KeyUp Space
+        DelayRandom 55,56
+        KeyDown Space
+        DelayRandom 60,61
+        KeyUp Space
+        DelayRandom 129,131
+        KeyUp Right
+        DelayRandom 263,266
+    else if intX <= -38 and tarX >= -38 then //目的在右,人在左
         SavedX		= tarX
         SavedY		= tarY
         SavedTor	= tolerance
+        SavedTorY	= yTolerance
 
         tarX      = -85
         tarY      = 117
@@ -300,9 +345,10 @@ Sub Navigate //引導路線
             Call Move_Bear()
         End If
 
-        tarX      = SavedX
-        tarY      = SavedY
-        tolerance = SavedTor
+        tarX		= SavedX
+        tarY		= SavedY
+        tolerance	= SavedTor
+        yTolerance	= SavedTorY
     else if tarX <= -38 and intX >= -38 then //目的在左边
         SavedX		= tarX
         SavedY		= tarY
@@ -500,6 +546,7 @@ while 1 > 0
         tolerance = 2
         Call Navigate()
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        DelayRandom 198,207
         if intX >= 0 then //可以喷泉了
             DelayRandom 56,58
             KeyDown Right
