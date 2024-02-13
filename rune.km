@@ -8,15 +8,34 @@ Dim x1,     x2,    y1,        y2          // 矩形区域:小地图采样点
 Dim x3,     y3,    xEnd,      yEnd        // 2个顶点:技能区/屏幕右下角顶点
 Dim tarX,   tarY,  tolerance, yTolerance  //目标
 Dim logoX,  logoY, intX,      intY        //算目的地差值
-Dim SavedX, SavedY                        //保存一下临时处理的XY
 Dim RuneCooldown                          //找轮间隔
 
-Sub Move  //模拟移动,不要移植这个
+Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
+    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+
+    if intX < 0 Then //人物跑到了边界  处理一下
+        KeyDown Left
+        DelayRandom 200,250
+        KeyUp Left
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then //左移了还是没找到,就右移
+            KeyDown Right
+            DelayRandom 200,250
+            KeyUp Right
+            FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        End if
+    End if
+
+    intX = intX - logoX
+    intY = intY - logoY
+End Sub
+
+Sub Navigate  //模拟移动,不要移植这个
 	MsgBox [轮X轴 & tarX & ,轮Y轴 & tarY & ]
 End Sub
 
-Sub on_timer4 //查地图轮,每3秒一次
-
+Sub on_timer4 //查地图轮,每3秒一次 ver2.0不需要存储了
     a = GetTimeStamp() - RuneCooldown
     if a > 600 then //可以放轮了
         FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
@@ -24,16 +43,12 @@ Sub on_timer4 //查地图轮,每3秒一次
             FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
             intX = intX - logoX
             intY = intY - logoY - 1 //图标的对准问题
-            SavedX     = tarX  //(导航前先记录一下老坐标,然后再恢复,复用SavedX)
-            SavedY     = tarY
             tarX       = intX
             tarY       = intY
             tolerance  = 2
             yTolerance = 3
             KeyAllup //防错误
-            Call Move()
-            tarX = SavedX
-            tarY = SavedY
+            Call Navigate() //解轮也走捷径
             //暂停脚本
             Beep 1000,200
             DelayRandom 100,120
@@ -43,6 +58,9 @@ Sub on_timer4 //查地图轮,每3秒一次
             DelayRandom 100,120
             Beep 1000,200
             Pause
+            call GetXY()
+            tarX = intX
+            tarY = intY
             RuneCooldown = GetTimeStamp()
         else
         End If

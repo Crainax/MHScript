@@ -4,19 +4,19 @@ ScreenY=2560
 Times=0
 
 [Script]
-Dim x1,           x2,               y1,   y2        // 矩形区域:小地图采样点
-Dim x3,           y3,               xEnd, yEnd      // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,         tarY,             Hooking         //目标
-Dim logoX,        logoY,            intX, intY      //算目的地差值
-Dim alterX,       alterY                            //备用地点,传送门脚步开关
-Dim cY,           consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X或Y轴变化了
-Dim tolerance,    tolLoc,           yTolerance      //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim ReleaseTime1, ReleaseTime2,     ReleaseTime3    //各种冷却
-Dim a,            stoneSteleTime,   fountainTime    //各种冷却
-Dim RuneCooldown, seedTime1,        seedTime2       //各种冷却
-Dim staticCount,  staticX,          staticY         //防卡计数器
-Dim SavedX,       SavedY                            //保存一下临时处理的XY
-Dim min,          minType                           //预移动
+Dim x1,           x2,               y1,       y2         // 矩形区域:小地图采样点
+Dim x3,           y3,               xEnd,     yEnd       // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,         tarY,             Hooking              //目标
+Dim logoX,        logoY,            intX,     intY       //算目的地差值
+Dim alterX,       alterY                                 //备用地点,传送门脚步开关
+Dim cY,           consecutiveTimes, consecutiveMax       //用这个东西判断角色是不是没有X或Y轴变化了
+Dim tolerance,    tolLoc,           yTolerance           //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim ReleaseTime1, ReleaseTime2,     ReleaseTime3         //各种冷却
+Dim a,            stoneSteleTime,   fountainTime         //各种冷却
+Dim RuneCooldown, seedTime1,        seedTime2            //各种冷却
+Dim staticCount,  staticX,          staticY              //防卡计数器
+Dim SavedX,       SavedY,           SavedTor, SavedTorY  //保存一下临时处理的XY
+Dim min,          minType                                //预移动
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -476,8 +476,7 @@ Sub Move()  //精确的移动:Ver2.5 0容忍加了新办法
     Wend
 End Sub
 
-Sub on_timer4 //查地图轮,每3秒一次
-
+Sub on_timer4 //查地图轮,每3秒一次 ver2.0不需要存储了
     a = GetTimeStamp() - RuneCooldown
     if a > 600 then //可以放轮了
         FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
@@ -485,16 +484,12 @@ Sub on_timer4 //查地图轮,每3秒一次
             FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
             intX = intX - logoX
             intY = intY - logoY - 1 //图标的对准问题
-            SavedX     = tarX  //(导航前先记录一下老坐标,然后再恢复,复用SavedX)
-            SavedY     = tarY
             tarX       = intX
             tarY       = intY
             tolerance  = 2
             yTolerance = 3
             KeyAllup //防错误
-            Call Move()
-            tarX = SavedX
-            tarY = SavedY
+            Call Navigate() //解轮也走捷径
             //暂停脚本
             Beep 1000,200
             DelayRandom 100,120
@@ -504,6 +499,9 @@ Sub on_timer4 //查地图轮,每3秒一次
             DelayRandom 100,120
             Beep 1000,200
             Pause
+            call GetXY()
+            tarX = intX
+            tarY = intY
             RuneCooldown = GetTimeStamp()
         else
         End If
@@ -511,7 +509,7 @@ Sub on_timer4 //查地图轮,每3秒一次
     End If
 EndSub
 
-Sub SpellList() //随便扔技能 V2.3 随机点判断是否瞬移
+Sub SpellList() //随便扔技能 V2.4 攻击长一点
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\V.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //找V3
         KeyDown V
@@ -556,9 +554,9 @@ Sub SpellList() //随便扔技能 V2.3 随机点判断是否瞬移
                         Call GetXY()
                         if SavedX == intX and SavedY == intY then //人物没变就不要施放了,平A就行
                             KeyDown F
-                            DelayRandom 112,114
+                            DelayRandom 960,970
                             KeyUp F
-                            DelayRandom 479,484
+                            DelayRandom 223,226
                         else
                             KeyDown E
                             DelayRandom 136,138
@@ -582,50 +580,31 @@ End Sub
 
 Sub Navigate //引導路線
     call GetXY()
-    if intY == 67 and intX >= (1-4) and intX <=(1+4) and tarY == 85 and tarX >= -25 and tarX <= -12 then //屁1去熊
+    if intX >= -38 and tarX >= -38 and intY-tarY >= 44 then //右边的超高高度处理
+        SavedX		= tarX
+        SavedY		= tarY
+        SavedTor	= tolerance
+        SavedTorY	= yTolerance
+
+        tarX      = 1
+        tarY      = 115
+        tolerance = 6
+        Call Move()
+
         DelayRandom 46,52
-        KeyDown Down
-        DelayRandom 65,66
-        KeyDown Space
-        DelayRandom 176,178
-        KeyDown Left
-        DelayRandom 12,13
-        KeyUp Space
-        DelayRandom 27,28
-        KeyUp Down
-        DelayRandom 67,68
-        KeyDown Space
-        DelayRandom 67,68
-        KeyUp Space
-        DelayRandom 54,55
-        KeyDown Space
-        DelayRandom 62,63
-        KeyUp Space
-        DelayRandom 249,252
-        KeyUp Left
-        DelayRandom 358,362
-    else if intY == 85 and intX >= -25 and intX <= -12 and tarY == 91 and tarX >= -7 and tarX <= 9 then //熊去屁2
-        DelayRandom 46,52
-        KeyDown Right
-        DelayRandom 217,220
-        KeyDown Down
-        DelayRandom 116,118
-        KeyDown Space
-        DelayRandom 121,123
-        KeyUp Space
-        DelayRandom 59,60
-        KeyUp Down
-        DelayRandom 93,94
-        KeyDown Space
-        DelayRandom 61,62
-        KeyUp Space
-        DelayRandom 55,56
-        KeyDown Space
-        DelayRandom 60,61
-        KeyUp Space
-        DelayRandom 129,131
-        KeyUp Right
-        DelayRandom 263,266
+        KeyDown LAlt
+        DelayRandom 161,163
+        KeyUp LAlt
+        DelayRandom 439,444
+        KeyDown LCtrl
+        DelayRandom 108,110
+        KeyUp LCtrl
+        DelayRandom 1714,1732
+
+        tarX		= SavedX
+        tarY		= SavedY
+        tolerance	= SavedTor
+        yTolerance	= SavedTorY
     else if intX <= -38 and tarX >= -38 then //目的在右,人在左
         SavedX		= tarX
         SavedY		= tarY
@@ -637,7 +616,7 @@ Sub Navigate //引導路線
         tolerance = 0
         alterX    = 1 //传送位置
         alterY    = 67
-        Call Move_Bear()
+        Call Move()
 
         if tarY < 91 then //人在右上,目标在右下,再传一次(右下位置)
             tarX      = 1
@@ -645,7 +624,7 @@ Sub Navigate //引導路線
             tolerance = 0
             alterX    = 1 //传送位置
             alterY    = 115
-            Call Move_Bear()
+            Call Move()
         End If
 
         tarX		= SavedX
@@ -663,7 +642,7 @@ Sub Navigate //引導路線
             tolerance = 0
             alterX    = 1 //传送位置
             alterY    = 115
-            Call Move_Bear()
+            Call Move()
         End If
 
         tarX      = 1
@@ -671,75 +650,51 @@ Sub Navigate //引導路線
         tolerance = 0
         alterX    = -85 //传送位置
         alterY    = 117
-        Call Move_Bear()
+        Call Move()
 
         tarX      = SavedX
         tarY      = SavedY
         tolerance = SavedTor
     End If
-    Call Move_Bear()
+    Call Move()
 End Sub
 
 Sub PreMove //提前移动到特定地点 Ver2.0 提前移动先judge,不然怕重复移动
-    min = fountainTime + 55
-    minType = 0 //默认喷泉
-    if min > ReleaseTime1 + 13 then
-        min = ReleaseTime1 + 13
-        minType = 1
-    end if
-    if min > ReleaseTime2 + 13 then
+    min = seedTime1 + 18 //先从种子开始排序
+    minType = 3
+    if min > ReleaseTime2 + 13 then //
         min = ReleaseTime2 + 13
         minType = 2
     end if
-    if min > seedTime1 + 18 then
-        min = seedTime1 + 18
-        minType = 3
+    if min > ReleaseTime1 + 13 then //
+        min = ReleaseTime1 + 13
+        minType = 1
+    end if
+    if min > fountainTime + 55 then //
+        min = fountainTime + 55
+        minType = 0
     end if
 
     if minType = 0 then
-        tarX = 29 //跳河判断
-        Call JumpWater()
-        If tolLoc > 0 then //跳楼法成功了
-            DelayRandom 87,92
-            KeyDown Up
-            DelayRandom 120,122
-            KeyUp Up
-            DelayRandom 231,234
-        End If
-        tarX = 29
-        tarY = 84
-        tolerance = 4
-        Call Judge()
-        if tolLoc <= 0 then
-            Call Move()
-        End If
+        tarX = -85
+        tarY = 117
+        tolerance = 2
     else if minType = 1 then
-        tarX = -47 //这样判断是否要跳河
-        Call JumpWater()
-        tarX = -47
-        tarY = 84
+        tarX = -9
+        tarY = 115
         tolerance = 4
-        Call Judge()
-        if tolLoc <= 0 then
-            Call Move()
-        End If
     else if minType = 2 then
-        tarX       = -72 //跳河X轴判断
-        Call JumpWater()
-        tarX       = -72
-        tarY       = 114
+        tarX       = 21
+        tarY       = 111
         tolerance  = 4
-        if tolLoc <= 0 then
-            Call Move()
-        End If
     else if minType = 3 then
-        tarX       = -16
-        tarY       = 114
+        tarX       = 1
+        tarY       = 67
         tolerance  = 6
-        Call Judge()
-        if tolLoc <= 0 then
-            Call Move()
-        End If
+    End If
+    call GetXY()
+    if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
+        Call Navigate()
     End If
 End Sub
 
@@ -776,23 +731,17 @@ while 1 > 0
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
     a = GetTimeStamp() - fountainTime
     if a > 55 or intX >= 0 then //可以喷泉了
-        tarX = 29 //跳河判断
-        Call JumpWater()
-        If tolLoc > 0 then //跳楼法成功了
-            DelayRandom 87,92
-            KeyDown Up
-            DelayRandom 120,122
-            KeyUp Up
-            DelayRandom 231,234
+        tarX = -85
+        tarY = 117
+        tolerance = 2
+        call GetXY()
+        if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
+            Call Navigate()
         End If
-        tarX = 29
-        tarY = 84
-        tolerance = 4
-        Call Move()
         DelayRandom 56,58
-        KeyDown Left
+        KeyDown Right
         DelayRandom 62,68
-        KeyUp Left
+        KeyUp Right
         DelayRandom 106,109
         KeyDown 1
         DelayRandom 194,196
@@ -813,12 +762,13 @@ while 1 > 0
 
     a = GetTimeStamp() - ReleaseTime1
     if a > 13 then //施放1 Ver2.0
-        tarX = -47 //这样判断是否要跳河
-        Call JumpWater()
-        tarX = -47
-        tarY = 84
+        tarX = -9
+        tarY = 115
         tolerance = 4
-        Call Move()
+        call GetXY()
+        if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
+            Call Navigate()
+        End If
         DelayRandom 56,58
         KeyDown Right
         DelayRandom 91,93
@@ -832,21 +782,22 @@ while 1 > 0
         DelayRandom 119,121
         KeyUp S
         DelayRandom 248,251
-        KeyDown Left
+        KeyDown Right
         DelayRandom 106,108
-        KeyUp Left
+        KeyUp Right
         DelayRandom 342,347
         ReleaseTime1 = GetTimeStamp()
     End If
 
     a = GetTimeStamp() - ReleaseTime2
     if a > 13 then //施放2 Ver2.0
-        tarX       = -72 //跳河X轴判断
-        Call JumpWater()
-        tarX       = -72
-        tarY       = 114
+        tarX       = 21
+        tarY       = 111
         tolerance  = 4
-        Call Move()
+        call GetXY()
+        if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
+            Call Navigate()
+        End If
         DelayRandom 56,58
         KeyDown left
         DelayRandom 91,93
@@ -860,42 +811,30 @@ while 1 > 0
         DelayRandom 119,121
         KeyUp S
         DelayRandom 248,251
-        KeyDown Right
+        KeyDown Left
         DelayRandom 106,108
-        KeyUp Right
+        KeyUp Left
         DelayRandom 342,347
         ReleaseTime2 = GetTimeStamp()
     else
         a = GetTimeStamp() - seedTime1
         if a > 18 then //可以放种子了 Ver2.0
-            tarX       = -16
-            tarY       = 114
+            tarX       = 1
+            tarY       = 67
             tolerance  = 6
-            Call Judge()
-            if tolLoc <= 0 then
-                Call Move()
+            call GetXY()
+            if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
+                Call Navigate()
             End If
             DelayRandom 56,58
+            KeyDown Down
+            DelayRandom 95,98
             KeyDown `
-            DelayRandom 829,839
+            DelayRandom 251,259
             KeyUp `
-            DelayRandom 309,313
-            KeyDown Right
-            DelayRandom 67,68
-            KeyDown Space
-            DelayRandom 90,91
-            KeyUp Space
-            DelayRandom 30,31
-            KeyDown Space
-            DelayRandom 90,91
-            KeyUp Space
-            DelayRandom 233,236
-            KeyUp Right
-            DelayRandom 576,582
-            KeyDown `
-            DelayRandom 200,204
-            KeyUp `
-            DelayRandom 425,431
+            DelayRandom 119,123
+            KeyUp Down
+            DelayRandom 455,469
             seedTime1 = GetTimeStamp()
         else //前往牛马地方放技能
             Call PreMove()

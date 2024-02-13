@@ -16,6 +16,16 @@
 		],
 		"description": "判断坐标"
 	},
+	"判断坐标(不在)": {
+		"prefix": "getXYn",
+		"body": [
+			"call GetXY()",
+            "if intY != ${1:102} or intX < (${2:52}-${3:4}) or intX > ($2+$3) then //",
+			"	${4://todo}",
+            "End If"
+		],
+		"description": "判断坐标"
+	},
 	"冷却行动": {
 		"prefix": "time",
 		"body": [
