@@ -4,26 +4,25 @@ ScreenY=1440
 Times=0
 
 [Script]
-Dim x1,          x2,               y1,   y2    // 矩形区域:小地图采样点
-Dim x3,          y3,               xEnd, yEnd  // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,        tarY,             SpellOK     //目标
-Dim alterX,      alterY                        //备用地点,传送门脚步开关
-Dim logoX,       logoY,            intX, intY  //算目的地差值
-Dim cY,          consecutiveTimes, stuckTimes  //用这个东西判断角色是不是没有X或Y轴变化了
-Dim InfiTime,    BarlogTime,       a           //放技能时间冷却
-Dim DTime                                      //末日烈焰冷却
-Dim tolerance,   tolLoc,           yTolerance  //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim staticCount, staticX,          staticY     //防卡计数器
-Dim LEDState                                   //测试用:开大写键就是获取点位,不要切来切去的了
+Dim x1,             x2,               y1,       y2         // 矩形区域:小地图采样点
+Dim x3,             y3,               xEnd,     yEnd       // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,           tarY,             SpellOK              //目标
+Dim alterX,         alterY                                 //备用地点,传送门脚步开关
+Dim logoX,          logoY,            intX,     intY       //寻位置相关:当前地点
+Dim InfiTime,       BarlogTime,       a                    //放技能时间冷却
+Dim cY,             consecutiveTimes, stuckTimes           //用这个东西判断角色是不是没有X或Y轴变化了
+Dim stoneSteleTime, fountainTime,     RuneCooldown         //各种时间间隔
+Dim cycleCount,     AuraTime,         DTime                //技能间隔
+Dim tolerance,      tolLoc,           yTolerance           //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim staticCount,    staticX,          staticY              //防卡计数器
+Dim SavedX,         SavedY,           SavedTor, SavedTorY  //保存一下临时处理的XY
 
-//左上传送点(-96,90),喷泉点(-81,104),左下传送点(-73,118),右下传送点(5,118),右上传送点(29,88),右下捡钱点(48,118),普攻(-8,107),上巡(-8,79),测试上瞬(15,68),测试上瞬(-58,90),左下捡钱(-98,118)
 
 Sub on_timer1 //扔技能CD2秒
     SpellOK = 1
 EndSub
 
-
-Sub Attack //放技能,然后再瞬移(注意要先获取XY再放招)  Ver2.2 加入末日烈焰
+Sub Attack //放技能,然后再瞬移(注意要先获取XY再放招)  Ver2.4 修复问题和终极无限卡着不放招
     a = GetTimeStamp() - InfiTime
     if a > 110 then //该补充终极无限了
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\InfiR.bmp",000000,1.00,0,intX,intY
@@ -32,6 +31,7 @@ Sub Attack //放技能,然后再瞬移(注意要先获取XY再放招)  Ver2.2 加入末日烈焰
             DelayRandom 351,355
             KeyUp R
             InfiTime = GetTimeStamp()
+            a = -1001
         else
             FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\InfiG.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then //`位置的终极无限
@@ -39,82 +39,84 @@ Sub Attack //放技能,然后再瞬移(注意要先获取XY再放招)  Ver2.2 加入末日烈焰
                 DelayRandom 1251,1255
                 KeyUp `
                 InfiTime = GetTimeStamp()
+                a = -1001
             End If
         End If
-    else //没到终极无限
-        a = GetTimeStamp() - BarlogTime
-        if a > 240 then //召唤新的炎魔
-            KeyDown E
-            DelayRandom 985,989
-            KeyUp E
-            BarlogTime = GetTimeStamp()
-        else
-            if SpellOK == 1 Then
-                SpellOK = 0
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\Q.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //V1技能好了
-                    KeyDown Q
-                    DelayRandom 101,103
-                    KeyUp Q
+    End If
+    if a != -1001 then
+        if SpellOK == 1 Then
+            SpellOK = 0
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\Q.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //V1技能好了
+                KeyDown Q
+                DelayRandom 101,103
+                KeyUp Q
+            else
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\W.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //V2技能好了
+                    KeyDown W
+                    DelayRandom 301,305
+                    KeyUp W
                 else
-                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\W.bmp",000000,1.00,0,intX,intY
-                    if intX >= 0 Then //V2技能好了
-                        KeyDown W
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\V.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then //V4技能好了
+                        a = GetTimeStamp() - BarlogTime
+                        if a > 240 then //召唤新的炎魔
+                            KeyDown E
+                            DelayRandom 185,187
+                            KeyUp E
+                            DelayRandom 670,677
+                            BarlogTime = GetTimeStamp()
+                        End If
+                        KeyDown V
                         DelayRandom 301,305
-                        KeyUp W
+                        KeyUp V
                     else
-                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\V.bmp",000000,1.00,0,intX,intY
-                        if intX >= 0 Then //V4技能好了
-                            KeyDown V
-                            DelayRandom 301,305
-                            KeyUp V
+                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\B.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //流星技能好了
+                            KeyDown B
+                            DelayRandom 1251,1255
+                            KeyUp B
                         else
-                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\B.bmp",000000,1.00,0,intX,intY
-                            if intX >= 0 Then //流星技能好了
-                                KeyDown B
-                                DelayRandom 1251,1255
-                                KeyUp B
+                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\S.bmp",000000,1.00,0,intX,intY
+                            if intX >= 0 Then //V3技能好了
+                                KeyDown S
+                                DelayRandom 201,205
+                                KeyUp S
                             else
-                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\S.bmp",000000,1.00,0,intX,intY
-                                if intX >= 0 Then //V3技能好了
-                                    KeyDown S
-                                    DelayRandom 201,205
-                                    KeyUp S
+                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\Z.bmp",000000,1.00,0,intX,intY
+                                if intX >= 0 Then //蓝焰斩技能好了
+                                    KeyDown Z
+                                    DelayRandom 301,305
+                                    KeyUp Z
                                 else
-                                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\Z.bmp",000000,1.00,0,intX,intY
-                                    if intX >= 0 Then //蓝焰斩技能好了
-                                        KeyDown Z
-                                        DelayRandom 301,305
-                                        KeyUp Z
+                                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\H.bmp",000000,1.00,0,intX,intY
+                                    if intX >= 0 Then //找蜘蛛
+                                        KeyDown H
+                                        DelayRandom 901,905
+                                        KeyUp H
                                     else
-                                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\H.bmp",000000,1.00,0,intX,intY
-                                        if intX >= 0 Then //找蜘蛛
-                                            KeyDown H
-                                            DelayRandom 901,905
-                                            KeyUp H
+                                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Y.bmp",000000,1.00,0,intX,intY
+                                        if intX >= 0 Then //找烈阳
+                                            KeyDown Y
+                                            DelayRandom 801,805
+                                            KeyUp Y
                                         else
-                                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Y.bmp",000000,1.00,0,intX,intY
-                                            if intX >= 0 Then //找烈阳
-                                                KeyDown Y
-                                                DelayRandom 801,805
-                                                KeyUp Y
-                                            else
-                                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\4.bmp",000000,1.00,0,intX,intY
-                                                if intX >= 0 Then //找武公
-                                                    KeyDown 4
-                                                    DelayRandom 801,809
-                                                    KeyUp 4
-                                                else //什么都没有就普攻一下
-                                                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\5A.bmp",000000,1.00,0,intX,intY
-                                                    if intX >= 0 Then //补充个大祝福
-                                                        KeyDown 5
-                                                        DelayRandom 301,309
-                                                        KeyUp 5
-                                                    else //实在没有就普攻一下
-                                                        KeyDown F
-                                                        DelayRandom 101,103
-                                                        KeyUp F
-                                                    End If
+                                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\4.bmp",000000,1.00,0,intX,intY
+                                            if intX >= 0 Then //找武公
+                                                KeyDown 4
+                                                DelayRandom 801,809
+                                                KeyUp 4
+                                            else //什么都没有就普攻一下
+                                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\5A.bmp",000000,1.00,0,intX,intY
+                                                if intX >= 0 Then //补充个大祝福
+                                                    KeyDown 5
+                                                    DelayRandom 301,309
+                                                    KeyUp 5
+                                                else //实在没有就普攻一下
+                                                    KeyDown F
+                                                    DelayRandom 101,103
+                                                    KeyUp F
                                                 End If
                                             End If
                                         End If
@@ -124,19 +126,19 @@ Sub Attack //放技能,然后再瞬移(注意要先获取XY再放招)  Ver2.2 加入末日烈焰
                         End If
                     End If
                 End If
-                Timer 1,1,2000
-            else
-                a = GetTimeStamp() - DTime
-                if a > 2 and intY >= 85 and intY < 112 then //可以放末日了(仅限第二层)
-                    KeyDown D
-                    DelayRandom 101,103
-                    KeyUp D
-                    DTime = GetTimeStamp()
-                else //平时就放扫荡
-                    KeyDown F
-                    DelayRandom 101,103
-                    KeyUp F
-                End If
+            End If
+            Timer 1,1,2000
+        else
+            a = GetTimeStamp() - DTime
+            if a > 2 and intY > 98 and intY < 124 then //可以放末日了(仅限第二层)
+                KeyDown D
+                DelayRandom 101,103
+                KeyUp D
+                DTime = GetTimeStamp()
+            else //平时就放扫荡
+                KeyDown F
+                DelayRandom 101,103
+                KeyUp F
             End If
         End If
     End If
@@ -269,16 +271,13 @@ Sub Move //精确的移动:V2.3 近距离的一些补正
                         KeyUp Down
                         DelayRandom 356,360
                     else //计数器达到5次Y轴不动了,下跳
-                        TracePrint 下跳一次
                         KeyDown Down
                         DelayRandom 134,136
                         KeyDown Space
                         if intY > (tarY - 13) //太接近就只用同一种办法
                             DelayRandom 162,164
-                            TracePrint 定式 & intY &: & tarY
                         else
                             Delay (tarY - intY) * 49 - 520
-                            TracePrint 变式 & intY &: & tarY
                         End If
                         KeyUp Space
                         DelayRandom 66,67
@@ -319,7 +318,6 @@ Sub Move //精确的移动:V2.3 近距离的一些补正
                     consecutiveTimes = -1 //这一步已经不需要监控Y轴卡住了
                     yTolerance = 0
                     if tolerance == 0 then //传送门型
-                        TracePrint 传送一发
                         If intX < tarX Then //向右小碎步
                             DelayRandom 45,52
                             KeyDown Right
@@ -385,12 +383,10 @@ Sub Move //精确的移动:V2.3 近距离的一些补正
                         Delay 125
                         Call GetXY()
                         if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
-                            TracePrint 到达目的地
                             alterX    = 0
                             alterY    = 0
                             Exit Sub
                         else
-                            TracePrint 未到达[ & intX & , & intY & ],传送[ & alterX & , & alterY & ]
                         End if
                     else //非传送门
                         if tolerance < 4 Then //容忍度小于4还是要小碎步
@@ -422,7 +418,109 @@ Sub Move //精确的移动:V2.3 近距离的一些补正
     Wend
 End Sub
 
-//分辨率初始化
+Sub Judge //判断人物是否在某个地点旁边,用tarXY,tolerance,tolLoc返回结果,不能嵌套move()使用,可以先使用这个再用move
+    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    tolLoc = 0
+    if intX >= 0 Then //找到了人物才会进行下去
+        intX = intX - logoX
+        intY = intY - logoY
+        if intY == tarY and intX >= (tarX - tolerance) and intX <= (tarX + tolerance) then
+            tolLoc = 1
+        End If
+    End If
+End Sub
+
+Sub Navigate //引導路線
+    call GetXY()
+    if intX <= -38 and tarX >= -38 then //目的在右,人在左
+        SavedX		= tarX
+        SavedY		= tarY
+        SavedTor	= tolerance
+        SavedTorY	= yTolerance
+
+        tarX      = -85
+        tarY      = 117
+        tolerance = 0
+        alterX    = 1 //传送位置
+        alterY    = 67
+        Call Move()
+
+        if tarY < 91 then //人在右上,目标在右下,再传一次(右下位置)
+            tarX      = 1
+            tarY      = 67
+            tolerance = 0
+            alterX    = 1 //传送位置
+            alterY    = 115
+            Call Move()
+        End If
+
+        tarX		= SavedX
+        tarY		= SavedY
+        tolerance	= SavedTor
+        yTolerance	= SavedTorY
+    else if tarX <= -38 and intX >= -38 then //目的在左边
+        SavedX		= tarX
+        SavedY		= tarY
+        SavedTor	= tolerance
+
+        if intY <= 74 then //上半层,
+            tarX      = 1
+            tarY      = 67
+            tolerance = 0
+            alterX    = 1 //传送位置
+            alterY    = 115
+            Call Move()
+        End If
+
+        tarX      = 1
+        tarY      = 115
+        tolerance = 0
+        alterX    = -85 //传送位置
+        alterY    = 117
+        Call Move()
+
+        tarX      = SavedX
+        tarY      = SavedY
+        tolerance = SavedTor
+    End If
+    Call Move()
+End Sub
+
+Sub on_timer4 //查地图轮,每3秒一次 ver2.0不需要存储了
+    a = GetTimeStamp() - RuneCooldown
+    if a > 600 then //可以放轮了
+        FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then
+            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+            intX = intX - logoX
+            intY = intY - logoY - 1 //图标的对准问题
+            tarX       = intX
+            tarY       = intY
+            tolerance  = 2
+            yTolerance = 3
+            KeyAllup //防错误
+            Call Navigate() //解轮也走捷径
+            //暂停脚本
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            Pause
+            call GetXY()
+            tarX = intX
+            tarY = intY
+            RuneCooldown = GetTimeStamp()
+        else
+        End If
+        Timer 4,1,5000 //无限循环
+    End If
+EndSub
+
+//Main函数
 GetScreenResolution intX, intY
 if intX > intY then //横放屏幕
     x1 = 700
@@ -443,40 +541,95 @@ else //竖放屏幕
     xEnd = 1440
     yEnd = 2560
 End If
-InfiTime   = GetTimeStamp() - 110  //上次终极无限的时间
-DTime      = 0                     //上次放末日烈焰的时间
-BarlogTime = 0                     //上次召炎魔的时间
-SpellOK    = 1                     //技能冷却
-Timer 1,1,1000
+InfiTime       = GetTimeStamp() - 110  //上次终极无限的时间
+BarlogTime     = 0                     //上次召炎魔的时间
+SpellOK        = 1                     //技能冷却
+RuneCooldown   = 0                     //解轮时间
+stoneSteleTime = 0                     //放轮时间
+fountainTime   = 0                     //喷泉时间
+AuraTime       = 0                     //领域时间
+DTime          = 0                     //末日冷却时间
+cycleCount     = 0                     //巡逻位置指针
+yTolerance     = 0                     //初始化
+Timer          4, 1, 3100              //无限循环
+Timer          1, 1, 1000              //无限循环
 while 1 > 0
-    LEDState = GetLED(1)
-    if LEDState == 0 then //
-        tolLoc = 1
-        GetFileLine tarX,Move.Conf,tolLoc		//文件查找
-        tolLoc = 2
-        GetFileLine tarY,Move.Conf,tolLoc		//文件查找
-        tolLoc = 3
-        GetFileLine tolerance,Move.Conf,tolLoc	//文件查找
-        tolLoc = 4
-        GetFileLine alterX,Move.Conf,tolLoc	//文件查找
-        tolLoc = 5
-        GetFileLine alterY,Move.Conf,tolLoc	//文件查找
-        TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance & ,传送[ & alterX & , & alterY & ]
-        //tolerance = 4 //容忍度,4为推荐值
-        Call Move()
-        MsgBox 测试结束
-    else //大写键亮的话就获取点
-        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
-        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY	//找图
-        If intX >= 0 Then
-            // TracePrint [图标X轴 & logoX & ,图标Y轴 & logoY & ],[绿点X轴 & intX & ,绿点Y轴 & intY & ]
-            // MsgBox [图标X轴 & logoX & ,图标Y轴 & logoY & ],[绿点X轴 & intX & ,绿点Y轴 & intY & ]
-            intX = intX - logoX
-            intY = intY - logoY
-            TracePrint [人物X轴 & intX & ,人物Y轴 & intY & ]
-            MsgBox [人物X轴 & intX & ,人物Y轴 & intY & ]
+    a = GetTimeStamp() - stoneSteleTime
+    if a > 570 then //可以放轮了
+        DelayRandom 356,358
+        KeyDown O
+        DelayRandom 337,339
+        KeyUp O
+        DelayRandom 736,747
+        stoneSteleTime = GetTimeStamp()
+    End If
+
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+    a = GetTimeStamp() - fountainTime
+    if a > 55 and intX >= 0 then //可以喷泉了
+        tarX = -34
+        tarY = 98
+        tolerance = 2
+        Call Navigate()
+        DelayRandom 56,58
+        KeyDown Left
+        DelayRandom 62,68
+        KeyUp Left
+        DelayRandom 106,109
+        KeyDown 1
+        DelayRandom 194,196
+        KeyUp 1
+        DelayRandom 712,721
+        fountainTime = GetTimeStamp()
+    else
+        a = GetTimeStamp() - AuraTime
+        if a > 55 Then //前往领域点
+            //前往领域点
+            call GetXY()
+            if intX <= -22 then //左边领域
+                tarX      = -22
+            else if intX >= 17 //右边领域
+                tarX      = 17
+            else
+                tarX = intX
+            End If
+            tarY      = 124
+            tolerance = 6
+            Call Navigate()
+            DelayRandom 123,130
+            KeyDown A
+            DelayRandom 130,132
+            KeyUp A
+            DelayRandom 405,413
+            AuraTime = GetTimeStamp()
         else
-            MsgBox "没找到"	 //弹窗
+            if cycleCount == 1 then //前往楼上
+                tarX		= -2
+                tarY		= 111
+                tolerance	= 3
+                Call Navigate()
+            else if cycleCount == 2 then //前往楼上
+                tarX		= -2
+                tarY		= 98
+                tolerance	= 3
+                Call Navigate()
+            else if cycleCount == 3  then //前往楼上
+                tarX		= 14
+                tarY		= 98
+                tolerance	= 3
+                Call Navigate()
+            else
+                tarX		= 14
+                tarY		= 111
+                tolerance	= 3
+                Call Navigate()
+            End If
+            cycleCount = cycleCount + 1
+            if cycleCount > 3 then
+                cycleCount = 0
+            End If
         End If
+
+        DelayRandom 100,103
     End If
 Wend
