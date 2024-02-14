@@ -29,8 +29,7 @@
 	"冷却行动": {
 		"prefix": "time",
 		"body": [
-			"a = GetTimeStamp() - ${1:boboTime}",
-            "if a > ${2:55} then",
+            "if GetTimeStamp() - ${1:boboTime} > ${2:55} then",
             "	${1} = GetTimeStamp()",
             "End If",
 		],

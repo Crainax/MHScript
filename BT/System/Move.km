@@ -4,17 +4,17 @@ ScreenY=2560
 Times=0
 
 [Script]
-Dim x1,          x2,               y1,   y2        // 矩形区域:小地图采样点
-Dim x3,          y3,               xEnd, yEnd      // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,        tarY                              //目标
-Dim logoX,       logoY,            intX, intY      //算目的地差值
-Dim DashCool,    tolLoc                            //冲刺冷却
-Dim alterX,      alterY                            //备用地点,传送门脚步开关
-Dim tolerance,   temp,             yTolerance      //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim cY,          consecutiveTimes, consecutiveMax  //用这个东西判断角色是不是没有X或Y轴变化了
-Dim Hooking,     gliding                           //钩子中(方便中途刹车)/滑翔中
-Dim staticCount, staticX,          staticY         //防卡计数器
-Dim LEDState                                       //测试位置
+Dim x1,          x2,      y1,   y2    // 矩形区域:小地图采样点
+Dim x3,          y3,      xEnd, yEnd  // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,        tarY                 //目标
+Dim logoX,       logoY,   intX, intY  //算目的地差值
+Dim DashCool,    tolLoc               //冲刺冷却
+Dim alterX,      alterY               //备用地点,传送门脚步开关
+Dim tolerance,   temp,    yTolerance  //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim cY,          csTimes, csMax       //用这个东西判断角色是不是没有X或Y轴变化了
+Dim Hooking,     gliding              //钩子中(方便中途刹车)/滑翔中
+Dim staticCount, staticX, staticY     //防卡计数器
+Dim LEDState                          //测试位置
 
 //目前已经算出一个二段跳能跳32的X轴(平地)
 //几个测试点:轰炸点(右)-99,130    轰炸点(左)-48,129
@@ -156,12 +156,12 @@ Sub Move_Fly  //飞行阶段的移动
 End Sub
 
 Sub Move_Bild //鸟形态的地面移动
-    consecutiveTimes	= -1  //初始就启用指南针判断
-    consecutiveMax		= 4   //降落默认值为4
+    csTimes	= -1  //初始就启用指南针判断
+    csMax		= 4   //降落默认值为4
     Hooking				= 0   //钩子关闭
     while  1 > 0
         Call GetXY()
-        if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
+        if csTimes >= 0 Then //目前是在空中判断降落的阶段
             if gliding > 0 Then
                 If intX >= (tarX-12) and intX <= (tarX+12) Then //滑翔该下来了
                     TracePrint 滑翔预判结束
@@ -177,11 +177,11 @@ Sub Move_Bild //鸟形态的地面移动
                 Hooking = 0
             End If
             if intY == cY Then //Y轴没变化了
-                consecutiveTimes = consecutiveTimes + 1
-                //TracePrint 降落判断: & consecutiveTimes
-                if consecutiveTimes >= consecutiveMax Then
-                    consecutiveTimes	= -1	//判断为已经落地
-                    consecutiveMax		= 4		//归位最大降落判断值
+                csTimes = csTimes + 1
+                //TracePrint 降落判断: & csTimes
+                if csTimes >= csMax Then
+                    csTimes	= -1	//判断为已经落地
+                    csMax		= 4		//归位最大降落判断值
                     //TracePrint 判断已经落地
                     if gliding > 0 Then //滑翔提前碰地了
                         TracePrint 滑翔触地提前结束
@@ -191,8 +191,8 @@ Sub Move_Bild //鸟形态的地面移动
                 End If
             else
                 cY = intY
-                consecutiveTimes = 0
-                //TracePrint 降落判断: & consecutiveTimes
+                csTimes = 0
+                //TracePrint 降落判断: & csTimes
             End If
         else //继续根据
             Call AntiJam() //防卡
@@ -202,8 +202,8 @@ Sub Move_Bild //鸟形态的地面移动
                 temp = 4
             End If
             if intX < (tarX-32) Then //向右滑翔
-                consecutiveMax = 8 //延长一点降落判断
-                consecutiveTimes = 0 //启动降落判断
+                csMax = 8 //延长一点降落判断
+                csTimes = 0 //启动降落判断
                 cY = intY
                 gliding = 1 //开始滑翔
                 TracePrint 右滑翔
@@ -224,8 +224,8 @@ Sub Move_Bild //鸟形态的地面移动
                 // DelayRandom 402,407
                 // KeyUp LShift
             Else if intX > (tarX+32) Then //向左滑翔
-                consecutiveMax = 8 //延长一点降落判断
-                consecutiveTimes = 0 //启动降落判断
+                csMax = 8 //延长一点降落判断
+                csTimes = 0 //启动降落判断
                 cY = intY
                 gliding = 1 //开始滑翔
                 TracePrint 左滑翔
@@ -246,7 +246,7 @@ Sub Move_Bild //鸟形态的地面移动
                 // DelayRandom 402,407
                 // KeyUp LShift
             Else if intX <= (tarX-18) Then //向右二段跳
-                consecutiveTimes = 0 //启动降落判断
+                csTimes = 0 //启动降落判断
                 cY = intY
                 TracePrint 右跳
                 DelayRandom 15,25
@@ -263,7 +263,7 @@ Sub Move_Bild //鸟形态的地面移动
                 KeyUp Right
                 DelayRandom 146,151
             Else If intX >= (tarX+18) Then //向左二段跳
-                consecutiveTimes = 0 //启动降落判断
+                csTimes = 0 //启动降落判断
                 cY = 0
                 TracePrint 左跳
                 DelayRandom 15,25
@@ -289,7 +289,7 @@ Sub Move_Bild //鸟形态的地面移动
                 KeyUp Left
             else
                 If intY < tarY Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
-                    consecutiveTimes = 0 //启动降落判断
+                    csTimes = 0 //启动降落判断
                     cY = intY
                     TracePrint 下跳一次
                     DelayRandom 12,13
@@ -302,17 +302,17 @@ Sub Move_Bild //鸟形态的地面移动
                     KeyUp Down
                     DelayRandom 32,33
                 Else If intY > tarY Then //如果人在目标之下,就上跳(Y轴是用相反比较符)
-                    consecutiveTimes = 0 //启动降落判断
+                    csTimes = 0 //启动降落判断
                     cY = intY
                     if intY > (tarY+25) Then	//>=26上跳就够不到了
-                        consecutiveMax = 6 //延长一点降落判断
+                        csMax = 6 //延长一点降落判断
                         TracePrint 钩子一次
                         KeyDown Alt
                         DelayRandom 128,132
                         KeyUp Alt
                         Hooking = 1 //开启钩子判断
                     Else if intY >= (tarY+16) Then	// < 26时跳得高一些
-                        consecutiveMax = 8 //延长一点降落判断
+                        csMax = 8 //延长一点降落判断
                         TracePrint 上跳一次高
                         DelayRandom 128,130
                         KeyDown Space
@@ -327,7 +327,7 @@ Sub Move_Bild //鸟形态的地面移动
                         DelayRandom 98,99
                         KeyUp Up
                     else //小于16就这样跳
-                        consecutiveMax = 8 //延长一点降落判断
+                        csMax = 8 //延长一点降落判断
                         TracePrint 上跳一次矮
                         DelayRandom 128,130
                         KeyDown Space
@@ -372,13 +372,13 @@ Sub Move_Bild //鸟形态的地面移动
     Wend
 End Sub
 
-Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题) v2.2下跳修正与左右移容差校正
-    consecutiveTimes = -1  //初始就启用指南针判断
-    consecutiveMax   = 4   //降落默认值为4
+Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题) v2.3 同步了火毒的修正
+    csTimes = -1  //初始就启用指南针判断
+    csMax   = 4   //降落默认值为4
     while  1 > 0
         Call GetXY()
 
-        if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
+        if csTimes >= 0 Then //目前是在空中判断降落的阶段
             if Hooking > 0 and intY <= tarY - 3 Then //钩子的判断刹车
                 TracePrint 钩子刹车
                 KeyDown Alt
@@ -387,17 +387,17 @@ Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题) v2.2下跳修正与左右移容差校正
                 Hooking = 0
             End If
             if intY == cY Then //Y轴没变化了
-                consecutiveTimes = consecutiveTimes + 1
-                TracePrint 降落判断: & consecutiveTimes
-                if consecutiveTimes >= consecutiveMax Then
-                    consecutiveTimes	= -1	//判断为已经落地
-                    consecutiveMax		= 4		//归位最大降落判断值
+                csTimes = csTimes + 1
+                TracePrint 降落判断: & csTimes
+                if csTimes >= csMax Then
+                    csTimes	= -1	//判断为已经落地
+                    csMax		= 4		//归位最大降落判断值
                     TracePrint 判断已经落地
                 End If
             else
                 cY = intY
-                consecutiveTimes = 0
-                TracePrint 降落判断: & consecutiveTimes
+                csTimes = 0
+                TracePrint 降落判断: & csTimes
             End If
         else //继续根据
             Call AntiJam() //防卡
@@ -407,7 +407,7 @@ Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题) v2.2下跳修正与左右移容差校正
                 tolLoc = 2
             End If
             if intX < (tarX-24) Then //向右二段跳
-                consecutiveTimes = 0 //启动降落判断
+                csTimes = 0 //启动降落判断
                 cY = intY
                 TracePrint 右跳
                 DelayRandom 15,25
@@ -424,7 +424,7 @@ Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题) v2.2下跳修正与左右移容差校正
                 KeyUp Right
                 DelayRandom 319,323
             Else If intX > (tarX+24) Then //向左二段跳
-                consecutiveTimes = 0 //启动降落判断
+                csTimes = 0 //启动降落判断
                 cY = 0
                 TracePrint 左跳
                 DelayRandom 15,25
@@ -464,9 +464,9 @@ Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题) v2.2下跳修正与左右移容差校正
                     KeyUp Down
                     DelayRandom 548,554
                 Else If intY > (tarY + yTolerance) Then //如果人在目标之下,上钩
-                    consecutiveTimes = 0 //启动降落判断
+                    csTimes = 0 //启动降落判断
                     cY = intY
-                    consecutiveMax = 8 //延长一点降落判断
+                    csMax = 8 //延长一点降落判断
                     TracePrint 钩子一次
                     Hooking = 1
                     KeyDown Alt
@@ -492,14 +492,14 @@ Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题) v2.2下跳修正与左右移容差校正
                             DelayRandom 70,71
                             KeyUp Up
                             DelayRandom 37,38
-                            KeyDown Up
-                            DelayRandom 77,78
-                            KeyUp Up
-                            DelayRandom 37,38
-                            KeyDown Up
-                            DelayRandom 82,83
-                            KeyUp Up
-                            DelayRandom 38,39
+                            //KeyDown Up
+                            //DelayRandom 77,78
+                            //KeyUp Up
+                            //DelayRandom 37,38
+                            //KeyDown Up
+                            //DelayRandom 82,83
+                            //KeyUp Up
+                            //DelayRandom 38,39
                             KeyUp Right
                             DelayRandom 11,12
                         Else If intX > tarX Then //向左小碎步
@@ -518,14 +518,14 @@ Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题) v2.2下跳修正与左右移容差校正
                             DelayRandom 70,71
                             KeyUp Up
                             DelayRandom 37,38
-                            KeyDown Up
-                            DelayRandom 77,78
-                            KeyUp Up
-                            DelayRandom 37,38
-                            KeyDown Up
-                            DelayRandom 82,83
-                            KeyUp Up
-                            DelayRandom 38,39
+                            //KeyDown Up
+                            //DelayRandom 77,78
+                            //KeyUp Up
+                            //DelayRandom 37,38
+                            //KeyDown Up
+                            //DelayRandom 82,83
+                            //KeyUp Up
+                            //DelayRandom 38,39
                             KeyUp Left
                             DelayRandom 11,12
                         else //直接按上
@@ -534,9 +534,6 @@ Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题) v2.2下跳修正与左右移容差校正
                             DelayRandom 120,122
                             KeyUp Up
                             DelayRandom 231,234
-                            alterX    = 0
-                            alterY    = 0
-                            Exit Sub
                         End If
                         Delay 125
                         Call GetXY()
