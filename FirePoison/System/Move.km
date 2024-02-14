@@ -4,17 +4,17 @@ ScreenY=1440
 Times=0
 
 [Script]
-Dim x1,          x2,               y1,   y2    // 矩形区域:小地图采样点
-Dim x3,          y3,               xEnd, yEnd  // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,        tarY,             SpellOK     //目标
-Dim alterX,      alterY                        //备用地点,传送门脚步开关
-Dim logoX,       logoY,            intX, intY  //算目的地差值
-Dim cY,          consecutiveTimes, stuckTimes  //用这个东西判断角色是不是没有X或Y轴变化了
-Dim InfiTime,    BarlogTime,       a           //放技能时间冷却
-Dim DTime                                      //末日烈焰冷却
-Dim tolerance,   tolLoc,           yTolerance  //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim staticCount, staticX,          staticY     //防卡计数器
-Dim LEDState                                   //测试用:开大写键就是获取点位,不要切来切去的了
+Dim x1,          x2,         y1,   y2    // 矩形区域:小地图采样点
+Dim x3,          y3,         xEnd, yEnd  // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,        tarY,       SpellOK     //目标
+Dim alterX,      alterY,     stuckTimes  //备用地点,传送门脚步开关
+Dim logoX,       logoY,      intX, intY  //算目的地差值
+Dim cX,          cY,         csTimes     //用这个东西判断角色是不是没有X或Y轴变化了
+Dim InfiTime,    BarlogTime, a           //放技能时间冷却
+Dim DTime                                //末日烈焰冷却
+Dim tolerance,   tolLoc,     yTolerance  //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim staticCount, staticX,    staticY     //防卡计数器
+Dim LEDState                             //测试用:开大写键就是获取点位,不要切来切去的了
 
 //左上传送点(-96,90),喷泉点(-81,104),左下传送点(-73,118),右下传送点(5,118),右上传送点(29,88),右下捡钱点(48,118),普攻(-8,107),上巡(-8,79),测试上瞬(15,68),测试上瞬(-58,90),左下捡钱(-98,118)
 
@@ -189,24 +189,24 @@ Sub AntiJam //一般跟随GetXY后用,  Ver2.0 延长了一点时间防误判断
     End If
 End Sub
 
-Sub Move //精确的移动:V2.3 近距离的一些补正
-    consecutiveTimes = -1 //初始就启用指南针判断
+Sub Move //精确的移动:V2.5 左右卡位修正,传送点偏移变小
+    csTimes = -1 //初始就启用指南针判断
     stuckTimes = 0 //防卡检测初始次数为0
+    cX = -100
     cY = 0
     KeyAllup //施放所有按键防止卡住
     while  1 > 0
 
         Call GetXY()
-
-        if consecutiveTimes >= 0 Then //目前是在空中判断降落的阶段
+        if csTimes >= 0 Then //目前是在空中判断降落的阶段
             if intY == cY Then //Y轴没变化了
-                consecutiveTimes = consecutiveTimes + 1
-                if consecutiveTimes >= 8 Then
-                    consecutiveTimes	= -1	//判断为已经落地
+                csTimes = csTimes + 1
+                if csTimes >= 8 Then
+                    csTimes	= -1	//判断为已经落地
                 End If
             else
                 cY = intY
-                consecutiveTimes = 0
+                csTimes = 0
             End If
         else //继续根据
             if tolerance > 2 Then
@@ -215,29 +215,61 @@ Sub Move //精确的移动:V2.3 近距离的一些补正
                 tolLoc = 2
             End If
             if intX < (tarX-12) Then //右瞬:这里的shit必须要抬起来 不然好像下面会出问题
-                Call AntiJam()
-                Call Attack()
-                DelayRandom 115,117
-                KeyDown Right
-                DelayRandom 53,54
-                KeyDown LShift
-                DelayRandom 86,87
-                KeyUp LShift
-                DelayRandom 22,23
-                KeyUp Right
-                DelayRandom 356,360
+                If stuckTimes < 2 Then
+                    if cX != intX Then //有变化了,就重置计数器
+                        cX = intX
+                        stuckTimes = 0
+                    else
+                        stuckTimes = stuckTimes + 1 //原地就计数器+1
+                    End If
+                    Call AntiJam()
+                    Call Attack()
+                    DelayRandom 115,117
+                    KeyDown Right
+                    DelayRandom 53,54
+                    KeyDown LShift
+                    DelayRandom 86,87
+                    KeyUp LShift
+                    DelayRandom 22,23
+                    KeyUp Right
+                    DelayRandom 356,360
+                else //计数器达到5次Y轴不动了,下跳
+                    DelayRandom 53,54
+                    KeyDown Right
+                    DelayRandom 186,187
+                    KeyUp Right
+                    DelayRandom 22,23
+                    stuckTimes = 0
+                    cX = -100
+                End If
             Else If intX > (tarX+12) Then //向左瞬
-                Call AntiJam()
-                Call Attack()
-                DelayRandom 115,117
-                KeyDown Left
-                DelayRandom 53,54
-                KeyDown LShift
-                DelayRandom 86,87
-                KeyUp LShift
-                DelayRandom 22,23
-                KeyUp Left
-                DelayRandom 356,360
+                If stuckTimes < 2 Then
+                    if cX != intX Then //有变化了,就重置计数器
+                        cX = intX
+                        stuckTimes = 0
+                    else
+                        stuckTimes = stuckTimes + 1 //原地就计数器+1
+                    End If
+                    Call AntiJam()
+                    Call Attack()
+                    DelayRandom 115,117
+                    KeyDown Left
+                    DelayRandom 53,54
+                    KeyDown LShift
+                    DelayRandom 86,87
+                    KeyUp LShift
+                    DelayRandom 22,23
+                    KeyUp Left
+                    DelayRandom 356,360
+                else //计数器达到5次Y轴不动了,下跳
+                    DelayRandom 53,54
+                    KeyDown Left
+                    DelayRandom 186,187
+                    KeyUp Left
+                    DelayRandom 22,23
+                    stuckTimes = 0
+                    cX = -100
+                End If
             Else If intX < (tarX-tolLoc) Then //向右走
                 Call AntiJam()
                 KeyDown Right
@@ -251,7 +283,7 @@ Sub Move //精确的移动:V2.3 近距离的一些补正
             else //到Y方向的了
                 If intY < (tarY - yTolerance) Then //如果人在目标之上,就下瞬(Y轴是用相反比较符)
                     KeyUp Up
-                    If stuckTimes < 3 Then //普通下瞬
+                    If stuckTimes < 2 Then //普通下瞬
                         if cY != intY Then //有变化了,就重置计数器
                             cY = intY
                             stuckTimes = 0
@@ -270,6 +302,7 @@ Sub Move //精确的移动:V2.3 近距离的一些补正
                         DelayRandom 356,360
                     else //计数器达到5次Y轴不动了,下跳
                         TracePrint 下跳一次
+                        stuckTimes = 0
                         KeyDown Down
                         DelayRandom 134,136
                         KeyDown Space
@@ -287,7 +320,7 @@ Sub Move //精确的移动:V2.3 近距离的一些补正
                     End If
                 Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上瞬(Y轴是用相反比较符)
                     KeyUp Down
-                    If stuckTimes < 3 Then //普通上瞬
+                    If stuckTimes < 2 Then //普通上瞬
                         if cY != intY Then //有变化了,就重置计数器
                             cY = intY
                             stuckTimes = 0
@@ -305,7 +338,7 @@ Sub Move //精确的移动:V2.3 近距离的一些补正
                         KeyUp Up
                         DelayRandom 356,360
                     else //计数器达到5次Y轴不动了,钩子
-                        consecutiveTimes = 0     //启动降落判断
+                        csTimes = 0     //启动降落判断
                         cY               = intY
                         stuckTimes       = 0
                         DelayRandom 12,13
@@ -316,7 +349,7 @@ Sub Move //精确的移动:V2.3 近距离的一些补正
                     End If
                 else //Y轴搞定了,到容忍度的X轴了,前提是不在空中
                     KeyAllup
-                    consecutiveTimes = -1 //这一步已经不需要监控Y轴卡住了
+                    csTimes = -1 //这一步已经不需要监控Y轴卡住了
                     yTolerance = 0
                     if tolerance == 0 then //传送门型
                         TracePrint 传送一发
@@ -336,14 +369,14 @@ Sub Move //精确的移动:V2.3 近距离的一些补正
                             DelayRandom 70,71
                             KeyUp Up
                             DelayRandom 37,38
-                            KeyDown Up
-                            DelayRandom 77,78
-                            KeyUp Up
-                            DelayRandom 37,38
-                            KeyDown Up
-                            DelayRandom 82,83
-                            KeyUp Up
-                            DelayRandom 38,39
+                            // KeyDown Up
+                            // DelayRandom 77,78
+                            // KeyUp Up
+                            // DelayRandom 37,38
+                            // KeyDown Up
+                            // DelayRandom 82,83
+                            // KeyUp Up
+                            // DelayRandom 38,39
                             KeyUp Right
                             DelayRandom 11,12
                         Else If intX > tarX Then //向左小碎步
@@ -362,14 +395,14 @@ Sub Move //精确的移动:V2.3 近距离的一些补正
                             DelayRandom 70,71
                             KeyUp Up
                             DelayRandom 37,38
-                            KeyDown Up
-                            DelayRandom 77,78
-                            KeyUp Up
-                            DelayRandom 37,38
-                            KeyDown Up
-                            DelayRandom 82,83
-                            KeyUp Up
-                            DelayRandom 38,39
+                            // KeyDown Up
+                            // DelayRandom 77,78
+                            // KeyUp Up
+                            // DelayRandom 37,38
+                            // KeyDown Up
+                            // DelayRandom 82,83
+                            // KeyUp Up
+                            // DelayRandom 38,39
                             KeyUp Left
                             DelayRandom 11,12
                         else //直接按上
@@ -378,9 +411,6 @@ Sub Move //精确的移动:V2.3 近距离的一些补正
                             DelayRandom 120,122
                             KeyUp Up
                             DelayRandom 231,234
-                            alterX    = 0
-                            alterY    = 0
-                            Exit Sub
                         End If
                         Delay 125
                         Call GetXY()
