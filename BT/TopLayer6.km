@@ -354,7 +354,7 @@ Sub Navigate //引導路線
         SavedY		= tarY
         SavedTor	= tolerance
 
-        if tarY <= 74 then //上半层,
+        if intY <= 74 then //上半层,
             tarX      = 1
             tarY      = 67
             tolerance = 0
@@ -543,7 +543,7 @@ while 1 > 0
     if currentState == 0 Then //喷泉->屁3的路线
         tarX      = -85
         tarY      = 117
-        tolerance = 2
+        tolerance = 6
         Call Navigate()
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
         DelayRandom 198,207

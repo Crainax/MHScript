@@ -646,7 +646,7 @@ Sub Navigate //引導路線
         SavedY		= tarY
         SavedTor	= tolerance
 
-        if tarY <= 74 then //上半层,
+        if intY <= 74 then //上半层,
             tarX      = 1
             tarY      = 67
             tolerance = 0
@@ -743,7 +743,7 @@ while 1 > 0
     if a > 55 or intX >= 0 then //可以喷泉了
         tarX = -85
         tarY = 117
-        tolerance = 2
+        tolerance = 6
         call GetXY()
         if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
             Call Navigate()
