@@ -94,6 +94,43 @@ Sub Move_Bear  //熊形态的移动(解决了卡绳子的问题) v2.3 同步了火毒的修正
                 cY = intY
                 csTimes = 0
             End If
+        else if intY == 124 and tarY == 117 and tarX >= (-80-8) and tarX <=(-80+8) and intX >= -94 and intX <= -66 then //右跳
+            if intX >= -79 then
+                KeyDown Right
+                DelayRandom 210,213
+                KeyDown Space
+                DelayRandom 141,143
+                KeyUp Space
+                DelayRandom 85,86
+                KeyDown Left
+                DelayRandom 25,26
+                KeyUp Right
+                DelayRandom 100,102
+                KeyDown Space
+                DelayRandom 99,100
+                KeyUp Space
+                DelayRandom 153,155
+                KeyUp Left
+                DelayRandom 335,339
+            else
+                KeyDown Left
+                DelayRandom 210,213
+                KeyDown Space
+                DelayRandom 141,143
+                KeyUp Space
+                DelayRandom 85,86
+                KeyDown Right
+                DelayRandom 25,26
+                KeyUp Left
+                DelayRandom 100,102
+                KeyDown Space
+                DelayRandom 99,100
+                KeyUp Space
+                DelayRandom 153,155
+                KeyUp Right
+                DelayRandom 335,339
+            End If
+            //todo
         else //继续根据
             Call AntiJam() //防卡
             if tolerance > 2 Then
