@@ -82,7 +82,7 @@ Sub Move()  //跳放(Ver5.1 没自由龙脉前的刷法)
                 if consecutiveTimes >= consecutiveMax Then
                     consecutiveTimes	= -1	//判断为已经落地
                     consecutiveMax		= 3		//归位最大降落判断值
-                    if GetTimeStamp() - ReleaseTime2 > 3 then
+                    if GetTimeStamp() - ReleaseTime2 > 2 then
                         KeyDown Left
                         DelayRandom 104,106
                         KeyUp Left
@@ -201,6 +201,7 @@ Sub Move()  //跳放(Ver5.1 没自由龙脉前的刷法)
                 Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上跳(Y轴是用相反比较符)
                     consecutiveTimes = 0 //启动降落判断
                     cY = intY
+                    consecutiveMax = 6 //延长一点降落判断
                     KeyDown Alt
                     DelayRandom 328,430
                     KeyUp Alt
@@ -437,55 +438,31 @@ Timer          4, 1, 3100  //无限循环解轮
 while 1 > 0
 
     if state      == 0 then
-       tarX        = -17
-       tarY        = 91
-       tolerance   = 4
-       yTolerance  = 4
-        Call Navigate()
-    End If
-
-    if state      == 1 then
-       tarX        = 22
-       tarY        = 91
-       tolerance   = 4
-       yTolerance  = 4
-        Call Navigate()
-    End If
-
-    if state      == 2 then
-       tarX        = 46
-       tarY        = 91
-       tolerance   = 4
-       yTolerance  = 4
-        Call Navigate()
-    End If
-
-    if state      == 3 then
-       tarX        = 46
-       tarY        = 68
-       tolerance   = 4
-       yTolerance  = 4
-        Call Navigate()
-    End If
-
-    if state      == 4 then
-       tarX        = 22
-       tarY        = 76
-       tolerance   = 4
-       yTolerance  = 4
-        Call Navigate()
-    End If
-
-    if state      == 5 then
-       tarX        = -17
+       tarX        = -74
        tarY        = 79
        tolerance   = 4
        yTolerance  = 4
         Call Navigate()
     End If
 
+    if state      == 1 then
+       tarX        = 34
+       tarY        = 75
+       tolerance   = 4
+       yTolerance  = 4
+        Call Navigate()
+    End If
+
+    if state      == 2 then
+       tarX        = -20
+       tarY        = 64
+       tolerance   = 4
+       yTolerance  = 4
+        Call Navigate()
+    End If
+
     state = state + 1
-    if state < 0 or state > 6 Then
+    if state < 0 or state > 2 Then
         state = 0 //初始化状态为0
     End If
     Delay 5
