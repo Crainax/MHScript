@@ -210,7 +210,7 @@ Sub Move //精确的移动:V2.5 左右卡位修正,传送点偏移变小
                 cY = intY
                 csTimes = 0
             End If
-        else if intY == 106 and intX >= (-81-10) and intX <=(-81+10) then //小下跳
+        else if tarY - intY <= 11 and tarY > intY and tarX <= -62 then //小下跳
             DelayRandom 12,13
             KeyDown Down
             DelayRandom 134,136
