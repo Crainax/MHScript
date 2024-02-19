@@ -680,7 +680,7 @@ Sub Navigate //引導路線 V2.0针对各种地点
             alterY    = 67
             Call Move()
         else if intY == 115 and intX >= (-9-8) and intX <=(-9+8) then //人在风释放点
-            if GetTimeStamp() - pickTime > 60 then
+            if GetTimeStamp() - pickTime > 45 then
                 DelayRandom 42,46
                 KeyDown Left
                 DelayRandom 74,75
@@ -789,12 +789,28 @@ Sub Navigate //引導路線 V2.0针对各种地点
                 Call Move()
             End If
 
-            tarX      = 1
-            tarY      = 67
-            tolerance = 0
-            alterX    = 1 //传送位置
-            alterY    = 115
-            Call Move()
+            if GetTimeStamp() - pickTime > 45 then
+                KeyDown Left
+                DelayRandom 698,705
+                KeyDown Down
+                DelayRandom 17,18
+                KeyUp Left
+                DelayRandom 155,157
+                KeyDown Space
+                DelayRandom 1648,1665
+                KeyUp Space
+                DelayRandom 58,59
+                KeyUp Down
+                DelayRandom 705,713
+                pickTime = GetTimeStamp()
+            else
+                tarX      = 1
+                tarY      = 67
+                tolerance = 0
+                alterX    = 1 //传送位置
+                alterY    = 115
+                Call Move()
+            End If
 
             tarX      = SavedX
             tarY      = SavedY
@@ -867,6 +883,7 @@ End If
 ReleaseTime1   = 0         //施放冷却1
 ReleaseTime2   = 0         //施放冷却2
 seedTime1      = 0         //上次种子的时间
+pickTime       = 0         //捡钱时间
 fountainTime   = 0         //上次喷泉的时间
 RuneCooldown   = 0         //解轮冷却
 stoneSteleTime = 0         //上次轮回的时间
