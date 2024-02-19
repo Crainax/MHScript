@@ -13,7 +13,7 @@ Dim cY,           consecutiveTimes, consecutiveMax       //ÓÃÕâ¸ö¶«Î÷ÅĞ¶Ï½ÇÉ«ÊÇ²
 Dim tolerance,    tolLoc,           yTolerance           //¿ìËÙÒÆ¶¯µÄÈİ²î,0´ú±í¾«È·ÒÆ¶¯,ÁíÍâ¸öÊÇ¾Ö²¿±äÁ¿
 Dim ReleaseTime1, ReleaseTime2,     ReleaseTime3         //¸÷ÖÖÀäÈ´
 Dim a,            stoneSteleTime,   fountainTime         //¸÷ÖÖÀäÈ´
-Dim RuneCooldown, seedTime1,        seedTime2            //¸÷ÖÖÀäÈ´
+Dim RuneCooldown, seedTime1,        pickTime             //¸÷ÖÖÀäÈ´
 Dim staticCount,  staticX,          staticY              //·À¿¨¼ÆÊıÆ÷
 Dim SavedX,       SavedY,           SavedTor, SavedTorY  //±£´æÒ»ÏÂÁÙÊ±´¦ÀíµÄXY
 Dim min,          minType                                //Ô¤ÒÆ¶¯
@@ -69,7 +69,7 @@ Sub AntiJam //Ò»°ã¸úËæGetXYºóÓÃ
     End If
 End Sub
 
-Sub Move()  //¾«È·µÄÒÆ¶¯:Ver2.5 0ÈİÈÌ¼ÓÁËĞÂ°ì·¨
+Sub Move()  //¾«È·µÄÒÆ¶¯:Ver2.6 °«YÖá·´Ç½Ìø
     consecutiveTimes	= -1  //³õÊ¼¾ÍÆôÓÃÖ¸ÄÏÕëÅĞ¶Ï
     consecutiveMax		= 3   //½µÂäÄ¬ÈÏÖµÎª4
     Hooking				= 0 //¹³×Ó³õÊ¼ÊÇ¹ØµÄ
@@ -92,12 +92,95 @@ Sub Move()  //¾«È·µÄÒÆ¶¯:Ver2.5 0ÈİÈÌ¼ÓÁËĞÂ°ì·¨
                 cY = intY
                 consecutiveTimes = 0
             End If
-        else if intX == -48 and intY < 100 and intY > 84 then //Éş×Ó¿¨×¡
-            DelayRandom 32,35
-            KeyDown Up
-            DelayRandom 315,440
-            KeyUp Up
-            DelayRandom 32,35
+        else if intY == 124 and tarY == 117 and tarX >= (-80-8) and tarX <=(-80+8) and intX >= -94 and intX <= -66 then //ÓÒÌø
+            if intX >= -79 then
+                KeyDown Right
+                DelayRandom 210,213
+                KeyDown Space
+                DelayRandom 141,143
+                KeyUp Space
+                DelayRandom 85,86
+                KeyDown Left
+                DelayRandom 25,26
+                KeyUp Right
+                DelayRandom 100,102
+                KeyDown Space
+                DelayRandom 99,100
+                KeyUp Space
+                DelayRandom 153,155
+                KeyUp Left
+                DelayRandom 335,339
+            else
+                KeyDown Left
+                DelayRandom 210,213
+                KeyDown Space
+                DelayRandom 141,143
+                KeyUp Space
+                DelayRandom 85,86
+                KeyDown Right
+                DelayRandom 25,26
+                KeyUp Left
+                DelayRandom 100,102
+                KeyDown Space
+                DelayRandom 99,100
+                KeyUp Space
+                DelayRandom 153,155
+                KeyUp Right
+                DelayRandom 335,339
+            End If
+        else if intY == 115 and tarY == 111 and intX >= 1 and intX <= 8 then //Ìø¹ıÈ¥Ë®²»Òª×ß¹ıÈ¥
+            KeyDown Left
+            DelayRandom 151,153
+            KeyDown Space
+            DelayRandom 106,108
+            KeyUp Space
+            DelayRandom 11,12
+            KeyUp Left
+            DelayRandom 42,43
+            KeyDown Right
+            DelayRandom 229,232
+            KeyDown Space
+            DelayRandom 139,141
+            KeyUp Space
+            DelayRandom 79,80
+            KeyUp Right
+            DelayRandom 526,532
+        else if intY == 124 and tarY == 115 and tarX >= (-14-21) and tarX <=(-14+21) and intX >= -40 and intX <= 7 then //ÓÒÌø
+            if intX >= -14 then
+                KeyDown Right
+                DelayRandom 210,213
+                KeyDown Space
+                DelayRandom 141,143
+                KeyUp Space
+                DelayRandom 85,86
+                KeyDown Left
+                DelayRandom 25,26
+                KeyUp Right
+                DelayRandom 100,102
+                KeyDown Space
+                DelayRandom 99,100
+                KeyUp Space
+                DelayRandom 153,155
+                KeyUp Left
+                DelayRandom 335,339
+            else
+                KeyDown Left
+                DelayRandom 210,213
+                KeyDown Space
+                DelayRandom 141,143
+                KeyUp Space
+                DelayRandom 85,86
+                KeyDown Right
+                DelayRandom 25,26
+                KeyUp Left
+                DelayRandom 100,102
+                KeyDown Space
+                DelayRandom 99,100
+                KeyUp Space
+                DelayRandom 153,155
+                KeyUp Right
+                DelayRandom 335,339
+            End If
         else //¼ÌĞø¸ù¾İ
             Call AntiJam() //·À¿¨
             if tolerance > 4 Then
@@ -580,68 +663,94 @@ Sub SpellList() //Ëæ±ãÈÓ¼¼ÄÜ V2.4 ¹¥»÷³¤Ò»µã
     End If
 End Sub
 
-Sub Navigate //ÒıŒ§Â·¾€
+Sub Navigate //ÒıŒ§Â·¾€ V2.0Õë¶Ô¸÷ÖÖµØµã
     call GetXY()
-    if intX >= -38 and tarX >= -38 and intY-tarY >= 44 then //ÓÒ±ßµÄ³¬¸ß¸ß¶È´¦Àí
+    call GetXY()
+    if tarY <= 85 and tarX >= -38 then //Ä¿±êÓÒÉÏ½Ç:ÖÖ×Ó
         SavedX		= tarX
         SavedY		= tarY
         SavedTor	= tolerance
         SavedTorY	= yTolerance
 
-        tarX      = -9
-        tarY      = 115
-        tolerance = 6
-        Call Move()
+        if intX <= -38 Then//ÈËÔÚ×ó±ß,½ø´«ËÍÃÅ
+            tarX      = -85
+            tarY      = 117
+            tolerance = 0
+            alterX    = 1 //´«ËÍÎ»ÖÃ
+            alterY    = 67
+            Call Move()
+        else if intY == 115 and intX >= (-9-8) and intX <=(-9+8) then //ÈËÔÚ·çÊÍ·Åµã
+            if GetTimeStamp() - pickTime > 60 then
+                DelayRandom 42,46
+                KeyDown Left
+                DelayRandom 74,75
+                KeyDown Space
+                DelayRandom 80,81
+                KeyUp Space
+                DelayRandom 39,40
+                KeyDown Space
+                DelayRandom 100,102
+                KeyUp Space
+                DelayRandom 31,32
+                KeyUp Left
+                DelayRandom 396,400
+                KeyDown LCtrl
+                DelayRandom 110,112
+                KeyUp LCtrl
+                DelayRandom 1351,1365
+                KeyDown Right
+                DelayRandom 342,346
+                KeyDown Space
+                DelayRandom 85,86
+                KeyUp Right
+                DelayRandom 22,23
+                KeyUp Space
+                DelayRandom 760,768
+                pickTime = GetTimeStamp()
+            else //´«ËÍÃÅË«´«
+                tarX      = 1
+                tarY      = 115
+                tolerance = 0
+                alterX    = -85 //´«ËÍÎ»ÖÃ
+                alterY    = 117
+                Call Move()
 
-        DelayRandom 46,52
-        KeyDown LAlt
-        DelayRandom 161,163
-        KeyUp LAlt
-        DelayRandom 439,444
-        KeyDown LCtrl
-        DelayRandom 108,110
-        KeyUp LCtrl
-        DelayRandom 1714,1732
+                tarX      = -85
+                tarY      = 117
+                tolerance = 0
+                alterX    = 1 //´«ËÍÎ»ÖÃ
+                alterY    = 67
+                Call Move()
+            End If
+        else if intY == 111 and intX >= (26-8) and intX <=(26+8) then //ÈËÔÚË®ÊÍ·Åµã
+            DelayRandom 42,46
+            KeyDown Left
+            DelayRandom 511,517
+            KeyDown LCtrl
+            DelayRandom 58,59
+            KeyUp Left
+            DelayRandom 86,87
+            KeyUp LCtrl
+            DelayRandom 1190,1202
+            KeyDown Left
+            DelayRandom 337,341
+            KeyDown Space
+            DelayRandom 73,74
+            KeyUp Space
+            DelayRandom 58,59
+            KeyDown Space
+            DelayRandom 85,86
+            KeyUp Space
+            DelayRandom 73,74
+            KeyUp Left
+            DelayRandom 513,519
+        End If
 
         tarX		= SavedX
         tarY		= SavedY
         tolerance	= SavedTor
         yTolerance	= SavedTorY
-    else if intX <= -38 and tarX >= -38 and tarY <= 91  then //Ä¿µÄÔÚÓÒ,ÈËÔÚ×ó
-        SavedX		= tarX
-        SavedY		= tarY
-        SavedTor	= tolerance
-        SavedTorY	= yTolerance
-
-        tarX      = -85
-        tarY      = 117
-        tolerance = 0
-        alterX    = 1 //´«ËÍÎ»ÖÃ
-        alterY    = 67
-        Call Move()
-
-        tarX		= SavedX
-        tarY		= SavedY
-        tolerance	= SavedTor
-        yTolerance	= SavedTorY
-    else if intX >= -38 and tarX >= -38 and tarY > 91 and intY <= 67  then //ÈËÔÚ×îÉÏÃæ,Ä¿µÄÔÚÏÂÃæ2²ã
-        SavedX		= tarX
-        SavedY		= tarY
-        SavedTor	= tolerance
-        SavedTorY	= yTolerance
-
-        tarX      = 1
-        tarY      = 67
-        tolerance = 0
-        alterX    = 1 //´«ËÍÎ»ÖÃ
-        alterY    = 115
-        Call Move()
-
-        tarX		= SavedX
-        tarY		= SavedY
-        tolerance	= SavedTor
-        yTolerance	= SavedTorY
-    else if tarX <= -38 and intX >= -38 then //Ä¿µÄÔÚ×ó±ß
+    else if tarX <= -45 and intX >= -25 then //Ä¿µÄÔÚ×ó±ß:ÅçÈª
         SavedX		= tarX
         SavedY		= tarY
         SavedTor	= tolerance
@@ -665,6 +774,32 @@ Sub Navigate //ÒıŒ§Â·¾€
         tarX      = SavedX
         tarY      = SavedY
         tolerance = SavedTor
+    else if tarY > 91 and tarX >= -38 then //Ä¿±ê:ÓÒÏÂ½Ç
+        if intX <= -45 or intY <= 74 then
+            SavedX		= tarX
+            SavedY		= tarY
+            SavedTor	= tolerance
+
+            if intX <= -45 then //ÈËÔÚÅçÈª´¦
+                tarX      = -85
+                tarY      = 117
+                tolerance = 0
+                alterX    = 1 //´«ËÍÎ»ÖÃ
+                alterY    = 67
+                Call Move()
+            End If
+
+            tarX      = 1
+            tarY      = 67
+            tolerance = 0
+            alterX    = 1 //´«ËÍÎ»ÖÃ
+            alterY    = 115
+            Call Move()
+
+            tarX      = SavedX
+            tarY      = SavedY
+            tolerance = SavedTor
+        End If
     End If
     Call Move()
 End Sub
