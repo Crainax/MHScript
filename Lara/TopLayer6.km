@@ -592,7 +592,7 @@ Sub on_timer4 //查地图轮,每3秒一次 ver2.0不需要存储了
     End If
 EndSub
 
-Sub SpellList() //随便扔技能 V2.4 攻击长一点
+Sub SpellList() //随便扔技能 V2.5 根据地点放火(下按或上按)
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\V.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //找V3
         KeyDown V
@@ -622,36 +622,58 @@ Sub SpellList() //随便扔技能 V2.4 攻击长一点
                     DelayRandom 899,909
                 else //什么都没有就随机瞬移释放
                     a = GetTimeStamp() - ReleaseTime3
-                    if a > 12 then
-                        ReleaseTime3 = GetTimeStamp()
-                        Call GetXY()
-                        SavedX = intX
-                        SavedY = intY
-                        KeyDown LShift
-                        DelayRandom 128,130
-                        KeyUp LShift
-                        DelayRandom 437,442
-                        Call GetXY()
-                        if SavedX == intX and SavedY == intY then //人物没变就不要施放了,平A就行
+                    Call GetXY()
+                    if intY == 67 or intY = 115 or intY = 111 then //只有三个地方能放
+                        if a > 12 then
+                            ReleaseTime3 = GetTimeStamp()
+                            SavedX = intX
+                            SavedY = intY
+                            if intY == 67 and intX == 11 then //绳子正上方,左一点
+                                DelayRandom 42,50
+                                KeyDown Left
+                                DelayRandom 101,120
+                                KeyUp Left
+                                DelayRandom 42,50
+                            End If
+                            if intY == 67 then //压下键
+                                KeyDown Down
+                                DelayRandom 202,205
+                            else
+                                KeyDown Up
+                                DelayRandom 202,205
+                            End If
+                            KeyDown LShift
+                            DelayRandom 128,130
+                            KeyUp LShift
+                            DelayRandom 437,442
+                            KeyAllup
+                            Call GetXY()
+                            if SavedX == intX and SavedY == intY then //人物没变就不要施放了,平A就行
+                                KeyDown F
+                                DelayRandom 960,970
+                                KeyUp F
+                                DelayRandom 223,226
+                            else
+                                KeyDown E
+                                DelayRandom 136,138
+                                KeyUp E
+                                DelayRandom 82,83
+                                KeyDown Up
+                                DelayRandom 120,122
+                                KeyUp Up
+                                DelayRandom 187,189
+                                KeyDown S
+                                DelayRandom 83,84
+                                KeyUp S
+                                DelayRandom 456,461
+                            End If
+                        else
                             KeyDown F
                             DelayRandom 960,970
                             KeyUp F
                             DelayRandom 223,226
-                        else
-                            KeyDown E
-                            DelayRandom 136,138
-                            KeyUp E
-                            DelayRandom 82,83
-                            KeyDown Up
-                            DelayRandom 120,122
-                            KeyUp Up
-                            DelayRandom 187,189
-                            KeyDown S
-                            DelayRandom 83,84
-                            KeyUp S
-                            DelayRandom 456,461
                         End If
-                    else
+                    Else
                         KeyDown F
                         DelayRandom 960,970
                         KeyUp F
