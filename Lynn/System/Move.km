@@ -9,8 +9,8 @@ Dim x3,          y3,      xEnd, yEnd  // 2个顶点:技能区/屏幕右下角顶点
 Dim tarX,        tarY,    Hooking     //目标
 Dim logoX,       logoY,   intX, intY  //算目的地差值
 Dim dash,        tolLoc               //冲刺冷却
-Dim alterX,      alterY               //备用地点,传送门脚步开关
-Dim tolerance,   temp,    yTolerance  //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim alterX,      alterY,  switch1      //备用地点,传送门脚步开关
+Dim tolerance,   length,  yTolerance  //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim cY,          csTimes, csMax       //用这个东西判断角色是不是没有X或Y轴变化了
 Dim staticCount, staticX, staticY     //防卡计数器
 Dim LEDState                          //测试位置
@@ -24,7 +24,10 @@ Sub on_timer1 //鸟冲计时器
     End If
 
     if dash < 5 then //小于5才不断补充
+        switch1 = 1
         Timer 1,1,5000
+    else
+        switch1 = 0
     end if
 EndSub
 
@@ -75,7 +78,48 @@ Sub AntiJam //一般跟随GetXY后用
     End If
 End Sub
 
-Sub Move  //熊形态的移动(解决了卡绳子的问题) v2.3 同步了火毒的修正
+Sub JumpAttack
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\S.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then
+        KeyDown S
+        DelayRandom 182,185
+        KeyUp S
+    else
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\G.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            KeyDown G
+            DelayRandom 334,340
+            KeyUp G
+        else
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\B.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                KeyDown B
+                DelayRandom 182,185
+                KeyUp B
+            else
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\H.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    KeyDown H
+                    DelayRandom 782,785
+                    KeyUp H
+                else
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Y.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        KeyDown Y
+                        DelayRandom 482,485
+                        KeyUp Y
+                    else
+                        KeyDown F
+                        DelayRandom 70,71
+                        KeyUp F
+                    End If
+                End If
+            End If
+        End If
+    End If
+End Sub
+
+Sub Move  //1.0 初版琳恩
     csTimes = -1  //初始就启用指南针判断
     csMax   = 3   //降落默认值为4
     while  1 > 0
@@ -105,40 +149,67 @@ Sub Move  //熊形态的移动(解决了卡绳子的问题) v2.3 同步了火毒的修正
             else  //速走的默认为2
                 tolLoc = 2
             End If
+
+            // if dash > 0 then
+                // if tarX > intX then //加下总长度
+                    // length = tarX - intX
+                // else
+                    // length = intX - tarX
+                // end if
+                // if tarY > intY then //加下总长度
+                    // length = length + tarY - intY
+                // else
+                    // length = length + intY - tarY
+                // end if
+                // if length > 40 then //超过一定程度才会往目标飞去
+                    // if
+                    // if switch <= 0 then
+                        // switch = 1
+                        // Timer 1,1,5000
+                    // End If
+                // End If
+            // End if
             if intX < (tarX-24) Then //向右二段跳
                 csTimes = 0 //启动降落判断
                 cY = intY
                 TracePrint 右跳
                 DelayRandom 15,25
                 KeyDown Right
-                DelayRandom 96,97
-                KeyDown Space
-                DelayRandom 44,45
-                KeyUp Space
-                DelayRandom 71,72
-                KeyDown Space
                 DelayRandom 62,63
+                KeyDown Space
+                DelayRandom 55,56
                 KeyUp Space
-                DelayRandom 267,270
+                DelayRandom 61,62
+                KeyDown Space
+                DelayRandom 63,64
+                KeyUp Space
+                DelayRandom 37,38
                 KeyUp Right
-                DelayRandom 319,323
+                DelayRandom 116,118
+                Call JumpAttack()
+                DelayRandom 370,374
             Else If intX > (tarX+24) Then //向左二段跳
                 csTimes = 0 //启动降落判断
                 cY = 0
                 TracePrint 左跳
                 DelayRandom 15,25
                 KeyDown Left
-                DelayRandom 96,97
-                KeyDown Space
-                DelayRandom 44,45
-                KeyUp Space
-                DelayRandom 71,72
-                KeyDown Space
                 DelayRandom 62,63
+                KeyDown Space
+                DelayRandom 55,56
                 KeyUp Space
-                DelayRandom 267,270
+                DelayRandom 61,62
+                KeyDown Space
+                DelayRandom 63,64
+                KeyUp Space
+                DelayRandom 37,38
                 KeyUp Left
-                DelayRandom 319,323
+                DelayRandom 116,118
+                Call JumpAttack()
+                KeyDown F
+                DelayRandom 70,71
+                KeyUp F
+                DelayRandom 370,374
             Else If intX < (tarX-tolLoc) Then //向右走
                 KeyDown Right
                 Delay (tarX - tolLoc - intX) * 52
@@ -297,7 +368,9 @@ End If
 FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\Shift.bmp",000000,1.00,0,intX,intY
 if intX >= 0 Then //找到了5次
     dash = 5
+    switch1 = 0
 else
+    switch1 = 1
     dash = 0
     Timer 1,1,5000
 End If
