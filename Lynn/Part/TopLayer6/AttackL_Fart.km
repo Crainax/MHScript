@@ -1,0 +1,16 @@
+DelayRandom 469,474
+KeyDown Down
+DelayRandom 94,95
+KeyDown Space
+DelayRandom 672,679
+KeyUp Down
+DelayRandom 15,16
+KeyUp Space
+DelayRandom 281,284
+KeyDown F
+DelayRandom 663,670
+KeyUp F
+DelayRandom 287,290
+KeyDown Right
+DelayRandom 62,63
+KeyUp Right

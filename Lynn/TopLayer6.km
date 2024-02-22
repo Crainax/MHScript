@@ -11,7 +11,7 @@ Dim logoX,          logoY,        intX,     intY       //算目的地差值
 Dim alterX,         alterY,       cycle1               //备用地点,传送门脚步开关
 Dim tolerance,      yTolerance,   Hooking              //快速移动的容差
 Dim cY,             csTimes,      csMax                //用这个东西判断角色是不是没有X或Y轴变化了
-Dim tolLoc,         a                                  //冷却和状态相关
+Dim tolLoc,         a,            fireTime             //冷却和状态相关
 Dim stoneSteleTime, fountainTime, WGTime               //冷却
 Dim staticCount,    staticX,      staticY              //防卡计数器
 Dim SavedX,         SavedY,       SavedTor, SavedTorY  //保存一下临时处理的XY
@@ -97,7 +97,7 @@ Sub JumpAttack //跳A技能组
                         KeyUp Y
                     else
                         KeyDown F
-                        DelayRandom 70,71
+                        DelayRandom 621,626
                         KeyUp F
                     End If
                 End If
@@ -129,6 +129,78 @@ Sub Move  //1.0 初版琳恩
                 cY = intY
                 csTimes = 0
             End If
+        else if intY == 124 and tarY == 117 and tarX >= (-80-8) and tarX <=(-80+8) and intX >= -94 and intX <= -66 then //右跳
+            if intX >= -79 then
+                KeyDown Right
+                DelayRandom 210,213
+                KeyDown Space
+                DelayRandom 141,143
+                KeyUp Space
+                DelayRandom 85,86
+                KeyDown Left
+                DelayRandom 25,26
+                KeyUp Right
+                DelayRandom 100,102
+                KeyDown Space
+                DelayRandom 99,100
+                KeyUp Space
+                DelayRandom 153,155
+                KeyUp Left
+                DelayRandom 335,339
+            else
+                KeyDown Left
+                DelayRandom 210,213
+                KeyDown Space
+                DelayRandom 141,143
+                KeyUp Space
+                DelayRandom 85,86
+                KeyDown Right
+                DelayRandom 25,26
+                KeyUp Left
+                DelayRandom 100,102
+                KeyDown Space
+                DelayRandom 99,100
+                KeyUp Space
+                DelayRandom 153,155
+                KeyUp Right
+                DelayRandom 335,339
+            End If
+        else if intY == 124 and tarY == 115 and tarX >= (-14-21) and tarX <=(-14+21) and intX >= -40 and intX <= 7 then //右跳
+            if intX >= -14 then
+                KeyDown Right
+                DelayRandom 210,213
+                KeyDown Space
+                DelayRandom 141,143
+                KeyUp Space
+                DelayRandom 85,86
+                KeyDown Left
+                DelayRandom 25,26
+                KeyUp Right
+                DelayRandom 100,102
+                KeyDown Space
+                DelayRandom 99,100
+                KeyUp Space
+                DelayRandom 153,155
+                KeyUp Left
+                DelayRandom 335,339
+            else
+                KeyDown Left
+                DelayRandom 210,213
+                KeyDown Space
+                DelayRandom 141,143
+                KeyUp Space
+                DelayRandom 85,86
+                KeyDown Right
+                DelayRandom 25,26
+                KeyUp Left
+                DelayRandom 100,102
+                KeyDown Space
+                DelayRandom 99,100
+                KeyUp Space
+                DelayRandom 153,155
+                KeyUp Right
+                DelayRandom 335,339
+            End If
         else //继续根据
             Call AntiJam() //防卡
             if tolerance > 2 Then
@@ -157,8 +229,8 @@ Sub Move  //1.0 初版琳恩
                 // End If
             // End if
             if intX < (tarX-24) Then //向右二段跳
-                csTimes = 0 //启动降落判断
-                cY = intY
+                // csTimes = 0 //启动降落判断
+                // cY = intY
                 DelayRandom 15,25
                 KeyDown Right
                 DelayRandom 62,63
@@ -175,8 +247,8 @@ Sub Move  //1.0 初版琳恩
                 Call JumpAttack()
                 DelayRandom 370,374
             Else If intX > (tarX+24) Then //向左二段跳
-                csTimes = 0 //启动降落判断
-                cY = 0
+                // csTimes = 0 //启动降落判断
+                // cY = 0
                 DelayRandom 15,25
                 KeyDown Left
                 DelayRandom 62,63
@@ -339,7 +411,7 @@ End Sub
 
 Sub Navigate //引導路線 V1.0 先抄一波菈菈的
     call GetXY()
-    if tarY <= 85 and tarX >= -38 then //目标右上角:种子
+    if tarY <= 91 and tarX >= -38 then //目标跳A地点
         SavedX		= tarX
         SavedY		= tarY
         SavedTor	= tolerance
@@ -352,42 +424,160 @@ Sub Navigate //引導路線 V1.0 先抄一波菈菈的
             alterX    = 1 //传送位置
             alterY    = 67
             Call Move()
-        else if intY == 115 and intX >= (-9-8) and intX <=(-9+8) then //人在风释放点
-            tarX      = 1
-            tarY      = 115
-            tolerance = 0
-            alterX    = -85 //传送位置
-            alterY    = 117
-            Call Move()
 
-            tarX      = -85
-            tarY      = 117
-            tolerance = 0
-            alterX    = 1 //传送位置
-            alterY    = 67
-            Call Move()
-        else if intY == 111 and intX >= (26-8) and intX <=(26+8) then //人在水释放点
-            DelayRandom 42,46
-            KeyDown Left
-            DelayRandom 511,517
-            KeyDown LCtrl
-            DelayRandom 58,59
-            KeyUp Left
-            DelayRandom 86,87
-            KeyUp LCtrl
-            DelayRandom 1190,1202
-            KeyDown Left
-            DelayRandom 337,341
+            DelayRandom 45,46
+            KeyDown Down
+            DelayRandom 95,96
             KeyDown Space
-            DelayRandom 73,74
+            DelayRandom 104,106
             KeyUp Space
-            DelayRandom 58,59
+            DelayRandom 45,46
+            KeyUp Down
+            DelayRandom 119,121
+            KeyDown Right
+            DelayRandom 129,131
             KeyDown Space
-            DelayRandom 85,86
+            DelayRandom 61,62
             KeyUp Space
-            DelayRandom 73,74
-            KeyUp Left
-            DelayRandom 513,519
+            DelayRandom 54,55
+            KeyDown Space
+            DelayRandom 70,71
+            KeyUp Space
+            DelayRandom 4,5
+            KeyUp Right
+            DelayRandom 198,200
+            KeyDown F
+            DelayRandom 88,89
+            KeyUp F
+            DelayRandom 551,557
+        else if tarY == 91 and intY == 115 and intX >= (-18-8) and intX <=(-18+8) then //人在熊屁点
+            if tarX >= (20-4) and tarX <=(20+4) then //右平A点
+                DelayRandom 46,50
+                KeyDown Right
+                DelayRandom 47,48
+                KeyDown Space
+                DelayRandom 60,61
+                KeyUp Space
+                DelayRandom 54,55
+                KeyDown Space
+                DelayRandom 69,70
+                KeyUp Space
+                DelayRandom 69,70
+                KeyDown Up
+                DelayRandom 21,22
+                KeyDown LShift
+                DelayRandom 96,97
+                KeyUp LShift
+                DelayRandom 13,14
+                KeyUp Right
+                DelayRandom 11,12
+                KeyUp Up
+                DelayRandom 249,252
+                KeyDown F
+                DelayRandom 107,109
+                KeyUp F
+                DelayRandom 367,371
+            else if tarX >= (-14-4) and tarX <=(-14+4) then //左平A点
+                DelayRandom 46,50
+                KeyDown Left
+                DelayRandom 53,54
+                KeyDown Space
+                DelayRandom 62,63
+                KeyUp Space
+                DelayRandom 47,48
+                KeyDown Space
+                DelayRandom 75,76
+                KeyUp Space
+                DelayRandom 13,14
+                KeyUp Left
+                DelayRandom 269,272
+                KeyDown LAlt
+                DelayRandom 86,87
+                KeyUp LAlt
+                DelayRandom 1390,1404
+                KeyDown Right
+                DelayRandom 20,21
+                KeyDown Down
+                DelayRandom 136,138
+                KeyDown LShift
+                DelayRandom 153,155
+                KeyUp LShift
+                DelayRandom 95,96
+                KeyUp Right
+                DelayRandom 2,3
+                KeyUp Down
+                DelayRandom 224,227
+                KeyDown F
+                DelayRandom 102,104
+                KeyUp F
+                DelayRandom 404,409
+            else
+                tarX      = 1
+                tarY      = 115
+                tolerance = 0
+                alterX    = -85 //传送位置
+                alterY    = 117
+                Call Move()
+
+                tarX      = -85
+                tarY      = 117
+                tolerance = 0
+                alterX    = 1 //传送位置
+                alterY    = 67
+                Call Move()
+            End If
+        End If
+
+        if tarY == 91 and tarX >= (20-4) and tarX <=(20+4) and intX >= (22-8) and intX <=(22+8) then //右平A点卡住的情况
+            if intY == 111 then //下方
+                DelayRandom 46,50
+                KeyDown Right
+                DelayRandom 54,55
+                KeyDown Space
+                DelayRandom 45,46
+                KeyUp Space
+                DelayRandom 71,72
+                KeyDown Space
+                DelayRandom 88,89
+                KeyUp Right
+                DelayRandom 1,2
+                KeyUp Space
+                DelayRandom 48,49
+                KeyDown Left
+                DelayRandom 31,32
+                KeyDown Up
+                DelayRandom 153,155
+                KeyDown LShift
+                DelayRandom 120,122
+                KeyUp LShift
+                DelayRandom 101,103
+                KeyUp Up
+                DelayRandom 24,25
+                KeyUp Left
+                DelayRandom 150,152
+                KeyDown F
+                DelayRandom 169,171
+                KeyUp F
+                DelayRandom 419,424
+            else if intY == 67 then //上方
+                DelayRandom 46,50
+                KeyDown Down
+                DelayRandom 111,113
+                KeyDown Space
+                DelayRandom 672,679
+                KeyUp Space
+                DelayRandom 20,21
+                KeyUp Down
+                DelayRandom 171,173
+                KeyDown Left
+                DelayRandom 96,97
+                KeyUp Left
+                DelayRandom 81,82
+                KeyDown F
+                DelayRandom 96,97
+                KeyUp F
+                DelayRandom 387,391
+            End If
         End If
 
         tarX		= SavedX
@@ -406,6 +596,44 @@ Sub Navigate //引導路線 V1.0 先抄一波菈菈的
             alterX    = 1 //传送位置
             alterY    = 115
             Call Move()
+        else if intY <=91 and intY >= 85 then //人在平A点
+            if intX >= (20-4) and intX <=(20+4) then //右平A点
+                DelayRandom 46,50
+                KeyDown Left
+                DelayRandom 1,2
+                KeyDown Down
+                DelayRandom 48,49
+                KeyDown LShift
+                DelayRandom 120,122
+                KeyUp LShift
+                DelayRandom 41,42
+                KeyUp Left
+                DelayRandom 3,4
+                KeyUp Down
+                DelayRandom 379,383
+                KeyDown F
+                DelayRandom 145,147
+                KeyUp F
+                DelayRandom 419,424
+            else if intX >= (-14-4) and intX <=(-14+4) then //左平A点
+                DelayRandom 46,50
+                KeyDown Right
+                DelayRandom 1,2
+                KeyDown Down
+                DelayRandom 48,49
+                KeyDown LShift
+                DelayRandom 120,122
+                KeyUp LShift
+                DelayRandom 41,42
+                KeyUp Right
+                DelayRandom 3,4
+                KeyUp Down
+                DelayRandom 379,383
+                KeyDown F
+                DelayRandom 145,147
+                KeyUp F
+                DelayRandom 419,424
+            End If
         End If
 
         tarX      = 1
@@ -418,20 +646,68 @@ Sub Navigate //引導路線 V1.0 先抄一波菈菈的
         tarX      = SavedX
         tarY      = SavedY
         tolerance = SavedTor
-    else if tarY > 91 and tarX >= -38 then //目标:右下角
-        if intX <= -45 or intY <= 74 then
-            SavedX		= tarX
-            SavedY		= tarY
-            SavedTor	= tolerance
+    else if tarY == 115 and tarX >= (-18-8) and tarX <=(-18+8) then //目标熊屁点
+        SavedX		= tarX
+        SavedY		= tarY
+        SavedTor	= tolerance
 
-            if intX <= -45 then //人在喷泉处
-                tarX      = -85
-                tarY      = 117
-                tolerance = 0
-                alterX    = 1 //传送位置
-                alterY    = 67
-                Call Move()
-            End If
+        if intY >= 85 and intY <= 91 then //右平A点
+            if intX >= (20-4) and intX <=(20+4) then
+                DelayRandom 46,50
+                KeyDown Left
+                DelayRandom 302,306
+                KeyDown Down
+                DelayRandom 97,98
+                KeyUp Left
+                DelayRandom 13,14
+                KeyDown Space
+                DelayRandom 93,94
+                KeyUp Space
+                DelayRandom 97,98
+                KeyUp Down
+                DelayRandom 25,26
+                KeyDown Left
+                DelayRandom 88,89
+                KeyDown Space
+                DelayRandom 72,73
+                KeyUp Space
+                DelayRandom 43,44
+                KeyDown Space
+                DelayRandom 70,71
+                KeyUp Space
+                DelayRandom 94,95
+                KeyUp Left
+                DelayRandom 38,39
+                KeyDown Right
+                DelayRandom 78,79
+                KeyUp Right
+                DelayRandom 167,169
+                KeyDown F
+                DelayRandom 639,646
+                KeyUp F
+                DelayRandom 387,391
+            else if intX >= (-14-4) and intX <=(-14+4) then //左平A点
+                DelayRandom 46,50
+                KeyDown Down
+                DelayRandom 94,95
+                KeyDown Space
+                DelayRandom 672,679
+                KeyUp Down
+                DelayRandom 15,16
+                KeyUp Space
+                DelayRandom 281,284
+                KeyDown F
+                DelayRandom 663,670
+                KeyUp F
+                DelayRandom 287,290
+            end if
+        else if intX <= -38 then //人在喷泉处
+            tarX      = -85
+            tarY      = 117
+            tolerance = 0
+            alterX    = 1 //传送位置
+            alterY    = 67
+            Call Move()
 
             tarX      = 1
             tarY      = 67
@@ -439,11 +715,11 @@ Sub Navigate //引導路線 V1.0 先抄一波菈菈的
             alterX    = 1 //传送位置
             alterY    = 115
             Call Move()
-
-            tarX      = SavedX
-            tarY      = SavedY
-            tolerance = SavedTor
         End If
+
+        tarX      = SavedX
+        tarY      = SavedY
+        tolerance = SavedTor
     End If
     Call Move()
 End Sub
@@ -544,13 +820,14 @@ else //竖放屏幕
     xEnd = 1440
     yEnd = 2560
 End If
-stoneSteleTime = 0                   //上次轮回的时间
-RuneCooldown   = 0                   //解轮CD
-WGTime         = 0                   //上次放武公的时间
-fountainTime   = 0                   //上次喷泉时间
-cycle1         = 0                   //循环
-yTolerance     = 0                   //初始化容忍
-Timer          4, 1, 3100            //无限循环解符文
+stoneSteleTime = 0         //上次轮回的时间
+RuneCooldown   = 0         //解轮CD
+WGTime         = 0         //上次放武公的时间
+fireTime       = 0         //上次放熊屁的时间
+fountainTime   = 0         //上次喷泉时间
+cycle1         = 0         //循环
+yTolerance     = 0         //初始化容忍
+Timer          4, 1, 3100  //无限循环解符文
 while 1 > 0
 
     if GetTimeStamp() - stoneSteleTime > 570 then //可以放轮了
@@ -585,7 +862,7 @@ while 1 > 0
     End If
 
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\D.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then //熊屁
+    if intX >= 0 and GetTimeStamp() - fireTime > 28 Then //熊屁
         tarX      = -18
         tarY      = 115
         tolerance = 4
@@ -598,17 +875,18 @@ while 1 > 0
         KeyDown D
         DelayRandom 194,196
         KeyUp D
+        fireTime = GetTimeStamp()
         DelayRandom 412,421
     else //左右跳A
-        if   cycle1     == 0 then
-             tarX        = 20
-             tarY        = 91
-             tolerance   = 8
+        if cycle1     == 0 then
+            tarX        = 20
+            tarY        = 91
+            tolerance   = 8
         else if cycle1  == 1 then
-             tarX        = -14
-             tarY        = 91
-             tolerance   = 8
-             yTolerance  = 6
+            tarX        = -14
+            tarY        = 91
+            tolerance   = 8
+            yTolerance  = 6
         End If
         Call Navigate()
         Call Spell()
