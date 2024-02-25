@@ -201,6 +201,54 @@ Sub Move  //1.0 初版琳恩
                 KeyUp Right
                 DelayRandom 335,339
             End If
+        else if intY == 111 and tarY == 91 and tarX >= (20-4) and tarX <=(20+4) and intX >= (22-8) and intX <=(22+8) then
+            DelayRandom 46,50
+            KeyDown Right
+            DelayRandom 54,55
+            KeyDown Space
+            DelayRandom 45,46
+            KeyUp Space
+            DelayRandom 71,72
+            KeyDown Space
+            DelayRandom 88,89
+            KeyUp Right
+            DelayRandom 1,2
+            KeyUp Space
+            DelayRandom 48,49
+            KeyDown Left
+            DelayRandom 31,32
+            KeyDown Up
+            DelayRandom 153,155
+            KeyDown LShift
+            DelayRandom 120,122
+            KeyUp LShift
+            DelayRandom 101,103
+            KeyUp Up
+            DelayRandom 24,25
+            KeyUp Left
+            DelayRandom 150,152
+            KeyDown F
+            DelayRandom 169,171
+            KeyUp F
+            DelayRandom 419,424
+        else if intY == 67 and tarY == 91 and tarX >= (20-4) and tarX <=(20+4) and intX >= (22-8) and intX <=(22+8) then
+            DelayRandom 46,50
+            KeyDown Down
+            DelayRandom 111,113
+            KeyDown Space
+            DelayRandom 672,679
+            KeyUp Space
+            DelayRandom 20,21
+            KeyUp Down
+            DelayRandom 171,173
+            KeyDown Left
+            DelayRandom 96,97
+            KeyUp Left
+            DelayRandom 81,82
+            KeyDown F
+            DelayRandom 96,97
+            KeyUp F
+            DelayRandom 387,391
         else //继续根据
             Call AntiJam() //防卡
             if tolerance > 2 Then
@@ -528,58 +576,6 @@ Sub Navigate //引導路線 V1.0 先抄一波菈菈的
             End If
         End If
 
-        if tarY == 91 and tarX >= (20-4) and tarX <=(20+4) and intX >= (22-8) and intX <=(22+8) then //右平A点卡住的情况
-            if intY == 111 then //下方
-                DelayRandom 46,50
-                KeyDown Right
-                DelayRandom 54,55
-                KeyDown Space
-                DelayRandom 45,46
-                KeyUp Space
-                DelayRandom 71,72
-                KeyDown Space
-                DelayRandom 88,89
-                KeyUp Right
-                DelayRandom 1,2
-                KeyUp Space
-                DelayRandom 48,49
-                KeyDown Left
-                DelayRandom 31,32
-                KeyDown Up
-                DelayRandom 153,155
-                KeyDown LShift
-                DelayRandom 120,122
-                KeyUp LShift
-                DelayRandom 101,103
-                KeyUp Up
-                DelayRandom 24,25
-                KeyUp Left
-                DelayRandom 150,152
-                KeyDown F
-                DelayRandom 169,171
-                KeyUp F
-                DelayRandom 419,424
-            else if intY == 67 then //上方
-                DelayRandom 46,50
-                KeyDown Down
-                DelayRandom 111,113
-                KeyDown Space
-                DelayRandom 672,679
-                KeyUp Space
-                DelayRandom 20,21
-                KeyUp Down
-                DelayRandom 171,173
-                KeyDown Left
-                DelayRandom 96,97
-                KeyUp Left
-                DelayRandom 81,82
-                KeyDown F
-                DelayRandom 96,97
-                KeyUp F
-                DelayRandom 387,391
-            End If
-        End If
-
         tarX		= SavedX
         tarY		= SavedY
         tolerance	= SavedTor
@@ -599,22 +595,26 @@ Sub Navigate //引導路線 V1.0 先抄一波菈菈的
         else if intY <=91 and intY >= 85 then //人在平A点
             if intX >= (20-4) and intX <=(20+4) then //右平A点
                 DelayRandom 46,50
-                KeyDown Left
-                DelayRandom 1,2
                 KeyDown Down
-                DelayRandom 48,49
-                KeyDown LShift
-                DelayRandom 120,122
-                KeyUp LShift
-                DelayRandom 41,42
-                KeyUp Left
-                DelayRandom 3,4
+                DelayRandom 95,96
+                KeyDown Space
+                DelayRandom 112,114
+                KeyUp Space
+                DelayRandom 103,105
                 KeyUp Down
-                DelayRandom 379,383
+                DelayRandom 70,71
+                KeyDown Left
+                DelayRandom 292,295
+                KeyDown LShift
+                DelayRandom 104,106
+                KeyUp LShift
+                DelayRandom 54,55
+                KeyUp Left
+                DelayRandom 323,327
                 KeyDown F
-                DelayRandom 145,147
+                DelayRandom 138,140
                 KeyUp F
-                DelayRandom 419,424
+                DelayRandom 368,372
             else if intX >= (-14-4) and intX <=(-14+4) then //左平A点
                 DelayRandom 46,50
                 KeyDown Right
@@ -654,38 +654,26 @@ Sub Navigate //引導路線 V1.0 先抄一波菈菈的
         if intY >= 85 and intY <= 91 then //右平A点
             if intX >= (20-4) and intX <=(20+4) then
                 DelayRandom 46,50
-                KeyDown Left
-                DelayRandom 302,306
                 KeyDown Down
-                DelayRandom 97,98
-                KeyUp Left
-                DelayRandom 13,14
+                DelayRandom 95,96
                 KeyDown Space
-                DelayRandom 93,94
+                DelayRandom 112,114
                 KeyUp Space
-                DelayRandom 97,98
+                DelayRandom 103,105
                 KeyUp Down
-                DelayRandom 25,26
-                KeyDown Left
-                DelayRandom 88,89
-                KeyDown Space
-                DelayRandom 72,73
-                KeyUp Space
-                DelayRandom 43,44
-                KeyDown Space
                 DelayRandom 70,71
-                KeyUp Space
-                DelayRandom 94,95
+                KeyDown Left
+                DelayRandom 292,295
+                KeyDown LShift
+                DelayRandom 104,106
+                KeyUp LShift
+                DelayRandom 54,55
                 KeyUp Left
-                DelayRandom 38,39
-                KeyDown Right
-                DelayRandom 78,79
-                KeyUp Right
-                DelayRandom 167,169
+                DelayRandom 323,327
                 KeyDown F
-                DelayRandom 639,646
+                DelayRandom 138,140
                 KeyUp F
-                DelayRandom 387,391
+                DelayRandom 368,372
             else if intX >= (-14-4) and intX <=(-14+4) then //左平A点
                 DelayRandom 46,50
                 KeyDown Down
@@ -702,19 +690,31 @@ Sub Navigate //引導路線 V1.0 先抄一波菈菈的
                 DelayRandom 287,290
             end if
         else if intX <= -38 then //人在喷泉处
-            tarX      = -85
-            tarY      = 117
-            tolerance = 0
-            alterX    = 1 //传送位置
-            alterY    = 67
-            Call Move()
-
-            tarX      = 1
-            tarY      = 67
-            tolerance = 0
-            alterX    = 1 //传送位置
-            alterY    = 115
-            Call Move()
+            DelayRandom 46,50
+            KeyDown Right
+            DelayRandom 85,86
+            KeyDown Space
+            DelayRandom 62,63
+            KeyUp Space
+            DelayRandom 95,96
+            KeyDown Space
+            DelayRandom 87,88
+            KeyUp Space
+            DelayRandom 275,278
+            KeyDown LShift
+            DelayRandom 161,163
+            KeyUp LShift
+            DelayRandom 351,355
+            KeyDown LShift
+            DelayRandom 63,64
+            KeyUp LShift
+            DelayRandom 52,53
+            KeyDown LShift
+            DelayRandom 95,96
+            KeyUp LShift
+            DelayRandom 154,156
+            KeyUp Right
+            DelayRandom 268,271
         End If
 
         tarX      = SavedX
@@ -758,11 +758,11 @@ Sub on_timer4 //查地图轮,每3秒一次 ver2.0不需要存储了
 EndSub
 
 Sub Spell //普通技能
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\C.bmp",000000,1.0,0,intX,intY//江湖群
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\F3.bmp",000000,1.0,0,intX,intY//江湖群
     if intX >= 0 Then
-        KeyDown C
+        KeyDown F3
         DelayRandom 105,107
-        KeyUp C
+        KeyUp F3
         DelayRandom 105,106
     else //放其他小技能
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\V.bmp",000000,1.0,0,intX,intY//江湖群
