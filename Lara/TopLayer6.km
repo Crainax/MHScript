@@ -899,6 +899,7 @@ else //竖放屏幕
 End If
 ReleaseTime1   = 0         //施放冷却1
 ReleaseTime2   = 0         //施放冷却2
+ReleaseTime3   = 0         //施放冷却3
 seedTime1      = 0         //上次种子的时间
 pickTime       = 0         //捡钱时间
 fountainTime   = 0         //上次喷泉的时间
