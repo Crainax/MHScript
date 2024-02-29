@@ -13,6 +13,7 @@ Dim tolerance,      yTolerance,   Hooking              //快速移动的容差
 Dim cY,             csTimes,      csMax                //用这个东西判断角色是不是没有X或Y轴变化了
 Dim tolLoc,         a,            fireTime             //冷却和状态相关
 Dim stoneSteleTime, fountainTime, WGTime               //冷却
+Dim pick1,          pick2                              //捡钱
 Dim staticCount,    staticX,      staticY              //防卡计数器
 Dim SavedX,         SavedY,       SavedTor, SavedTorY  //保存一下临时处理的XY
 Dim RuneCooldown                                       //找轮间隔
@@ -201,54 +202,74 @@ Sub Move  //1.0 初版琳恩
                 KeyUp Right
                 DelayRandom 335,339
             End If
-        else if intY == 111 and tarY == 91 and tarX >= (20-4) and tarX <=(20+4) and intX >= (22-8) and intX <=(22+8) then
-            DelayRandom 46,50
-            KeyDown Right
-            DelayRandom 54,55
-            KeyDown Space
-            DelayRandom 45,46
-            KeyUp Space
-            DelayRandom 71,72
-            KeyDown Space
-            DelayRandom 88,89
-            KeyUp Right
-            DelayRandom 1,2
-            KeyUp Space
-            DelayRandom 48,49
-            KeyDown Left
-            DelayRandom 31,32
-            KeyDown Up
-            DelayRandom 153,155
-            KeyDown LShift
-            DelayRandom 120,122
-            KeyUp LShift
-            DelayRandom 101,103
-            KeyUp Up
-            DelayRandom 24,25
-            KeyUp Left
-            DelayRandom 150,152
-            KeyDown F
-            DelayRandom 169,171
-            KeyUp F
-            DelayRandom 419,424
-        else if intY == 67 and tarY == 91 and tarX >= (20-4) and tarX <=(20+4) and intX >= (22-8) and intX <=(22+8) then
-            DelayRandom 46,50
-            KeyDown Down
-            DelayRandom 111,113
-            KeyDown Space
-            DelayRandom 672,679
-            KeyUp Space
-            DelayRandom 20,21
-            KeyUp Down
-            DelayRandom 171,173
-            KeyDown Left
-            DelayRandom 96,97
-            KeyUp Left
-            DelayRandom 81,82
-            KeyDown F
-            DelayRandom 96,97
-            KeyUp F
-            DelayRandom 387,391
+        else if intY != 91 and tarY == 91 and tarX >= (20-4) and tarX <=(20+4) and intX >= (22-8) and intX <=(22+8) then
+            if intY >= 111 then //下面前往上面
+                DelayRandom 46,50
+                KeyDown Right
+                DelayRandom 54,55
+                KeyDown Space
+                DelayRandom 45,46
+                KeyUp Space
+                DelayRandom 71,72
+                KeyDown Space
+                DelayRandom 88,89
+                KeyUp Right
+                DelayRandom 1,2
+                KeyUp Space
+                DelayRandom 48,49
+                KeyDown Left
+                DelayRandom 31,32
+                KeyDown Up
+                DelayRandom 153,155
+                KeyDown LShift
+                DelayRandom 120,122
+                KeyUp LShift
+                DelayRandom 101,103
+                KeyUp Up
+                DelayRandom 24,25
+                KeyUp Left
+                DelayRandom 150,152
+                KeyDown F
+                DelayRandom 169,171
+                KeyUp F
+                DelayRandom 419,424
+            else if intY == 67 then //上面前往下面
+                DelayRandom 46,50
+                KeyDown Left
+                DelayRandom 2,3
+                KeyDown Down
+                DelayRandom 17,18
+                KeyDown LShift
+                DelayRandom 138,140
+                KeyUp LShift
+                DelayRandom 36,37
+                KeyUp Left
+                DelayRandom 22,23
+                KeyUp Down
+                DelayRandom 284,287
+                KeyDown Right
+                DelayRandom 80,81
+                KeyDown LShift
+                DelayRandom 94,95
+                KeyUp LShift
+                DelayRandom 3,4
+                KeyUp Right
+                DelayRandom 664,671
+            else then intY == 74 then //上面跳下來
+                DelayRandom 46,50
+                KeyDown Down
+                DelayRandom 96,97
+                KeyDown Space
+                DelayRandom 64,65
+                KeyUp Space
+                DelayRandom 48,49
+                KeyUp Down
+                DelayRandom 172,174
+                KeyDown F
+                DelayRandom 102,104
+                KeyUp F
+                DelayRandom 392,396
+            End If
         else //继续根据
             Call AntiJam() //防卡
             if tolerance > 2 Then
@@ -468,19 +489,6 @@ Sub Move  //1.0 初版琳恩
     Wend
 End Sub
 
-Sub Judge //判断人物是否在某个地点旁边,用tarXY,tolerance,tolLoc返回结果,不能嵌套move()使用,可以先使用这个再用move
-    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-    tolLoc = 0
-    if intX >= 0 Then //找到了人物才会进行下去
-        intX = intX - logoX
-        intY = intY - logoY
-        if intY == tarY and intX >= (tarX - tolerance) and intX <= (tarX + tolerance) then
-            tolLoc = 1
-        End If
-    End If
-End Sub
-
 Sub Navigate //引導路線 V1.0 先抄一波菈菈的
     call GetXY()
     if tarY <= 91 and tarX >= -38 then //目标跳A地点
@@ -521,7 +529,7 @@ Sub Navigate //引導路線 V1.0 先抄一波菈菈的
             KeyDown F
             DelayRandom 88,89
             KeyUp F
-            DelayRandom 551,557
+            DelayRandom 751,757
         else if tarY == 91 and intY == 115 and intX >= (-18-8) and intX <=(-18+8) then //人在熊屁点
             if tarX >= (20-4) and tarX <=(20+4) then //右平A点
                 DelayRandom 46,50
@@ -677,27 +685,56 @@ Sub Navigate //引導路線 V1.0 先抄一波菈菈的
 
         if intY >= 85 and intY <= 91 then //右平A点
             if intX >= (20-4) and intX <=(20+4) then
-                DelayRandom 46,50
-                KeyDown Down
-                DelayRandom 95,96
-                KeyDown Space
-                DelayRandom 112,114
-                KeyUp Space
-                DelayRandom 103,105
-                KeyUp Down
-                DelayRandom 70,71
-                KeyDown Left
-                DelayRandom 292,295
-                KeyDown LShift
-                DelayRandom 104,106
-                KeyUp LShift
-                DelayRandom 54,55
-                KeyUp Left
-                DelayRandom 323,327
-                KeyDown F
-                DelayRandom 138,140
-                KeyUp F
-                DelayRandom 368,372
+                if GetTimeStamp() - pick1 > 75 then
+                    KeyDown Down
+                    DelayRandom 73,74
+                    KeyDown Space
+                    DelayRandom 1077,1088
+                    KeyUp Space
+                    DelayRandom 45,46
+                    KeyUp Down
+                    DelayRandom 135,137
+                    KeyDown Left
+                    DelayRandom 23,24
+                    KeyDown Up
+                    DelayRandom 42,43
+                    KeyDown LShift
+                    DelayRandom 103,105
+                    KeyUp LShift
+                    DelayRandom 61,62
+                    KeyUp Up
+                    DelayRandom 38,39
+                    KeyUp Left
+                    DelayRandom 308,312
+                    KeyDown F
+                    DelayRandom 144,146
+                    KeyUp F
+                    DelayRandom 493,498
+                    pick1 = GetTimeStamp()
+                else
+                    DelayRandom 46,50
+                    KeyDown Down
+                    DelayRandom 95,96
+                    KeyDown Space
+                    DelayRandom 112,114
+                    KeyUp Space
+                    DelayRandom 103,105
+                    KeyUp Down
+                    DelayRandom 70,71
+                    KeyDown Left
+                    DelayRandom 292,295
+                    KeyDown LShift
+                    DelayRandom 104,106
+                    KeyUp LShift
+                    DelayRandom 54,55
+                    KeyUp Left
+                    DelayRandom 323,327
+                    KeyDown F
+                    DelayRandom 138,140
+                    KeyUp F
+                    DelayRandom 368,372
+                End If
+
             else if intX >= (-14-4) and intX <=(-14+4) then //左平A点
                 DelayRandom 46,50
                 KeyDown Down
@@ -848,6 +885,8 @@ stoneSteleTime = 0         //上次轮回的时间
 RuneCooldown   = 0         //解轮CD
 WGTime         = 0         //上次放武公的时间
 fireTime       = 0         //上次放熊屁的时间
+pick1          = 0         //捡钱
+pick2          = 0         //捡钱
 fountainTime   = 0         //上次喷泉时间
 cycle1         = 0         //循环
 yTolerance     = 0         //初始化容忍
@@ -855,12 +894,15 @@ Timer          4, 1, 3100  //无限循环解符文
 while 1 > 0
 
     if GetTimeStamp() - stoneSteleTime > 570 then //可以放轮了
-        DelayRandom 356,358
-        KeyDown O
-        DelayRandom 237,239
-        KeyUp O
-        DelayRandom 736,747
-        stoneSteleTime = GetTimeStamp()
+        call GetXY()
+        if intY == 117 or intY == 115 or intY == 91 then
+            DelayRandom 356,358
+            KeyDown O
+            DelayRandom 237,239
+            KeyUp O
+            DelayRandom 736,747
+            stoneSteleTime = GetTimeStamp()
+        End If
     End If
 
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
@@ -874,6 +916,26 @@ while 1 > 0
             Call Navigate()
         End If
         DelayRandom 56,58
+        if GetTimeStamp() - pick2 > 75 then
+            DelayRandom 256,258
+            KeyDown Space
+            Delay 86
+            KeyUp Space
+            Delay 76
+            KeyDown F
+            Delay 153
+            KeyUp F
+            Delay 485
+            KeyDown Space
+            Delay 80
+            KeyUp Space
+            Delay 133
+            KeyDown F
+            Delay 118
+            KeyUp F
+            Delay 520
+            pick2 = GetTimeStamp()
+        End If
         KeyDown Right
         DelayRandom 62,68
         KeyUp Right
