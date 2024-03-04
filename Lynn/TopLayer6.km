@@ -351,53 +351,77 @@ Sub Move  //1.0 初版琳恩
                         If intX < tarX Then //向右小碎步
                             DelayRandom 45,52
                             KeyDown Right
-                            DelayRandom 98,99
-                            KeyDown Up
-                            DelayRandom 104,106
-                            KeyUp Up
-                            DelayRandom 56,57
-                            KeyDown Up
-                            DelayRandom 63,64
-                            KeyUp Up
-                            DelayRandom 50,51
+                            DelayRandom 37,38
                             KeyDown Up
                             DelayRandom 70,71
                             KeyUp Up
                             DelayRandom 37,38
-                            //KeyDown Up
-                            //DelayRandom 77,78
-                            //KeyUp Up
-                            //DelayRandom 37,38
-                            //KeyDown Up
-                            //DelayRandom 82,83
-                            //KeyUp Up
-                            //DelayRandom 38,39
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyDown Up
+                                DelayRandom 70,71
+                                KeyUp Up
+                                DelayRandom 37,38
+                            End if
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyDown Up
+                                DelayRandom 70,71
+                                KeyUp Up
+                                DelayRandom 37,38
+                            End if
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyDown Up
+                                DelayRandom 77,78
+                                KeyUp Up
+                                DelayRandom 37,38
+                            End if
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyDown Up
+                                DelayRandom 82,83
+                                KeyUp Up
+                                DelayRandom 38,39
+                            End if
                             KeyUp Right
                             DelayRandom 11,12
                         Else If intX > tarX Then //向左小碎步
                             DelayRandom 45,52
                             KeyDown Left
-                            DelayRandom 98,99
-                            KeyDown Up
-                            DelayRandom 104,106
-                            KeyUp Up
-                            DelayRandom 56,57
-                            KeyDown Up
-                            DelayRandom 63,64
-                            KeyUp Up
-                            DelayRandom 50,51
+                            DelayRandom 37,38
                             KeyDown Up
                             DelayRandom 70,71
                             KeyUp Up
                             DelayRandom 37,38
-                            //KeyDown Up
-                            //DelayRandom 77,78
-                            //KeyUp Up
-                            //DelayRandom 37,38
-                            //KeyDown Up
-                            //DelayRandom 82,83
-                            //KeyUp Up
-                            //DelayRandom 38,39
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyDown Up
+                                DelayRandom 70,71
+                                KeyUp Up
+                                DelayRandom 37,38
+                            End if
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyDown Up
+                                DelayRandom 70,71
+                                KeyUp Up
+                                DelayRandom 37,38
+                            End if
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyDown Up
+                                DelayRandom 77,78
+                                KeyUp Up
+                                DelayRandom 37,38
+                            End if
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyDown Up
+                                DelayRandom 82,83
+                                KeyUp Up
+                                DelayRandom 38,39
+                            End if
                             KeyUp Left
                             DelayRandom 11,12
                         else //直接按上
