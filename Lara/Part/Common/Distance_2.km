@@ -1,0 +1,8 @@
+Delay 500
+KeyDown Left
+Delay 71
+KeyUp Left
+Delay 176
+KeyDown Up
+Delay 79
+KeyUp Up
