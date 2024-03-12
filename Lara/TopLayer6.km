@@ -13,7 +13,8 @@ Dim cY,           csTimes,        csMax                //ÓÃÕâ¸ö¶«Î÷ÅÐ¶Ï½ÇÉ«ÊÇ²»Ê
 Dim tolerance,    tolLoc,         yTolerance           //¿ìËÙÒÆ¶¯µÄÈÝ²î,0´ú±í¾«È·ÒÆ¶¯,ÁíÍâ¸öÊÇ¾Ö²¿±äÁ¿
 Dim ReleaseTime1, ReleaseTime2,   ReleaseTime3         //¸÷ÖÖÀäÈ´
 Dim a,            stoneSteleTime, fountainTime         //¸÷ÖÖÀäÈ´
-Dim RuneCooldown, seedTime1,      pickTime             //¸÷ÖÖÀäÈ´
+Dim RuneCooldown, seedTime1                            //¸÷ÖÖÀäÈ´
+Dim pick1,        pick2                                //Àä…s
 Dim staticCount,  staticX,        staticY              //·À¿¨¼ÆÊýÆ÷
 Dim SavedX,       SavedY,         SavedTor, SavedTorY  //±£´æÒ»ÏÂÁÙÊ±´¦ÀíµÄXY
 Dim min,          minType                              //Ô¤ÒÆ¶¯
@@ -696,7 +697,7 @@ Sub Navigate //ÒýŒ§Â·¾€ V2.0Õë¶Ô¸÷ÖÖµØµã
             alterY    = 67
             Call Move()
         else if intY == 115 and intX >= (-9-8) and intX <=(-9+8) then //ÈËÔÚ·çÊÍ·Åµã
-            if GetTimeStamp() - pickTime > 45 then
+            if GetTimeStamp() - pick1 > 45 then
                 DelayRandom 42,46
                 KeyDown Left
                 DelayRandom 74,75
@@ -722,7 +723,7 @@ Sub Navigate //ÒýŒ§Â·¾€ V2.0Õë¶Ô¸÷ÖÖµØµã
                 DelayRandom 22,23
                 KeyUp Space
                 DelayRandom 760,768
-                pickTime = GetTimeStamp()
+                pick1 = GetTimeStamp()
             else //´«ËÍÃÅË«´«
                 tarX      = 1
                 tarY      = 115
@@ -805,7 +806,7 @@ Sub Navigate //ÒýŒ§Â·¾€ V2.0Õë¶Ô¸÷ÖÖµØµã
                 Call Move()
             End If
 
-            if GetTimeStamp() - pickTime > 45 then
+            if GetTimeStamp() - pick1 > 45 then
                 KeyDown Left
                 DelayRandom 698,705
                 KeyDown Down
@@ -818,7 +819,7 @@ Sub Navigate //ÒýŒ§Â·¾€ V2.0Õë¶Ô¸÷ÖÖµØµã
                 DelayRandom 58,59
                 KeyUp Down
                 DelayRandom 705,713
-                pickTime = GetTimeStamp()
+                pick1 = GetTimeStamp()
             else
                 tarX      = 1
                 tarY      = 67
@@ -896,15 +897,16 @@ else //Êú·ÅÆÁÄ»
     xEnd = 1440
     yEnd = 2560
 End If
-ReleaseTime1   = 0         //Ê©·ÅÀäÈ´1
-ReleaseTime2   = 0         //Ê©·ÅÀäÈ´2
-ReleaseTime3   = 0         //Ê©·ÅÀäÈ´3
-seedTime1      = 0         //ÉÏ´ÎÖÖ×ÓµÄÊ±¼ä
-pickTime       = 0         //¼ñÇ®Ê±¼ä
-fountainTime   = 0         //ÉÏ´ÎÅçÈªµÄÊ±¼ä
-RuneCooldown   = 0         //½âÂÖÀäÈ´
-stoneSteleTime = 0         //ÉÏ´ÎÂÖ»ØµÄÊ±¼ä
-yTolerance     = 0         //³õÊ¼»¯
+ReleaseTime1   = 0               //Ê©·ÅÀäÈ´1
+ReleaseTime2   = 0               //Ê©·ÅÀäÈ´2
+ReleaseTime3   = 0               //Ê©·ÅÀäÈ´3
+seedTime1      = 0               //ÉÏ´ÎÖÖ×ÓµÄÊ±¼ä
+pick1          = 0               //¼ñÇ®Ê±¼ä
+pick2          = GetTimeStamp()  //¼ñÇ®Ê±¼ä
+fountainTime   = 0               //ÉÏ´ÎÅçÈªµÄÊ±¼ä
+RuneCooldown   = 0               //½âÂÖÀäÈ´
+stoneSteleTime = 0               //ÉÏ´ÎÂÖ»ØµÄÊ±¼ä
+yTolerance     = 0               //³õÊ¼»¯
 while 1 > 0
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
     a = GetTimeStamp() - fountainTime
@@ -915,6 +917,26 @@ while 1 > 0
         call GetXY()
         if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
             Call Navigate()
+        End If
+        if GetTimeStamp() - pick2 > 75 then
+            DelayRandom 278,281
+            KeyDown Space
+            DelayRandom 149,151
+            KeyUp Space
+            DelayRandom 38,39
+            KeyDown F
+            DelayRandom 178,180
+            KeyUp F
+            DelayRandom 481,486
+            KeyDown Space
+            DelayRandom 90,91
+            KeyUp Space
+            DelayRandom 195,197
+            KeyDown F
+            DelayRandom 136,138
+            KeyUp F
+            DelayRandom 540,546
+            pick2 = GetTimeStamp()
         End If
         DelayRandom 56,58
         KeyDown Right

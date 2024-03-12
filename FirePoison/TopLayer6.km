@@ -191,7 +191,7 @@ Sub AntiJam //一般跟随GetXY后用,  Ver2.0 延长了一点时间防误判断
     End If
 End Sub
 
-Sub Move //精确的移动:V2.5 左右卡位修正,传送点偏移变小
+Sub Move //精确的移动:V2.8 传送门更严谨+左右走防数值过大
     csTimes = -1 //初始就启用指南针判断
     stuckTimes = 0 //防卡检测初始次数为0
     cX = -100
@@ -221,10 +221,10 @@ Sub Move //精确的移动:V2.5 左右卡位修正,传送点偏移变小
             KeyUp Down
             DelayRandom 548,554
         else //继续根据
-            if tolerance > 2 Then
+            if tolerance > 4 Then
                 tolLoc = tolerance
-            else  //速走的默认为2
-                tolLoc = 2
+            else  //速走的默认为4
+                tolLoc = 4
             End If
             if intX < (tarX-12) Then //右瞬:这里的shit必须要抬起来 不然好像下面会出问题
                 If stuckTimes < 2 Then
@@ -285,12 +285,24 @@ Sub Move //精确的移动:V2.5 左右卡位修正,传送点偏移变小
             Else If intX < (tarX-tolLoc) Then //向右走
                 Call AntiJam()
                 KeyDown Right
-                Delay (tarX - tolLoc - intX) * 52
+                a = (tarX - tolLoc - intX) * 52
+                if a < 52 then
+                    a = 52
+                else if a > 1800 then
+                    a = 1800
+                End If
+                Delay a
                 KeyUp Right
             Else If intX > (tarX+tolLoc) Then //向左走
                 Call AntiJam()
                 KeyDown Left
-                Delay (intX - tarX - tolLoc) * 52
+                a = (tarX - tolLoc - intX) * 52
+                if a < 52 then
+                    a = 52
+                else if a > 1800 then
+                    a = 1800
+                End If
+                Delay a
                 KeyUp Left
             else //到Y方向的了
                 If intY < (tarY - yTolerance) Then //如果人在目标之上,就下瞬(Y轴是用相反比较符)
@@ -452,6 +464,41 @@ Sub Move //精确的移动:V2.5 左右卡位修正,传送点偏移变小
                             Exit Sub
                         else
                         End if
+                    else if tolerance == -1 then //负1代表枚举走到目的地
+                        if intX - tarX == 4 then
+                            KeyDown Left
+                            Delay 197
+                            KeyUp Left
+                        else if intX - tarX == -4 then
+                            KeyDown Right
+                            Delay 197
+                            KeyUp Right
+                        else if intX - tarX == 3 then
+                            KeyDown Left
+                            Delay 145
+                            KeyUp Left
+                        else if intX - tarX == -3 then
+                            KeyDown Right
+                            Delay 145
+                            KeyUp Right
+                        else if intX - tarX == 2 then
+                            KeyDown Left
+                            Delay 71
+                            KeyUp Left
+                        else if intX - tarX == -2 then
+                            KeyDown Right
+                            Delay 71
+                            KeyUp Right
+                        else if intX > tarX then
+                            KeyDown Left
+                            Delay 40
+                            KeyUp Left
+                        else if intX < tarX then
+                            KeyDown Right
+                            Delay 40
+                            KeyUp Right
+                        End If
+                        Exit Sub
                     else //非传送门
                         if tolerance < 4 Then //容忍度小于4还是要小碎步
                             for 10
