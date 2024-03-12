@@ -1,7 +1,7 @@
 [General]
 ScreenX=1440
 ScreenY=2560
-Times=0
+Times=1
 
 [Script]
 Dim x1,        x2,               y1,   y2        // 矩形区域:小地图采样点
@@ -31,9 +31,11 @@ else //竖放屏幕
 End If
 
 
-FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Mercedes\angle.bmp",000000,1.00,0,intX,intY	//找图
+FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\Rune5.bmp",000000,1.00,0,intX,intY	//找图
 If intX >= 0 Then
-	MsgBox "找到了"	 //弹窗
+    TracePrint 地震轮[ & intX & , & intY & ]
+    MoveTo intX+2,intY+1
+    RightClick
 else
 	MsgBox "没找到"	 //弹窗
 End If
