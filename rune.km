@@ -35,9 +35,8 @@ Sub Navigate  //模拟移动,不要移植这个
 	MsgBox [轮X轴 & tarX & ,轮Y轴 & tarY & ]
 End Sub
 
-Sub on_timer4 //查地图轮,每3秒一次 ver2.0不需要存储了
-    a = GetTimeStamp() - RuneCooldown
-    if a > 600 then //可以放轮了
+Sub ReleaseRune //定期解轮 ver2.1
+    if GetTimeStamp() - RuneCooldown > 600 then //可以放轮了
         FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
         if intX >= 0 then
             FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
@@ -58,15 +57,11 @@ Sub on_timer4 //查地图轮,每3秒一次 ver2.0不需要存储了
             DelayRandom 100,120
             Beep 1000,200
             Pause
-            call GetXY()
-            tarX = intX
-            tarY = intY
             RuneCooldown = GetTimeStamp()
         else
         End If
-        Timer 4,1,5000 //无限循环
     End If
-EndSub
+End Sub
 
 
 GetScreenResolution intX, intY
@@ -90,8 +85,8 @@ else //竖放屏幕
     yEnd = 2560
 End If
 RuneCooldown = 0
-Timer 4,1,1000 //无限循环
 TracePrint 开始了哦
 while 1 > 0
+    Call ReleaseRune()
     DelayRandom 500,1000
 Wend
