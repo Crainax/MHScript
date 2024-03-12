@@ -107,7 +107,7 @@ Sub JumpAttack //跳A技能组
     End If
 End Sub
 
-Sub Move  //1.0 初版琳恩
+Sub Move  //1.2 左右防卡和0容忍定点移动
     csTimes = -1  //初始就启用指南针判断
     csMax   = 3   //降落默认值为4
     while  1 > 0
@@ -124,7 +124,7 @@ Sub Move  //1.0 初版琳恩
                 csTimes = csTimes + 1
                 if csTimes >= csMax Then
                     csTimes	= -1	//判断为已经落地
-                    csMax	= 3		//归位最大降落判断值
+                    csMax		= 3		//归位最大降落判断值
                 End If
             else
                 cY = intY
@@ -270,6 +270,7 @@ Sub Move  //1.0 初版琳恩
                 KeyUp F
                 DelayRandom 392,396
             End If
+
         else //继续根据
             Call AntiJam() //防卡
             if tolerance > 2 Then
@@ -298,8 +299,8 @@ Sub Move  //1.0 初版琳恩
                 // End If
             // End if
             if intX < (tarX-24) Then //向右二段跳
-                // csTimes = 0 //启动降落判断
-                // cY = intY
+                csTimes = 0 //启动降落判断
+                cY = intY
                 DelayRandom 15,25
                 KeyDown Right
                 DelayRandom 62,63
@@ -316,8 +317,8 @@ Sub Move  //1.0 初版琳恩
                 Call JumpAttack()
                 DelayRandom 370,374
             Else If intX > (tarX+24) Then //向左二段跳
-                // csTimes = 0 //启动降落判断
-                // cY = 0
+                csTimes = 0 //启动降落判断
+                cY = 0
                 DelayRandom 15,25
                 KeyDown Left
                 DelayRandom 62,63
@@ -338,11 +339,23 @@ Sub Move  //1.0 初版琳恩
                 DelayRandom 370,374
             Else If intX < (tarX-tolLoc) Then //向右走
                 KeyDown Right
-                Delay (tarX - tolLoc - intX) * 52
+                a = (tarX - tolLoc - intX) * 52
+                if a < 52 then
+                    a = 52
+                else if a > 1800 then
+                    a = 1800
+                End If
+                Delay a
                 KeyUp Right
             Else If intX > (tarX+tolLoc) Then //向左走
                 KeyDown Left
-                Delay (intX - tarX - tolLoc) * 52
+                a = (tarX - tolLoc - intX) * 52
+                if a < 52 then
+                    a = 52
+                else if a > 1800 then
+                    a = 1800
+                End If
+                Delay a
                 KeyUp Left
             else
                 If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
@@ -460,6 +473,41 @@ Sub Move  //1.0 初版琳恩
                             Exit Sub
                         else
                         End if
+                    else if tolerance == -1 then //负1代表枚举走到目的地
+                        if intX - tarX == 4 then
+                            KeyDown Left
+                            Delay 197
+                            KeyUp Left
+                        else if intX - tarX == -4 then
+                            KeyDown Right
+                            Delay 197
+                            KeyUp Right
+                        else if intX - tarX == 3 then
+                            KeyDown Left
+                            Delay 145
+                            KeyUp Left
+                        else if intX - tarX == -3 then
+                            KeyDown Right
+                            Delay 145
+                            KeyUp Right
+                        else if intX - tarX == 2 then
+                            KeyDown Left
+                            Delay 71
+                            KeyUp Left
+                        else if intX - tarX == -2 then
+                            KeyDown Right
+                            Delay 71
+                            KeyUp Right
+                        else if intX > tarX then
+                            KeyDown Left
+                            Delay 40
+                            KeyUp Left
+                        else if intX < tarX then
+                            KeyDown Right
+                            Delay 40
+                            KeyUp Right
+                        End If
+                        Exit Sub
                     else //非传送门
                         if tolerance < 4 Then //容忍度小于4还是要小碎步
                             for 10
@@ -785,9 +833,8 @@ Sub Navigate //引導路線 V1.0 先抄一波菈菈的
     Call Move()
 End Sub
 
-Sub on_timer4 //查地图轮,每3秒一次 ver2.0不需要存储了
-    a = GetTimeStamp() - RuneCooldown
-    if a > 600 then //可以放轮了
+Sub ReleaseRune //定期解轮 ver2.1
+    if GetTimeStamp() - RuneCooldown > 600 then //可以放轮了
         FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
         if intX >= 0 then
             FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
@@ -808,15 +855,11 @@ Sub on_timer4 //查地图轮,每3秒一次 ver2.0不需要存储了
             DelayRandom 100,120
             Beep 1000,200
             Pause
-            call GetXY()
-            tarX = intX
-            tarY = intY
             RuneCooldown = GetTimeStamp()
         else
         End If
-        Timer 4,1,5000 //无限循环
     End If
-EndSub
+End Sub
 
 Sub Spell //普通技能
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\F3.bmp",000000,1.0,0,intX,intY//江湖群
@@ -890,7 +933,6 @@ pick2          = GetTimeStamp()  //捡钱
 fountainTime   = 0               //上次喷泉时间
 cycle1         = 0               //循环
 yTolerance     = 0               //初始化容忍
-Timer          4, 1, 3100        //无限循环解符文
 while 1 > 0
 
     if GetTimeStamp() - stoneSteleTime > 570 then //可以放轮了
@@ -981,6 +1023,6 @@ while 1 > 0
             cycle1 = 0
         End If
     End If
-
+    Call ReleaseRune() //定期解轮
     Delay 5
 Wend

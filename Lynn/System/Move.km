@@ -119,7 +119,7 @@ Sub JumpAttack
     End If
 End Sub
 
-Sub Move  //1.1 传送门更新
+Sub Move  //1.2 左右防卡和0容忍定点移动
     csTimes = -1  //初始就启用指南针判断
     csMax   = 3   //降落默认值为4
     while  1 > 0
@@ -212,11 +212,23 @@ Sub Move  //1.1 传送门更新
                 DelayRandom 370,374
             Else If intX < (tarX-tolLoc) Then //向右走
                 KeyDown Right
-                Delay (tarX - tolLoc - intX) * 52
+                a = (tarX - tolLoc - intX) * 52
+                if a < 52 then
+                    a = 52
+                else if a > 1800 then
+                    a = 1800
+                End If
+                Delay a
                 KeyUp Right
             Else If intX > (tarX+tolLoc) Then //向左走
                 KeyDown Left
-                Delay (intX - tarX - tolLoc) * 52
+                a = (tarX - tolLoc - intX) * 52
+                if a < 52 then
+                    a = 52
+                else if a > 1800 then
+                    a = 1800
+                End If
+                Delay a
                 KeyUp Left
             else
                 If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
@@ -339,6 +351,41 @@ Sub Move  //1.1 传送门更新
                         else
                             TracePrint 未到达[ & intX & , & intY & ],传送[ & alterX & , & alterY & ]
                         End if
+                    else if tolerance == -1 then //负1代表枚举走到目的地
+                        if intX - tarX == 4 then
+                            KeyDown Left
+                            Delay 197
+                            KeyUp Left
+                        else if intX - tarX == -4 then
+                            KeyDown Right
+                            Delay 197
+                            KeyUp Right
+                        else if intX - tarX == 3 then
+                            KeyDown Left
+                            Delay 145
+                            KeyUp Left
+                        else if intX - tarX == -3 then
+                            KeyDown Right
+                            Delay 145
+                            KeyUp Right
+                        else if intX - tarX == 2 then
+                            KeyDown Left
+                            Delay 71
+                            KeyUp Left
+                        else if intX - tarX == -2 then
+                            KeyDown Right
+                            Delay 71
+                            KeyUp Right
+                        else if intX > tarX then
+                            KeyDown Left
+                            Delay 40
+                            KeyUp Left
+                        else if intX < tarX then
+                            KeyDown Right
+                            Delay 40
+                            KeyUp Right
+                        End If
+                        Exit Sub
                     else //非传送门
                         if tolerance < 4 Then //容忍度小于4还是要小碎步
                             for 10

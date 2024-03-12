@@ -305,11 +305,23 @@ Sub Move()  //精确的移动:Ver2.7 加上了-1的容忍(精确走位)
                 End If
             Else If intX < (tarX-tolLoc) Then //向右走
                 KeyDown Right
-                Delay (tarX - tolLoc - intX) * 52
+                a = (tarX - tolLoc - intX) * 52
+                if a < 52 then
+                    a = 52
+                else if a > 1800 then
+                    a = 1800
+                End If
+                Delay a
                 KeyUp Right
             Else If intX > (tarX+tolLoc) Then //向左走
                 KeyDown Left
-                Delay (intX - tarX - tolLoc) * 52
+                a = (tarX - tolLoc - intX) * 52
+                if a < 52 then
+                    a = 52
+                else if a > 1800 then
+                    a = 1800
+                End If
+                Delay a
                 KeyUp Left
             else
                 If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)

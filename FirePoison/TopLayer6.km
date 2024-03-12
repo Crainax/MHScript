@@ -598,9 +598,8 @@ Sub Navigate //引導路線
     Call Move()
 End Sub
 
-Sub on_timer4 //查地图轮,每3秒一次 ver2.0不需要存储了
-    a = GetTimeStamp() - RuneCooldown
-    if a > 600 then //可以放轮了
+Sub ReleaseRune //定期解轮 ver2.1
+    if GetTimeStamp() - RuneCooldown > 600 then //可以放轮了
         FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
         if intX >= 0 then
             FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
@@ -621,15 +620,11 @@ Sub on_timer4 //查地图轮,每3秒一次 ver2.0不需要存储了
             DelayRandom 100,120
             Beep 1000,200
             Pause
-            call GetXY()
-            tarX = intX
-            tarY = intY
             RuneCooldown = GetTimeStamp()
         else
         End If
-        Timer 4,1,5000 //无限循环
     End If
-EndSub
+End Sub
 
 //Main函数
 GetScreenResolution intX, intY
@@ -663,7 +658,6 @@ AuraTime       = 0                     //领域时间
 DTime          = 0                     //末日冷却时间
 cycleCount     = 0                     //巡逻位置指针
 yTolerance     = 0                     //初始化
-Timer          4, 1, 3100              //无限循环
 Timer          1, 1, 1000              //无限循环
 while 1 > 0
     a = GetTimeStamp() - stoneSteleTime
@@ -696,6 +690,7 @@ while 1 > 0
             DelayRandom 712,721
         End If
         currentState = 1 //喷泉->顶点
+        Call ReleaseRune() //定期解轮
     End If
 
     if currentState == 1 Then //顶点处
@@ -703,7 +698,8 @@ while 1 > 0
         tarY      = 67
         tolerance = 4
         Call Navigate()
-        currentState = 2 //然后去屁2
+        currentState = 2
+        Call ReleaseRune() //定期解轮
     End If
 
     if currentState == 2 Then
@@ -711,7 +707,7 @@ while 1 > 0
         tarY      = 67
         tolerance = 6
         Call Navigate()
-        currentState = 3 //然后去屁2
+        currentState = 3
     End If
 
     if currentState == 3 Then
@@ -719,7 +715,7 @@ while 1 > 0
         tarY      = 85
         tolerance = 6
         Call Navigate()
-        currentState = 4 //然后去屁2
+        currentState = 4
     End If
 
     if currentState == 4 Then
@@ -727,7 +723,7 @@ while 1 > 0
         tarY      = 91
         tolerance = 6
         Call Navigate()
-        currentState = 5 //然后去屁2
+        currentState = 5
     End If
 
     if currentState == 5 Then
@@ -735,7 +731,7 @@ while 1 > 0
         tarY      = 91
         tolerance = 4
         Call Navigate()
-        currentState = 6 //然后去屁2
+        currentState = 6
     End If
 
     if currentState == 6 Then
@@ -743,7 +739,7 @@ while 1 > 0
         tarY      = 91
         tolerance = 6
         Call Navigate()
-        currentState = 7 //然后去屁2
+        currentState = 7
     End If
 
     if currentState == 7 Then
@@ -751,7 +747,7 @@ while 1 > 0
         tarY      = 111
         tolerance = 6
         Call Navigate()
-        currentState = 8 //然后去屁2
+        currentState = 8
     End If
 
     if currentState == 8 Then
@@ -765,6 +761,7 @@ while 1 > 0
         else
             currentState = 10 //回到老位置
         End If
+        Call ReleaseRune() //定期解轮
     End If
 
     if currentState == 9 Then//领域
