@@ -296,7 +296,7 @@ Sub Move //精确的移动:V2.8 传送门更严谨+左右走防数值过大
             Else If intX > (tarX+tolLoc) Then //向左走
                 Call AntiJam()
                 KeyDown Left
-                a = (tarX - tolLoc - intX) * 52
+                a = (intX - tarX - tolLoc) * 52
                 if a < 52 then
                     a = 52
                 else if a > 1800 then

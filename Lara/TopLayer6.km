@@ -13,7 +13,7 @@ Dim cY,           csTimes,        csMax                //ÓÃÕâ¸ö¶«Î÷ÅÐ¶Ï½ÇÉ«ÊÇ²»Ê
 Dim tolerance,    tolLoc,         yTolerance           //¿ìËÙÒÆ¶¯µÄÈÝ²î,0´ú±í¾«È·ÒÆ¶¯,ÁíÍâ¸öÊÇ¾Ö²¿±äÁ¿
 Dim ReleaseTime1, ReleaseTime2,   ReleaseTime3         //¸÷ÖÖÀäÈ´
 Dim a,            stoneSteleTime, fountainTime         //¸÷ÖÖÀäÈ´
-Dim RuneCooldown, seedTime1                            //¸÷ÖÖÀäÈ´
+Dim RuneCooldown, seedTime1,      WGTime               //¸÷ÖÖÀäÈ´
 Dim pick1,        pick2                                //Àä…s
 Dim staticCount,  staticX,        staticY              //·À¿¨¼ÆÊýÆ÷
 Dim SavedX,       SavedY,         SavedTor, SavedTorY  //±£´æÒ»ÏÂÁÙÊ±´¦ÀíµÄXY
@@ -403,7 +403,7 @@ Sub Move()  //¾«È·µÄÒÆ¶¯:Ver2.7 ¼ÓÉÏÁË-1µÄÈÝÈÌ(¾«È·×ßÎ»)
                 KeyUp Right
             Else If intX > (tarX+tolLoc) Then //Ïò×ó×ß
                 KeyDown Left
-                a = (tarX - tolLoc - intX) * 52
+                a = (intX - tarX - tolLoc) * 52
                 if a < 52 then
                     a = 52
                 else if a > 1800 then
@@ -656,11 +656,12 @@ Sub SpellList() //Ëæ±ãÈÓ¼¼ÄÜ V2.5 ¸ù¾ÝµØµã·Å»ð(ÏÂ°´»òÉÏ°´)
                 DelayRandom 512,519
             else
                 FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\4.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //ÕÒÎä¹«
+                if intX >= 0 and GetTimeStamp() - WGTime > 58 Then //ÕÒÎä¹«
                     KeyDown 4
                     DelayRandom 105,107
                     KeyUp 4
                     DelayRandom 899,909
+                    WGTime = GetTimeStamp()
                 else //Ê²Ã´¶¼Ã»ÓÐ¾ÍËæ»úË²ÒÆÊÍ·Å
                     a = GetTimeStamp() - ReleaseTime3
                     Call GetXY()

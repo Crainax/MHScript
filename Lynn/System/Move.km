@@ -170,8 +170,6 @@ Sub Move  //1.2 左右防卡和0容忍定点移动
                 // End If
             // End if
             if intX < (tarX-24) Then //向右二段跳
-                csTimes = 0 //启动降落判断
-                cY = intY
                 TracePrint 右跳
                 DelayRandom 15,25
                 KeyDown Right
@@ -189,8 +187,6 @@ Sub Move  //1.2 左右防卡和0容忍定点移动
                 Call JumpAttack()
                 DelayRandom 370,374
             Else If intX > (tarX+24) Then //向左二段跳
-                csTimes = 0 //启动降落判断
-                cY = 0
                 TracePrint 左跳
                 DelayRandom 15,25
                 KeyDown Left
@@ -222,7 +218,7 @@ Sub Move  //1.2 左右防卡和0容忍定点移动
                 KeyUp Right
             Else If intX > (tarX+tolLoc) Then //向左走
                 KeyDown Left
-                a = (tarX - tolLoc - intX) * 52
+                a = (intX - tarX - tolLoc) * 52
                 if a < 52 then
                     a = 52
                 else if a > 1800 then
