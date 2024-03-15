@@ -1,6 +1,6 @@
 [General]
-ScreenX=1440
-ScreenY=2560
+ScreenX=2560
+ScreenY=1440
 Times=1
 
 [Script]
@@ -10,33 +10,21 @@ Dim logoX,logoY,intX,intY
 Dim x,y
 
 GetScreenResolution intX, intY
-if intX > intY then //横放屏幕
-    x1 = 700
-    y1 = 550
-    x2 = 1650
-    y2 = 850
-    x3 = 1500
-    y3 = 1250
-    xEnd = 2560
-    yEnd = 1440
-else //竖放屏幕
-    x1 = 0
-    y1 = 1650
-    x2 = 300
-    y2 = 1900
-    x3 = 800
-    y3 = 2300
-    xEnd = 1440
-    yEnd = 2560
-End If
+x1 = intX - 1860
+y1 = intY - 890
+x2 = intX - 910
+y2 = intY - 590
+x3 = intX - 1060
+y3 = intY - 190
+xEnd = intX
+yEnd = intY
 
-
-FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\Rune5.bmp",000000,1.00,0,intX,intY	//找图
-If intX >= 0 Then
-    TracePrint 地震轮[ & intX & , & intY & ]
-    MoveTo intX+2,intY+1
-    RightClick
-else
-	MsgBox "没找到"	 //弹窗
-End If
-Delay 300
+while 1 > 0
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\G.bmp",000000,1.00,0,intX,intY	//找图
+    If intX >= 0 Then
+        MsgBox 找到坐标[ & intX & , & intY & ]
+    else
+        MsgBox "没找到"	 //弹窗
+    End If
+    Delay 300
+Wend

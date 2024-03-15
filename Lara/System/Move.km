@@ -67,29 +67,29 @@ Sub JumpAttack()
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\G.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then
         KeyDown G
-        DelayRandom 334,340
+        DelayRandom 333,335
         KeyUp G
     else
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\C2.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
             KeyDown C
-            DelayRandom 182,185
+            DelayRandom 583,585
             KeyUp C
         else
             FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\H.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then
                 KeyDown H
-                DelayRandom 782,785
+                DelayRandom 783,785
                 KeyUp H
             else
                 FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Y.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then
                     KeyDown Y
-                    DelayRandom 482,485
+                    DelayRandom 583,585
                     KeyUp Y
                 else //普攻
                     KeyDown F
-                    DelayRandom 113,115
+                    DelayRandom 313,315
                     KeyUp F
                 End If
             End If
@@ -128,10 +128,7 @@ Sub Move()  //精确的移动:Ver2.8 整合了跳A放的技能
                 tolLoc = 4
             End If
             if intX < (tarX-24) Then //向右二段跳
-                csTimes = 0 //启动降落判断
-                cY = intY
                 TracePrint 右跳
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\G.bmp",000000,1.00,0,intX,intY
                 DelayRandom 15,25
                 KeyDown Right
                 DelayRandom 50,51
@@ -146,12 +143,9 @@ Sub Move()  //精确的移动:Ver2.8 整合了跳A放的技能
                 KeyUp Right
                 DelayRandom 41,42
                 Call JumpAttack()
-                DelayRandom 146,151
+                DelayRandom 256,261
             Else If intX > (tarX+24) Then //向左二段跳
-                csTimes = 0 //启动降落判断
-                cY = 0
                 TracePrint 左跳
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\G.bmp",000000,1.00,0,intX,intY
                 DelayRandom 15,25
                 KeyDown Left
                 DelayRandom 50,51
@@ -166,7 +160,7 @@ Sub Move()  //精确的移动:Ver2.8 整合了跳A放的技能
                 KeyUp Left
                 DelayRandom 41,42
                 Call JumpAttack()
-                DelayRandom 146,151
+                DelayRandom 256,261
             Else If intX < (tarX-tolLoc) Then //向右走
                 KeyDown Right
                 a = (tarX - tolLoc - intX) * 52

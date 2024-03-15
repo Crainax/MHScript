@@ -1,0 +1,26 @@
+[General]
+ScreenX=1440
+ScreenY=2560
+Times=1
+
+[Script]
+DelayRandom 15,25
+KeyDown Right
+DelayRandom 50,51
+KeyDown Space
+DelayRandom 80,81
+KeyUp Space
+DelayRandom 30,31
+KeyDown Space
+DelayRandom 75,76
+KeyUp Space
+DelayRandom 85,86
+KeyUp Right
+DelayRandom 41,42
+KeyDown C
+DelayRandom 583,585
+KeyUp C
+DelayRandom 256,261
+KeyDown Space
+DelayRandom 63,64
+KeyUp Space
