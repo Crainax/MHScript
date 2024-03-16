@@ -4,15 +4,15 @@ ScreenY=2560
 Times=0
 
 [Script]
-Dim x1,          x2,      y1,   y2    // 矩形区域:小地图采样点
-Dim x3,          y3,      xEnd, yEnd  // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,        tarY,    Hooking     //目标
-Dim logoX,       logoY,   intX, intY  //算目的地差值
-Dim alterX,      alterY               //备用地点,传送门脚步开关
-Dim cY,          csTimes, csMax       //用这个东西判断角色是不是没有X或Y轴变化了
-Dim tolerance,   tolLoc,  yTolerance  //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim staticCount, staticX, staticY     //防卡计数器
-Dim LEDState                          //测试用:开大写键就是获取点位,不要切来切去的了
+Dim x1,          x2,      y1,      y2    // 矩形区域:小地图采样点
+Dim x3,          y3,      xEnd,    yEnd  // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,        tarY,    Hooking, a     //目标
+Dim logoX,       logoY,   intX,    intY  //算目的地差值
+Dim alterX,      alterY,  facing         //备用地点,传送门脚步开关,传送门的面向
+Dim cY,          csTimes, csMax          //用这个东西判断角色是不是没有X或Y轴变化了
+Dim tolerance,   tolLoc,  yTolerance     //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim staticCount, staticX, staticY        //防卡计数器
+Dim LEDState                             //测试用:开大写键就是获取点位,不要切来切去的了
 
 //目前已经算出一个二段跳能跳32的X轴(平地)
 //下跳时长:33 -> down3   22->down2  11->down1
@@ -318,40 +318,100 @@ Sub Move()  //精确的移动:Ver2.8 整合了跳A放的技能
                             TracePrint 未到达[ & intX & , & intY & ],传送[ & alterX & , & alterY & ]
                         End if
                     else if tolerance == -1 then //负1代表枚举走到目的地
+                        a = 0
                         if intX - tarX == 4 then
                             KeyDown Left
                             Delay 197
                             KeyUp Left
+                            if facing > 0 then //要求面向右边
+                                a = 1
+                            end if
                         else if intX - tarX == -4 then
                             KeyDown Right
                             Delay 197
                             KeyUp Right
+                            if facing < 0 then //要求面向左边
+                                a = 1
+                            end if
                         else if intX - tarX == 3 then
                             KeyDown Left
                             Delay 145
                             KeyUp Left
+                            if facing > 0 then //要求面向右边
+                                a = 1
+                            end if
                         else if intX - tarX == -3 then
                             KeyDown Right
                             Delay 145
                             KeyUp Right
+                            if facing < 0 then //要求面向左边
+                                a = 1
+                            end if
                         else if intX - tarX == 2 then
                             KeyDown Left
                             Delay 71
                             KeyUp Left
+                            if facing > 0 then //要求面向右边
+                                a = 1
+                            end if
                         else if intX - tarX == -2 then
                             KeyDown Right
                             Delay 71
                             KeyUp Right
+                            if facing < 0 then //要求面向左边
+                                a = 1
+                            end if
                         else if intX > tarX then
                             KeyDown Left
                             Delay 40
                             KeyUp Left
+                            if facing > 0 then //要求面向右边
+                                a = 1
+                            end if
                         else if intX < tarX then
                             KeyDown Right
                             Delay 40
                             KeyUp Right
+                            if facing < 0 then //要求面向左边
+                                a = 1
+                            end if
                         End If
-                        Exit Sub
+                        DelayRandom 45,52
+                        KeyDown Up
+                        DelayRandom 120,122
+                        KeyUp Up
+                        DelayRandom 231,234
+                        Call GetXY()
+                        if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
+                            TracePrint 到达目的地
+                            alterX    = 0
+                            alterY    = 0
+                            if a > 0 then //要换方向
+                                if facing > 0 then  //改面向右边
+                                    KeyDown Left
+                                    Delay 40
+                                    KeyUp Left
+                                    DelayRandom 62,65
+                                    KeyDown Right
+                                    Delay 40
+                                    KeyUp Right
+                                    DelayRandom 62,65
+                                else if facing < 0 then //改面向左边
+                                    KeyDown Right
+                                    Delay 40
+                                    KeyUp Right
+                                    DelayRandom 62,65
+                                    KeyDown Left
+                                    Delay 40
+                                    KeyUp Left
+                                    DelayRandom 62,65
+                                end if
+                            End If
+                            facing = 0
+                            Exit Sub
+                        else
+                            TracePrint 未到达[ & intX & , & intY & ],传送[ & alterX & , & alterY & ] //没到目的点
+                        End if
                     else //非传送门
                         if tolerance < 4 Then //容忍度小于4还是要小碎步
                             for 10
@@ -385,16 +445,17 @@ End Sub
 
 //分辨率初始化
 GetScreenResolution intX, intY
-x1 = intX - 1440
-y1 = intY - 950
-x2 = intX - 1140
-y2 = intY - 600
-x3 = intX - 640
-y3 = intY - 260
-xEnd = intX
-yEnd = intY
-alterX     = 0  //备用地点
-alterY     = 0  //备用地点
+x1     = intX - 1440
+y1     = intY - 950
+x2     = intX - 1140
+y2     = intY - 600
+x3     = intX - 640
+y3     = intY - 260
+xEnd   = intX
+yEnd   = intY
+alterX = 0            //备用地点
+alterY = 0            //备用地点
+facing = 0            //面向初始归0
 while 1 > 0
     LEDState = GetLED(1)
     if LEDState == 0 then //
