@@ -872,11 +872,11 @@ Sub Spell //普通技能
             KeyUp V
             DelayRandom 245,250
         else //放其他小技能
-            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\R.bmp",000000,1.0,0,intX,intY//江湖群
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\C.bmp",000000,1.0,0,intX,intY//江湖群
             if intX >= 0 Then
-                KeyDown R
+                KeyDown C
                 DelayRandom 105,107
-                KeyUp R
+                KeyUp C
                 DelayRandom 245,250
             else //放其他小技能
                 FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\4.bmp",000000,1.00,0,intX,intY

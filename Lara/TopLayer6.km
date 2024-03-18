@@ -587,7 +587,6 @@ End Sub
 
 Sub Navigate //引導路線 V2.0针对各种地点
     call GetXY()
-    call GetXY()
     if tarY <= 85 and tarX >= -38 then //目标右上角:种子
         SavedX		= tarX
         SavedY		= tarY
