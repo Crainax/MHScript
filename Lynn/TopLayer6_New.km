@@ -937,55 +937,73 @@ while 1 > 0
     End If
 
     if cycle1 == 0 then //第一次在左边
-        tarX      = -85
-        tarY      = 117
-        tolerance = -1
-        facing = 1 //面向右边
-        alterX    = 1 //传送位置
-        alterY    = 67
-        //todo attack
+        call GetXY()
+        if intY != 117 or intX <( -85-8) or intX > (-85+8) then //
+           tarX			= -85
+           tarY			= 117
+           tolerance	= 4
+           call Navigate()
+        End If
+        //todo: 跳A录制
+         tarX       = -85
+         tarY       = 117
+         tolerance  = -1
+         facing     = 1       //面向右边
+         alterX     = 1       //传送位置
+         alterY     = 67
+         call Move() //开始传送
+    else if cycle1 == 1 then  //在上方
+        call GetXY()
+        if intY != 117 or intX <( -85-8) or intX > (-85+8) then //
+           tarX			= -85
+           tarY			= 117
+           tolerance	= 4
+           call Navigate()
+        End If
+        //todo: 普A录制
+         tarX       = -85
+         tarY       = 117
+         tolerance  = -1
+         facing     = 1       //面向右边
+         alterX     = 1       //传送位置
+         alterY     = 67
+         call Move() //开始传送
+
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+            if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
+                tarX = -85 //todo:修改这个地方
+                tarY = 117
+                tolerance = 6
+                call GetXY()
+                if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
+                    Call Navigate()
+                End If
+                DelayRandom 56,58
+                KeyDown Left
+                DelayRandom 62,68
+                KeyUp Left
+                DelayRandom 106,109
+                KeyDown 1
+                DelayRandom 194,196
+                KeyUp 1
+                DelayRandom 712,721
+                fountainTime = GetTimeStamp()
+
+                //todo:丝滑小连招
+            else if GetTimeStamp() - pick1 > 75 then //捡钱
+                //todo:录制一下
+                pick1 = GetTimeStamp()
+            else
+
+            End If
+
+        End If
+
     End If
 
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
-    a = GetTimeStamp() - fountainTime
-    if a > 55 or intX >= 0 then //可以喷泉了
-        tarX = -85 //todo:修改这个地方
-        tarY = 117
-        tolerance = 6
-        call GetXY()
-        if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-            Call Navigate()
-        End If
-        DelayRandom 56,58
-        if GetTimeStamp() - pick2 > 75 then
-            DelayRandom 256,258
-            KeyDown Space
-            Delay 86
-            KeyUp Space
-            Delay 76
-            KeyDown F
-            Delay 153
-            KeyUp F
-            Delay 485
-            KeyDown Space
-            Delay 80
-            KeyUp Space
-            Delay 133
-            KeyDown F
-            Delay 118
-            KeyUp F
-            Delay 520
-            pick2 = GetTimeStamp()
-        End If
-        KeyDown Right
-        DelayRandom 62,68
-        KeyUp Right
-        DelayRandom 106,109
-        KeyDown 1
-        DelayRandom 194,196
-        KeyUp 1
-        DelayRandom 712,721
-        fountainTime = GetTimeStamp()
+    cycle1 = cycle1 + 1 //下一步
+    if cycle1 < 0 or cycle1 > 4 then
+        cycle1 = 0
     End If
 
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\D.bmp",000000,1.00,0,intX,intY
