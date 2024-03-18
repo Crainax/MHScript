@@ -97,7 +97,7 @@ Sub JumpAttack()
     End If
 End Sub
 
-Sub Move()  //精确的移动:Ver2.8 整合了跳A放的技能
+Sub Move()  //精确的移动:Ver2.9 精确走到传送点的功能完成了
     csTimes	= -1  //初始就启用指南针判断
     csMax		= 3   //降落默认值为4
     Hooking				= 0 //钩子初始是关的
@@ -411,6 +411,17 @@ Sub Move()  //精确的移动:Ver2.8 整合了跳A放的技能
                             Exit Sub
                         else
                             TracePrint 未到达[ & intX & , & intY & ],传送[ & alterX & , & alterY & ] //没到目的点
+                            if facing > 0 then  //刚刚有右走
+                                KeyDown Left
+                                Delay 35
+                                KeyUp Left
+                                DelayRandom 62,65
+                            else if facing < 0 then //刚刚是向左走
+                                KeyDown Right
+                                Delay 35
+                                KeyUp Right
+                                DelayRandom 62,65
+                            end if
                         End if
                     else //非传送门
                         if tolerance < 4 Then //容忍度小于4还是要小碎步
@@ -469,6 +480,8 @@ while 1 > 0
         GetFileLine alterX,Move.Conf,tolLoc	//文件查找
         tolLoc = 5
         GetFileLine alterY,Move.Conf,tolLoc	//文件查找
+        tolLoc = 6
+        GetFileLine facing,Move.Conf,tolLoc	//文件查找
         TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance & ,传送[ & alterX & , & alterY & ]
         //tolerance = 4 //容忍度,4为推荐值
         Call Move()
