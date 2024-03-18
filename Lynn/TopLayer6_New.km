@@ -604,7 +604,49 @@ End Sub
 
 Sub Navigate //引導路線 V1.0 先抄一波菈菈的
     call GetXY()
-    if tarY <= 85 and tarX >= -38 then //目标右上角
+    if tarY == 85 and tarX >= (-13-8) and tarX <=(-13+8) and intY == 67 and intX >= (1-8) and intX <=(1+8) //去喷泉
+        DelayRandom 46,50
+        KeyDown Left
+        DelayRandom 80,81
+        KeyDown Space
+        DelayRandom 69,70
+        KeyUp Space
+        DelayRandom 72,73
+        KeyDown Space
+        DelayRandom 71,72
+        KeyUp Space
+        DelayRandom 127,129
+        KeyUp Left
+        DelayRandom 132,134
+        KeyDown F
+        DelayRandom 103,105
+        KeyUp F
+        DelayRandom 329,333
+        KeyDown Down
+        DelayRandom 103,105
+        KeyDown Space
+        DelayRandom 103,105
+        KeyUp Space
+        DelayRandom 72,73
+        KeyUp Down
+        DelayRandom 44,45
+        KeyDown Right
+        DelayRandom 228,231
+        KeyDown Space
+        DelayRandom 61,62
+        KeyUp Space
+        DelayRandom 74,75
+        KeyDown Space
+        DelayRandom 10,11
+        KeyUp Right
+        DelayRandom 28,29
+        KeyUp Space
+        DelayRandom 249,252
+        KeyDown F
+        DelayRandom 94,95
+        KeyUp F
+        DelayRandom 346,350
+    else if tarY <= 85 and tarX >= -38 then //目标右上角
         SavedX		= tarX
         SavedY		= tarY
         SavedTor	= tolerance
@@ -664,26 +706,41 @@ Sub Navigate //引導路線 V1.0 先抄一波菈菈的
     else if tarY > 91 and tarX >= -38 then //目标:右下角
         if tarY == 115 and tarX >= (1-8) and tarX <=(1+8) and intY == 85 and intX >= (-13-8) and intX <=(-13+8) //喷泉下去
             DelayRandom 46,50
-            KeyDown Left
-            DelayRandom 2,3
             KeyDown Down
-            DelayRandom 46,47
-            KeyDown LShift
-            DelayRandom 182,184
-            KeyUp LShift
-            DelayRandom 23,24
-            KeyUp Left
-            DelayRandom 1,2
+            DelayRandom 144,146
+            KeyDown Space
+            DelayRandom 731,739
+            KeyUp Space
+            DelayRandom 22,23
             KeyUp Down
-            DelayRandom 269,272
+            KeyDown Left
+            DelayRandom 137,139
+            KeyDown Space
+            DelayRandom 61,62
+            KeyUp Space
+            DelayRandom 57,58
+            KeyDown Space
+            DelayRandom 75,76
+            KeyUp Left
+            DelayRandom 12,13
+            KeyUp Space
+            DelayRandom 194,196
+            KeyDown F
+            DelayRandom 97,98
+            KeyUp F
+            DelayRandom 334,338
             KeyDown Right
-            DelayRandom 133,135
+            DelayRandom 84,85
             KeyDown LShift
-            DelayRandom 112,114
+            DelayRandom 115,117
             KeyUp LShift
-            DelayRandom 31,32
+            DelayRandom 43,44
             KeyUp Right
-            DelayRandom 715,723
+            DelayRandom 282,285
+            KeyDown F
+            DelayRandom 146,148
+            KeyUp F
+            DelayRandom 262,265
         else if intX <= -45 then //在左边
             DelayRandom 46,50
             KeyDown Right
@@ -810,14 +867,14 @@ x3             = intX - 640
 y3             = intY - 260
 xEnd           = intX
 yEnd           = intY
-stoneSteleTime = 0            //上次轮回的时间
-RuneCooldown   = 0            //解轮CD
-WGTime         = 0            //上次放武公的时间
-fireTime       = 0            //上次放熊屁的时间
-pick1          = 0            //捡钱
-fountainTime   = 0            //上次喷泉时间
-cycle1         = 0            //循环
-yTolerance     = 0            //初始化容忍
+stoneSteleTime = 0               //上次轮回的时间
+RuneCooldown   = 0               //解轮CD
+WGTime         = 0               //上次放武公的时间
+fireTime       = 0               //上次放熊屁的时间
+pick1          = GetTimeStamp()  //捡钱
+fountainTime   = 0               //上次喷泉时间
+cycle1         = 0               //循环
+yTolerance     = 0               //初始化容忍
 while 1 > 0
 
     if GetTimeStamp() - stoneSteleTime > 570 then //可以放轮了
@@ -849,7 +906,7 @@ while 1 > 0
         KeyDown F
         DelayRandom 104,106
         KeyUp F
-        DelayRandom 592,598
+        DelayRandom 512,518
         tarX       = -85
         tarY       = 117
         tolerance  = -1
@@ -870,7 +927,7 @@ while 1 > 0
         KeyDown F
         DelayRandom 111,113
         KeyUp F
-        DelayRandom 374,378
+        DelayRandom 174,178
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
         if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
             tarX = -13
@@ -890,71 +947,60 @@ while 1 > 0
             KeyUp 1
             DelayRandom 712,721
             fountainTime = GetTimeStamp()
-        else if GetTimeStamp() - pick1 > 75 then //捡钱
+        else if GetTimeStamp() - pick1 > 120 then //捡钱
             DelayRandom 52,53
             KeyDown Right
-            DelayRandom 52,53
+            DelayRandom 37,38
+            KeyDown Space
+            DelayRandom 65,66
+            KeyUp Space
+            DelayRandom 50,51
             KeyDown Space
             DelayRandom 62,63
             KeyUp Space
-            DelayRandom 87,88
-            KeyDown Space
-            DelayRandom 78,79
-            KeyUp Space
-            DelayRandom 474,479
+            DelayRandom 467,472
             KeyDown Down
-            DelayRandom 178,180
-            KeyDown LShift
-            DelayRandom 118,120
-            KeyUp LShift
-            DelayRandom 63,64
-            KeyUp Right
-            DelayRandom 62,63
-            KeyUp Down
-            DelayRandom 231,234
-            KeyDown Left
-            DelayRandom 1,2
-            KeyDown Down
-            DelayRandom 131,133
-            KeyDown LShift
-            DelayRandom 131,133
-            KeyUp LShift
-            DelayRandom 161,163
-            KeyUp Left
-            KeyUp Down
-            DelayRandom 247,250
-            KeyDown F
-            DelayRandom 112,114
-            KeyUp F
-            DelayRandom 140,142
-            KeyDown Left
-            DelayRandom 433,438
-            KeyDown Down
-            DelayRandom 62,63
-            KeyUp Left
-            DelayRandom 79,80
-            KeyDown Space
-            DelayRandom 126,128
-            KeyUp Space
-            DelayRandom 118,120
-            KeyUp Down
-            DelayRandom 277,280
-            KeyDown Left
-            DelayRandom 29,30
-            KeyDown Up
-            DelayRandom 154,156
+            DelayRandom 135,137
             KeyDown LShift
             DelayRandom 119,121
             KeyUp LShift
-            DelayRandom 105,107
-            KeyUp Up
-            DelayRandom 19,20
+            DelayRandom 145,147
+            KeyUp Right
+            DelayRandom 53,54
+            KeyUp Down
+            DelayRandom 186,188
+            KeyDown Left
+            DelayRandom 14,15
+            KeyDown Down
+            DelayRandom 118,120
+            KeyDown LShift
+            DelayRandom 118,120
+            KeyUp LShift
+            DelayRandom 129,131
+            KeyUp Down
+            DelayRandom 4,5
             KeyUp Left
-            DelayRandom 160,162
+            DelayRandom 200,203
             KeyDown F
-            DelayRandom 111,113
+            DelayRandom 119,121
             KeyUp F
-            DelayRandom 401,406
+            DelayRandom 347,351
+            KeyDown Left
+            DelayRandom 209,212
+            KeyDown Space
+            DelayRandom 55,56
+            KeyUp Space
+            DelayRandom 68,69
+            KeyDown Space
+            DelayRandom 78,79
+            KeyUp Space
+            DelayRandom 70,71
+            KeyUp Left
+            DelayRandom 175,177
+            KeyDown F
+            DelayRandom 96,97
+            KeyUp F
+            DelayRandom 544,550
             pick1 = GetTimeStamp()
         else //沒有东西就传送下去
             tarX       = 1
@@ -978,7 +1024,7 @@ while 1 > 0
         KeyDown F
         DelayRandom 111,113
         KeyUp F
-        DelayRandom 374,378
+        DelayRandom 174,178
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\D.bmp",000000,1.00,0,intX,intY
         if intX >= 0 and GetTimeStamp() - fireTime > 28 Then //地火
             DelayRandom 56,58
