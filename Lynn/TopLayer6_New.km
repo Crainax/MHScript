@@ -48,6 +48,10 @@ Sub AntiJam //一般跟随GetXY后用
         staticCount = 0
     End If
     if staticCount >= 5 Then //
+        if intY == 115 and intX >= (1-4) and intX <=(1+4) Then //白名单
+            staticCount = 0
+            Exit Sub
+        End If
 
         Beep 500,500
         KeyAllup //施放所有按键并重启
@@ -911,7 +915,115 @@ while 1 > 0
         End If
     End If
 
-    if cycle1 == 0 then //第一次在左边
+    if cycle1 == 0 then  //在下方
+        call GetXY()
+        if intY != 115 or intX <( 1-8) or intX > (1+8) then //
+        tarX			= 1
+        tarY			= 115
+        tolerance	= 4
+        call Navigate()
+        End If
+        Call Buff()
+        DelayRandom 58,65
+        Call Spell() //原地放技能
+        DelayRandom 174,178
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\D.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 and GetTimeStamp() - fireTime > 28 Then //熊屁
+            DelayRandom 156,158
+            KeyDown Left
+            DelayRandom 62,68
+            KeyUp Left
+            DelayRandom 42,50
+            KeyDown D
+            DelayRandom 194,196
+            KeyUp D
+            fireTime = GetTimeStamp()
+            DelayRandom 412,421
+        End If
+
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if GetTimeStamp() - fountainTime > 55 or intX >= 0 or GetTimeStamp() - pick1 > 120 then //可以喷泉了,就正常循环
+            tarX      = 1
+            tarY      = 115
+            tolerance = -1
+            facing    = 1    //面向右边
+            alterX    = -85  //传送位置
+            alterY    = 117
+            call Move() //开始传送
+        else if intY == 115 and intX == 1 then //如果人就在位置直接按上
+            DelayRandom 45,48
+            KeyDown Up
+            DelayRandom 103,105
+            KeyUp Up
+            DelayRandom 333,337
+            KeyDown F
+            DelayRandom 128,130
+            KeyUp F
+            DelayRandom 359,363
+            KeyDown Up
+            DelayRandom 105,107
+            KeyUp Up
+            DelayRandom 340,344
+            KeyDown F
+            DelayRandom 137,139
+            KeyUp F
+            DelayRandom 368,372
+            KeyDown Up
+            DelayRandom 103,105
+            KeyUp Up
+            DelayRandom 341,345
+            KeyDown F
+            DelayRandom 128,130
+            KeyUp F
+            DelayRandom 343,347
+            KeyDown Up
+            DelayRandom 104,106
+            KeyUp Up
+            DelayRandom 358,362
+            KeyDown F
+            DelayRandom 119,121
+            KeyUp F
+            DelayRandom 335,339
+            KeyDown Up
+            DelayRandom 121,123
+            KeyUp Up
+            DelayRandom 350,354
+            KeyDown F
+            DelayRandom 118,120
+            KeyUp F
+            DelayRandom 344,348
+            KeyDown Up
+            DelayRandom 128,130
+            KeyUp Up
+            DelayRandom 274,277
+        else //先找,再循环2次
+            tarX      = 1
+            tarY      = 115
+            tolerance = -1
+            facing    = 1    //面向右边
+            alterX    = -85  //传送位置
+            alterY    = 117
+            call Move() //开始传送
+            DelayRandom 45,48
+            KeyDown F
+            DelayRandom 97,98
+            KeyUp F
+            DelayRandom 376,380
+            KeyDown Up
+            DelayRandom 77,78
+            KeyUp Up
+            DelayRandom 318,322
+            KeyDown F
+            DelayRandom 119,121
+            KeyUp F
+            DelayRandom 335,339
+            KeyDown Up
+            DelayRandom 96,97
+            KeyUp Up
+            DelayRandom 274,277
+            cycle1 = 2
+        End If
+    else if cycle1 == 1 then //第一次在左边
         call GetXY()
         if intY != 117 or intX <( -85-8) or intX > (-85+8) then //
            tarX			= -85
@@ -940,7 +1052,7 @@ while 1 > 0
         alterX     = 1       //传送位置
         alterY     = 67
         call Move() //开始传送
-    else if cycle1 == 1 then  //在上方
+    else if cycle1 == 2 then  //在上方
         call GetXY()
         if intY != 67 or intX <( 1-8) or intX > (1+8) then //
            tarX			= 1
@@ -970,7 +1082,7 @@ while 1 > 0
             KeyDown 1
             DelayRandom 194,196
             KeyUp 1
-            DelayRandom 712,721
+            DelayRandom 612,621
             fountainTime = GetTimeStamp()
         else if GetTimeStamp() - pick1 > 120 then //捡钱
             DelayRandom 52,53
@@ -1036,39 +1148,6 @@ while 1 > 0
             alterY     = 115
             call Move() //开始传送
         End If
-    else if cycle1 == 2 then  //在下方
-        call GetXY()
-        if intY != 115 or intX <( 1-8) or intX > (1+8) then //
-           tarX			= 1
-           tarY			= 115
-           tolerance	= 4
-           call Navigate()
-        End If
-        Call Buff()
-        DelayRandom 58,65
-        Call Spell() //原地放技能
-        DelayRandom 174,178
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\D.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 and GetTimeStamp() - fireTime > 28 Then //熊屁
-            DelayRandom 156,158
-            KeyDown Left
-            DelayRandom 62,68
-            KeyUp Left
-            DelayRandom 42,50
-            KeyDown D
-            DelayRandom 194,196
-            KeyUp D
-            fireTime = GetTimeStamp()
-            DelayRandom 412,421
-        End If
-
-        tarX      = 1
-        tarY      = 115
-        tolerance = -1
-        facing    = 1    //面向右边
-        alterX    = -85  //传送位置
-        alterY    = 117
-        call Move() //开始传送
     End If
 
     cycle1 = cycle1 + 1 //下一步
