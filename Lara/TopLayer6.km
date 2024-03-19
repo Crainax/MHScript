@@ -821,14 +821,6 @@ while 1 > 0
             DelayRandom 178,180
             KeyUp F
             DelayRandom 481,486
-            KeyDown Space
-            DelayRandom 90,91
-            KeyUp Space
-            DelayRandom 195,197
-            KeyDown F
-            DelayRandom 136,138
-            KeyUp F
-            DelayRandom 540,546
             pick2 = GetTimeStamp()
         End If
         DelayRandom 56,58

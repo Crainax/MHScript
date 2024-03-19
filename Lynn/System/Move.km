@@ -150,25 +150,6 @@ Sub Move  //1.3 精确走到传送点的功能完成了
                 tolLoc = 2
             End If
 
-            // if dash > 0 then
-                // if tarX > intX then //加下总长度
-                    // length = tarX - intX
-                // else
-                    // length = intX - tarX
-                // end if
-                // if tarY > intY then //加下总长度
-                    // length = length + tarY - intY
-                // else
-                    // length = length + intY - tarY
-                // end if
-                // if length > 40 then //超过一定程度才会往目标飞去
-                    // if
-                    // if switch <= 0 then
-                        // switch = 1
-                        // Timer 1,1,5000
-                    // End If
-                // End If
-            // End if
             if intX < (tarX-24) Then //向右二段跳
                 TracePrint 右跳
                 DelayRandom 15,25
@@ -439,19 +420,19 @@ Sub Move  //1.3 精确走到传送点的功能完成了
                             End If
                             facing = 0
                             Exit Sub
-                        else
-                            TracePrint 未到达[ & intX & , & intY & ],传送[ & alterX & , & alterY & ] //没到目的点
-                            if facing > 0 then  //刚刚有右走
-                                KeyDown Left
-                                Delay 35
-                                KeyUp Left
-                                DelayRandom 62,65
-                            else if facing < 0 then //刚刚是向左走
-                                KeyDown Right
-                                Delay 35
-                                KeyUp Right
-                                DelayRandom 62,65
-                            end if
+                        // else
+                            // TracePrint 未到达[ & intX & , & intY & ],传送[ & alterX & , & alterY & ] // 没到目的点
+                            // if facing > 0 then  //刚刚有右走
+                                // KeyDown Left
+                                // Delay 35
+                                // KeyUp Left
+                                // DelayRandom 62,65
+                            // else if facing < 0 then //刚刚是向左走
+                                // KeyDown Right
+                                // Delay 35
+                                // KeyUp Right
+                                // DelayRandom 62,65
+                            // end if
                         End if
                     else //非传送门
                         if tolerance < 4 Then //容忍度小于4还是要小碎步
