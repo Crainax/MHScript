@@ -11,7 +11,7 @@ Dim alterX,      alterY,     stuckTimes  //备用地点,传送门脚步开关
 Dim logoX,       logoY,      intX, intY  //算目的地差值
 Dim cX,          cY,         csTimes     //用这个东西判断角色是不是没有X或Y轴变化了
 Dim InfiTime,    BarlogTime, a           //放技能时间冷却
-Dim DTime                                //末日烈焰冷却
+Dim DTime,       facing                  //末日烈焰冷却
 Dim tolerance,   tolLoc,     yTolerance  //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim staticCount, staticX,    staticY     //防卡计数器
 Dim LEDState                             //测试用:开大写键就是获取点位,不要切来切去的了

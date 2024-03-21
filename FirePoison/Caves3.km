@@ -10,9 +10,10 @@ Dim tarX,           tarY,         SpellOK              //Ä¿±ê
 Dim alterX,         alterY,       stuckTimes           //±¸ÓÃµØµã,´«ËÍÃÅ½Å²½¿ª¹Ø
 Dim cX,             cY,           csTimes              //ÓÃÕâ¸ö¶«Î÷ÅĞ¶Ï½ÇÉ«ÊÇ²»ÊÇÃ»ÓĞX»òYÖá±ä»¯ÁË
 Dim logoX,          logoY,        intX,     intY       //Ñ°Î»ÖÃÏà¹Ø:µ±Ç°µØµã
-Dim InfiTime,       BarlogTime,   a                    //·Å¼¼ÄÜÊ±¼äÀäÈ´
+Dim InfiTime,       BarlogTime,   a,        facing     //·Å¼¼ÄÜÊ±¼äÀäÈ´
 Dim stoneSteleTime, fountainTime, RuneCooldown         //¸÷ÖÖÊ±¼ä¼ä¸ô
-Dim cycleCount,     AuraTime,     DTime                //¼¼ÄÜ¼ä¸ô
+Dim currentState,   AuraTime,     DTime                //¼¼ÄÜ¼ä¸ô
+Dim pick1,          pick2                              //¼ñÇ®
 Dim tolerance,      tolLoc,       yTolerance           //¿ìËÙÒÆ¶¯µÄÈİ²î,0´ú±í¾«È·ÒÆ¶¯,ÁíÍâ¸öÊÇ¾Ö²¿±äÁ¿
 Dim staticCount,    staticX,      staticY              //·À¿¨¼ÆÊıÆ÷
 Dim SavedX,         SavedY,       SavedTor, SavedTorY  //±£´æÒ»ÏÂÁÙÊ±´¦ÀíµÄXY
@@ -130,7 +131,7 @@ Sub Attack //·Å¼¼ÄÜ,È»ºóÔÙË²ÒÆ(×¢ÒâÒªÏÈ»ñÈ¡XYÔÙ·ÅÕĞ)  Ver2.4 ĞŞ¸´ÎÊÌâºÍÖÕ¼«ÎŞÏŞ¿
             Timer 1,1,2000
         else
             a = GetTimeStamp() - DTime
-            if a > 2 and intY > 110 and intY < 124 then //¿ÉÒÔ·ÅÄ©ÈÕÁË(½öÏŞµÚ¶ş²ã)
+            if a > 2 and intY > 83 and intY < 110 then //¿ÉÒÔ·ÅÄ©ÈÕÁË(½öÏŞµÚ¶ş²ã)
                 KeyDown D
                 DelayRandom 101,103
                 KeyUp D
@@ -588,71 +589,87 @@ Sub Move //¾«È·µÄÒÆ¶¯:V2.9 ¶¨µã´«ËÍÃÅ¸ã¶¨ÁË
     Wend
 End Sub
 
-Sub Judge //ÅĞ¶ÏÈËÎïÊÇ·ñÔÚÄ³¸öµØµãÅÔ±ß,ÓÃtarXY,tolerance,tolLoc·µ»Ø½á¹û,²»ÄÜÇ¶Ì×move()Ê¹ÓÃ,¿ÉÒÔÏÈÊ¹ÓÃÕâ¸öÔÙÓÃmove
-    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-    tolLoc = 0
-    if intX >= 0 Then //ÕÒµ½ÁËÈËÎï²Å»á½øĞĞÏÂÈ¥
-        intX = intX - logoX
-        intY = intY - logoY
-        if intY == tarY and intX >= (tarX - tolerance) and intX <= (tarX + tolerance) then
-            tolLoc = 1
-        End If
-    End If
-End Sub
-
 Sub Navigate //ÒıŒ§Â·¾€
     call GetXY()
-    if intX <= -38 and tarX >= -38 then //Ä¿µÄÔÚÓÒ,ÈËÔÚ×ó
+    if tarX > -42 and tarX < -21 then //Ä¿µÄÔÚÖĞ¼ä
+        if intX >= -21 or intX <= -42 then //ÈËÎïÔÚÁ½±ß²ÅÕâÃ´Íæ
+            SavedX		= tarX
+            SavedY		= tarY
+            SavedTor	= tolerance
+            SavedTorY	= yTolerance
+
+            if tarY == 110 then //ÏÂÃæ
+                tarX       = intX
+                tarY       = 110
+                tolerance  = 4
+                Call Move()
+            else if tarY <= 84  //ÉÏÃæ
+                tarX       = intX
+                tarY       = 83
+                tolerance  = 4
+                yTolerance = 4
+                Call Move()
+            End If
+
+            tarX		= SavedX
+            tarY		= SavedY
+            tolerance	= SavedTor
+            yTolerance	= SavedTorY
+        else if intY > tarY then //ÈËÔÚÏÂÃæ,¹³×Ó
+            DelayRandom 45,50
+            KeyDown LAlt
+            DelayRandom 136,138
+            KeyUp LAlt
+            DelayRandom 622,629
+            KeyDown LAlt
+            DelayRandom 472,477
+            KeyUp LAlt
+            DelayRandom 428,433
+        else if intY < tarY then //ÈËÔÚÉÏÃæ,ÏÂÌø
+            DelayRandom 45,50
+            KeyDown Down
+            DelayRandom 76,77
+            KeyDown Space
+            DelayRandom 1057,1068
+            KeyUp Space
+            DelayRandom 69,70
+            KeyUp Down
+            DelayRandom 689,696
+        End If
+    elseif intX <= -42 and tarX >= -21 then //Ä¿µÄÔÚ×ó±ß
         SavedX		= tarX
         SavedY		= tarY
         SavedTor	= tolerance
         SavedTorY	= yTolerance
 
-        tarX      = -85
-        tarY      = 117
+        tarX      = -67
+        tarY      = 97
         tolerance = 0
-        alterX    = 1 //´«ËÍÎ»ÖÃ
-        alterY    = 67
+        alterX    = 6 //´«ËÍÎ»ÖÃ
+        alterY    = 97
         Call Move()
-
-        if tarY < 91 then //ÈËÔÚÓÒÉÏ,Ä¿±êÔÚÓÒÏÂ,ÔÙ´«Ò»´Î(ÓÒÏÂÎ»ÖÃ)
-            tarX      = 1
-            tarY      = 67
-            tolerance = 0
-            alterX    = 1 //´«ËÍÎ»ÖÃ
-            alterY    = 115
-            Call Move()
-        End If
 
         tarX		= SavedX
         tarY		= SavedY
         tolerance	= SavedTor
         yTolerance	= SavedTorY
-    else if tarX <= -38 and intX >= -38 then //Ä¿µÄÔÚ×ó±ß
+    else if tarX <= -42 and intX >= -21 then //ÈËÔÚ×îÓÒÇ°Íù×ó
         SavedX		= tarX
         SavedY		= tarY
         SavedTor	= tolerance
+        SavedTorY	= yTolerance
 
-        if intY <= 74 then //ÉÏ°ë²ã,
-            tarX      = 1
-            tarY      = 67
-            tolerance = 0
-            alterX    = 1 //´«ËÍÎ»ÖÃ
-            alterY    = 115
-            Call Move()
-        End If
-
-        tarX      = 1
-        tarY      = 115
+        tarX      = 6
+        tarY      = 97
         tolerance = 0
-        alterX    = -85 //´«ËÍÎ»ÖÃ
-        alterY    = 117
+        alterX    = -67  //´«ËÍÎ»ÖÃ
+        alterY    = 97
         Call Move()
 
         tarX      = SavedX
         tarY      = SavedY
         tolerance = SavedTor
+        yTolerance	= SavedTorY
     End If
     Call Move()
 End Sub
@@ -687,24 +704,25 @@ End Sub
 
 //Mainº¯Êı
 GetScreenResolution intX, intY
-x1 = intX - 1440
-y1 = intY - 950
-x2 = intX - 1140
-y2 = intY - 600
-x3 = intX - 640
-y3 = intY - 260
-xEnd = intX
-yEnd = intY
+x1             = intX - 1440
+y1             = intY - 950
+x2             = intX - 1140
+y2             = intY - 600
+x3             = intX - 640
+y3             = intY - 260
+xEnd           = intX
+yEnd           = intY
 InfiTime       = GetTimeStamp() - 110  //ÉÏ´ÎÖÕ¼«ÎŞÏŞµÄÊ±¼ä
 BarlogTime     = 0                     //ÉÏ´ÎÕÙÑ×Ä§µÄÊ±¼ä
 SpellOK        = 1                     //¼¼ÄÜÀäÈ´
 RuneCooldown   = 0                     //½âÂÖÊ±¼ä
 stoneSteleTime = 0                     //·ÅÂÖÊ±¼ä
-currentState   = 0                    //³õÊ¼×´Ì¬²»ÒªÈ¥·ÅÅçÈª
+currentState   = 0                     //³õÊ¼×´Ì¬²»ÒªÈ¥·ÅÅçÈª
 fountainTime   = 0                     //ÅçÈªÊ±¼ä
 AuraTime       = 0                     //ÁìÓòÊ±¼ä
 DTime          = 0                     //Ä©ÈÕÀäÈ´Ê±¼ä
-cycleCount     = 0                     //Ñ²ÂßÎ»ÖÃÖ¸Õë
+pick1          = GetTimeStamp()        //¼ñÇ®ÖĞ¼ä
+pick2          = GetTimeStamp()        //¼ñÇ®ÖĞ¼ä
 yTolerance     = 0                     //³õÊ¼»¯
 Timer          1, 1, 1000              //ÎŞÏŞÑ­»·
 while 1 > 0
@@ -718,123 +736,86 @@ while 1 > 0
         stoneSteleTime = GetTimeStamp()
     End If
 
-    if currentState == 0 Then //ÅçÈª->Æ¨3µÄÂ·Ïß
-        tarX      = -85
-        tarY      = 117
-        tolerance = 6
+
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+    if currentState = 0 and intX >= 0 then //¿ÉÒÔÅçÈªÁË
+        tarX      = -74
+        tarY      = 83
+        tolerance = 4
         Call Navigate()
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
-        DelayRandom 198,207
-        if intX >= 0 then //¿ÉÒÔÅçÈªÁË
-            DelayRandom 56,58
-            KeyDown Right
-            DelayRandom 62,68
-            KeyUp Right
-            DelayRandom 106,109
-            KeyDown 1
-            DelayRandom 194,196
-            KeyUp 1
-            fountainTime = GetTimeStamp()
-            DelayRandom 712,721
+        DelayRandom 56,58
+        KeyDown Left
+        DelayRandom 62,68
+        KeyUp Left
+        DelayRandom 106,109
+        KeyDown 1
+        DelayRandom 194,196
+        KeyUp 1
+        fountainTime = GetTimeStamp()
+        DelayRandom 712,721
+
+        if GetTimeStamp() - pick2 > 108 then
+            tarX		= -98
+            tarY		= 97
+            tolerance	= 6
+            Call Navigate()
+            pick2 = GetTimeStamp()
         End If
-        currentState = 1 //ÅçÈª->¶¥µã
-        Call ReleaseRune() //¶¨ÆÚ½âÂÖ
-    End If
-
-    if currentState == 1 Then //¶¥µã´¦
-        tarX      = 1
-        tarY      = 67
-        tolerance = 4
-        Call Navigate()
-        currentState = 2
-        Call ReleaseRune() //¶¨ÆÚ½âÂÖ
-    End If
-
-    if currentState == 2 Then
-        tarX      = -17
-        tarY      = 67
-        tolerance = 6
-        Call Navigate()
-        currentState = 3
-    End If
-
-    if currentState == 3 Then
-        tarX      = -17
-        tarY      = 85
-        tolerance = 6
-        Call Navigate()
-        currentState = 4
-    End If
-
-    if currentState == 4 Then
-        tarX      = -17
-        tarY      = 91
-        tolerance = 6
-        Call Navigate()
-        currentState = 5
-    End If
-
-    if currentState == 5 Then
-        tarX      = 1
-        tarY      = 91
-        tolerance = 4
-        Call Navigate()
-        currentState = 6
-    End If
-
-    if currentState == 6 Then
-        tarX      = 19
-        tarY      = 91
-        tolerance = 6
-        Call Navigate()
-        currentState = 7
-    End If
-
-    if currentState == 7 Then
-        tarX      = 19
-        tarY      = 111
-        tolerance = 6
-        Call Navigate()
-        currentState = 8
-    End If
-
-    if currentState == 8 Then
-        tarX      = 1
-        tarY      = 115
-        tolerance = 4
-        Call Navigate()
-        if GetTimeStamp() - AuraTime > 55 then
-            currentState = 9 //ÁìÓò
+    else
+        a = GetTimeStamp() - AuraTime
+        if a > 55 Then //Ç°ÍùÁìÓòµã
+            //Ç°ÍùÁìÓòµã
+            tarX      = -27
+            tarY      = 110
+            tolerance = 6
+            Call Navigate()
+            DelayRandom 123,130
+            KeyDown A
+            DelayRandom 130,132
+            KeyUp A
+            DelayRandom 405,413
             AuraTime = GetTimeStamp()
         else
-            currentState = 10 //»Øµ½ÀÏÎ»ÖÃ
+            if currentState == 1 then //Ç°ÍùÂ¥ÉÏ
+                tarX		= 33
+                tarY		= 97
+                tolerance	= 6
+                Call Navigate()
+            else if currentState == 2 then //Ç°ÍùÂ¥ÉÏ
+                tarX		= 32
+                tarY		= 84
+                tolerance	= 6
+                Call Navigate()
+            else if currentState == 3  then //Ç°ÍùÂ¥ÉÏ
+                tarX		= 4
+                tarY		= 83
+                tolerance	= 6
+                Call Navigate()
+
+                if GetTimeStamp() - pick1 > 90 then //ÖĞ¼äµÄ¼ñÇ®
+                    currentState = -2
+                    pick1 = GetTimeStamp()
+                End If
+            else if currentState == -1  then //¼ñÇ®
+                tarX		= -25
+                tarY		= 84
+                tolerance	= 6
+                Call Navigate()
+            else
+                tarX		= 4
+                tarY		= 97
+                tolerance	= 6
+                Call Navigate()
+            End If
+            currentState = currentState + 1
+            if currentState > 3 then
+                currentState = 0
+            End If
         End If
-        Call ReleaseRune() //¶¨ÆÚ½âÂÖ
-    End If
 
-    if currentState == 9 Then//ÁìÓò
-        tarX      = 1
-        tarY      = 124
-        tolerance = 4
-        Call Navigate()
-        DelayRandom 123,130
-        KeyDown A
-        DelayRandom 130,132
-        KeyUp A
-        DelayRandom 405,413
-        currentState = 0 //»Øµ½ÀÏÎ»ÖÃ
+        DelayRandom 100,103
     End If
+    Call ReleaseRune() //¶¨ÆÚ½âÂÖ
 
-    if currentState == 10 Then
-        tarX      = -17
-        tarY      = 115
-        tolerance = 6
-        Call Navigate()
-        currentState = 0 //È»ºóÈ¥Æ¨2
-    End If
 
-    if currentState < 0 or currentState > 10 Then
-        currentState = 0 //³õÊ¼»¯×´Ì¬Îª0
-    End If
-    Delay 5
 Wend

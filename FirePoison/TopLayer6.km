@@ -529,19 +529,6 @@ Sub Move //精确的移动:V2.8 传送门更严谨+左右走防数值过大
     Wend
 End Sub
 
-Sub Judge //判断人物是否在某个地点旁边,用tarXY,tolerance,tolLoc返回结果,不能嵌套move()使用,可以先使用这个再用move
-    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-    tolLoc = 0
-    if intX >= 0 Then //找到了人物才会进行下去
-        intX = intX - logoX
-        intY = intY - logoY
-        if intY == tarY and intX >= (tarX - tolerance) and intX <= (tarX + tolerance) then
-            tolLoc = 1
-        End If
-    End If
-End Sub
-
 Sub Navigate //引導路線
     call GetXY()
     if intX <= -38 and tarX >= -38 then //目的在右,人在左
