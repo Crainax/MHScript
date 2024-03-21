@@ -8,7 +8,7 @@ Dim x1,           x2,             y1,       y2         // 矩形区域:小地图采样点
 Dim x3,           y3,             xEnd,     yEnd       // 2个顶点:技能区/屏幕右下角顶点
 Dim tarX,         tarY,           Hooking              //目标
 Dim logoX,        logoY,          intX,     intY       //算目的地差值
-Dim alterX,       alterY                               //备用地点,传送门脚步开关
+Dim alterX,       alterY,         facing               //备用地点,传送门脚步开关
 Dim cY,           csTimes,        csMax                //用这个东西判断角色是不是没有X或Y轴变化了
 Dim tolerance,    tolLoc,         yTolerance           //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim ReleaseTime1, ReleaseTime2,   ReleaseTime3         //各种冷却
@@ -503,57 +503,66 @@ Sub SpellList() //随便扔技能 V2.5 根据地点放火(下按或上按)
                 else //什么都没有就随机瞬移释放
                     a = GetTimeStamp() - ReleaseTime3
                     Call GetXY()
-                    if intY == 67 or intY = 115 or intY = 111 then //只有三个地方能放
-                        if a > 12 then
-                            ReleaseTime3 = GetTimeStamp()
-                            SavedX = intX
-                            SavedY = intY
-                            if intY == 67 and intX == 11 then //绳子正上方,左一点
-                                DelayRandom 42,50
-                                KeyDown Left
-                                DelayRandom 101,120
-                                KeyUp Left
-                                DelayRandom 42,50
-                            End If
-                            if intY == 67 then //压下键
-                                KeyDown Down
-                                DelayRandom 202,205
+                    if intX > -40 then
+                        if intY == 87 or intY == 93 then //只有三个地方能放
+                            if a > 12 then
+                                ReleaseTime3 = GetTimeStamp()
+                                SavedX = intX
+                                SavedY = intY
+                                if intY == 93 then //压左键
+                                    KeyDown Left
+                                    DelayRandom 202,205
+                                else
+                                    KeyDown Down
+                                    DelayRandom 202,205
+                                End If
+                                KeyDown LShift
+                                DelayRandom 128,130
+                                KeyUp LShift
+                                DelayRandom 437,442
+                                KeyAllup
+                                Call GetXY()
+                                if SavedX == intX and SavedY == intY then //人物没变就不要施放了,平A就行
+                                    KeyDown F
+                                    DelayRandom 960,970
+                                    KeyUp F
+                                    DelayRandom 223,226
+                                else
+                                    DelayRandom 42,45
+                                    KeyDown Right
+                                    DelayRandom 101,105
+                                    KeyUp Right
+                                    DelayRandom 62,65
+                                    KeyDown Left
+                                    DelayRandom 40,42
+                                    KeyUp Left
+                                    DelayRandom 62,65
+                                    KeyDown E
+                                    DelayRandom 136,138
+                                    KeyUp E
+                                    DelayRandom 82,83
+                                    KeyDown Up
+                                    DelayRandom 120,122
+                                    KeyUp Up
+                                    DelayRandom 187,189
+                                    KeyDown S
+                                    DelayRandom 83,84
+                                    KeyUp S
+                                    DelayRandom 456,461
+                                End If
                             else
-                                KeyDown Up
-                                DelayRandom 202,205
-                            End If
-                            KeyDown LShift
-                            DelayRandom 128,130
-                            KeyUp LShift
-                            DelayRandom 437,442
-                            KeyAllup
-                            Call GetXY()
-                            if SavedX == intX and SavedY == intY then //人物没变就不要施放了,平A就行
                                 KeyDown F
                                 DelayRandom 960,970
                                 KeyUp F
                                 DelayRandom 223,226
-                            else
-                                KeyDown E
-                                DelayRandom 136,138
-                                KeyUp E
-                                DelayRandom 82,83
-                                KeyDown Up
-                                DelayRandom 120,122
-                                KeyUp Up
-                                DelayRandom 187,189
-                                KeyDown S
-                                DelayRandom 83,84
-                                KeyUp S
-                                DelayRandom 456,461
                             End If
-                        else
+                        Else
                             KeyDown F
                             DelayRandom 960,970
                             KeyUp F
                             DelayRandom 223,226
                         End If
-                    Else
+                    else
                         KeyDown F
                         DelayRandom 960,970
                         KeyUp F
@@ -567,157 +576,6 @@ End Sub
 
 Sub Navigate //引導路線 V2.0针对各种地点
     call GetXY()
-    if tarY <= 85 and tarX >= -38 then //目标右上角:种子
-        SavedX		= tarX
-        SavedY		= tarY
-        SavedTor	= tolerance
-        SavedTorY	= yTolerance
-
-        if intX <= -38 Then//人在左边,进传送门
-            tarX      = -85
-            tarY      = 117
-            tolerance = 0
-            alterX    = 1 //传送位置
-            alterY    = 67
-            Call Move()
-        else if intY == 115 and intX >= (-9-8) and intX <=(-9+8) then //人在风释放点
-            if GetTimeStamp() - pick1 > 45 then
-                DelayRandom 42,46
-                KeyDown Left
-                DelayRandom 74,75
-                KeyDown Space
-                DelayRandom 80,81
-                KeyUp Space
-                DelayRandom 39,40
-                KeyDown Space
-                DelayRandom 100,102
-                KeyUp Space
-                DelayRandom 31,32
-                KeyUp Left
-                DelayRandom 396,400
-                KeyDown LCtrl
-                DelayRandom 110,112
-                KeyUp LCtrl
-                DelayRandom 1351,1365
-                KeyDown Right
-                DelayRandom 342,346
-                KeyDown Space
-                DelayRandom 85,86
-                KeyUp Right
-                DelayRandom 22,23
-                KeyUp Space
-                DelayRandom 760,768
-                pick1 = GetTimeStamp()
-            else //传送门双传
-                tarX      = 1
-                tarY      = 115
-                tolerance = 0
-                alterX    = -85 //传送位置
-                alterY    = 117
-                Call Move()
-
-                tarX      = -85
-                tarY      = 117
-                tolerance = 0
-                alterX    = 1 //传送位置
-                alterY    = 67
-                Call Move()
-            End If
-        else if intY == 111 and intX >= (26-8) and intX <=(26+8) then //人在水释放点
-            DelayRandom 42,46
-            KeyDown Left
-            DelayRandom 511,517
-            KeyDown LCtrl
-            DelayRandom 58,59
-            KeyUp Left
-            DelayRandom 86,87
-            KeyUp LCtrl
-            DelayRandom 1190,1202
-            KeyDown Left
-            DelayRandom 337,341
-            KeyDown Space
-            DelayRandom 73,74
-            KeyUp Space
-            DelayRandom 58,59
-            KeyDown Space
-            DelayRandom 85,86
-            KeyUp Space
-            DelayRandom 73,74
-            KeyUp Left
-            DelayRandom 513,519
-        End If
-
-        tarX		= SavedX
-        tarY		= SavedY
-        tolerance	= SavedTor
-        yTolerance	= SavedTorY
-    else if tarX <= -45 and intX >= -25 then //目的在左边:喷泉
-        SavedX		= tarX
-        SavedY		= tarY
-        SavedTor	= tolerance
-
-        if intY <= 74 then //上半层,
-            tarX      = 1
-            tarY      = 67
-            tolerance = 0
-            alterX    = 1 //传送位置
-            alterY    = 115
-            Call Move()
-        End If
-
-        tarX      = 1
-        tarY      = 115
-        tolerance = 0
-        alterX    = -85 //传送位置
-        alterY    = 117
-        Call Move()
-
-        tarX      = SavedX
-        tarY      = SavedY
-        tolerance = SavedTor
-    else if tarY > 91 and tarX >= -38 then //目标:右下角
-        if intX <= -45 or intY <= 74 then
-            SavedX		= tarX
-            SavedY		= tarY
-            SavedTor	= tolerance
-
-            if intX <= -45 then //人在喷泉处
-                tarX      = -85
-                tarY      = 117
-                tolerance = 0
-                alterX    = 1 //传送位置
-                alterY    = 67
-                Call Move()
-            End If
-
-            if GetTimeStamp() - pick1 > 45 then
-                KeyDown Left
-                DelayRandom 698,705
-                KeyDown Down
-                DelayRandom 17,18
-                KeyUp Left
-                DelayRandom 155,157
-                KeyDown Space
-                DelayRandom 1648,1665
-                KeyUp Space
-                DelayRandom 58,59
-                KeyUp Down
-                DelayRandom 705,713
-                pick1 = GetTimeStamp()
-            else
-                tarX      = 1
-                tarY      = 67
-                tolerance = 0
-                alterX    = 1 //传送位置
-                alterY    = 115
-                Call Move()
-            End If
-
-            tarX      = SavedX
-            tarY      = SavedY
-            tolerance = SavedTor
-        End If
-    End If
     Call Move()
 End Sub
 
@@ -738,20 +596,20 @@ Sub PreMove //提前移动到特定地点 Ver2.0 提前移动先judge,不然怕重复移动
     end if
 
     if minType = 0 then
-        tarX = -85
-        tarY = 117
-        tolerance = 2
+        tarX = -98
+        tarY = 93
+        tolerance = 4
     else if minType = 1 then
-        tarX = -9
-        tarY = 115
+        tarX = -33
+        tarY = 87
         tolerance = 4
     else if minType = 2 then
-        tarX       = 21
-        tarY       = 111
+        tarX       = 42
+        tarY       = 93
         tolerance  = 4
     else if minType = 3 then
-        tarX       = 1
-        tarY       = 67
+        tarX       = 7
+        tarY       = 98
         tolerance  = 6
     End If
     call GetXY()
@@ -784,29 +642,17 @@ while 1 > 0
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
     a = GetTimeStamp() - fountainTime
     if a > 55 or intX >= 0 then //可以喷泉了
-        tarX = -85
-        tarY = 117
-        tolerance = 6
+        tarX = -98
+        tarY = 93
+        tolerance = 4
         call GetXY()
         if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
             Call Navigate()
         End If
-        if GetTimeStamp() - pick2 > 75 then
-            DelayRandom 278,281
-            KeyDown Space
-            DelayRandom 149,151
-            KeyUp Space
-            DelayRandom 38,39
-            KeyDown F
-            DelayRandom 178,180
-            KeyUp F
-            DelayRandom 481,486
-            pick2 = GetTimeStamp()
-        End If
         DelayRandom 56,58
-        KeyDown Right
+        KeyDown Left
         DelayRandom 62,68
-        KeyUp Right
+        KeyUp Left
         DelayRandom 106,109
         KeyDown 1
         DelayRandom 194,196
@@ -829,8 +675,8 @@ while 1 > 0
 
     a = GetTimeStamp() - ReleaseTime1
     if a > 13 then //施放1 Ver2.0
-        tarX = -9
-        tarY = 115
+        tarX = -33
+        tarY = 87
         tolerance = 4
         call GetXY()
         if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
@@ -860,17 +706,17 @@ while 1 > 0
 
     a = GetTimeStamp() - ReleaseTime2
     if a > 13 then //施放2 Ver2.0
-        tarX       = 26
-        tarY       = 111
+        tarX       = 42
+        tarY       = 93
         tolerance  = 4
         call GetXY()
         if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
             Call Navigate()
         End If
         DelayRandom 56,58
-        KeyDown Right
+        KeyDown Left
         DelayRandom 91,93
-        KeyUp Right
+        KeyUp Left
         DelayRandom 32,33
         KeyDown A
         DelayRandom 136,138
@@ -888,8 +734,8 @@ while 1 > 0
     else
         a = GetTimeStamp() - seedTime1
         if a > 18 then //可以放种子了 Ver2.0
-            tarX       = 1
-            tarY       = 67
+            tarX       = 7
+            tarY       = 98
             tolerance  = 6
             call GetXY()
             if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
