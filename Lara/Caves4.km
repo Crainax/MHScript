@@ -14,7 +14,7 @@ Dim tolerance,    tolLoc,         yTolerance           //¿ìËÙÒÆ¶¯µÄÈÝ²î,0´ú±í¾«È
 Dim ReleaseTime1, ReleaseTime2,   ReleaseTime3         //¸÷ÖÖÀäÈ´
 Dim a,            stoneSteleTime, fountainTime         //¸÷ÖÖÀäÈ´
 Dim RuneCooldown, seedTime1,      WGTime               //¸÷ÖÖÀäÈ´
-Dim pick1,        pick2                                //Àä…s
+Dim pick1                                              //¼ñÇ®Àä…s
 Dim staticCount,  staticX,        staticY              //·À¿¨¼ÆÊýÆ÷
 Dim SavedX,       SavedY,         SavedTor, SavedTorY  //±£´æÒ»ÏÂÁÙÊ±´¦ÀíµÄXY
 Dim min,          minType                              //Ô¤ÒÆ¶¯
@@ -121,6 +121,42 @@ Sub Move()  //¾«È·µÄÒÆ¶¯:Ver2.9 ¾«È·×ßµ½´«ËÍµãµÄ¹¦ÄÜÍê³ÉÁË
                 cY = intY
                 csTimes = 0
             End If
+        else if intY == 97 and tarY == 87 and tarX >= (-33-8) and tarX <=(-33+8) and intX >= -63 and intX <= -23 then //ÓÒÌø
+            if intX >= -40 then
+                KeyDown Right
+                DelayRandom 210,213
+                KeyDown Space
+                DelayRandom 141,143
+                KeyUp Space
+                DelayRandom 85,86
+                KeyDown Left
+                DelayRandom 25,26
+                KeyUp Right
+                DelayRandom 100,102
+                KeyDown Space
+                DelayRandom 99,100
+                KeyUp Space
+                DelayRandom 153,155
+                KeyUp Left
+                DelayRandom 335,339
+            else
+                KeyDown Left
+                DelayRandom 210,213
+                KeyDown Space
+                DelayRandom 141,143
+                KeyUp Space
+                DelayRandom 85,86
+                KeyDown Right
+                DelayRandom 25,26
+                KeyUp Left
+                DelayRandom 100,102
+                KeyDown Space
+                DelayRandom 99,100
+                KeyUp Space
+                DelayRandom 153,155
+                KeyUp Right
+                DelayRandom 335,339
+            End If
         else //¼ÌÐø¸ù¾Ý
             Call AntiJam() //·À¿¨
             if tolerance > 4 Then
@@ -182,20 +218,21 @@ Sub Move()  //¾«È·µÄÒÆ¶¯:Ver2.9 ¾«È·×ßµ½´«ËÍµãµÄ¹¦ÄÜÍê³ÉÁË
                 KeyUp Left
             else
                 If intY < (tarY - yTolerance) Then //Èç¹ûÈËÔÚÄ¿±êÖ®ÉÏ,¾ÍÏÂÌø(YÖáÊÇÓÃÏà·´±È½Ï·û)
-                    // csTimes = 0 //Æô¶¯½µÂäÅÐ¶Ï
-                    // cY = intY
-                    KeyDown Down
-                    DelayRandom 134,136
-                    KeyDown Space
-                    if intY > (tarY - 13) //Ì«½Ó½ü¾ÍÖ»ÓÃÍ¬Ò»ÖÖ°ì·¨
-                        DelayRandom 162,164
+                    if intY < 98 and intX >= (7-6) and intX <=(7+6) then //·ÀÖ¹ÌáÇ°ÏÂÌøµÄ·½°¸
                     else
-                        Delay (tarY - intY) * 49 - 520
+                        KeyDown Down
+                        DelayRandom 134,136
+                        KeyDown Space
+                        if intY > (tarY - 13) //Ì«½Ó½ü¾ÍÖ»ÓÃÍ¬Ò»ÖÖ°ì·¨
+                            DelayRandom 162,164
+                        else
+                            Delay (tarY - intY) * 49 - 520
+                        End If
+                        KeyUp Space
+                        DelayRandom 66,67
+                        KeyUp Down
+                        DelayRandom 548,554
                     End If
-                    KeyUp Space
-                    DelayRandom 66,67
-                    KeyUp Down
-                    DelayRandom 548,554
                 Else If intY > (tarY + yTolerance) Then //Èç¹ûÈËÔÚÄ¿±êÖ®ÏÂ,¾ÍÉÏÌø(YÖáÊÇÓÃÏà·´±È½Ï·û)
                     csTimes = 0 //Æô¶¯½µÂäÅÐ¶Ï
                     cY = intY
@@ -503,13 +540,13 @@ Sub SpellList() //Ëæ±ãÈÓ¼¼ÄÜ V2.5 ¸ù¾ÝµØµã·Å»ð(ÏÂ°´»òÉÏ°´)
                 else //Ê²Ã´¶¼Ã»ÓÐ¾ÍËæ»úË²ÒÆÊÍ·Å
                     a = GetTimeStamp() - ReleaseTime3
                     Call GetXY()
-                    if intX > -40 then
-                        if intY == 87 or intY == 93 then //Ö»ÓÐÈý¸öµØ·½ÄÜ·Å
+                    if intX > -40 and intX < 40 then
+                        if intY == 87 or intY == 98 then //Ö»ÓÐÈý¸öµØ·½ÄÜ·Å
                             if a > 12 then
                                 ReleaseTime3 = GetTimeStamp()
                                 SavedX = intX
                                 SavedY = intY
-                                if intY == 93 then //Ñ¹×ó¼ü
+                                if intY == 98 then //Ñ¹×ó¼ü
                                     KeyDown Left
                                     DelayRandom 202,205
                                 else
@@ -529,13 +566,13 @@ Sub SpellList() //Ëæ±ãÈÓ¼¼ÄÜ V2.5 ¸ù¾ÝµØµã·Å»ð(ÏÂ°´»òÉÏ°´)
                                     DelayRandom 223,226
                                 else
                                     DelayRandom 42,45
-                                    KeyDown Right
-                                    DelayRandom 101,105
-                                    KeyUp Right
-                                    DelayRandom 62,65
                                     KeyDown Left
                                     DelayRandom 40,42
                                     KeyUp Left
+                                    DelayRandom 62,65
+                                    KeyDown Right
+                                    DelayRandom 101,105
+                                    KeyUp Right
                                     DelayRandom 62,65
                                     KeyDown E
                                     DelayRandom 136,138
@@ -620,20 +657,19 @@ End Sub
 
 //·Ö±æÂÊ³õÊ¼»¯
 GetScreenResolution intX, intY
-x1 = intX - 1440
-y1 = intY - 950
-x2 = intX - 1140
-y2 = intY - 600
-x3 = intX - 640
-y3 = intY - 260
-xEnd = intX
-yEnd = intY
+x1             = intX - 1440
+y1             = intY - 950
+x2             = intX - 1140
+y2             = intY - 600
+x3             = intX - 640
+y3             = intY - 260
+xEnd           = intX
+yEnd           = intY
 ReleaseTime1   = 0               //Ê©·ÅÀäÈ´1
 ReleaseTime2   = 0               //Ê©·ÅÀäÈ´2
 ReleaseTime3   = 0               //Ê©·ÅÀäÈ´3
 seedTime1      = 0               //ÉÏ´ÎÖÖ×ÓµÄÊ±¼ä
-pick1          = 0               //¼ñÇ®Ê±¼ä
-pick2          = GetTimeStamp()  //¼ñÇ®Ê±¼ä
+pick1          = GetTimeStamp()  //¼ñÇ®Ê±¼ä
 fountainTime   = 0               //ÉÏ´ÎÅçÈªµÄÊ±¼ä
 RuneCooldown   = 0               //½âÂÖÀäÈ´
 stoneSteleTime = 0               //ÉÏ´ÎÂÖ»ØµÄÊ±¼ä
@@ -659,6 +695,39 @@ while 1 > 0
         KeyUp 1
         DelayRandom 712,721
         fountainTime = GetTimeStamp()
+
+        if GetTimeStamp() - pick1 > 95 then
+            DelayRandom 79,81
+            KeyDown Down
+            DelayRandom 145,147
+            KeyDown Space
+            DelayRandom 135,137
+            KeyUp Space
+            DelayRandom 120,122
+            KeyUp Down
+            DelayRandom 257,260
+            KeyDown F
+            DelayRandom 102,104
+            KeyUp F
+            DelayRandom 418,423
+            KeyDown Right
+            DelayRandom 73,74
+            KeyDown Space
+            DelayRandom 83,84
+            KeyUp Space
+            DelayRandom 73,74
+            KeyDown Space
+            DelayRandom 94,95
+            KeyUp Space
+            DelayRandom 109,111
+            KeyUp Right
+            DelayRandom 27,28
+            KeyDown F
+            DelayRandom 120,122
+            KeyUp F
+            DelayRandom 572,578
+            pick1 = GetTimeStamp()
+        End If
 
         Call ReleaseRune() //¶¨ÆÚ½âÂÖ
     End If
