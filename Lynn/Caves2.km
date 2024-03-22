@@ -1,0 +1,1157 @@
+[General]
+ScreenX=1440
+ScreenY=2560
+Times=0
+
+[Script]
+Dim x1,             x2,           y1,       y2         // 矩形区域:小地图采样点
+Dim x3,             y3,           xEnd,     yEnd       // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,           tarY,         facing               //目标
+Dim logoX,          logoY,        intX,     intY       //算目的地差值
+Dim alterX,         alterY,       cycle1               //备用地点,传送门脚步开关
+Dim tolerance,      yTolerance,   Hooking              //快速移动的容差
+Dim cY,             csTimes,      csMax                //用这个东西判断角色是不是没有X或Y轴变化了
+Dim tolLoc,         a,            fireTime             //冷却和状态相关
+Dim stoneSteleTime, fountainTime, WGTime               //冷却
+Dim pick1                                              //捡钱
+Dim staticCount,    staticX,      staticY              //防卡计数器
+Dim SavedX,         SavedY,       SavedTor, SavedTorY  //保存一下临时处理的XY
+Dim RuneCooldown                                       //找轮间隔
+
+Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
+    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+
+    if intX < 0 Then //人物跑到了边界  处理一下
+        KeyDown Left
+        DelayRandom 200,250
+        KeyUp Left
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then //左移了还是没找到,就右移
+            KeyDown Right
+            DelayRandom 200,250
+            KeyUp Right
+            FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        End if
+    End if
+
+    intX = intX - logoX
+    intY = intY - logoY
+End Sub
+
+Sub AntiJam //一般跟随GetXY后用
+    if staticX ==  intX and staticY == intY then //如果相等就累加计数器
+        staticCount = staticCount + 1
+    else
+        staticX     = intX
+        staticY     = intY
+        staticCount = 0
+    End If
+    if staticCount >= 5 Then //
+        if intY == 115 and intX >= (1-4) and intX <=(1+4) Then //白名单
+            staticCount = 0
+            Exit Sub
+        End If
+
+        Beep 500,500
+        KeyAllup //施放所有按键并重启
+        // RestartScript //重启 和上面二选一即可
+        // 模拟从绳子跳走
+        DelayRandom 13,15
+        KeyDown Right
+        DelayRandom 21,22
+        KeyDown Space
+        DelayRandom 76,77
+        KeyUp Space
+        DelayRandom 44,45
+        KeyUp Right
+        DelayRandom 13,15
+
+    End If
+End Sub
+
+Sub JumpAttack //跳A技能组
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\S.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then
+        KeyDown S
+        DelayRandom 182,185
+        KeyUp S
+    else
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\G.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            KeyDown G
+            DelayRandom 334,340
+            KeyUp G
+        else
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\B.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                KeyDown B
+                DelayRandom 182,185
+                KeyUp B
+            else
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\H.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    KeyDown H
+                    DelayRandom 782,785
+                    KeyUp H
+                else
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Y.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        KeyDown Y
+                        DelayRandom 482,485
+                        KeyUp Y
+                    else
+                        KeyDown F
+                        DelayRandom 621,626
+                        KeyUp F
+                    End If
+                End If
+            End If
+        End If
+    End If
+End Sub
+
+Sub Move  //1.3 精确走到传送点的功能完成了
+    csTimes = -1  //初始就启用指南针判断
+    csMax   = 3   //降落默认值为4
+    while  1 > 0
+        Call GetXY()
+
+        if csTimes >= 0 Then //目前是在空中判断降落的阶段
+            if Hooking > 0 and intY <= tarY - 3 Then //钩子的判断刹车
+                KeyDown Ctrl
+                DelayRandom 258,282
+                KeyUp Ctrl
+                Hooking = 0
+            End If
+            if intY == cY Then //Y轴没变化了
+                csTimes = csTimes + 1
+                if csTimes >= csMax Then
+                    csTimes	= -1	//判断为已经落地
+                    csMax		= 3		//归位最大降落判断值
+                End If
+            else
+                cY = intY
+                csTimes = 0
+            End If
+        else if intY == 124 and tarY == 117 and tarX >= (-80-8) and tarX <=(-80+8) and intX >= -94 and intX <= -66 then //右跳
+            if intX >= -79 then
+                KeyDown Right
+                DelayRandom 210,213
+                KeyDown Space
+                DelayRandom 141,143
+                KeyUp Space
+                DelayRandom 85,86
+                KeyDown Left
+                DelayRandom 25,26
+                KeyUp Right
+                DelayRandom 100,102
+                KeyDown Space
+                DelayRandom 99,100
+                KeyUp Space
+                DelayRandom 153,155
+                KeyUp Left
+                DelayRandom 335,339
+            else
+                KeyDown Left
+                DelayRandom 210,213
+                KeyDown Space
+                DelayRandom 141,143
+                KeyUp Space
+                DelayRandom 85,86
+                KeyDown Right
+                DelayRandom 25,26
+                KeyUp Left
+                DelayRandom 100,102
+                KeyDown Space
+                DelayRandom 99,100
+                KeyUp Space
+                DelayRandom 153,155
+                KeyUp Right
+                DelayRandom 335,339
+            End If
+        else if intY == 124 and tarY == 115 and tarX >= (-14-21) and tarX <=(-14+21) and intX >= -40 and intX <= 7 then //右跳
+            if intX >= -14 then
+                KeyDown Right
+                DelayRandom 210,213
+                KeyDown Space
+                DelayRandom 141,143
+                KeyUp Space
+                DelayRandom 85,86
+                KeyDown Left
+                DelayRandom 25,26
+                KeyUp Right
+                DelayRandom 100,102
+                KeyDown Space
+                DelayRandom 99,100
+                KeyUp Space
+                DelayRandom 153,155
+                KeyUp Left
+                DelayRandom 335,339
+            else
+                KeyDown Left
+                DelayRandom 210,213
+                KeyDown Space
+                DelayRandom 141,143
+                KeyUp Space
+                DelayRandom 85,86
+                KeyDown Right
+                DelayRandom 25,26
+                KeyUp Left
+                DelayRandom 100,102
+                KeyDown Space
+                DelayRandom 99,100
+                KeyUp Space
+                DelayRandom 153,155
+                KeyUp Right
+                DelayRandom 335,339
+            End If
+        else if intY != 91 and tarY == 91 and tarX >= (20-4) and tarX <=(20+4) and intX >= (22-8) and intX <=(22+8) then
+            if intY >= 111 then //下面前往上面
+                DelayRandom 46,50
+                KeyDown Right
+                DelayRandom 54,55
+                KeyDown Space
+                DelayRandom 45,46
+                KeyUp Space
+                DelayRandom 71,72
+                KeyDown Space
+                DelayRandom 88,89
+                KeyUp Right
+                DelayRandom 1,2
+                KeyUp Space
+                DelayRandom 48,49
+                KeyDown Left
+                DelayRandom 31,32
+                KeyDown Up
+                DelayRandom 153,155
+                KeyDown LShift
+                DelayRandom 120,122
+                KeyUp LShift
+                DelayRandom 101,103
+                KeyUp Up
+                DelayRandom 24,25
+                KeyUp Left
+                DelayRandom 150,152
+                KeyDown F
+                DelayRandom 169,171
+                KeyUp F
+                DelayRandom 419,424
+            else if intY == 67 then //上面前往下面
+                DelayRandom 46,50
+                KeyDown Left
+                DelayRandom 2,3
+                KeyDown Down
+                DelayRandom 17,18
+                KeyDown LShift
+                DelayRandom 138,140
+                KeyUp LShift
+                DelayRandom 36,37
+                KeyUp Left
+                DelayRandom 22,23
+                KeyUp Down
+                DelayRandom 284,287
+                KeyDown Right
+                DelayRandom 80,81
+                KeyDown LShift
+                DelayRandom 94,95
+                KeyUp LShift
+                DelayRandom 3,4
+                KeyUp Right
+                DelayRandom 664,671
+            else then intY == 74 then //上面跳下來
+                DelayRandom 46,50
+                KeyDown Down
+                DelayRandom 96,97
+                KeyDown Space
+                DelayRandom 64,65
+                KeyUp Space
+                DelayRandom 48,49
+                KeyUp Down
+                DelayRandom 172,174
+                KeyDown F
+                DelayRandom 102,104
+                KeyUp F
+                DelayRandom 392,396
+            End If
+
+        else //继续根据
+            Call AntiJam() //防卡
+            if tolerance > 2 Then
+                tolLoc = tolerance
+            else  //速走的默认为2
+                tolLoc = 2
+            End If
+
+            if intX < (tarX-24) Then //向右二段跳
+                DelayRandom 15,25
+                KeyDown Right
+                DelayRandom 62,63
+                KeyDown Space
+                DelayRandom 55,56
+                KeyUp Space
+                DelayRandom 61,62
+                KeyDown Space
+                DelayRandom 63,64
+                KeyUp Space
+                DelayRandom 37,38
+                KeyUp Right
+                DelayRandom 116,118
+                Call JumpAttack()
+                DelayRandom 370,374
+            Else If intX > (tarX+24) Then //向左二段跳
+                DelayRandom 15,25
+                KeyDown Left
+                DelayRandom 62,63
+                KeyDown Space
+                DelayRandom 55,56
+                KeyUp Space
+                DelayRandom 61,62
+                KeyDown Space
+                DelayRandom 63,64
+                KeyUp Space
+                DelayRandom 37,38
+                KeyUp Left
+                DelayRandom 116,118
+                Call JumpAttack()
+                KeyDown F
+                DelayRandom 70,71
+                KeyUp F
+                DelayRandom 370,374
+            Else If intX < (tarX-tolLoc) Then //向右走
+                KeyDown Right
+                a = (tarX - tolLoc - intX) * 52
+                if a < 52 then
+                    a = 52
+                else if a > 1800 then
+                    a = 1800
+                End If
+                Delay a
+                KeyUp Right
+            Else If intX > (tarX+tolLoc) Then //向左走
+                KeyDown Left
+                a = (intX - tarX - tolLoc) * 52
+                if a < 52 then
+                    a = 52
+                else if a > 1800 then
+                    a = 1800
+                End If
+                Delay a
+                KeyUp Left
+            else
+                If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
+                    KeyDown Down
+                    DelayRandom 134,136
+                    KeyDown Space
+                    if intY > (tarY - 13) //太接近就只用同一种办法
+                        DelayRandom 162,164
+                    else
+                        Delay (tarY - intY) * 49 - 520
+                    End If
+                    KeyUp Space
+                    DelayRandom 66,67
+                    KeyUp Down
+                    DelayRandom 548,554
+                Else If intY > (tarY + yTolerance) Then //如果人在目标之下,上钩
+                    csTimes = 0 //启动降落判断
+                    cY = intY
+                    csMax = 8 //延长一点降落判断
+                    Hooking = 1
+                    KeyDown Alt
+                    DelayRandom 328,430
+                    KeyUp Alt
+                else
+                    yTolerance = 0
+                    if tolerance == 0 then //传送门型
+                        If intX < tarX Then //向右小碎步
+                            DelayRandom 45,52
+                            KeyDown Right
+                            DelayRandom 37,38
+                            KeyDown Up
+                            DelayRandom 70,71
+                            KeyUp Up
+                            DelayRandom 37,38
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyDown Up
+                                DelayRandom 70,71
+                                KeyUp Up
+                                DelayRandom 37,38
+                            End if
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyDown Up
+                                DelayRandom 70,71
+                                KeyUp Up
+                                DelayRandom 37,38
+                            End if
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyDown Up
+                                DelayRandom 77,78
+                                KeyUp Up
+                                DelayRandom 37,38
+                            End if
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyDown Up
+                                DelayRandom 82,83
+                                KeyUp Up
+                                DelayRandom 38,39
+                            End if
+                            KeyUp Right
+                            DelayRandom 11,12
+                        Else If intX > tarX Then //向左小碎步
+                            DelayRandom 45,52
+                            KeyDown Left
+                            DelayRandom 37,38
+                            KeyDown Up
+                            DelayRandom 70,71
+                            KeyUp Up
+                            DelayRandom 37,38
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyDown Up
+                                DelayRandom 70,71
+                                KeyUp Up
+                                DelayRandom 37,38
+                            End if
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyDown Up
+                                DelayRandom 70,71
+                                KeyUp Up
+                                DelayRandom 37,38
+                            End if
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyDown Up
+                                DelayRandom 77,78
+                                KeyUp Up
+                                DelayRandom 37,38
+                            End if
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyDown Up
+                                DelayRandom 82,83
+                                KeyUp Up
+                                DelayRandom 38,39
+                            End if
+                            KeyUp Left
+                            DelayRandom 11,12
+                        else //直接按上
+                            DelayRandom 45,52
+                            KeyDown Up
+                            DelayRandom 120,122
+                            KeyUp Up
+                            DelayRandom 231,234
+                        End If
+                        Delay 125
+                        Call GetXY()
+                        if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
+                            alterX    = 0
+                            alterY    = 0
+                            Exit Sub
+                        else
+                        End if
+                    else if tolerance == -1 then //负1代表枚举走到目的地
+                        a = 0
+                        if intX - tarX == 4 then
+                            KeyDown Left
+                            Delay 197
+                            KeyUp Left
+                            if facing > 0 then //要求面向右边
+                                a = 1
+                            end if
+                        else if intX - tarX == -4 then
+                            KeyDown Right
+                            Delay 197
+                            KeyUp Right
+                            if facing < 0 then //要求面向左边
+                                a = 1
+                            end if
+                        else if intX - tarX == 3 then
+                            KeyDown Left
+                            Delay 145
+                            KeyUp Left
+                            if facing > 0 then //要求面向右边
+                                a = 1
+                            end if
+                        else if intX - tarX == -3 then
+                            KeyDown Right
+                            Delay 145
+                            KeyUp Right
+                            if facing < 0 then //要求面向左边
+                                a = 1
+                            end if
+                        else if intX - tarX == 2 then
+                            KeyDown Left
+                            Delay 71
+                            KeyUp Left
+                            if facing > 0 then //要求面向右边
+                                a = 1
+                            end if
+                        else if intX - tarX == -2 then
+                            KeyDown Right
+                            Delay 71
+                            KeyUp Right
+                            if facing < 0 then //要求面向左边
+                                a = 1
+                            end if
+                        else if intX > tarX then
+                            KeyDown Left
+                            Delay 40
+                            KeyUp Left
+                            if facing > 0 then //要求面向右边
+                                a = 1
+                            end if
+                        else if intX < tarX then
+                            KeyDown Right
+                            Delay 40
+                            KeyUp Right
+                            if facing < 0 then //要求面向左边
+                                a = 1
+                            end if
+                        End If
+                        DelayRandom 45,52
+                        KeyDown Up
+                        DelayRandom 120,122
+                        KeyUp Up
+                        DelayRandom 231,234
+                        Call GetXY()
+                        if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
+                            alterX    = 0
+                            alterY    = 0
+                            if a > 0 then //要换方向
+                                if facing > 0 then  //改面向右边
+                                    KeyDown Left
+                                    Delay 40
+                                    KeyUp Left
+                                    DelayRandom 62,65
+                                    KeyDown Right
+                                    Delay 40
+                                    KeyUp Right
+                                    DelayRandom 62,65
+                                else if facing < 0 then //改面向左边
+                                    KeyDown Right
+                                    Delay 40
+                                    KeyUp Right
+                                    DelayRandom 62,65
+                                    KeyDown Left
+                                    Delay 40
+                                    KeyUp Left
+                                    DelayRandom 62,65
+                                end if
+                            End If
+                            facing = 0
+                            Exit Sub
+                        // else
+                            // if facing > 0 then  //刚刚有右走
+                                // KeyDown Left
+                                // Delay 35
+                                // KeyUp Left
+                                // DelayRandom 62,65
+                            // else if facing < 0 then //刚刚是向左走
+                                // KeyDown Right
+                                // Delay 35
+                                // KeyUp Right
+                                // DelayRandom 62,65
+                            // end if
+                        End if
+                    else //非传送门
+                        if tolerance < 4 Then //容忍度小于4还是要小碎步
+                            for 10
+                                If intX < (tarX-tolerance) Then //向右小碎步
+                                    KeyDown Right
+                                    Delay (tarX - tolerance - intX) * 14
+                                    KeyUp Right
+                                Else If intX > (tarX+tolerance) Then //向左小碎步
+                                    KeyDown Left
+                                    Delay (intX - tarX - tolerance) * 14
+                                    KeyUp Left
+                                else
+                                    Exit Sub
+                                End If
+
+                                Call GetXY() //更新人物坐标
+                            Next
+                            Exit Sub //次数到了直接结束
+                        else //容忍度大于等于4可以直接结束
+                            Exit Sub
+                        End If
+                    End if
+                End If
+            End If
+        End If
+        Delay 5
+    Wend
+End Sub
+
+Sub Navigate //引導路線 V1.0 先抄一波菈菈的
+    call GetXY()
+    if tarY == 85 and tarX >= (-13-8) and tarX <=(-13+8) and intY == 67 and intX >= (1-8) and intX <=(1+8) //去喷泉
+        DelayRandom 46,50
+        KeyDown Left
+        DelayRandom 80,81
+        KeyDown Space
+        DelayRandom 69,70
+        KeyUp Space
+        DelayRandom 72,73
+        KeyDown Space
+        DelayRandom 71,72
+        KeyUp Space
+        DelayRandom 127,129
+        KeyUp Left
+        DelayRandom 132,134
+        KeyDown F
+        DelayRandom 103,105
+        KeyUp F
+        DelayRandom 329,333
+        KeyDown Down
+        DelayRandom 103,105
+        KeyDown Space
+        DelayRandom 103,105
+        KeyUp Space
+        DelayRandom 72,73
+        KeyUp Down
+        DelayRandom 44,45
+        KeyDown Right
+        DelayRandom 228,231
+        KeyDown Space
+        DelayRandom 61,62
+        KeyUp Space
+        DelayRandom 74,75
+        KeyDown Space
+        DelayRandom 10,11
+        KeyUp Right
+        DelayRandom 28,29
+        KeyUp Space
+        DelayRandom 249,252
+        KeyDown F
+        DelayRandom 94,95
+        KeyUp F
+        DelayRandom 346,350
+    else if tarY <= 85 and tarX >= -38 then //目标右上角
+        SavedX		= tarX
+        SavedY		= tarY
+        SavedTor	= tolerance
+        SavedTorY	= yTolerance
+
+        if intX <= -38 Then//人在左边,进传送门
+            tarX      = -85
+            tarY      = 117
+            tolerance = 0
+            alterX    = 1 //传送位置
+            alterY    = 67
+            Call Move()
+        else if intY > 91 then //人在右下,直接双传
+            tarX      = 1
+            tarY      = 115
+            tolerance = 0
+            alterX    = -85 //传送位置
+            alterY    = 117
+            Call Move()
+
+            tarX      = -85
+            tarY      = 117
+            tolerance = 0
+            alterX    = 1 //传送位置
+            alterY    = 67
+            Call Move()
+        End If
+
+        tarX		= SavedX
+        tarY		= SavedY
+        tolerance	= SavedTor
+        yTolerance	= SavedTorY
+    else if tarX <= -45 and intX >= -25 then //目的在左边
+        SavedX		= tarX
+        SavedY		= tarY
+        SavedTor	= tolerance
+
+        if intY <= 74 then //上半层,
+            tarX      = 1
+            tarY      = 67
+            tolerance = 0
+            alterX    = 1 //传送位置
+            alterY    = 115
+            Call Move()
+        End If
+
+        tarX      = 1
+        tarY      = 115
+        tolerance = 0
+        alterX    = -85 //传送位置
+        alterY    = 117
+        Call Move()
+
+        tarX      = SavedX
+        tarY      = SavedY
+        tolerance = SavedTor
+    else if tarY > 91 and tarX >= -38 then //目标:右下角
+        if tarY == 115 and tarX >= (1-8) and tarX <=(1+8) and intY == 85 and intX >= (-13-8) and intX <=(-13+8) //喷泉下去
+            DelayRandom 46,50
+            KeyDown Down
+            DelayRandom 144,146
+            KeyDown Space
+            DelayRandom 731,739
+            KeyUp Space
+            DelayRandom 22,23
+            KeyUp Down
+            KeyDown Left
+            DelayRandom 137,139
+            KeyDown Space
+            DelayRandom 61,62
+            KeyUp Space
+            DelayRandom 57,58
+            KeyDown Space
+            DelayRandom 75,76
+            KeyUp Left
+            DelayRandom 12,13
+            KeyUp Space
+            DelayRandom 194,196
+            KeyDown F
+            DelayRandom 97,98
+            KeyUp F
+            DelayRandom 334,338
+            KeyDown Right
+            DelayRandom 84,85
+            KeyDown LShift
+            DelayRandom 115,117
+            KeyUp LShift
+            DelayRandom 43,44
+            KeyUp Right
+            DelayRandom 282,285
+            KeyDown F
+            DelayRandom 146,148
+            KeyUp F
+            DelayRandom 262,265
+        else if intX <= -45 then //在左边
+            DelayRandom 46,50
+            KeyDown Right
+            DelayRandom 85,86
+            KeyDown Space
+            DelayRandom 62,63
+            KeyUp Space
+            DelayRandom 95,96
+            KeyDown Space
+            DelayRandom 87,88
+            KeyUp Space
+            DelayRandom 275,278
+            KeyDown LShift
+            DelayRandom 161,163
+            KeyUp LShift
+            DelayRandom 351,355
+            KeyDown LShift
+            DelayRandom 63,64
+            KeyUp LShift
+            DelayRandom 52,53
+            KeyDown LShift
+            DelayRandom 95,96
+            KeyUp LShift
+            DelayRandom 154,156
+            KeyUp Right
+            DelayRandom 268,271
+        else if intY <= 74 then //在上面
+            SavedX		= tarX
+            SavedY		= tarY
+            SavedTor	= tolerance
+
+            tarX      = 1
+            tarY      = 67
+            tolerance = 0
+            alterX    = 1 //传送位置
+            alterY    = 115
+            Call Move()
+
+            tarX      = SavedX
+            tarY      = SavedY
+            tolerance = SavedTor
+        End If
+    End If
+    Call Move()
+End Sub
+
+Sub ReleaseRune //定期解轮 ver2.1
+    if GetTimeStamp() - RuneCooldown > 600 then //可以放轮了
+        FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then
+            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+            intX = intX - logoX
+            intY = intY - logoY - 1 //图标的对准问题
+            tarX       = intX
+            tarY       = intY
+            tolerance  = 2
+            yTolerance = 3
+            KeyAllup //防错误
+            Call Navigate() //解轮也走捷径
+            //暂停脚本
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            Pause
+            RuneCooldown = GetTimeStamp()
+        else
+        End If
+    End If
+End Sub
+
+Sub Buff //上BUFF
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\F3.bmp",000000,1.0,0,intX,intY//江湖群
+    if intX >= 0 Then
+        KeyDown F3
+        DelayRandom 105,107
+        KeyUp F3
+        DelayRandom 345,350
+    else //放其他小技能
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\B.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            KeyDown B
+            DelayRandom 182,185
+            KeyUp B
+            DelayRandom 245,250
+        else
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\C.bmp",000000,1.0,0,intX,intY//江湖群
+            if intX >= 0 Then
+                KeyDown C
+                DelayRandom 105,107
+                KeyUp C
+                DelayRandom 245,250
+            else //放其他小技能
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\4.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 and GetTimeStamp() - WGTime > 55 Then //找武公
+                    KeyDown 4
+                    DelayRandom 105,107
+                    KeyUp 4
+                    DelayRandom 899,909
+                    WGTime = GetTimeStamp()
+                else
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\5A.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        KeyDown 5
+                        DelayRandom 134,142
+                        KeyUp 5
+                        DelayRandom 512,519
+                    End If
+                End If
+            End If
+        End If
+    End If
+End Sub
+
+Sub Spell //右下放技能
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\V.bmp",000000,1.0,0,intX,intY//无情撕裂
+    if intX >= 0 Then
+        KeyDown V
+        DelayRandom 105,107
+        KeyUp V
+    else
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\S.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            KeyDown S
+            DelayRandom 232,235
+            KeyUp S
+        else
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\G.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                KeyDown G
+                DelayRandom 284,280
+                KeyUp G
+            else
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\H.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    KeyDown H
+                    DelayRandom 682,685
+                    KeyUp H
+                else
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Y.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        KeyDown Y
+                        DelayRandom 422,425
+                        KeyUp Y
+                    else
+                        KeyDown F
+                        DelayRandom 111,113
+                        KeyUp F
+                    End If
+                End If
+            End If
+        End If
+    End If
+End Sub
+
+GetScreenResolution intX, intY
+x1             = intX - 1440
+y1             = intY - 950
+x2             = intX - 1140
+y2             = intY - 600
+x3             = intX - 640
+y3             = intY - 260
+xEnd           = intX
+yEnd           = intY
+stoneSteleTime = 0               //上次轮回的时间
+RuneCooldown   = 0               //解轮CD
+WGTime         = 0               //上次放武公的时间
+fireTime       = 0               //上次放熊屁的时间
+pick1          = GetTimeStamp()  //捡钱
+fountainTime   = 0               //上次喷泉时间
+cycle1         = 0               //循环
+yTolerance     = 0               //初始化容忍
+while 1 > 0
+
+    if GetTimeStamp() - stoneSteleTime > 570 then //可以放轮了
+        call GetXY()
+        DelayRandom 356,358
+        KeyDown O
+        DelayRandom 237,239
+        KeyUp O
+        DelayRandom 736,747
+        stoneSteleTime = GetTimeStamp()
+    End If
+
+    if cycle1 == 0 then  //在下方
+        call GetXY()
+        if intY != 115 or intX <( 1-8) or intX > (1+8) then //
+        tarX			= 1
+        tarY			= 115
+        tolerance	= 4
+        call Navigate()
+        End If
+        Call Buff()
+        DelayRandom 58,65
+        Call Spell() //原地放技能
+        DelayRandom 174,178
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\D.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 and GetTimeStamp() - fireTime > 28 Then //熊屁
+            DelayRandom 156,158
+            KeyDown Left
+            DelayRandom 62,68
+            KeyUp Left
+            DelayRandom 42,50
+            KeyDown D
+            DelayRandom 194,196
+            KeyUp D
+            fireTime = GetTimeStamp()
+            DelayRandom 412,421
+        End If
+
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if GetTimeStamp() - fountainTime > 55 or intX >= 0 or GetTimeStamp() - pick1 > 120 then //可以喷泉了,就正常循环
+            tarX      = 1
+            tarY      = 115
+            tolerance = -1
+            facing    = 1    //面向右边
+            alterX    = -85  //传送位置
+            alterY    = 117
+            call Move() //开始传送
+        else if intY == 115 and intX == 1 then //如果人就在位置直接按上
+            DelayRandom 45,48
+            KeyDown Up
+            DelayRandom 103,105
+            KeyUp Up
+            DelayRandom 333,337
+            KeyDown F
+            DelayRandom 128,130
+            KeyUp F
+            DelayRandom 359,363
+            KeyDown Up
+            DelayRandom 105,107
+            KeyUp Up
+            DelayRandom 340,344
+            KeyDown F
+            DelayRandom 137,139
+            KeyUp F
+            DelayRandom 368,372
+            KeyDown Up
+            DelayRandom 103,105
+            KeyUp Up
+            DelayRandom 341,345
+            KeyDown F
+            DelayRandom 128,130
+            KeyUp F
+            DelayRandom 343,347
+            KeyDown Up
+            DelayRandom 104,106
+            KeyUp Up
+            DelayRandom 358,362
+            KeyDown F
+            DelayRandom 119,121
+            KeyUp F
+            DelayRandom 335,339
+            KeyDown Up
+            DelayRandom 121,123
+            KeyUp Up
+            DelayRandom 350,354
+            KeyDown F
+            DelayRandom 118,120
+            KeyUp F
+            DelayRandom 344,348
+            KeyDown Up
+            DelayRandom 128,130
+            KeyUp Up
+            DelayRandom 274,277
+        else //先找,再循环2次
+            tarX      = 1
+            tarY      = 115
+            tolerance = -1
+            facing    = 1    //面向右边
+            alterX    = -85  //传送位置
+            alterY    = 117
+            call Move() //开始传送
+            DelayRandom 45,48
+            KeyDown F
+            DelayRandom 97,98
+            KeyUp F
+            DelayRandom 376,380
+            KeyDown Up
+            DelayRandom 77,78
+            KeyUp Up
+            DelayRandom 318,322
+            KeyDown F
+            DelayRandom 119,121
+            KeyUp F
+            DelayRandom 335,339
+            KeyDown Up
+            DelayRandom 96,97
+            KeyUp Up
+            DelayRandom 274,277
+            cycle1 = 2
+        End If
+    else if cycle1 == 1 then //第一次在左边
+        call GetXY()
+        if intY != 117 or intX <( -85-8) or intX > (-85+8) then //
+           tarX			= -85
+           tarY			= 117
+           tolerance	= 4
+           call Navigate()
+        End If
+        DelayRandom 58,65
+        KeyDown F
+        DelayRandom 111,113
+        KeyUp F
+        DelayRandom 174,178
+        //先不跳了
+        // KeyDown Space
+        // DelayRandom 70,71
+        // KeyUp Space
+        // DelayRandom 125,127
+        // KeyDown F
+        // DelayRandom 104,106
+        // KeyUp F
+        // DelayRandom 512,518
+        tarX       = -85
+        tarY       = 117
+        tolerance  = -1
+        facing     = 1       //面向右边
+        alterX     = 1       //传送位置
+        alterY     = 67
+        call Move() //开始传送
+    else if cycle1 == 2 then  //在上方
+        call GetXY()
+        if intY != 67 or intX <( 1-8) or intX > (1+8) then //
+           tarX			= 1
+           tarY			= 67
+           tolerance	= 4
+           call Navigate()
+        End If
+        DelayRandom 58,65
+        KeyDown F
+        DelayRandom 111,113
+        KeyUp F
+        DelayRandom 174,178
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
+            tarX = -13
+            tarY = 85
+            tolerance = 4
+            call GetXY()
+            if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
+                Call Navigate()
+            End If
+            DelayRandom 56,58
+            KeyDown Left
+            DelayRandom 62,68
+            KeyUp Left
+            DelayRandom 106,109
+            KeyDown 1
+            DelayRandom 194,196
+            KeyUp 1
+            DelayRandom 612,621
+            fountainTime = GetTimeStamp()
+        else if GetTimeStamp() - pick1 > 120 then //捡钱
+            DelayRandom 52,53
+            KeyDown Right
+            DelayRandom 37,38
+            KeyDown Space
+            DelayRandom 65,66
+            KeyUp Space
+            DelayRandom 50,51
+            KeyDown Space
+            DelayRandom 62,63
+            KeyUp Space
+            DelayRandom 467,472
+            KeyDown Down
+            DelayRandom 135,137
+            KeyDown LShift
+            DelayRandom 119,121
+            KeyUp LShift
+            DelayRandom 145,147
+            KeyUp Right
+            DelayRandom 53,54
+            KeyUp Down
+            DelayRandom 186,188
+            KeyDown Left
+            DelayRandom 14,15
+            KeyDown Down
+            DelayRandom 118,120
+            KeyDown LShift
+            DelayRandom 118,120
+            KeyUp LShift
+            DelayRandom 129,131
+            KeyUp Down
+            DelayRandom 4,5
+            KeyUp Left
+            DelayRandom 200,203
+            KeyDown F
+            DelayRandom 119,121
+            KeyUp F
+            DelayRandom 347,351
+            KeyDown Left
+            DelayRandom 209,212
+            KeyDown Space
+            DelayRandom 55,56
+            KeyUp Space
+            DelayRandom 68,69
+            KeyDown Space
+            DelayRandom 78,79
+            KeyUp Space
+            DelayRandom 70,71
+            KeyUp Left
+            DelayRandom 175,177
+            KeyDown F
+            DelayRandom 96,97
+            KeyUp F
+            DelayRandom 544,550
+            pick1 = GetTimeStamp()
+        else //沒有东西就传送下去
+            tarX       = 1
+            tarY       = 67
+            tolerance  = -1
+            facing     = 1       //面向右边
+            alterX     = 1       //传送位置
+            alterY     = 115
+            call Move() //开始传送
+        End If
+    End If
+
+    cycle1 = cycle1 + 1 //下一步
+    if cycle1 < 0 or cycle1 > 2 then
+        cycle1 = 0
+    End If
+    Call ReleaseRune() //定期解轮
+    Delay 5
+Wend
