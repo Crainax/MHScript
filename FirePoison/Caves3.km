@@ -131,7 +131,7 @@ Sub Attack //·Å¼¼ÄÜ,È»ºóÔÙË²ÒÆ(×¢ÒâÒªÏÈ»ñÈ¡XYÔÙ·ÅÕĞ)  Ver2.4 ĞŞ¸´ÎÊÌâºÍÖÕ¼«ÎŞÏŞ¿
             Timer 1,1,2000
         else
             a = GetTimeStamp() - DTime
-            if a > 2 and intY > 83 and intY < 110 then //¿ÉÒÔ·ÅÄ©ÈÕÁË(½öÏŞµÚ¶ş²ã)
+            if a > 2 and intY > 84 and intY < 110 then //¿ÉÒÔ·ÅÄ©ÈÕÁË(½öÏŞµÚ¶ş²ã)
                 KeyDown D
                 DelayRandom 101,103
                 KeyUp D
