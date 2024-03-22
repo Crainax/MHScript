@@ -873,10 +873,10 @@ Sub Spell //右下放技能
                         KeyDown Y
                         DelayRandom 422,425
                         KeyUp Y
-                    else
-                        KeyDown F
-                        DelayRandom 111,113
-                        KeyUp F
+                    // else
+                        // KeyDown F
+                        // DelayRandom 111,113
+                        // KeyUp F
                     End If
                 End If
             End If

@@ -629,19 +629,10 @@ Sub Navigate //引導路線
         DelayRandom 105,107
         KeyUp F
         DelayRandom 533,539
-    else if tarX <= -12 and intX >= -52 then //目的在右边
+    else if tarX >= -12 and intX <= -52 then //目的在右边
         SavedX		= tarX
         SavedY		= tarY
         SavedTor	= tolerance
-
-        if intY <= 74 then //上半层,
-            tarX      = 1
-            tarY      = 67
-            tolerance = 0
-            alterX    = 1 //传送位置
-            alterY    = 115
-            Call Move()
-        End If
 
         tarX      = -82
         tarY      = 98
@@ -653,7 +644,7 @@ Sub Navigate //引導路線
         tarX      = SavedX
         tarY      = SavedY
         tolerance = SavedTor
-    else if intX <= -12 and tarY >= -52 then //目的在左边
+    else if intX >= -12 and tarX <= -52 then //目的在左边
         SavedX		= tarX
         SavedY		= tarY
         SavedTor	= tolerance
@@ -773,10 +764,10 @@ Sub Spell //右下放技能
                         KeyDown Y
                         DelayRandom 422,425
                         KeyUp Y
-                    else
-                        KeyDown F
-                        DelayRandom 111,113
-                        KeyUp F
+                    // else
+                        // KeyDown F
+                        // DelayRandom 111,113
+                        // KeyUp F
                     End If
                 End If
             End If
@@ -804,6 +795,8 @@ fountainTime   = 0               //上次喷泉时间
 cycle1         = 0               //循环
 yTolerance     = 0               //初始化容忍
 while 1 > 0
+
+    Rem reboot
 
     if GetTimeStamp() - stoneSteleTime > 570 then //可以放轮了
         call GetXY()
@@ -840,23 +833,64 @@ while 1 > 0
         call Move() //开始传送
     End If
 
-    DelayRandom 122,124
-    KeyDown Down
-    DelayRandom 136,138
-    KeyDown Space
-    DelayRandom 95,96
-    KeyUp Space
-    DelayRandom 28,29
-    KeyUp Down
-    DelayRandom 151,153
-    KeyDown F
-    DelayRandom 119,121
-    KeyUp F
-    DelayRandom 507,513
-    KeyDown F
-    DelayRandom 105,107
-    KeyUp F
-    DelayRandom 434,439
+    if GetTimeStamp() - pick2 > 119 then //捡钱
+        DelayRandom 122,124
+        KeyDown Left
+        DelayRandom 1,2
+        KeyDown Down
+        DelayRandom 44,45
+        KeyDown LShift
+        DelayRandom 145,147
+        KeyUp LShift
+        DelayRandom 79,80
+        KeyUp Left
+        DelayRandom 4,5
+        KeyUp Down
+        DelayRandom 374,378
+        KeyDown F
+        DelayRandom 103,105
+        KeyUp F
+        DelayRandom 657,664
+        KeyDown Right
+        DelayRandom 12,13
+        KeyDown Up
+        DelayRandom 37,38
+        KeyDown LShift
+        DelayRandom 104,106
+        KeyUp LShift
+        DelayRandom 1,2
+        KeyUp Up
+        DelayRandom 5,6
+        KeyUp Right
+        DelayRandom 397,401
+        KeyDown F
+        DelayRandom 103,105
+        KeyUp F
+        DelayRandom 434,439
+        KeyDown Left
+        DelayRandom 64,65
+        KeyUp Left
+        pick2 = GetTimeStamp()
+    else
+        DelayRandom 122,124
+        KeyDown Down
+        DelayRandom 136,138
+        KeyDown Space
+        DelayRandom 95,96
+        KeyUp Space
+        DelayRandom 28,29
+        KeyUp Down
+        DelayRandom 151,153
+        KeyDown F
+        DelayRandom 119,121
+        KeyUp F
+        DelayRandom 507,513
+        KeyDown F
+        DelayRandom 105,107
+        KeyUp F
+        DelayRandom 434,439
+    End If
+
 
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
     if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
@@ -868,23 +902,62 @@ while 1 > 0
             Call Navigate()
         End If
         DelayRandom 56,58
-        // KeyDown Left
-        // DelayRandom 62,68
-        // KeyUp Left
-        // DelayRandom 106,109
         KeyDown 1
         DelayRandom 194,196
         KeyUp 1
         DelayRandom 612,621
         fountainTime = GetTimeStamp()
 
-        tarX      = -82
-        tarY      = 98
-        tolerance = -1
-        facing    = -1   //面向左边
-        alterX    = 18    //传送位置
-        alterY    = 73   //回左门
-        call   Move()  //开始传送
+        if GetTimeStamp() - pick1 > 98 then
+            DelayRandom 166,170
+            KeyDown Right
+            DelayRandom 103,105
+            KeyDown Space
+            DelayRandom 51,52
+            KeyUp Space
+            DelayRandom 65,66
+            KeyDown Space
+            DelayRandom 69,70
+            KeyUp Space
+            DelayRandom 259,262
+            KeyDown LShift
+            DelayRandom 104,106
+            KeyUp LShift
+            DelayRandom 316,320
+            KeyDown F
+            DelayRandom 71,72
+            KeyUp F
+            DelayRandom 146,148
+            KeyUp Right
+            DelayRandom 252,255
+            KeyDown Right
+            DelayRandom 37,38
+            KeyDown Space
+            DelayRandom 37,38
+            KeyUp Space
+            DelayRandom 54,55
+            KeyDown Space
+            DelayRandom 45,46
+            KeyUp Space
+            DelayRandom 20,21
+            KeyUp Right
+            DelayRandom 143,145
+            KeyDown F
+            DelayRandom 112,114
+            KeyUp F
+            DelayRandom 460,465
+            Goto reboot
+            pick1 = GetTimeStamp()
+        else
+            tarX      = -82
+            tarY      = 98
+            tolerance = -1
+            facing    = -1   //面向左边
+            alterX    = 18    //传送位置
+            alterY    = 73   //回左门
+            call   Move()  //开始传送
+        End If
+
     else if intY != 98 or intX != -82 then //先判定一下位置
         tarX      = -82
         tarY      = 98
