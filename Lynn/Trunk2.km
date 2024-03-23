@@ -541,7 +541,11 @@ Sub Navigate //引導路線
 
         call GetXY()
         if intY == 109 and intX >= (49-4) and intX <=(49+4) then //
-            DelayRandom 102,109
+            DelayRandom 62,68
+            KeyDown Left
+            DelayRandom 62,68
+            KeyUp Left
+            DelayRandom 62,68
             KeyDown Down
             DelayRandom 87,88
             KeyDown Space
@@ -725,7 +729,7 @@ fountainTime   = 0               //上次喷泉时间
 yTolerance     = 0               //初始化容忍
 while 1 > 0
     Rem reboot
-     if GetTimeStamp() - stoneSteleTime > 570 then //可以放轮了
+    if GetTimeStamp() - stoneSteleTime > 570 then //可以放轮了
         call GetXY()
         DelayRandom 356,358
         KeyDown O
@@ -798,22 +802,25 @@ while 1 > 0
                 DelayRandom 14,15
                 KeyUp Left
                 DelayRandom 630,637
-                KeyDown Up
-                DelayRandom 71,72
-                KeyDown Space
-                DelayRandom 45,46
-                KeyUp Space
-                DelayRandom 70,71
-                KeyDown Space
-                DelayRandom 87,88
-                KeyUp Space
-                DelayRandom 94,95
-                KeyUp Up
-                DelayRandom 109,111
-                KeyDown F
-                DelayRandom 104,106
-                KeyUp F
-                DelayRandom 470,475
+                call GetXY()
+                if intY > 125 then //人在下面再跳起来
+                    KeyDown Up
+                    DelayRandom 71,72
+                    KeyDown Space
+                    DelayRandom 45,46
+                    KeyUp Space
+                    DelayRandom 70,71
+                    KeyDown Space
+                    DelayRandom 87,88
+                    KeyUp Space
+                    DelayRandom 94,95
+                    KeyUp Up
+                    DelayRandom 109,111
+                    KeyDown F
+                    DelayRandom 104,106
+                    KeyUp F
+                    DelayRandom 470,475
+                End If
             else if intY == 127 and intX >= (43-8) and intX <=(43+8) then //人在喷泉处
                 DelayRandom 144,146
                 KeyDown Left
@@ -915,7 +922,7 @@ while 1 > 0
             End If
         else //左右跳A
             call GetXY()
-            if intY > 114 and intY <= 125 and intX >= -15 and intX <= 2 then //人在起跳点
+            if intY > 114 and intY <= 125 and intX >= -20 and intX <= 2 then //人在起跳点
 
                 KeyDown Left
                 DelayRandom 52,53
@@ -934,7 +941,7 @@ while 1 > 0
                 KeyUp F
                 DelayRandom 321,325
                 call GetXY()
-                if intX >= -41 then //极限滑的距离
+                if intX >= -45 then //极限滑的距离
                     KeyDown Space
                     DelayRandom 46,47
                     KeyUp Space
@@ -971,17 +978,18 @@ while 1 > 0
                 DelayRandom 169,171
                 KeyUp F
                 DelayRandom 320,324
+                call GetXY()
                 if intX <= -9 then //极限滑的距离
                     KeyDown Space
-                    DelayRandom 53,54
+                    DelayRandom 46,47
                     KeyUp Space
-                    DelayRandom 11,12
+                    DelayRandom 43,44
                     KeyDown F
-                    DelayRandom 656,663
+                    DelayRandom 746,754
                     KeyUp F
-                    DelayRandom 409,414
+                    DelayRandom 231,234
                 End If
-            else if intY > 114 and intY <= 125 and intX >= -24 and intX <= -15 then //反墙小跳
+            else if intY > 114 and intY <= 125 and intX >= -30 and intX <= -20 then //反墙小跳
                 DelayRandom 119,121
                 KeyDown Left
                 DelayRandom 103,105
@@ -1019,7 +1027,7 @@ while 1 > 0
                 DelayRandom 111,113
                 KeyUp F
                 DelayRandom 304,309
-            else if intY > 114 and intY <= 125 and intX >= -56 and intX <= -24 then //左边冲右边
+            else if intY > 114 and intY <= 125 and intX >= -56 and intX <= -30 then //左边冲右边
                 DelayRandom 102,107
                 KeyDown Right
                 DelayRandom 69,70
@@ -1072,7 +1080,7 @@ while 1 > 0
             else //来
                 tarX        = -9
                 tarY        = 125
-                tolerance   = 4
+                tolerance   = 8
                 Call Navigate()
             End If
             //Call Spell()
