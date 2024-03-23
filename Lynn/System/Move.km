@@ -119,7 +119,7 @@ Sub JumpAttack
     End If
 End Sub
 
-Sub Move  //1.3 精确走到传送点的功能完成了
+Sub Move  //1.4 上跳功能优化
     csTimes = -1  //初始就启用指南针判断
     csMax   = 3   //降落默认值为4
     while  1 > 0
@@ -223,14 +223,34 @@ Sub Move  //1.3 精确走到传送点的功能完成了
                     KeyUp Down
                     DelayRandom 548,554
                 Else If intY > (tarY + yTolerance) Then //如果人在目标之下,上钩
-                    csTimes = 0 //启动降落判断
-                    cY = intY
-                    csMax = 8 //延长一点降落判断
-                    TracePrint 钩子一次
-                    Hooking = 1
-                    KeyDown Alt
-                    DelayRandom 328,430
-                    KeyUp Alt
+                    if intY > (tarY+18) Then	//>=19上跳就够不到了
+                        csTimes = 0 //启动降落判断
+                        cY = intY
+                        csMax = 8 //延长一点降落判断
+                        TracePrint 钩子一次
+                        Hooking = 1
+                        KeyDown Alt
+                        DelayRandom 328,430
+                        KeyUp Alt
+                    else
+                        DelayRandom 78,79
+                        KeyDown Up
+                        DelayRandom 105,107
+                        KeyDown Space
+                        DelayRandom 78,79
+                        KeyUp Space
+                        DelayRandom 94,95
+                        KeyDown Space
+                        DelayRandom 96,97
+                        KeyUp Space
+                        DelayRandom 76,77
+                        KeyUp Up
+                        DelayRandom 160,162
+                        KeyDown F
+                        DelayRandom 95,96
+                        KeyUp F
+                        DelayRandom 553,559
+                    End If
                 else
                     yTolerance = 0
                     if tolerance == 0 then //传送门型
@@ -420,19 +440,6 @@ Sub Move  //1.3 精确走到传送点的功能完成了
                             End If
                             facing = 0
                             Exit Sub
-                        // else
-                            // TracePrint 未到达[ & intX & , & intY & ],传送[ & alterX & , & alterY & ] // 没到目的点
-                            // if facing > 0 then  //刚刚有右走
-                                // KeyDown Left
-                                // Delay 35
-                                // KeyUp Left
-                                // DelayRandom 62,65
-                            // else if facing < 0 then //刚刚是向左走
-                                // KeyDown Right
-                                // Delay 35
-                                // KeyUp Right
-                                // DelayRandom 62,65
-                            // end if
                         End if
                     else //非传送门
                         if tolerance < 4 Then //容忍度小于4还是要小碎步
