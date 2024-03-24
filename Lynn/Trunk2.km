@@ -174,34 +174,6 @@ Sub Move  //1.4 上跳功能优化
             DelayRandom 86,87
             KeyUp F
             DelayRandom 362,366
-        else if intX == -69 and intY > 128 and intY < 140 then //卡在绳子上
-            DelayRandom 137,139
-            KeyDown Right
-            DelayRandom 94,95
-            KeyDown Space
-            DelayRandom 77,78
-            KeyUp Right
-            DelayRandom 13,14
-            KeyUp Space
-            DelayRandom 175,177
-            KeyDown F
-            DelayRandom 103,105
-            KeyUp F
-            DelayRandom 386,390
-        else if intX == -19 and intY > 125 and intY < 140 then //卡在绳子上
-            DelayRandom 137,139
-            KeyDown Right
-            DelayRandom 94,95
-            KeyDown Space
-            DelayRandom 77,78
-            KeyUp Right
-            DelayRandom 13,14
-            KeyUp Space
-            DelayRandom 175,177
-            KeyDown F
-            DelayRandom 103,105
-            KeyUp F
-            DelayRandom 386,390
         else //继续根据
             Call AntiJam() //防卡
             if tolerance > 2 Then
@@ -942,7 +914,35 @@ while 1 > 0
             End If
         else //左右跳A
             call GetXY()
-            if intY > 114 and intY <= 125 and intX >= -20 and intX <= 2 then //人在起跳点
+            if intX == -69 and intY > 128 and intY < 140 then //卡在绳子上
+                DelayRandom 137,139
+                KeyDown Right
+                DelayRandom 94,95
+                KeyDown Space
+                DelayRandom 77,78
+                KeyUp Right
+                DelayRandom 13,14
+                KeyUp Space
+                DelayRandom 175,177
+                KeyDown F
+                DelayRandom 103,105
+                KeyUp F
+                DelayRandom 386,390
+            else if intX == -19 and intY > 125 and intY < 140 then //卡在绳子上
+                DelayRandom 137,139
+                KeyDown Right
+                DelayRandom 94,95
+                KeyDown Space
+                DelayRandom 77,78
+                KeyUp Right
+                DelayRandom 13,14
+                KeyUp Space
+                DelayRandom 175,177
+                KeyDown F
+                DelayRandom 103,105
+                KeyUp F
+                DelayRandom 386,390
+            else if intY > 114 and intY <= 125 and intX >= -20 and intX <= 2 then //人在起跳点
 
                 KeyDown Left
                 DelayRandom 52,53
@@ -1102,34 +1102,6 @@ while 1 > 0
                 DelayRandom 86,87
                 KeyUp F
                 DelayRandom 362,366
-            else if intX == -69 and intY > 128 and intY < 140 then //卡在绳子上
-                DelayRandom 137,139
-                KeyDown Right
-                DelayRandom 94,95
-                KeyDown Space
-                DelayRandom 77,78
-                KeyUp Right
-                DelayRandom 13,14
-                KeyUp Space
-                DelayRandom 175,177
-                KeyDown F
-                DelayRandom 103,105
-                KeyUp F
-                DelayRandom 386,390
-            else if intX == -19 and intY > 125 and intY < 140 then //卡在绳子上
-                DelayRandom 137,139
-                KeyDown Right
-                DelayRandom 94,95
-                KeyDown Space
-                DelayRandom 77,78
-                KeyUp Right
-                DelayRandom 13,14
-                KeyUp Space
-                DelayRandom 175,177
-                KeyDown F
-                DelayRandom 103,105
-                KeyUp F
-                DelayRandom 386,390
             else //来
                 tarX        = -9
                 tarY        = 125
