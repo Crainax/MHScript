@@ -192,7 +192,7 @@ Sub AntiJam //一般跟随GetXY后用,  Ver2.0 延长了一点时间防误判断
     End If
 End Sub
 
-Sub Move //精确的移动:V2.9 定点传送门搞定了
+Sub Move //精确的移动:V3.0定点稳定加了个不按上的方法
     csTimes = -1 //初始就启用指南针判断
     stuckTimes = 0 //防卡检测初始次数为0
     cX = -100
@@ -514,51 +514,43 @@ Sub Move //精确的移动:V2.9 定点传送门搞定了
                                 a = 1
                             end if
                         End If
-                        DelayRandom 45,52
-                        KeyDown Up
-                        DelayRandom 120,122
-                        KeyUp Up
-                        DelayRandom 231,234
-                        Call GetXY()
-                        if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
-                            alterX    = 0
-                            alterY    = 0
-                            if a > 0 then //要换方向
-                                if facing > 0 then  //改面向右边
-                                    KeyDown Left
-                                    Delay 40
-                                    KeyUp Left
-                                    DelayRandom 62,65
-                                    KeyDown Right
-                                    Delay 40
-                                    KeyUp Right
-                                    DelayRandom 62,65
-                                else if facing < 0 then //改面向左边
-                                    KeyDown Right
-                                    Delay 40
-                                    KeyUp Right
-                                    DelayRandom 62,65
-                                    KeyDown Left
-                                    Delay 40
-                                    KeyUp Left
-                                    DelayRandom 62,65
-                                end if
-                            End If
-                            facing = 0
+                        if alterY > 0 then //有这个才是会按上
+                            DelayRandom 45,52
+                            KeyDown Up
+                            DelayRandom 120,122
+                            KeyUp Up
+                            DelayRandom 231,234
+                            Call GetXY()
+                            if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
+                                alterX    = 0
+                                alterY    = 0
+                                if a > 0 then //要换方向
+                                    if facing > 0 then  //改面向右边
+                                        KeyDown Left
+                                        Delay 40
+                                        KeyUp Left
+                                        DelayRandom 62,65
+                                        KeyDown Right
+                                        Delay 40
+                                        KeyUp Right
+                                        DelayRandom 62,65
+                                    else if facing < 0 then //改面向左边
+                                        KeyDown Right
+                                        Delay 40
+                                        KeyUp Right
+                                        DelayRandom 62,65
+                                        KeyDown Left
+                                        Delay 40
+                                        KeyUp Left
+                                        DelayRandom 62,65
+                                    end if
+                                End If
+                                facing = 0
+                                Exit Sub
+                            End if
+                        else
                             Exit Sub
-                        // else
-                            // if facing > 0 then  //刚刚有右走
-                                // KeyDown Left
-                                // Delay 35
-                                // KeyUp Left
-                                // DelayRandom 62,65
-                            // else if facing < 0 then //刚刚是向左走
-                                // KeyDown Right
-                                // Delay 35
-                                // KeyUp Right
-                                // DelayRandom 62,65
-                            // end if
-                        End if
+                        End If
                     else //非传送门
                         if tolerance < 4 Then //容忍度小于4还是要小碎步
                             for 10
@@ -755,66 +747,102 @@ while 1 > 0
         DelayRandom 712,721
 
         if GetTimeStamp() - pick2 > 108 then
-            tarX		= -98
+            tarX		= -106
             tarY		= 97
             tolerance	= 6
             Call Navigate()
             pick2 = GetTimeStamp()
         End If
     else
-        a = GetTimeStamp() - AuraTime
-        if a > 55 Then //前往领域点
-            //前往领域点
-            tarX      = -27
-            tarY      = 110
-            tolerance = 6
+        if currentState == 1 then //右下位置
+            tarX		= 28
+            tarY		= 97
+            tolerance	= 6
             Call Navigate()
-            DelayRandom 123,130
+        else if currentState == 2 then //右上位置
+            tarX		= 28
+            tarY		= 84
+            tolerance	= 6
+            Call Navigate()
+        else if currentState == 3  then //左上位置
+            tarX		= 12
+            tarY		= 83
+            tolerance	= 6
+            Call Navigate()
+
+            if GetTimeStamp() - AuraTime > 50 then //放领域+捡钱
+                currentState = -3
+                AuraTime = GetTimeStamp()
+            End If
+        else if currentState == -2  then //中上的地方
+            tarX		= -36
+            tarY		= 84
+            tolerance	= 6
+            Call Navigate()
+        else if currentState == -1  then //中下的地方放
+            tarX		= -36
+            tarY		= 110
+            tolerance	= 6
+            Call Navigate()
+            DelayRandom 45,50
             KeyDown A
             DelayRandom 130,132
             KeyUp A
             DelayRandom 405,413
-            AuraTime = GetTimeStamp()
-        else
-            if currentState == 1 then //前往楼上
-                tarX		= 33
-                tarY		= 97
-                tolerance	= 6
-                Call Navigate()
-            else if currentState == 2 then //前往楼上
-                tarX		= 32
-                tarY		= 84
-                tolerance	= 6
-                Call Navigate()
-            else if currentState == 3  then //前往楼上
-                tarX		= 4
-                tarY		= 83
-                tolerance	= 6
-                Call Navigate()
-
-                if GetTimeStamp() - pick1 > 90 then //中间的捡钱
-                    currentState = -2
-                    pick1 = GetTimeStamp()
-                End If
-            else if currentState == -1  then //捡钱
-                tarX		= -25
-                tarY		= 84
-                tolerance	= 6
-                Call Navigate()
-            else
-                tarX		= 4
-                tarY		= 97
-                tolerance	= 6
-                Call Navigate()
-            End If
-            currentState = currentState + 1
-            if currentState > 3 then
-                currentState = 0
-            End If
+        else //最后归于左下位置
+            tarX      = 12
+            tarY      = 97
+            tolerance = -1
+            alterY    = 0
+            Call Navigate()
         End If
-
-        DelayRandom 100,103
+        // else if currentState == 3  then //左上位置
+            // tarX		= 12
+            // tarY		= 83
+            // tolerance	= 6
+            // Call Navigate()
+            // if GetTimeStamp() - pick1 > 120 then //放领域+捡钱
+                // currentState = -4
+                // pick1 = GetTimeStamp()
+            // End If
+        // else if currentState == -3  then //中上的地方
+            // tarX		= -36
+            // tarY		= 84
+            // tolerance	= 6
+            // Call Navigate()
+        // else if currentState == -2  then //中下的地方放
+            // tarX		= -36
+            // tarY		= 110
+            // tolerance	= 6
+            // Call Navigate()
+            // currentState = -1 //直接跳到0
+        // else if currentState == -1  then //中下的地方放
+            // tarX      = 12
+            // tarY      = 110
+            // tolerance = 6
+            // Call Navigate()
+            // DelayRandom 45,50
+            // KeyDown A
+            // DelayRandom 130,132
+            // KeyUp A
+            // AuraTime = GetTimeStamp()
+            // DelayRandom 405,413
+        // else //最后归于左下位置
+            // tarX      = 12
+            // tarY      = 97
+            // tolerance = -1
+            // alterY    = 0
+            // Call Navigate()
+            // if GetTimeStamp() - AuraTime > 54 then //放领域
+                // currentState = -2 //直接跳到-1
+            // End If
+        currentState = currentState + 1
+        if currentState > 3 then
+            currentState = 0
+        End If
     End If
+
+    DelayRandom 100,103
     Call ReleaseRune() //定期解轮
 
 
