@@ -208,10 +208,10 @@ Sub Move //精确的移动:V3.0定点稳定加了个不按上的方法
                 csTimes = 0
             End If
         else //继续根据
-            if tolerance > 4 Then
+            if tolerance > 2 Then
                 tolLoc = tolerance
             else  //速走的默认为4
-                tolLoc = 4
+                tolLoc = 2
             End If
             if intX < (tarX-12) Then //右瞬:这里的shit必须要抬起来 不然好像下面会出问题
                 If stuckTimes < 2 Then

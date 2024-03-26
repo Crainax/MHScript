@@ -122,10 +122,10 @@ Sub Move()  //精确的移动:Ver2.9 精确走到传送点的功能完成了
             End If
         else //继续根据
             Call AntiJam() //防卡
-            if tolerance > 4 Then
+            if tolerance > 2 Then
                 tolLoc = tolerance
             else  //速走的默认为4
-                tolLoc = 4
+                tolLoc = 2
             End If
             if intX < (tarX-24) Then //向右二段跳
                 TracePrint 右跳

@@ -212,10 +212,10 @@ Sub Move //精确的移动:V3.0定点稳定加了个不按上的方法
                 csTimes = 0
             End If
         else //继续根据
-            if tolerance > 4 Then
+            if tolerance > 2 Then
                 tolLoc = tolerance
             else  //速走的默认为4
-                tolLoc = 4
+                tolLoc = 2
             End If
             if intX < (tarX-12) Then //右瞬:这里的shit必须要抬起来 不然好像下面会出问题
                 If stuckTimes < 2 Then
@@ -747,9 +747,9 @@ while 1 > 0
         DelayRandom 712,721
 
         if GetTimeStamp() - pick2 > 108 then
-            tarX		= -106
+            tarX		= -103
             tarY		= 97
-            tolerance	= 6
+            tolerance	= 2
             Call Navigate()
             pick2 = GetTimeStamp()
         End If
@@ -757,17 +757,17 @@ while 1 > 0
         if currentState == 1 then //右下位置
             tarX		= 28
             tarY		= 97
-            tolerance	= 6
+            tolerance	= 2
             Call Navigate()
         else if currentState == 2 then //右上位置
             tarX		= 28
             tarY		= 84
-            tolerance	= 6
+            tolerance	= 2
             Call Navigate()
         else if currentState == 3  then //左上位置
             tarX		= 12
             tarY		= 83
-            tolerance	= 6
+            tolerance	= 2
             Call Navigate()
 
             if GetTimeStamp() - AuraTime > 50 then //放领域+捡钱
@@ -777,7 +777,7 @@ while 1 > 0
         else if currentState == -2  then //中上的地方
             tarX		= -36
             tarY		= 84
-            tolerance	= 6
+            tolerance	= 2
             Call Navigate()
         else if currentState == -1  then //中下的地方放
             tarX		= -36
