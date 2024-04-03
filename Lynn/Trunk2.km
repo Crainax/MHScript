@@ -595,7 +595,7 @@ Sub Navigate //引導路線
 End Sub
 
 Sub ReleaseRune //定期解轮 ver2.1
-    if GetTimeStamp() - RuneCooldown > 600 then //可以放轮了
+    if GetTimeStamp() - RuneCooldown > 900 then //可以放轮了
         FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
         if intX >= 0 then
             FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY

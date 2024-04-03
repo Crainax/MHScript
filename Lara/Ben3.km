@@ -19,6 +19,8 @@ Dim staticCount,  staticX,        staticY              //防卡计数器
 Dim SavedX,       SavedY,         SavedTor, SavedTorY  //保存一下临时处理的XY
 Dim min,          minType                              //预移动
 
+//给小号挂刷怪用
+
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
