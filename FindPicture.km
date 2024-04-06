@@ -4,27 +4,27 @@ ScreenY=1440
 Times=1
 
 [Script]
-Dim x1,        x2,               y1,   y2        // ¾ØÐÎÇøÓò:Ð¡µØÍ¼²ÉÑùµã
-Dim x3,        y3,               xEnd, yEnd      // 2¸ö¶¥µã:¼¼ÄÜÇø/ÆÁÄ»ÓÒÏÂ½Ç¶¥µã
+Dim x1,        x2,               y1,   y2        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:Ð¡ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+Dim x3,        y3,               xEnd, yEnd      // 2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½Ä»ï¿½ï¿½ï¿½Â½Ç¶ï¿½ï¿½ï¿½
 Dim logoX,logoY,intX,intY
 Dim x,y
 
 GetScreenResolution intX, intY
-x1 = intX - 1860
-y1 = intY - 890
-x2 = intX - 910
-y2 = intY - 590
-x3 = intX - 1060
-y3 = intY - 190
-xEnd = intX
-yEnd = intY
+x1             = intX - 1440
+y1             = intY - 950
+x2             = intX - 1140
+y2             = intY - 600
+x3             = intX - 640
+y3             = intY - 260
+xEnd           = intX
+yEnd           = intY
 
 while 1 > 0
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\G.bmp",000000,1.00,0,intX,intY	//ÕÒÍ¼
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\G.bmp",000000,1.00,0,intX,intY	//ï¿½ï¿½Í¼
     If intX >= 0 Then
-        MsgBox ÕÒµ½×ø±ê[ & intX & , & intY & ]
+        MsgBox ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½[ & intX & , & intY & ]
     else
-        MsgBox "Ã»ÕÒµ½"	 //µ¯´°
+        MsgBox "Ã»ï¿½Òµï¿½"	 //ï¿½ï¿½ï¿½ï¿½
     End If
     Delay 300
 Wend

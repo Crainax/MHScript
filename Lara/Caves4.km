@@ -49,6 +49,7 @@ Sub AntiJam //一般跟随GetXY后用
         staticCount = 0
     End If
     if staticCount >= 3 Then //
+        Beep 500,500
         KeyAllup //施放所有按键
         // 模拟从绳子跳走
         DelayRandom 13,15

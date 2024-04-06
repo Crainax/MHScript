@@ -651,6 +651,14 @@ Sub PreMove //提前移动到特定地点 Ver2.0 提前移动先judge,不然怕重复移动
     End If
 End Sub
 
+Sub Accept //同意加入组队
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Team\plus.bmp",000000,1.00,0,intX,intY	//找图
+    If intX >= 0 Then
+        MoveTo intX+138,intY-17
+        LeftClick
+    End If
+End Sub
+
 //分辨率初始化
 GetScreenResolution intX, intY
 x1             = intX - 1440
@@ -671,6 +679,7 @@ RuneCooldown   = 0               //解轮冷却
 stoneSteleTime = 0               //上次轮回的时间
 yTolerance     = 0               //初始化
 while 1 > 0
+    Call Accept()
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
     a = GetTimeStamp() - fountainTime
     if a > 55 or intX >= 0 then //可以喷泉了
