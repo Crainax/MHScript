@@ -380,7 +380,7 @@ yTolerance     = 0         //初始化
 while 1 > 0
     Call ReleaseRune() //定期解轮
 
-    FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Snake.bmp",000000,1.00,0,intX,intY
+    FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Snake2.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //小青蛇
 
         if state      == 0 then
@@ -443,7 +443,7 @@ while 1 > 0
             tarY        = 122
             tolerance   = 4
             yTolerance  = 4
-                Call Navigate()
+                Call Move()
             End If
 
             if state      == 1 then
@@ -451,7 +451,7 @@ while 1 > 0
             tarY        = 122
             tolerance   = 4
             yTolerance  = 4
-                Call Navigate()
+                Call Move()
             End If
 
             if state      == 2 then
@@ -459,7 +459,7 @@ while 1 > 0
             tarY        = 103
             tolerance   = 4
             yTolerance  = 4
-                Call Navigate()
+                Call Move()
             End If
 
             if state      == 3 then
@@ -467,7 +467,7 @@ while 1 > 0
             tarY        = 103
             tolerance   = 4
             yTolerance  = 4
-                Call Navigate()
+                Call Move()
             End If
 
             if state      == 4 then
@@ -475,7 +475,7 @@ while 1 > 0
             tarY        = 88
             tolerance   = 4
             yTolerance  = 4
-                Call Navigate()
+                Call Move()
             End If
 
             if state      == 5 then
@@ -483,7 +483,7 @@ while 1 > 0
             tarY        = 88
             tolerance   = 4
             yTolerance  = 4
-                Call Navigate()
+                Call Move()
             End If
 
             state = state + 1
@@ -498,7 +498,7 @@ while 1 > 0
                 tarY        = 78
                 tolerance   = 4
                 yTolerance  = 4
-                    Call Navigate()
+                    Call Move()
                 End If
 
                 if state      == 1 then
@@ -506,7 +506,7 @@ while 1 > 0
                 tarY        = 82
                 tolerance   = 4
                 yTolerance  = 4
-                    Call Navigate()
+                    Call Move()
                 End If
 
                 state = state + 1
@@ -521,7 +521,7 @@ while 1 > 0
                         tarY        = 92
                         tolerance   = 4
                         yTolerance  = 4
-                        Call Navigate()
+                        Call Move()
                     End If
 
                     if state      == 1 then
@@ -529,7 +529,7 @@ while 1 > 0
                         tarY        = 82
                         tolerance   = 4
                         yTolerance  = 4
-                        Call Navigate()
+                        Call Move()
                     End If
 
                     if state      == 2 then
@@ -537,7 +537,7 @@ while 1 > 0
                         tarY        = 74
                         tolerance   = 4
                         yTolerance  = 4
-                        Call Navigate()
+                        Call Move()
                     End If
 
                     if state      == 3 then
@@ -545,7 +545,7 @@ while 1 > 0
                         tarY        = 92
                         tolerance   = 4
                         yTolerance  = 4
-                        Call Navigate()
+                        Call Move()
                     End If
 
                     state = state + 1
@@ -553,14 +553,14 @@ while 1 > 0
                         state = 0 //初始化状态为0
                     End If
                 else
-                    FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Bird2.bmp",000000,1.00,0,intX,intY
+                    FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Dog1.bmp",000000,1.00,0,intX,intY
                     if intX >= 0 Then
                         if state      == 0 then
                             tarX        = -74
                             tarY        = 79
                             tolerance   = 4
                             yTolerance  = 4
-                            Call Navigate()
+                            Call Move()
                         End If
 
                         if state      == 1 then
@@ -568,7 +568,7 @@ while 1 > 0
                             tarY        = 75
                             tolerance   = 4
                             yTolerance  = 4
-                            Call Navigate()
+                            Call Move()
                         End If
 
                         if state      == 2 then
@@ -576,7 +576,7 @@ while 1 > 0
                             tarY        = 64
                             tolerance   = 4
                             yTolerance  = 4
-                            Call Navigate()
+                            Call Move()
                         End If
 
                         state = state + 1
