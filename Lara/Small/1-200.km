@@ -355,45 +355,6 @@ Sub ReleaseRune //定期解轮 ver2.1
     End If
 End Sub
 
-Sub SpellList() //随便扔技能 V2.4 攻击长一点
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\V.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then //找V3
-        KeyDown V
-        DelayRandom 123,130
-        KeyUp V
-        DelayRandom 899,909
-    else
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\B.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then //找V4
-            KeyDown B
-            DelayRandom 105,107
-            KeyUp B
-            DelayRandom 712,780
-        else
-            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\5G.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then //找女神祝福
-                KeyDown 5
-                DelayRandom 134,142
-                KeyUp 5
-                DelayRandom 512,519
-            else
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\4.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //找武公
-                    KeyDown 4
-                    DelayRandom 105,107
-                    KeyUp 4
-                    DelayRandom 899,909
-                else //什么都没有就随机瞬移释放
-                    KeyDown F
-                    DelayRandom 960,970
-                    KeyUp F
-                    DelayRandom 223,226
-                End If
-            End If
-        End If
-    End If
-End Sub
-
 Sub Navigate //引導路線
     Call Move()
 End Sub
@@ -423,95 +384,211 @@ while 1 > 0
     if intX >= 0 Then //小青蛇
 
         if state      == 0 then
-        tarX        = -17
-        tarY        = 91
-        tolerance   = 4
-        yTolerance  = 4
-        Call Move()
+            tarX        = -17
+            tarY        = 91
+            tolerance   = 4
+            yTolerance  = 4
+            Call Move()
         End If
 
         if state      == 1 then
-        tarX        = 22
-        tarY        = 91
-        tolerance   = 4
-        yTolerance  = 4
-        Call Move()
+            tarX        = 22
+            tarY        = 91
+            tolerance   = 4
+            yTolerance  = 4
+            Call Move()
         End If
 
         if state      == 2 then
-        tarX        = 46
-        tarY        = 91
-        tolerance   = 4
-        yTolerance  = 4
-        Call Move()
+            tarX        = 46
+            tarY        = 91
+            tolerance   = 4
+            yTolerance  = 4
+            Call Move()
         End If
 
         if state      == 3 then
-        tarX        = 46
-        tarY        = 68
-        tolerance   = 4
-        yTolerance  = 4
-        Call Move()
+            tarX        = 46
+            tarY        = 68
+            tolerance   = 4
+            yTolerance  = 4
+            Call Move()
         End If
 
         if state      == 4 then
-        tarX        = 22
-        tarY        = 76
-        tolerance   = 4
-        yTolerance  = 4
-        Call Move()
+            tarX        = 22
+            tarY        = 76
+            tolerance   = 4
+            yTolerance  = 4
+            Call Move()
         End If
 
         if state      == 5 then
-        tarX        = -17
-        tarY        = 79
-        tolerance   = 4
-        yTolerance  = 4
-        Call Move()
+            tarX        = -17
+            tarY        = 79
+            tolerance   = 4
+            yTolerance  = 4
+            Call Move()
         End If
 
         state = state + 1
         if state < 0 or state > 6 Then
             state = 0 //初始化状态为0
         End If
+    else
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Tulong.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //土龙
+            if state      == 0 then
+            tarX        = 11
+            tarY        = 122
+            tolerance   = 4
+            yTolerance  = 4
+                Call Navigate()
+            End If
 
-    End If
+            if state      == 1 then
+            tarX        = 45
+            tarY        = 122
+            tolerance   = 4
+            yTolerance  = 4
+                Call Navigate()
+            End If
 
-    if state      == 0 then
-       tarX        = -21
-       tarY        = 92
-       tolerance   = 4
-       yTolerance  = 4
-        Call Navigate()
-    End If
+            if state      == 2 then
+            tarX        = 45
+            tarY        = 103
+            tolerance   = 4
+            yTolerance  = 4
+                Call Navigate()
+            End If
 
-    if state      == 1 then
-       tarX        = 31
-       tarY        = 82
-       tolerance   = 4
-       yTolerance  = 4
-        Call Navigate()
-    End If
+            if state      == 3 then
+            tarX        = 11
+            tarY        = 103
+            tolerance   = 4
+            yTolerance  = 4
+                Call Navigate()
+            End If
 
-    if state      == 2 then
-       tarX        = -8
-       tarY        = 74
-       tolerance   = 4
-       yTolerance  = 4
-        Call Navigate()
-    End If
+            if state      == 4 then
+            tarX        = 11
+            tarY        = 88
+            tolerance   = 4
+            yTolerance  = 4
+                Call Navigate()
+            End If
 
-    if state      == 3 then
-       tarX        = -14
-       tarY        = 92
-       tolerance   = 4
-       yTolerance  = 4
-        Call Navigate()
-    End If
+            if state      == 5 then
+            tarX        = 45
+            tarY        = 88
+            tolerance   = 4
+            yTolerance  = 4
+                Call Navigate()
+            End If
 
-    state = state + 1
-    if state < 0 or state > 3 Then
-        state = 0 //初始化状态为0
+            state = state + 1
+            if state < 0 or state > 6 Then
+                state = 0 //初始化状态为0
+            End If
+        else
+            FindPic x1,y1,x2,y2,"E:\MHImg\Maps\RedSand.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                if state      == 0 then
+                tarX        = 36
+                tarY        = 78
+                tolerance   = 4
+                yTolerance  = 4
+                    Call Navigate()
+                End If
+
+                if state      == 1 then
+                tarX        = -62
+                tarY        = 82
+                tolerance   = 4
+                yTolerance  = 4
+                    Call Navigate()
+                End If
+
+                state = state + 1
+                if state < 0 or state > 1 Then
+                    state = 0 //初始化状态为0
+                End If
+            else
+                FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Bird2.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    if state      == 0 then
+                        tarX        = -21
+                        tarY        = 92
+                        tolerance   = 4
+                        yTolerance  = 4
+                        Call Navigate()
+                    End If
+
+                    if state      == 1 then
+                        tarX        = 31
+                        tarY        = 82
+                        tolerance   = 4
+                        yTolerance  = 4
+                        Call Navigate()
+                    End If
+
+                    if state      == 2 then
+                        tarX        = -8
+                        tarY        = 74
+                        tolerance   = 4
+                        yTolerance  = 4
+                        Call Navigate()
+                    End If
+
+                    if state      == 3 then
+                        tarX        = -14
+                        tarY        = 92
+                        tolerance   = 4
+                        yTolerance  = 4
+                        Call Navigate()
+                    End If
+
+                    state = state + 1
+                    if state < 0 or state > 3 Then
+                        state = 0 //初始化状态为0
+                    End If
+                else
+                    FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Bird2.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        if state      == 0 then
+                            tarX        = -74
+                            tarY        = 79
+                            tolerance   = 4
+                            yTolerance  = 4
+                            Call Navigate()
+                        End If
+
+                        if state      == 1 then
+                            tarX        = 34
+                            tarY        = 75
+                            tolerance   = 4
+                            yTolerance  = 4
+                            Call Navigate()
+                        End If
+
+                        if state      == 2 then
+                            tarX        = -20
+                            tarY        = 64
+                            tolerance   = 4
+                            yTolerance  = 4
+                            Call Navigate()
+                        End If
+
+                        state = state + 1
+                        if state < 0 or state > 2 Then
+                            state = 0 //初始化状态为0
+                        End If
+                    else
+                        MsgBox 不认识现在的图
+                    End If
+                End If
+            End If
+        End If
     End If
     Delay 5
 
