@@ -542,18 +542,16 @@ Sub SpellList() //随便扔技能 V2.5 根据地点放火(下按或上按)
                 else //什么都没有就随机瞬移释放
                     a = GetTimeStamp() - ReleaseTime3
                     Call GetXY()
-                    if intX > -40 and intX < 40 then
-                        if intY == 87 or intY == 98 then //只有三个地方能放
+                    if intX > -50 and intX < -30 then
+                        if intY == -1 then //只有三个地方能放
                             if a > 12 then
                                 ReleaseTime3 = GetTimeStamp()
                                 SavedX = intX
                                 SavedY = intY
-                                if intY == 98 then //压左键
-                                    KeyDown Left
-                                    DelayRandom 202,205
-                                else
+                                if intY == -1 then //压左键
                                     KeyDown Down
                                     DelayRandom 202,205
+                                else
                                 End If
                                 KeyDown LShift
                                 DelayRandom 128,130
@@ -618,7 +616,7 @@ Sub Navigate //引導路線 V2.0针对各种地点
     Call Move()
 End Sub
 
-Sub PreMove //提前移动到特定地点 Ver2.0 提前移动先judge,不然怕重复移动
+Sub PreMove3 //提前移动到特定地点 Ver2.0 提前移动先judge,不然怕重复移动
     min = ReleaseTime2 + 13
     minType = 2
     if min > ReleaseTime1 + 13 then //
@@ -644,6 +642,45 @@ Sub PreMove //提前移动到特定地点 Ver2.0 提前移动先judge,不然怕重复移动
         tarY       = 85
         tolerance  = 4
         yTolerance = 11
+    End If
+    call GetXY()
+    if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
+        Call Navigate()
+    End If
+End Sub
+
+Sub PreMove6 //提前移动到特定地点 Ver2.0 提前移动先judge,不然怕重复移动
+    min = seedTime1 + 18 //先从种子开始排序
+    minType = 3
+    if min > ReleaseTime2 + 13 then //
+        min = ReleaseTime2 + 13
+        minType = 2
+    end if
+    if min > ReleaseTime1 + 13 then //
+        min = ReleaseTime1 + 13
+        minType = 1
+    end if
+    if min > fountainTime + 55 then //
+        min = fountainTime + 55
+        minType = 0
+    end if
+
+    if minType = 0 then
+        tarX = 31
+        tarY = 115
+        tolerance = 4
+    else if minType = 1 then
+        tarX = -43
+        tarY = 98
+        tolerance = 4
+    else if minType = 2 then
+        tarX       = -7
+        tarY       = 101
+        tolerance  = 4
+    else if minType = 3 then
+        tarX       = 28
+        tarY       = 76
+        tolerance  = 6
     End If
     call GetXY()
     if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
@@ -790,7 +827,7 @@ while 1 > 0
                 DelayRandom 455,469
                 seedTime1 = GetTimeStamp()
             else //前往牛马地方放技能
-                Call PreMove()
+                Call PreMove3()
                 DelayRandom 56,58
                 Call SpellList()
                 DelayRandom 155,169
@@ -805,74 +842,30 @@ while 1 > 0
             FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
             a = GetTimeStamp() - fountainTime
             if a > 55 or intX >= 0 then //可以喷泉了
-                tarX = -98
-                tarY = 93
+                tarX = 31
+                tarY = 115
                 tolerance = 4
                 call GetXY()
                 if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
                     Call Navigate()
                 End If
                 DelayRandom 56,58
-                KeyDown Left
+                KeyDown Right
                 DelayRandom 62,68
-                KeyUp Left
+                KeyUp Right
                 DelayRandom 106,109
                 KeyDown 1
                 DelayRandom 194,196
                 KeyUp 1
                 DelayRandom 712,721
                 fountainTime = GetTimeStamp()
-
-                if GetTimeStamp() - pick1 > 95 then
-                    DelayRandom 79,81
-                    KeyDown Down
-                    DelayRandom 145,147
-                    KeyDown Space
-                    DelayRandom 135,137
-                    KeyUp Space
-                    DelayRandom 120,122
-                    KeyUp Down
-                    DelayRandom 257,260
-                    KeyDown F
-                    DelayRandom 102,104
-                    KeyUp F
-                    DelayRandom 418,423
-                    KeyDown Right
-                    DelayRandom 73,74
-                    KeyDown Space
-                    DelayRandom 83,84
-                    KeyUp Space
-                    DelayRandom 73,74
-                    KeyDown Space
-                    DelayRandom 94,95
-                    KeyUp Space
-                    DelayRandom 109,111
-                    KeyUp Right
-                    DelayRandom 27,28
-                    KeyDown F
-                    DelayRandom 120,122
-                    KeyUp F
-                    DelayRandom 572,578
-                    pick1 = GetTimeStamp()
-                End If
-
                 Call ReleaseRune() //定期解轮
-            End If
-
-            a = GetTimeStamp() - stoneSteleTime
-            if a > 570 then //可以放轮了
-                DelayRandom 56,58
-                KeyDown O
-                DelayRandom 137,139
-                KeyUp O
-                DelayRandom 736,747
-                stoneSteleTime = GetTimeStamp()
             End If
 
             a = GetTimeStamp() - ReleaseTime1
             if a > 13 then //施放1 Ver2.0
-                tarX = -33
-                tarY = 87
+                tarX = -43
+                tarY = 98
                 tolerance = 4
                 call GetXY()
                 if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
@@ -902,8 +895,8 @@ while 1 > 0
 
             a = GetTimeStamp() - ReleaseTime2
             if a > 13 then //施放2 Ver2.0
-                tarX       = 42
-                tarY       = 93
+                tarX       = -7
+                tarY       = 101
                 tolerance  = 4
                 call GetXY()
                 if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
@@ -930,8 +923,8 @@ while 1 > 0
             else
                 a = GetTimeStamp() - seedTime1
                 if a > 18 then //可以放种子了 Ver2.0
-                    tarX       = 7
-                    tarY       = 98
+                    tarX       = 28
+                    tarY       = 76
                     tolerance  = 6
                     call GetXY()
                     if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
@@ -948,7 +941,7 @@ while 1 > 0
                     DelayRandom 455,469
                     seedTime1 = GetTimeStamp()
                 else //前往牛马地方放技能
-                    Call PreMove()
+                    Call PreMove6()
                     DelayRandom 56,58
                     Call SpellList()
                     DelayRandom 155,169
