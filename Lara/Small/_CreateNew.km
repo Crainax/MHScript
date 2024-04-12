@@ -7,7 +7,7 @@ Times=1
 
 while 1>0 //判断一下
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\Create\Shift.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then //第一个卡关点到了
+    if intX >= 0 Then //第一个卡关点到了(判断回车)
         break
     else
         DelayRandom 39,42
@@ -17,17 +17,29 @@ while 1>0 //判断一下
     End If
 Wend
 DelayRandom 113,115
-while 1>0 //判断一下
+KeyDown Enter
+DelayRandom 69,72
+KeyUp Enter
+DelayRandom 113,115
+KeyDown Space
+DelayRandom 69,72
+KeyUp Space
+DelayRandom 113,115
+
+//这里先清一下对话框
+while 1>0
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\Create\Shift.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //第一个卡关点到了
-        break
-    else
         DelayRandom 39,42
         KeyDown Space
         DelayRandom 69,72
         KeyUp Space
+    else
+        break
     End If
 Wend
+
+
 Beep 500,1000
 DelayRandom 772,780
 KeyDown Space
