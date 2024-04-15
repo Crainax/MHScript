@@ -5,9 +5,12 @@ Times=1
 
 [Script]
 
+//-7,91 Y容忍要有 小山灵
+//8,91 Y容忍要有 克理
+
 while 1>0 //判断一下
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\Create\Shift.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then //第一个卡关点到了(判断回车)
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\Create\EndChat.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then //判断黑框"结束对话"出来就下一步
         break
     else
         DelayRandom 39,42
@@ -28,454 +31,77 @@ DelayRandom 113,115
 
 //这里先清一下对话框
 while 1>0
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\Create\Shift.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then //第一个卡关点到了
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\Create\StopChat.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then
+        DelayRandom 39,42
+        KeyDown Space
+        DelayRandom 69,72
+        KeyUp Space
+    else  //停止对话UI没有就下一步(前往小山灵)
+        break
+    End If
+Wend
+
+tarX = -7
+tarY = 91
+tolerance = 2
+yTolerance = 2
+Call Move()
+DelayRandom 69,72
+KeyDown Space
+DelayRandom 69,72
+KeyUp Space
+DelayRandom 113,115
+
+while 1>0 //到了小山灵的对话
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\Create\StopChat.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then
         DelayRandom 39,42
         KeyDown Space
         DelayRandom 69,72
         KeyUp Space
     else
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\Create\EndChat.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            DelayRandom 39,42
+            KeyDown Space
+            DelayRandom 69,72
+            KeyUp Space
+        else  //停止对话和结束对话的UI都没有才下一步(前往克理)
+            break
+        End If
+    End If
+Wend
+
+tarX = 8
+tarY = 91
+tolerance = 2
+yTolerance = 2
+Call Move()
+DelayRandom 69,72
+KeyDown Space
+DelayRandom 69,72
+KeyUp Space
+DelayRandom 113,115
+
+while 1>0 //和克理的对话
+
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\Create\No.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then //出现橙框"不是"才结束
         break
+    else
+        DelayRandom 39,42
+        KeyDown Space
+        DelayRandom 69,72
+        KeyUp Space
     End If
 Wend
 
 
-Beep 500,1000
-DelayRandom 772,780
-KeyDown Space
 DelayRandom 113,115
-KeyUp Space
-DelayRandom 707,715
-KeyDown Space
-DelayRandom 154,156
-KeyUp Space
-DelayRandom 781,789
-KeyDown Space
-DelayRandom 255,258
-KeyUp Space
-DelayRandom 592,598
-KeyDown Space
-DelayRandom 181,183
-KeyUp Space
-DelayRandom 614,621
-KeyDown Space
-DelayRandom 225,228
-KeyUp Space
-DelayRandom 570,576
-KeyDown Space
-DelayRandom 202,205
-KeyUp Space
-DelayRandom 586,592
-KeyDown Space
-DelayRandom 196,198
-KeyUp Space
-DelayRandom 651,658
-KeyDown Space
-DelayRandom 206,209
-KeyUp Space
-DelayRandom 636,643
-KeyDown Space
-DelayRandom 201,204
-KeyUp Space
-DelayRandom 547,553
-KeyDown Space
-DelayRandom 181,183
-KeyUp Space
-DelayRandom 645,652
-KeyDown Space
-DelayRandom 203,206
-KeyUp Space
-DelayRandom 681,688
-KeyDown Space
-DelayRandom 211,214
-KeyUp Space
-DelayRandom 534,540
-KeyDown Space
-DelayRandom 209,212
-KeyUp Space
-DelayRandom 411,416
-KeyDown Space
-DelayRandom 211,214
-KeyUp Space
-DelayRandom 459,464
-KeyDown PageDown
-DelayRandom 243,246
-KeyUp PageDown
-DelayRandom 439,444
-KeyDown PageDown
-DelayRandom 158,160
-KeyUp PageDown
-DelayRandom 329,333
-KeyDown Space
-DelayRandom 210,213
-KeyUp Space
-DelayRandom 472,477
-KeyDown Space
-DelayRandom 210,213
-KeyUp Space
-DelayRandom 796,804
-KeyDown Space
-DelayRandom 216,219
-KeyUp Space
-DelayRandom 466,471
-KeyDown Space
-DelayRandom 179,181
-KeyUp Space
-DelayRandom 624,631
-KeyDown Space
-DelayRandom 1642,1659
-KeyUp Space
-DelayRandom 1035,1046
-KeyDown Space
-DelayRandom 5410,5465
-KeyUp Space
-DelayRandom 410,415
-KeyDown Space
-DelayRandom 4462,4507
-KeyUp Space
-DelayRandom 1008,1019
-KeyDown Space
-DelayRandom 200,203
-KeyUp Space
-DelayRandom 855,864
-KeyDown Space
-DelayRandom 165,167
-KeyUp Space
-DelayRandom 735,743
-KeyDown Space
-DelayRandom 180,182
-KeyUp Space
-DelayRandom 713,721
-KeyDown Space
-DelayRandom 164,166
-KeyUp Space
-DelayRandom 615,622
-KeyDown Space
-DelayRandom 173,175
-KeyUp Space
-DelayRandom 540,546
-KeyDown Space
-DelayRandom 172,174
-KeyUp Space
-DelayRandom 466,471
-KeyDown Space
-DelayRandom 164,166
-KeyUp Space
-DelayRandom 495,500
-KeyDown Space
-DelayRandom 301,305
-KeyUp Space
-DelayRandom 563,569
-KeyDown Space
-DelayRandom 179,181
-KeyUp Space
-DelayRandom 578,584
-KeyDown Space
-DelayRandom 195,197
-KeyUp Space
-DelayRandom 1763,1781
-KeyDown Space
-DelayRandom 209,212
-KeyUp Space
-DelayRandom 826,835
-KeyDown Space
-DelayRandom 172,174
-KeyUp Space
-DelayRandom 616,623
-KeyDown Space
-DelayRandom 156,158
-KeyUp Space
-DelayRandom 691,698
-KeyDown Space
-DelayRandom 158,160
-KeyUp Space
-DelayRandom 630,637
-KeyDown Space
-DelayRandom 156,158
-KeyUp Space
-DelayRandom 556,562
-KeyDown Space
-DelayRandom 157,159
-KeyUp Space
-DelayRandom 472,477
-KeyDown Space
-DelayRandom 158,160
-KeyUp Space
-DelayRandom 480,485
-KeyDown Space
-DelayRandom 187,189
-KeyUp Space
-DelayRandom 570,576
-KeyDown Space
-DelayRandom 173,175
-KeyUp Space
-DelayRandom 1539,1555
-KeyDown Space
-DelayRandom 231,234
-KeyUp Space
-DelayRandom 668,675
-KeyDown Space
-DelayRandom 347,351
-KeyUp Space
-DelayRandom 643,650
-KeyDown Space
-DelayRandom 412,417
-KeyUp Space
-DelayRandom 563,569
-KeyDown Space
-DelayRandom 533,539
-KeyUp Space
-DelayRandom 405,410
-KeyDown Space
-DelayRandom 524,530
-KeyUp Space
-DelayRandom 571,577
-KeyDown Space
-DelayRandom 329,333
-KeyUp Space
-DelayRandom 429,434
-KeyDown Space
-DelayRandom 360,364
-KeyUp Space
-DelayRandom 302,306
-KeyDown Space
-DelayRandom 304,308
-KeyUp Space
-DelayRandom 533,539
-KeyDown Space
-DelayRandom 382,386
-KeyUp Space
-DelayRandom 564,570
-KeyDown Space
-DelayRandom 382,386
-KeyUp Space
-DelayRandom 502,508
-KeyDown Space
-DelayRandom 570,576
-KeyUp Space
-DelayRandom 645,652
-KeyDown Space
-DelayRandom 525,531
-KeyUp Space
-DelayRandom 586,592
-KeyDown Space
-DelayRandom 607,614
-KeyUp Space
-DelayRandom 465,470
-KeyDown Space
-DelayRandom 277,280
-KeyUp Space
-DelayRandom 331,335
-KeyDown Space
-DelayRandom 240,243
-KeyUp Space
-DelayRandom 353,357
-KeyDown Space
-DelayRandom 264,267
-KeyUp Space
-DelayRandom 553,559
-KeyDown Space
-DelayRandom 240,243
-KeyUp Space
-DelayRandom 450,455
-KeyDown Space
-DelayRandom 262,265
-KeyUp Space
-DelayRandom 352,356
-KeyDown Space
-DelayRandom 241,244
-KeyUp Space
-DelayRandom 360,364
-KeyDown Space
-DelayRandom 173,175
-KeyUp Space
-DelayRandom 299,302
-KeyDown Space
-DelayRandom 232,235
-KeyUp Space
-DelayRandom 511,517
-KeyDown Space
-DelayRandom 179,181
-KeyUp Space
-DelayRandom 668,675
-KeyDown Space
-DelayRandom 338,342
-KeyUp Space
-DelayRandom 660,667
-KeyDown Space
-DelayRandom 284,287
-KeyUp Space
-DelayRandom 638,645
-KeyDown Space
-DelayRandom 285,288
-KeyUp Space
-DelayRandom 547,553
-KeyDown Space
-DelayRandom 218,221
-KeyUp Space
-DelayRandom 683,690
-KeyDown Space
-DelayRandom 187,189
-KeyUp Space
-DelayRandom 285,288
-KeyDown Space
-DelayRandom 180,182
-KeyUp Space
-DelayRandom 263,266
-KeyDown Space
-DelayRandom 202,205
-KeyUp Space
-DelayRandom 473,478
-KeyDown Space
-DelayRandom 195,197
-KeyUp Space
-DelayRandom 393,397
-KeyDown Space
-DelayRandom 208,211
-KeyUp Space
-DelayRandom 441,446
-KeyDown Space
-DelayRandom 269,272
-KeyUp Space
-DelayRandom 444,449
-KeyDown Space
-DelayRandom 322,326
-KeyUp Space
-DelayRandom 435,440
-KeyDown Space
-DelayRandom 203,206
-KeyUp Space
-DelayRandom 526,532
-KeyDown Space
-DelayRandom 7724,7802
-KeyUp Space
-DelayRandom 847,856
-KeyDown Space
-DelayRandom 8356,8440
-KeyUp Space
-DelayRandom 4402,4447
-KeyDown Space
-DelayRandom 11303,11417
-KeyUp Space
-DelayRandom 465,470
-KeyDown Space
-DelayRandom 6173,6235
-KeyUp Space
-DelayRandom 563,569
-KeyDown Space
-DelayRandom 6097,6158
-KeyUp Space
-DelayRandom 503,509
-KeyDown Space
-DelayRandom 2640,2667
-KeyUp Space
-DelayRandom 1252,1265
-KeyDown Space
-DelayRandom 6440,6455
-KeyUp Space
-DelayRandom 255,258
 KeyDown Esc
-DelayRandom 255,258
+DelayRandom 69,72
 KeyUp Esc
-DelayRandom 255,258
-Delay 838
-KeyDown Left
-Delay 937
-KeyUp Left
-Delay 676
-KeyDown Space
-Delay 127
-KeyUp Space
-Delay 451
-KeyDown Space
-Delay 156
-KeyUp Space
-Delay 789
-KeyDown Space
-Delay 158
-KeyUp Space
-Delay 1468
-KeyDown Enter
-Delay 99
-KeyUp Enter
-Delay 1170
-KeyDown Space
-Delay 142
-KeyUp Space
-Delay 1402
-KeyDown Left
-Delay 1433
-KeyUp Left
-Delay 315
-KeyDown Space
-Delay 142
-KeyUp Space
-Delay 1148
-KeyDown Space
-Delay 172
-KeyUp Space
-Delay 886
-KeyDown Space
-Delay 149
-KeyUp Space
-Delay 1200
-KeyDown Right
-Delay 1398
-KeyUp Right
-Delay 463
-KeyDown Space
-Delay 173
-KeyUp Space
-Delay 878
-KeyDown Space
-Delay 149
-KeyUp Space
-Delay 3811
-KeyDown Space
-Delay 119
-KeyUp Space
-Delay 961
-KeyDown Space
-Delay 142
-KeyUp Space
-Delay 1335
-KeyDown Space
-Delay 143
-KeyUp Space
-Delay 713
-KeyDown Space
-Delay 142
-KeyUp Space
-Delay 5131
-KeyDown Space
-Delay 142
-KeyUp Space
-Delay 744
-KeyDown Space
-Delay 126
-KeyUp Space
-Delay 697
-KeyDown Space
-Delay 151
-KeyUp Space
-Delay 966
-KeyDown Space
-Delay 114
-KeyUp Space
-Delay 1716
-KeyDown Space
-Delay 144
-KeyUp Space
-Delay 1605
-KeyDown Space
-Delay 149
-KeyUp Space
-Delay 1170
-KeyDown Space
-Delay 121
-KeyUp Space
-Delay 1065
-KeyDown Space
-Delay 134
-KeyUp Space
-Beep 500,500
+DelayRandom 113,115
+
+

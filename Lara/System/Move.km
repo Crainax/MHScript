@@ -445,9 +445,66 @@ Sub Move()  //精确的移动:Ver2.9 精确走到传送点的功能完成了
                             Exit Sub
                         End If
                     End if
-
-
                 End If
+            End If
+        End If
+        Delay 5
+    Wend
+End Sub
+
+Sub Move_A() //移动种类:创角
+    csTimes	= -1  //初始就启用指南针判断
+    csMax		= 3   //降落默认值为4
+    Hooking				= 0 //钩子初始是关的
+    while  1 > 0
+        Call GetXY()
+        Call AntiJam() //防卡
+        if tolerance > 2 Then
+            tolLoc = tolerance
+        else  //速走的默认为4
+            tolLoc = 2
+        End If
+        If intX < (tarX-tolLoc) Then //向右走
+            KeyDown Right
+            a = (tarX - tolLoc - intX) * 52
+            if a < 52 then
+                a = 52
+            else if a > 1800 then
+                a = 1800
+            End If
+            Delay a
+            KeyUp Right
+        Else If intX > (tarX+tolLoc) Then //向左走
+            KeyDown Left
+            a = (intX - tarX - tolLoc) * 52
+            if a < 52 then
+                a = 52
+            else if a > 1800 then
+                a = 1800
+            End If
+            Delay a
+            KeyUp Left
+        else
+            yTolerance = 0
+            if tolerance < 4 Then //容忍度小于4还是要小碎步
+                for 10
+                    If intX < (tarX-tolerance) Then //向右小碎步
+                        KeyDown Right
+                        Delay (tarX - tolerance - intX) * 14
+                        KeyUp Right
+                    Else If intX > (tarX+tolerance) Then //向左小碎步
+                        KeyDown Left
+                        Delay (intX - tarX - tolerance) * 14
+                        KeyUp Left
+                    else
+                        Exit Sub
+                    End If
+
+                    Call GetXY() //更新人物坐标
+                Next
+                Exit Sub //次数到了直接结束
+            else //容忍度大于等于4可以直接结束
+                Exit Sub
             End If
         End If
         Delay 5
@@ -484,7 +541,7 @@ while 1 > 0
         GetFileLine facing,Move.Conf,tolLoc	//文件查找
         TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance & ,传送[ & alterX & , & alterY & ]
         //tolerance = 4 //容忍度,4为推荐值
-        Call Move()
+        Call Move_A()
         MsgBox 测试结束
     else //大写键亮的话就获取点
         FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
