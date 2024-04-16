@@ -693,6 +693,7 @@ Sub Accept //同意加入组队
     If intX >= 0 Then
         MoveTo intX+138,intY-17
         LeftClick
+        DelayRandom 39,42
     End If
 End Sub
 

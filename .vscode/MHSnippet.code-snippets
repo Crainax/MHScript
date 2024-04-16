@@ -63,4 +63,57 @@
 		],
 		"description": "按一个键"
 	},
+	"找图并偏移按键": {
+		"prefix": "findClick",
+		"body": [
+			"FindPic x1,y1,xEnd,yEnd,\"E:\\MHImg\\Team\\plus.bmp\",000000,1.00,0,intX,intY",
+			"If intX >= 0 Then",
+			"    MoveTo intX${1:+}138,intY${2:-}17",
+			"    LeftClick",
+			"    DelayRandom 139,142",
+			"End If"
+		],
+		"description": "找图并偏移按键"
+	},
+	"循环找图-防卡": {
+		"prefix": "whileFindJam",
+		"body": [
+			"wJam = 0",
+			"while 1>0",
+			"    FindPic x1,y1,xEnd,yEnd,\"E:\\MHImg\\Lara\\Create\\StopChat.bmp\",000000,1.00,0,intX,intY",
+			"    if intX >= 0 Then",
+			"        //todo:找到后干嘛",
+			"        break",
+			"    else",
+			"        wJam = wJam + 1",
+			"        if wJam > 3 then //重复的动作太多就暂停提醒",
+			"            wJam = 0",
+			"            Beep 100,200",
+			"            Beep 200,200",
+			"            Beep 300,200",
+			"            Pause",
+			"        else",
+			"            //todo:重复的动作",
+			"            wJam = wJam + 1",
+			"        End If",
+			"    End If",
+			"Wend",
+		],
+		"description": "无限防卡型循环找图"
+	},
+	"循环找图": {
+		"prefix": "whileFind",
+		"body": [
+			"while 1>0",
+			"    FindPic x1,y1,xEnd,yEnd,\"E:\\MHImg\\Lara\\Create\\Confirm.bmp\",000000,1.00,0,intX,intY",
+			"    if intX >= 0 Then",
+			"        //todo:找到后干嘛",
+			"        break",
+			"    else",
+			"        //todo:重复的动作",
+			"    End If",
+			"Wend",
+		],
+		"description": "无限循环找图"
+	},
 }
