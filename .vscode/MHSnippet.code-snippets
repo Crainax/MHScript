@@ -63,6 +63,14 @@
 		],
 		"description": "按一个键"
 	},
+	"点击鼠标": {
+		"prefix": "click",
+		"body": [
+        	"LeftClick",
+        	"DelayRandom 139,142"
+		],
+		"description": "点击一下鼠标"
+	},
 	"找图并偏移按键": {
 		"prefix": "findClick",
 		"body": [

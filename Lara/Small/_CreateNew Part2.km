@@ -118,7 +118,6 @@ Sub Move_A() //移动种类:创角
     Wend
 End Sub
 
-
 //分辨率初始化
 GetScreenResolution intX, intY
 x1     = intX - 1440
@@ -146,111 +145,287 @@ while 1>0 //关闭角色窗口
     End If
 Wend
 
-wJam = 0
-while 1>0 //加点
-    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Confirm.bmp",000000,1.00,0,intX,intY
+while 1>0 //打开技能窗口
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Relate_Skill.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then
+        break
+    else
         DelayRandom 39,42
-        KeyDown 1
+        KeyDown k
         DelayRandom 69,72
-        KeyUp 1
+        KeyUp k
         DelayRandom 39,42
+    End If
+Wend
+
+    wJam = 0
+    while 1>0 //加点
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Confirm.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            DelayRandom 39,42
+            KeyDown 1
+            DelayRandom 69,72
+            KeyUp 1
+            DelayRandom 39,42
+            KeyDown Enter
+            DelayRandom 69,72
+            KeyUp Enter
+            DelayRandom 39,42
+            break
+        else
+            wJam = wJam + 1
+            if wJam > 10 then //重复的动作太多就暂停提醒
+                wJam = 0
+                Beep 100,200
+                Beep 200,200
+                Beep 300,200
+                Beep 400,200
+                Pause
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Relate_Skill.bmp",000000,1.00,0,intX,intY
+                If intX >= 0 Then
+                    MoveTo intX+120,intY+58
+                    LeftClick
+                    DelayRandom 39,42
+                End If
+            End If
+        End If
+    Wend
+
+    wJam = 0
+    while 1>0 //加点
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Confirm.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            DelayRandom 39,42
+            KeyDown 3
+            DelayRandom 69,72
+            KeyUp 3
+            DelayRandom 39,42
+            KeyDown Enter
+            DelayRandom 69,72
+            KeyUp Enter
+            DelayRandom 39,42
+            break
+        else
+            wJam = wJam + 1
+            if wJam > 10 then //重复的动作太多就暂停提醒
+                wJam = 0
+                Beep 100,200
+                Beep 200,200
+                Beep 300,200
+                Beep 400,200
+                Pause
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Relate_Skill.bmp",000000,1.00,0,intX,intY
+                If intX >= 0 Then
+                    MoveTo intX+266,intY+60
+                    LeftClick
+                    DelayRandom 39,42
+                End If
+            End If
+        End If
+    Wend
+
+    wJam = 0
+    while 1>0 //加点
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Confirm.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            DelayRandom 39,42
+            KeyDown 1
+            DelayRandom 69,72
+            KeyUp 1
+            DelayRandom 39,42
+            KeyDown Enter
+            DelayRandom 69,72
+            KeyUp Enter
+            DelayRandom 39,42
+            break
+        else
+            wJam = wJam + 1
+            if wJam > 10 then //重复的动作太多就暂停提醒
+                wJam = 0
+                Beep 100,200
+                Beep 200,200
+                Beep 300,200
+                Beep 400,200
+                Pause
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Relate_Skill.bmp",000000,1.00,0,intX,intY
+                If intX >= 0 Then
+                    MoveTo intX+123,intY+100
+                    LeftClick
+                    DelayRandom 39,42
+                End If
+            End If
+        End If
+    Wend
+
+while 1>0 //打开键盘 并清空所有设定 摆好位置
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Key_Reset.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then
+        MoveTo intX+85,intY+8
+        LeftClick
+        DelayRandom 139,142
         KeyDown Enter
         DelayRandom 69,72
         KeyUp Enter
         DelayRandom 39,42
+
+        //这里的intX和intY都基于这个清空键
+        MoveTo intX+392,intY-148
+        LeftClick
+        DelayRandom 139,142
+        MoveTo intX+421,intY-300
+        LeftClick
+        DelayRandom 139,142
+        MoveTo intX+242,intY-148
+        LeftClick
+        DelayRandom 139,142
+        MoveTo intX+421,intY-332
+        LeftClick
+        DelayRandom 139,142
+
+        MoveTo intX+431,intY-112
+        LeftClick
+        DelayRandom 139,142
+        MoveTo intX+309,intY-300
+        LeftClick
+        DelayRandom 139,142
+
+        MoveTo intX+206,intY-145
+        LeftClick
+        DelayRandom 139,142
+        MoveTo intX+262,intY-300
+        LeftClick
+        DelayRandom 139,142
+
+        MoveTo intX+315,intY-145
+        LeftClick
+        DelayRandom 139,142
+        MoveTo intX+215,intY-267
+        LeftClick
+        DelayRandom 139,142
+
+        MoveTo intX+246,intY-109
+        LeftClick
+        DelayRandom 139,142
+        MoveTo intX-89,intY-367
+        LeftClick
+        DelayRandom 139,142
+
+        MoveTo intX+208,intY-77
+        LeftClick
+        DelayRandom 139,142
+        MoveTo intX-150,intY-367
+        LeftClick
+        DelayRandom 139,142
+
+        MoveTo intX+347,intY-114
+        LeftClick
+        DelayRandom 139,142
+        MoveTo intX+129,intY-235
+        LeftClick
+        DelayRandom 139,142
+
+        MoveTo intX+354,intY-150
+        LeftClick
+        DelayRandom 139,142
+        MoveTo intX+84,intY-201
+        LeftClick
+        DelayRandom 139,142
+
+        MoveTo intX+134,intY-151
+        LeftClick
+        DelayRandom 139,142
+        MoveTo intX+65,intY-367
+        LeftClick
+        DelayRandom 139,142
+
+        MoveTo intX-47,intY-76
+        LeftClick
+        DelayRandom 139,142
+        MoveTo intX-51,intY-367
+        LeftClick
+        DelayRandom 139,142
+
+        MoveTo intX+98,intY-114
+        LeftClick
+        DelayRandom 139,142
+        MoveTo intX+147,intY-265
+        LeftClick
+        DelayRandom 139,142
+
+        MoveTo intX+100,intY-151
+        LeftClick
+        DelayRandom 139,142
+        MoveTo intX+129,intY-303
+        LeftClick
+        DelayRandom 139,142
+        MoveTo intX+67,intY-151
+        LeftClick
+        DelayRandom 139,142
+        MoveTo intX+97,intY-303
+        LeftClick
+        DelayRandom 139,142
+
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Skill\Alt.bmp",000000,1.00,0,logoX,logoY
+        If intX >= 0 Then
+            MoveTo logoX+10,logoY+10
+            LeftClick
+            DelayRandom 139,142
+        End If
+        MoveTo intX-45,intY-209
+        LeftClick
+        DelayRandom 139,142
+
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Skill\F.bmp",000000,1.00,0,logoX,logoY
+        If intX >= 0 Then
+            MoveTo logoX+10,logoY+10
+            LeftClick
+            DelayRandom 139,142
+        End If
+        MoveTo intX+14,intY-269
+        LeftClick
+        DelayRandom 139,142
+
+        //确认修改
+        MoveTo intX+408,intY+10
+        LeftClick
+        DelayRandom 139,142
+
         break
     else
-        wJam = wJam + 1
-        if wJam > 10 then //重复的动作太多就暂停提醒
-            wJam = 0
-            Beep 100,200
-            Beep 200,200
-            Beep 300,200
-            Beep 400,200
-            Pause
-        else
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Relate_Skill.bmp",000000,1.00,0,intX,intY
-            If intX >= 0 Then
-                MoveTo intX+120,intY+58
-                LeftClick
-                DelayRandom 39,42
-            End If
-        End If
+        DelayRandom 39,42
+        KeyDown F11
+        DelayRandom 69,72
+        KeyUp F11
+        DelayRandom 39,42
     End If
 Wend
 
-wJam = 0
-while 1>0 //加点
-    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Confirm.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then
-        DelayRandom 39,42
-        KeyDown 3
-        DelayRandom 69,72
-        KeyUp 3
-        DelayRandom 39,42
-        KeyDown Enter
-        DelayRandom 69,72
-        KeyUp Enter
-        DelayRandom 39,42
+while 1>0 //关闭技能窗口
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Relate_Skill.bmp",000000,1.00,0,intX,intY
+    if intX < 0 Then
         break
     else
-        wJam = wJam + 1
-        if wJam > 10 then //重复的动作太多就暂停提醒
-            wJam = 0
-            Beep 100,200
-            Beep 200,200
-            Beep 300,200
-            Beep 400,200
-            Pause
-        else
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Relate_Skill.bmp",000000,1.00,0,intX,intY
-            If intX >= 0 Then
-                MoveTo intX+266,intY+60
-                LeftClick
-                DelayRandom 39,42
-            End If
-        End If
+        DelayRandom 39,42
+        KeyDown k
+        DelayRandom 69,72
+        KeyUp k
+        DelayRandom 39,42
     End If
 Wend
 
-wJam = 0
-while 1>0 //加点
-    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Confirm.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then
-        DelayRandom 39,42
-        KeyDown 1
-        DelayRandom 69,72
-        KeyUp 1
-        DelayRandom 39,42
-        KeyDown Enter
-        DelayRandom 69,72
-        KeyUp Enter
-        DelayRandom 39,42
+while 1>0 //关闭键位窗口
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Key_Reset.bmp",000000,1.00,0,intX,intY
+    if intX < 0 Then
         break
     else
-        wJam = wJam + 1
-        if wJam > 10 then //重复的动作太多就暂停提醒
-            wJam = 0
-            Beep 100,200
-            Beep 200,200
-            Beep 300,200
-            Beep 400,200
-            Pause
-        else
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Relate_Skill.bmp",000000,1.00,0,intX,intY
-            If intX >= 0 Then
-                MoveTo intX+123,intY+100
-                LeftClick
-                DelayRandom 39,42
-            End If
-        End If
+        DelayRandom 39,42
+        KeyDown \
+        DelayRandom 69,72
+        KeyUp \
+        DelayRandom 39,42
     End If
 Wend
-
-DelayRandom 39,42
-KeyDown K
-DelayRandom 69,72
-KeyUp K
-DelayRandom 39,42 //关闭技能窗口
 Beep 200,500
