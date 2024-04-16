@@ -10,9 +10,9 @@
 		"prefix": "getXY",
 		"body": [
 			"call GetXY()",
-            "if intY == ${1:102} and intX >= (${2:52}-${3:4}) and intX <=($2+$3) then //",
-			"	${4://todo}",
-            "End If"
+			"if intY == ${1:102} and intX >= (${2:52}-${3:4}) and intX <=($2+$3) then //",
+			"    ${4://todo}",
+			"End If"
 		],
 		"description": "判断坐标"
 	},
@@ -20,9 +20,9 @@
 		"prefix": "getXYn",
 		"body": [
 			"call GetXY()",
-            "if intY != ${1:102} or intX < (${2:52}-${3:4}) or intX > ($2+$3) then //",
-			"	${4://todo}",
-            "End If"
+			"if intY != ${1:102} or intX < (${2:52}-${3:4}) or intX > ($2+$3) then //",
+			"    ${4://todo}",
+			"End If"
 		],
 		"description": "判断坐标"
 	},
@@ -31,7 +31,7 @@
 		"body": [
 			"FindPic x3,y3,xEnd,yEnd,\"E:\\MHImg\\Lynn\\Shift.bmp\",000000,1.00,0,intX,intY",
 			"if intX >= 0 Then",
-			"	//todo",
+			"    //todo",
 			"End If",
 		],
 		"description": "找技能"
@@ -39,18 +39,28 @@
 	"冷却行动": {
 		"prefix": "time",
 		"body": [
-            "if GetTimeStamp() - ${1:boboTime} > ${2:55} then",
-            "	${1} = GetTimeStamp()",
-            "End If",
+			"if GetTimeStamp() - ${1:boboTime} > ${2:55} then",
+			"    ${1} = GetTimeStamp()",
+			"End If",
 		],
 		"description": "用一个参数来设定一个冷却行动"
 	},
 	"打印坐标": {
 		"prefix": "print",
 		"body": [
-            "TracePrint 当前[ & intX & , & intY & ]前往[ & tarX & , & tarY & ]
-"
+			"TracePrint 当前[ & intX & , & intY & ]前往[ & tarX & , & tarY & ]"
 		],
 		"description": "打印一个坐标"
+	},
+	"按一个键": {
+		"prefix": "key",
+		"body": [
+			"${1:DelayRandom 39,42}",
+			"KeyDown ${2:Space}",
+			"DelayRandom 69,72",
+			"KeyUp ${2}",
+			"${1}"
+		],
+		"description": "按一个键"
 	},
 }
