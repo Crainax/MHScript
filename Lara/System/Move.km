@@ -458,7 +458,6 @@ Sub Move_A() //移动种类:创角
     Hooking				= 0 //钩子初始是关的
     while  1 > 0
         Call GetXY()
-        Call AntiJam() //防卡
         if tolerance > 2 Then
             tolLoc = tolerance
         else  //速走的默认为4

@@ -65,7 +65,6 @@ Sub Move_A() //移动种类:创角
     Hooking				= 0 //钩子初始是关的
     while  1 > 0
         Call GetXY()
-        Call AntiJam() //防卡
         if tolerance > 2 Then
             tolLoc = tolerance
         else  //速走的默认为4
@@ -136,7 +135,7 @@ facing = 0            //面向初始归0
 //-7,91 Y容忍要有 小山灵
 //8,91 Y容忍要有 克理
 while 1>0 //判断一下
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\Create\EndChat.bmp",000000,1.00,0,intX,intY
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\EndChat.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //判断黑框"结束对话"出来就下一步
         break
     else
@@ -158,14 +157,24 @@ DelayRandom 113,115
 
 //这里先清一下对话框
 while 1>0
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\Create\StopChat.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\No.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then //如果还卡在上一步就按
         DelayRandom 39,42
-        KeyDown Space
+        KeyDown Enter
         DelayRandom 69,72
-        KeyUp Space
-    else  //停止对话UI没有就下一步(前往小山灵)
-        break
+        KeyUp Enter
+        DelayRandom 169,172
+    else
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\StopChat.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            DelayRandom 39,42
+            KeyDown Space
+            DelayRandom 69,72
+            KeyUp Space
+            DelayRandom 169,172
+        else  //停止对话UI没有就下一步(前往小山灵)
+            break
+        End If
     End If
 Wend
 
@@ -179,16 +188,15 @@ KeyDown Space
 DelayRandom 69,72
 KeyUp Space
 DelayRandom 113,115
-
 while 1>0 //到了小山灵的对话
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\Create\StopChat.bmp",000000,1.00,0,intX,intY
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\StopChat.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then
         DelayRandom 39,42
         KeyDown Space
         DelayRandom 69,72
         KeyUp Space
     else
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\Create\EndChat.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\EndChat.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
             DelayRandom 39,42
             KeyDown Space
@@ -206,14 +214,25 @@ tolerance = 2
 yTolerance = 2
 Call Move_A()
 DelayRandom 69,72
-KeyDown Space
-DelayRandom 69,72
-KeyUp Space
-DelayRandom 113,115
 
+while 1>0 //接克理的任务
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\StopChat.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then //出现橙框"不是"才结束
+        DelayRandom 39,42
+        KeyDown Enter
+        DelayRandom 69,72
+        KeyUp Enter
+        DelayRandom 69,72
+        break
+    else
+        DelayRandom 39,42
+        KeyDown Space
+        DelayRandom 69,72
+        KeyUp Space
+    End If
+Wend
 while 1>0 //和克理的对话
-
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\Create\No.bmp",000000,1.00,0,intX,intY
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\No.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //出现橙框"不是"才结束
         break
     else
@@ -230,5 +249,5 @@ KeyDown Esc
 DelayRandom 69,72
 KeyUp Esc
 DelayRandom 113,115
-
+Beep 500,500
 

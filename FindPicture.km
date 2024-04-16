@@ -4,8 +4,8 @@ ScreenY=1440
 Times=1
 
 [Script]
-Dim x1,        x2,               y1,   y2        // ��������:С��ͼ������
-Dim x3,        y3,               xEnd, yEnd      // 2������:������/��Ļ���½Ƕ���
+Dim x1,        x2,               y1,   y2
+Dim x3,        y3,               xEnd, yEnd
 Dim logoX,logoY,intX,intY
 Dim x,y
 
@@ -20,11 +20,11 @@ xEnd           = intX
 yEnd           = intY
 
 while 1 > 0
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\G.bmp",000000,1.00,0,intX,intY	//��ͼ
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\EndChat.bmp",000000,1.00,0,intX,intY
     If intX >= 0 Then
-        MsgBox �ҵ�����[ & intX & , & intY & ]
+        MsgBox �ҵ�[ & intX & , & intY & ]
     else
-        MsgBox "û�ҵ�"	 //����
+        MsgBox "�]�ҵ�"	 //
     End If
     Delay 300
 Wend
