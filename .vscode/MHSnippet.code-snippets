@@ -66,6 +66,7 @@
 	"点击鼠标": {
 		"prefix": "click",
 		"body": [
+			"MoveTo intX${1:+138},intY${2:-17}",
         	"LeftClick",
         	"DelayRandom 139,142"
 		],
@@ -123,5 +124,14 @@
 			"Wend",
 		],
 		"description": "无限循环找图"
+	},
+	"For循环": {
+		"prefix": "for",
+		"body": [
+                "for ${1:6}",
+                "    ${2://todo}",
+                "Next"
+		],
+		"description": "For循环"
 	},
 }
