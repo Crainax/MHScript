@@ -4,15 +4,15 @@ ScreenY=2560
 Times=1
 
 [Script]
-Dim x1,          x2,      y1,      y2    // 矩形区域:小地图采样点
-Dim x3,          y3,      xEnd,    yEnd  // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,        tarY,    Hooking, a     //目标
-Dim logoX,       logoY,   intX,    intY  //算目的地差值
-Dim alterX,      alterY,  facing         //备用地点,传送门脚步开关,传送门的面向
-Dim cY,          csTimes, csMax          //用这个东西判断角色是不是没有X或Y轴变化了
-Dim tolerance,   tolLoc,  yTolerance     //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim staticCount, staticX, staticY        //防卡计数器
-Dim wJam,        wJam2                   //找图防卡
+Dim x1,          x2,      y1,      y2     // 矩形区域:小地图采样点
+Dim x3,          y3,      xEnd,    yEnd   // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,        tarY,    Hooking, a      //目标
+Dim logoX,       logoY,   intX,    intY   //算目的地差值
+Dim alterX,      alterY,  facing          //备用地点,传送门脚步开关,传送门的面向
+Dim cY,          csTimes, csMax           //用这个东西判断角色是不是没有X或Y轴变化了
+Dim tolerance,   tolLoc,  yTolerance      //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim staticCount, staticX, staticY         //防卡计数器
+Dim wJam,        wJam2,   loopA,   loopB  //找图防卡,loopAB是循环数
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -132,43 +132,163 @@ alterX = 0            //备用地点
 alterY = 0            //备用地点
 facing = 0            //面向初始归0
 
+Sub Fun1
+    while 1>0 //等进入商城
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //开始进入了(找不到XY轴了)
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\cashEntry.bmp",000000,1.00,0,intX,intY
+            If intX >= 0 Then
+                MoveTo intX-30,intY
+                LeftClick
+                DelayRandom 139,142
+            End If
+            DelayRandom 100,150
+        End If
+    Wend
 
-while 1>0 //等进入商城
-    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-    if intX <= 0 Then //开始进入了(找不到XY轴了)
-        break
-    else
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\cashEntry.bmp",000000,1.00,0,intX,intY
-        If intX >= 0 Then
-            MoveTo intX-50,intY
+    while 1>0 //等待商城加载完毕
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Cash_Mark.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then
+            MoveTo logoX,logoY //移走鼠标
+            wJam2 = 0
+            while 1>0
+                FindPic logoX,logoY,logoX+369,logoY+189,"E:\MHImg\Lara\Create\Cash_icon.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then //找不到就找图2
+                    FindPic logoX,logoY,logoX+369,logoY+189,"E:\MHImg\Lara\Create\Cash_icon2.bmp",000000,1.00,0,intX,intY
+                    if intX < 0 Then //找不到图1和图2就退出
+                        wJam2 = wJam2 + 1
+                        if wJam2 > 3 then
+                            break
+                        else //防卡移走鼠标
+                            MoveTo logoX,logoY //移走鼠标
+                            DelayRandom 139,142
+                        End If
+                    else
+                        wJam2 = 0
+                        MoveTo intX,intY //移走鼠标
+                        LeftDoubleClick
+                        DelayRandom 339,342
+                        MoveTo logoX,logoY //移走鼠标
+                        DelayRandom 139,142
+                    End If
+                else //找到图1
+                    wJam2 = 0
+                    MoveTo intX,intY //移走鼠标
+                    LeftDoubleClick
+                    DelayRandom 339,342
+                    MoveTo logoX,logoY //移走鼠标
+                    DelayRandom 139,142
+                End If
+            Wend
+
+            MoveTo intX-577,intY+385
+            LeftClick
+            DelayRandom 139,142
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Cash_Mark2.bmp",000000,1.00,0,intX,intY
+            If intX >= 0 Then
+                MoveTo intX+80,intY
+                LeftClick
+                DelayRandom 139,142
+            End If
+            DelayRandom 100,150
+        End If
+    Wend
+
+    while 1>0 //等进入加载
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Cash_Mark2.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //找不到图代表正在加载中
+            break
+        else
+            MoveTo intX-830,intY+434 //退出商城
             LeftClick
             DelayRandom 139,142
         End If
-        DelayRandom 100,150
-    End If
-Wend
+    Wend
 
-while 1>0 //等待商城加载完毕
-    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Cash_Mark.bmp",000000,1.00,0,logoX,logoY
-    if logoX >= 0 Then
-        MoveTo logoX,logoY //移走鼠标
-        while 1>0
-            FindPic logoX-50,logoY-50,logoX+200,logoY+200,"E:\MHImg\Lara\Create\Cash_icon.bmp",000000,1.00,0,intX,intY
-            if intX < 0 Then //找不到就退出
-                //todo:找到后干嘛
-                break
-            else
-                LeftDoubleClick
-                DelayRandom 339,342
-                MoveTo logoX,logoY //移走鼠标
-                DelayRandom 139,142
+    while 1>0 //等完毕
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX > 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+
+    while 1>0 //先处理装备标签
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Bag_Tag_Equit.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //找到了标签
+            //43一个格子
+            loopA = 0
+            for 5
+                loopB = 0
+                for 4
+                    //9,36
+                    MoveTo logoX+9+43*loopB,logoY+36+43*loopA
+                    DelayRandom 369,372
+                    LeftDoubleClick
+                    DelayRandom 339,342 //等一会判断有没有弹窗
+
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\OK.bmp",000000,1.00,0,intX,intY
+                    If intX >= 0 Then
+                        DelayRandom 39,42
+                        KeyDown Enter
+                        DelayRandom 69,72
+                        KeyUp Enter
+                        DelayRandom 239,242
+                    End If
+
+                    loopB = loopB + 1
+                Next
+                loopA = loopA + 1
+            Next
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Bag_Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //切标签页
+                DelayRandom 39,42
+                KeyDown tab
+                DelayRandom 69,72
+                KeyUp tab
+                DelayRandom 39,42
+            else //打开背包
+                DelayRandom 39,42
+                KeyDown i
+                DelayRandom 69,72
+                KeyUp i
+                DelayRandom 39,42
             End If
-        Wend
-        break
-    else
-        DelayRandom 100,150
-    End If
-Wend
+        End If
+    Wend
+
+    while 1>0 //处理称号
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Bag_Tag_Deco.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //找到了标签
+            MoveTo logoX-77,logoY+35
+            LeftDoubleClick
+            DelayRandom 539,542
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Bag_Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //切标签页
+                DelayRandom 39,42
+                KeyDown tab
+                DelayRandom 69,72
+                KeyUp tab
+                DelayRandom 39,42
+            else //打开背包
+                DelayRandom 39,42
+                KeyDown i
+                DelayRandom 69,72
+                KeyUp i
+                DelayRandom 39,42
+            End If
+        End If
+    Wend
+End Sub
 
 
 
