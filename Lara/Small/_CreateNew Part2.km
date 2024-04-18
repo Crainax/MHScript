@@ -132,266 +132,44 @@ alterX = 0            //备用地点
 alterY = 0            //备用地点
 facing = 0            //面向初始归0
 
-//仓库 -50,122
-//商店 -62,122
 
-    wJam = 0
-    while 1>0
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\F2_Cancel.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then
-            MoveTo intX-90,intY
+while 1>0 //等进入商城
+    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    if intX <= 0 Then //开始进入了(找不到XY轴了)
+        break
+    else
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\cashEntry.bmp",000000,1.00,0,intX,intY
+        If intX >= 0 Then
+            MoveTo intX-50,intY
             LeftClick
             DelayRandom 139,142
-            break
-        else
-            wJam = wJam + 1
-            if wJam > 3 then //重复的动作太多就暂停提醒
-                wJam = 0
-                Beep 100,200
-                Beep 200,200
-                Beep 300,200
-                Pause
-            else
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\F2_Nalin.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then
-                    MoveTo intX,intY+17
-                    LeftClick
-                    DelayRandom 139,142
-                else
-                    DelayRandom 39,42
-                    KeyDown F2
-                    DelayRandom 69,72
-                    KeyUp F2
-                    DelayRandom 39,42
-                End If
-                wJam = wJam + 1
-            End If
         End If
-    Wend
-
-    while 1>0 //等进入加载
-        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX <= 0 Then //加载完成了
-            break
-        else
-            DelayRandom 100,150
-        End If
-    Wend
-
-    while 1>0 //等加载
-        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX > 0 Then //加载完成了
-            break
-        else
-            DelayRandom 100,150
-        End If
-    Wend
-
-    FindPic x1,y1,x2,y2,"E:\MHImg\Lara\Create\ZoomMap.bmp",000000,1.00,0,intX,intY
-    If intX >= 0 Then //放大一下地图
-        MoveTo intX,intY
-        LeftClick
-        DelayRandom 139,142
+        DelayRandom 100,150
     End If
+Wend
 
-    tarX = -50
-    tarY = 122
-    tolerance = 2
-    yTolerance = 2
-    Call Move_A()
-
-    while 1>0 //仓库取东西
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Box_Mark.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then
-            DelayRandom 300,400
-            MoveTo intX-72,intY+315
-            LeftClick
-            DelayRandom 139,142
-            for 7
-                DelayRandom 39,42
-                KeyDown 2
-                DelayRandom 69,72
-                KeyUp 2
-                DelayRandom 39,42
-            Next
-            DelayRandom 39,42
-            KeyDown Enter
-            DelayRandom 69,72
-            KeyUp Enter
-            DelayRandom 339,342
-
-            MoveTo intX-214,intY+38
-            LeftDoubleClick
-            DelayRandom 139,142
-            wJam2 = 0
-            while 1>0 //取出仓库的东西
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\OK.bmp",000000,1.00,0,intX,intY
-                if intX < 0 Then //找不到就是
-                    wJam2 = wJam2 + 1
-                    if wJam2 > 3 then
-                        break
-                    else //防卡再点几次
-                        LeftDoubleClick
-                        DelayRandom 339,342
-                    End If
-                else
-                    wJam2 = 0
-                    DelayRandom 39,42
-                    KeyDown Enter
-                    DelayRandom 69,72
-                    KeyUp Enter
-                    DelayRandom 539,542
-                    LeftDoubleClick
-                    DelayRandom 339,342
-                End If
-            Wend
-            break
-        else
-            wJam = 0
-            while 1>0 //打开仓库
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Psw2Type.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Psw_1.bmp",000000,1.00,0,logoX,logoY
-                    MoveTo logoX,logoY
-                    for 6
-                        LeftClick
-                        DelayRandom 139,142
-                    Next
-                    MoveTo intX-100,intY
-                    LeftClick
-                    DelayRandom 1039,1042
-                    break
-                else
-                    wJam = wJam + 1
-                    if wJam > 5 then //重复的动作太多就暂停提醒
-                        wJam = 0
-                        Beep 100,200
-                        Beep 200,200
-                        Beep 300,200
-                        Pause
-                    else
-                        DelayRandom 39,42
-                        KeyDown PageDown
-                        DelayRandom 69,72
-                        KeyUp PageDown
-                        DelayRandom 139,142
-                        wJam = wJam + 1
-                    End If
-                End If
-            Wend
-        End If
-    Wend
-
-    while 1>0 //关闭仓库
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Box_Mark.bmp",000000,1.00,0,intX,intY
-        if intX < 0 Then
-            break
-        else
-            MoveTo intX,intY-53
-            LeftClick
-            DelayRandom 139,142
-        End If
-    Wend
-
-    tarX = -62
-    tarY = 122
-    tolerance = 2
-    yTolerance = 2
-    Call Move_A()
-
-    wJam = 0
-    while 1>0 //商店
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Shop_Tag1.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Shop_Buy1.bmp",000000,1.00,0,logoX,logoY
-            If logoX >= 0 Then //买第一个药水
-                MoveTo logoX+30,logoY
+while 1>0 //等待商城加载完毕
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Cash_Mark.bmp",000000,1.00,0,logoX,logoY
+    if logoX >= 0 Then
+        MoveTo logoX,logoY //移走鼠标
+        while 1>0
+            FindPic logoX-50,logoY-50,logoX+200,logoY+200,"E:\MHImg\Lara\Create\Cash_icon.bmp",000000,1.00,0,intX,intY
+            if intX < 0 Then //找不到就退出
+                //todo:找到后干嘛
+                break
+            else
                 LeftDoubleClick
                 DelayRandom 339,342
-                for 4
-                    DelayRandom 39,42
-                    KeyDown 1
-                    DelayRandom 69,72
-                    KeyUp 1
-                    DelayRandom 39,42
-                Next
-                DelayRandom 39,42
-                KeyDown Enter
-                DelayRandom 69,72
-                KeyUp Enter
-                DelayRandom 39,42
+                MoveTo logoX,logoY //移走鼠标
+                DelayRandom 139,142
             End If
+        Wend
+        break
+    else
+        DelayRandom 100,150
+    End If
+Wend
 
-            while 1>0 //买第二个药水
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Shop_Buy2.bmp",000000,1.00,0,logoX,logoY
-                if logoX >= 0 Then
-                    Delay 200 //防止还在滚动中
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Shop_Buy2.bmp",000000,1.00,0,logoX,logoY
-                    MoveTo logoX+30,logoY
-                    LeftDoubleClick
-                    DelayRandom 339,342
-                    for 3
-                        DelayRandom 39,42
-                        KeyDown 5
-                        DelayRandom 69,72
-                        KeyUp 5
-                        DelayRandom 39,42
-                    Next
-                    DelayRandom 39,42
-                    KeyDown Enter
-                    DelayRandom 69,72
-                    KeyUp Enter
-                    DelayRandom 39,42
-                    break
-                else
-                    MoveTo intX+120,intY+220
-                    MouseWheel -1
-                    Delay 10
-                End If
-            Wend
 
-            break
-        else
-            wJam = wJam + 1
-            if wJam > 3 then //重复的动作太多就暂停提醒
-                wJam = 0
-                Beep 100,200
-                Beep 200,200
-                Beep 300,200
-                Pause
-            else
-                while 1>0
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Shop_Mark.bmp",000000,1.00,0,intX,intY
-                    if intX >= 0 Then //点击tag1
-                        MoveTo intX-179,intY+33
-                        LeftClick
-                        DelayRandom 139,142
-                        MoveTo intX+179,intY-33 //归位不影响判断
-                        DelayRandom 139,142
-                        break
-                    else
-                        DelayRandom 39,42
-                        KeyDown PageDown
-                        DelayRandom 69,72
-                        KeyUp PageDown
-                        DelayRandom 139,142
-                    End If
-                Wend
-                wJam = wJam + 1
-            End If
-        End If
-    Wend
 
-    while 1>0 //关闭商店
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Shop_Mark.bmp",000000,1.00,0,intX,intY
-        if intX < 0 Then
-            break
-        else
-            DelayRandom 39,42
-            KeyDown Esc
-            DelayRandom 69,72
-            KeyUp Esc
-            DelayRandom 39,42
-        End If
-    Wend
 Beep 200,500
