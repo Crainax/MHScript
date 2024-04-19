@@ -12,7 +12,7 @@ Dim alterX,      alterY,  facing         //备用地点,传送门脚步开关,传送门的面向
 Dim cY,          csTimes, csMax          //用这个东西判断角色是不是没有X或Y轴变化了
 Dim tolerance,   tolLoc,  yTolerance     //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim staticCount, staticX, staticY        //防卡计数器
-Dim wJam,        wJam2                   //找图防卡
+Dim wJam,        wJam2,   loopA,   loopB  //找图防卡,loopAB是循环数
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -1134,6 +1134,406 @@ Sub Step2 //回城后-商店买完东西这一步
 
 End Sub
 
+Sub Step3
+
+    while 1>0 //等进入商城
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //开始进入了(找不到XY轴了)
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\cashEntry.bmp",000000,1.00,0,intX,intY
+            If intX >= 0 Then
+                MoveTo intX-30,intY
+                LeftClick
+                DelayRandom 139,142
+            End If
+            DelayRandom 100,150
+        End If
+    Wend
+
+    while 1>0 //等待商城加载完毕
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Cash_Mark.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then
+            MoveTo logoX,logoY //移走鼠标
+            wJam2 = 0
+            while 1>0
+                FindPic logoX,logoY,logoX+369,logoY+189,"E:\MHImg\Lara\Create\Cash_icon.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then //找不到就找图2
+                    FindPic logoX,logoY,logoX+369,logoY+189,"E:\MHImg\Lara\Create\Cash_icon2.bmp",000000,1.00,0,intX,intY
+                    if intX < 0 Then //找不到图1和图2就退出
+                        wJam2 = wJam2 + 1
+                        if wJam2 > 3 then
+                            break
+                        else //防卡移走鼠标
+                            MoveTo logoX,logoY //移走鼠标
+                            DelayRandom 139,142
+                        End If
+                    else
+                        wJam2 = 0
+                        MoveTo intX,intY //移走鼠标
+                        LeftDoubleClick
+                        DelayRandom 339,342
+                        MoveTo logoX,logoY //移走鼠标
+                        DelayRandom 139,142
+                    End If
+                else //找到图1
+                    wJam2 = 0
+                    MoveTo intX,intY //移走鼠标
+                    LeftDoubleClick
+                    DelayRandom 339,342
+                    MoveTo logoX,logoY //移走鼠标
+                    DelayRandom 139,142
+                End If
+            Wend
+
+            MoveTo intX-577,intY+385
+            LeftClick
+            DelayRandom 139,142
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Cash_Mark2.bmp",000000,1.00,0,intX,intY
+            If intX >= 0 Then
+                MoveTo intX+80,intY
+                LeftClick
+                DelayRandom 139,142
+            End If
+            DelayRandom 100,150
+        End If
+    Wend
+
+    while 1>0 //等进入加载
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Cash_Mark2.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //找不到图代表正在加载中
+            break
+        else
+            MoveTo intX-830,intY+434 //退出商城
+            LeftClick
+            DelayRandom 139,142
+        End If
+    Wend
+
+    while 1>0 //等完毕
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX > 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+
+    while 1>0 //先处理装备标签
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Tag_Equit.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //找到了标签
+            //43一个格子
+            loopA = 0
+            for 5
+                loopB = 0
+                for 4
+                    //9,36
+                    MoveTo logoX+9+43*loopB,logoY+36+43*loopA
+                    DelayRandom 369,372
+                    LeftDoubleClick
+                    DelayRandom 339,342 //等一会判断有没有弹窗
+
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                    If intX >= 0 Then
+                        DelayRandom 39,42
+                        KeyDown Enter
+                        DelayRandom 69,72
+                        KeyUp Enter
+                        DelayRandom 239,242
+                    End If
+
+                    loopB = loopB + 1
+                Next
+                loopA = loopA + 1
+            Next
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //切标签页
+                DelayRandom 39,42
+                KeyDown tab
+                DelayRandom 69,72
+                KeyUp tab
+                DelayRandom 39,42
+            else //打开背包
+                DelayRandom 39,42
+                KeyDown i
+                DelayRandom 69,72
+                KeyUp i
+                DelayRandom 39,42
+            End If
+        End If
+    Wend
+
+    while 1>0 //处理称号
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Tag_Deco.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //找到了标签
+            MoveTo logoX-77,logoY+35
+            LeftDoubleClick
+            DelayRandom 539,542
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //切标签页
+                DelayRandom 39,42
+                KeyDown tab
+                DelayRandom 69,72
+                KeyUp tab
+                DelayRandom 39,42
+            else //打开背包
+                DelayRandom 39,42
+                KeyDown i
+                DelayRandom 69,72
+                KeyUp i
+                DelayRandom 39,42
+            End If
+        End If
+    Wend
+
+    //这里关一次背包防闪烁
+    while 1>0 //关闭背包
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown i
+            DelayRandom 69,72
+            KeyUp i
+            DelayRandom 39,42
+        End If
+    Wend
+
+    while 1>0 //处理特殊标签(宠物)
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Tag_spec.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //找到了标签
+            //43一个格子
+            loopA = 0
+            for 2
+                loopB = 0
+                for 4
+                    //9,36
+                    MoveTo logoX-111+43*loopB,logoY+36+43*loopA
+                    DelayRandom 369,372
+                    LeftDoubleClick
+                    DelayRandom 339,342 //等一会判断有没有弹窗
+
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                    If intX >= 0 Then
+                        DelayRandom 39,42
+                        KeyDown Enter
+                        DelayRandom 69,72
+                        KeyUp Enter
+                        DelayRandom 339,342
+                    End If
+
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\Mark.bmp",000000,1.00,0,intX,intY
+                    If intX >= 0 Then
+                        MoveTo intX+236,intY-16
+                        LeftClick
+                        DelayRandom 139,142
+                    End If
+
+                    loopB = loopB + 1
+                Next
+                loopA = loopA + 1
+            Next
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //切标签页
+                DelayRandom 39,42
+                KeyDown tab
+                DelayRandom 69,72
+                KeyUp tab
+                DelayRandom 39,42
+            else //打开背包
+                DelayRandom 39,42
+                KeyDown i
+                DelayRandom 69,72
+                KeyUp i
+                DelayRandom 39,42
+            End If
+        End If
+    Wend
+
+    while 1>0 //处理时装标签
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Tag_Cash.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //找到了标签
+            //43一个格子
+            loopA = 0
+            for 1
+                loopB = 0
+                for 4
+                    //9,36
+                    MoveTo logoX-140+43*loopB,logoY+36+43*loopA
+                    DelayRandom 369,372
+                    LeftDoubleClick
+                    DelayRandom 339,342 //等一会判断有没有弹窗
+                    loopB = loopB + 1
+                Next
+                loopA = loopA + 1
+            Next
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //切标签页
+                DelayRandom 39,42
+                KeyDown tab
+                DelayRandom 69,72
+                KeyUp tab
+                DelayRandom 39,42
+            else //打开背包
+                DelayRandom 39,42
+                KeyDown i
+                DelayRandom 69,72
+                KeyUp i
+                DelayRandom 39,42
+            End If
+        End If
+    Wend
+
+    while 1>0 //切到消耗栏再下一步
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Tag_Coms.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //找到了标签
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //切标签页
+                DelayRandom 39,42
+                KeyDown tab
+                DelayRandom 69,72
+                KeyUp tab
+                DelayRandom 39,42
+            else //打开背包
+                DelayRandom 39,42
+                KeyDown i
+                DelayRandom 69,72
+                KeyUp i
+                DelayRandom 39,42
+            End If
+        End If
+    Wend
+
+
+    while 1>0 //打开装备栏的宠物界面
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //找到了标签
+            //43一个格子
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_Autopick_On.bmp",000000,1.00,0,intX,intY
+            If intX >= 0 Then //关闭自动拾取
+                MoveTo intX+2,intY+2
+                LeftClick
+                DelayRandom 139,142
+            End If
+
+            //宠物的喝药
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Item_Option.bmp",000000,1.00,0,intX,intY
+            If intX >= 0 Then //找药水
+
+                DelayRandom 300,400
+                MoveTo intX,intY
+                LeftClick
+                DelayRandom 339,342
+
+                MoveTo logoX+6,logoY+213
+                LeftClick
+                DelayRandom 339,342
+
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Option_Cancel.bmp",000000,1.00,0,intX,intY
+                If intX >= 0 Then
+                    DelayRandom 39,42
+                    KeyDown Esc
+                    DelayRandom 69,72
+                    KeyUp Esc
+                    DelayRandom 339,342
+                End If
+
+            End If
+
+            //宠物的喝药
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Item_Option.bmp",000000,1.00,0,intX,intY
+            If intX >= 0 Then //找药水
+
+                DelayRandom 300,400
+                MoveTo intX,intY
+                LeftClick
+                DelayRandom 339,342
+
+                MoveTo logoX+49,logoY+213
+                LeftClick
+                DelayRandom 339,342
+
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Option_Cancel.bmp",000000,1.00,0,intX,intY
+                If intX >= 0 Then
+                    DelayRandom 39,42
+                    KeyDown Esc
+                    DelayRandom 69,72
+                    KeyUp Esc
+                    DelayRandom 339,342
+                End If
+
+            End If
+
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_Off.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //切标签页
+                DelayRandom 39,42
+                KeyDown tab
+                DelayRandom 69,72
+                KeyUp tab
+                DelayRandom 39,42
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_On.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //切标签页
+                    DelayRandom 39,42
+                    KeyDown tab
+                    DelayRandom 69,72
+                    KeyUp tab
+                    DelayRandom 39,42
+                else //打开装备
+                    DelayRandom 39,42
+                    KeyDown u
+                    DelayRandom 69,72
+                    KeyUp u
+                    DelayRandom 39,42
+                End If
+            End If
+        End If
+    Wend
+
+
+    while 1>0 //关闭背包
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown i
+            DelayRandom 69,72
+            KeyUp i
+            DelayRandom 39,42
+        End If
+    Wend
+
+    while 1>0 //关闭装备栏
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown u
+            DelayRandom 69,72
+            KeyUp u
+            DelayRandom 39,42
+        End If
+    Wend
+
+End Sub
+
 //分辨率初始化
 GetScreenResolution intX, intY
 x1     = intX - 1440
@@ -1149,7 +1549,8 @@ alterY = 0            //备用地点
 facing = 0            //面向初始归0
 
 //Call Step1() //创角-回城这一步
-Call Step2() //回城后-商店买完东西这一步
+//Call Step2() //回城后-商店买完东西这一步
+Call Step3() //商城拿东西
 
 Beep 500,500
 
