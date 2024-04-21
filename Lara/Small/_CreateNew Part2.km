@@ -298,6 +298,31 @@ End Sub
             DelayRandom 339,342
 
             //拖动释放到键盘布局里
+            MoveTo intX+150,intY+53
+            LeftClick
+            DelayRandom 339,342
+
+            while 1>0 //打开键盘 并清空所有设定 摆好位置
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Key\Reset.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    MoveTo intX+85,intY+8
+                    LeftClick
+                    DelayRandom 139,142
+
+                    //确认修改
+                    MoveTo intX+408,intY+10
+                    LeftClick
+                    DelayRandom 139,142
+
+                    break
+                else
+                    DelayRandom 39,42
+                    KeyDown \
+                    DelayRandom 69,72
+                    KeyUp \
+                    DelayRandom 39,42
+                End If
+            Wend
 
             break
         else

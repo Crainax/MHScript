@@ -1,0 +1,8 @@
+DelayRandom 120,122
+KeyDown Right
+DelayRandom 181,183
+KeyDown LShift
+DelayRandom 884,893
+KeyUp LShift
+DelayRandom 75,76
+KeyUp Right

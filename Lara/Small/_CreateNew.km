@@ -699,7 +699,7 @@ Sub Step1 //创角-回城这一步
         Wend
 
     while 1>0 //打开键盘 并清空所有设定 摆好位置
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Key_Reset.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Key\Reset.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
             MoveTo intX+85,intY+8
             LeftClick
@@ -855,7 +855,7 @@ Sub Step1 //创角-回城这一步
     Wend
 
     while 1>0 //关闭键位窗口
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Key_Reset.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Key\Reset.bmp",000000,1.00,0,intX,intY
         if intX < 0 Then
             break
         else
