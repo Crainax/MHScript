@@ -454,7 +454,7 @@ End Sub
 Sub Step1 //创角-回城这一步
 
     while 1>0 //判断一下
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\EndChat.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\EndChat.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then //判断黑框"结束对话"出来就下一步
             break
         else
@@ -476,7 +476,7 @@ Sub Step1 //创角-回城这一步
 
     //这里先清一下对话框
     while 1>0
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\No.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then //如果还卡在上一步就按
             DelayRandom 39,42
             KeyDown Enter
@@ -484,7 +484,7 @@ Sub Step1 //创角-回城这一步
             KeyUp Enter
             DelayRandom 169,172
         else
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\StopChat.bmp",000000,1.00,0,intX,intY
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then
                 DelayRandom 39,42
                 KeyDown Space
@@ -508,14 +508,14 @@ Sub Step1 //创角-回城这一步
     KeyUp Space
     DelayRandom 113,115
     while 1>0 //到了小山灵的对话
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\StopChat.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
             DelayRandom 39,42
             KeyDown Space
             DelayRandom 69,72
             KeyUp Space
         else
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\EndChat.bmp",000000,1.00,0,intX,intY
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\EndChat.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then
                 DelayRandom 39,42
                 KeyDown Space
@@ -535,7 +535,7 @@ Sub Step1 //创角-回城这一步
     DelayRandom 69,72
 
     while 1>0 //接克理的任务
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\StopChat.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then //出现橙框"不是"才结束
             DelayRandom 39,42
             KeyDown Enter
@@ -551,7 +551,7 @@ Sub Step1 //创角-回城这一步
         End If
     Wend
     while 1>0 //和克理的对话
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\No.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then //出现橙框"不是"才结束
             break
         else
@@ -584,7 +584,7 @@ Sub Step1 //创角-回城这一步
     Wend
 
     while 1>0 //打开技能窗口
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Relate_Skill.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
             break
         else
@@ -598,7 +598,7 @@ Sub Step1 //创角-回城这一步
 
         wJam = 0
         while 1>0 //加点
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Confirm.bmp",000000,1.00,0,intX,intY
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then
                 DelayRandom 39,42
                 KeyDown 1
@@ -620,7 +620,7 @@ Sub Step1 //创角-回城这一步
                     Beep 400,200
                     Pause
                 else
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Relate_Skill.bmp",000000,1.00,0,intX,intY
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
                     If intX >= 0 Then
                         MoveTo intX+120,intY+58
                         LeftClick
@@ -632,7 +632,7 @@ Sub Step1 //创角-回城这一步
 
         wJam = 0
         while 1>0 //加点
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Confirm.bmp",000000,1.00,0,intX,intY
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then
                 DelayRandom 39,42
                 KeyDown 3
@@ -654,7 +654,7 @@ Sub Step1 //创角-回城这一步
                     Beep 400,200
                     Pause
                 else
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Relate_Skill.bmp",000000,1.00,0,intX,intY
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
                     If intX >= 0 Then
                         MoveTo intX+266,intY+60
                         LeftClick
@@ -666,7 +666,7 @@ Sub Step1 //创角-回城这一步
 
         wJam = 0
         while 1>0 //加点
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Confirm.bmp",000000,1.00,0,intX,intY
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then
                 DelayRandom 39,42
                 KeyDown 1
@@ -688,7 +688,7 @@ Sub Step1 //创角-回城这一步
                     Beep 400,200
                     Pause
                 else
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Relate_Skill.bmp",000000,1.00,0,intX,intY
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
                     If intX >= 0 Then
                         MoveTo intX+123,intY+100
                         LeftClick
@@ -842,7 +842,7 @@ Sub Step1 //创角-回城这一步
     Wend
 
     while 1>0 //关闭技能窗口
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Relate_Skill.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
         if intX < 0 Then
             break
         else
@@ -869,7 +869,7 @@ Sub Step1 //创角-回城这一步
 
     wJam = 0
     while 1>0
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2_Cancel.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Cancel.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
             MoveTo intX-90,intY
             LeftClick

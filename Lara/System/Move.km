@@ -1105,7 +1105,7 @@ Sub Move_C()  //没解锁释放前的平A
             else  //速走的默认为4
                 tolLoc = 2
             End If
-            if intX < (tarX-24) Then //向右二段跳
+            if intX < (tarX-16) Then //向右二段跳
                 TracePrint 右跳
                 DelayRandom 15,25
                 KeyDown Right
@@ -1124,7 +1124,7 @@ Sub Move_C()  //没解锁释放前的平A
                 DelayRandom 313,315
                 KeyUp F
                 DelayRandom 256,261
-            Else If intX > (tarX+24) Then //向左二段跳
+            Else If intX > (tarX+16) Then //向左二段跳
                 TracePrint 左跳
                 DelayRandom 15,25
                 KeyDown Left
@@ -1449,7 +1449,7 @@ while 1 > 0
         GetFileLine facing,Move.Conf,tolLoc	//文件查找
         TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance & ,传送[ & alterX & , & alterY & ]
         //tolerance = 4 //容忍度,4为推荐值
-        Call Move_A()
+        Call Move_C()
         MsgBox 测试结束
     else //大写键亮的话就获取点
         FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
