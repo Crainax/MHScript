@@ -193,6 +193,32 @@ Sub Loading //加载抽离函数
         End If
     Wend
 End Sub
+Sub Loading2 //(鸟2垃圾地图)
+    while 1>0 //等进入加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+    while 1>0 //等加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX > 0 Then //加载完成了
+            break
+        else
+            DelayRandom 39,42
+            KeyDown Down
+            DelayRandom 39,42
+            KeyDown Space
+            DelayRandom 69,72
+            KeyUp Space
+            DelayRandom 39,42
+            KeyUp Down
+            DelayRandom 139,142
+        End If
+    Wend
+End Sub
 
 Sub Drop //扔掉道具抽离
     If intX >= 0 Then
@@ -275,8 +301,6 @@ Sub AddSP //加点
 End Sub
 
 Sub Fun1
-
-
 
     while 1>0 //打开指导
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
@@ -489,34 +513,100 @@ Sub Fun1
         End If
     Wend
 
-End Sub
 
-    while 1>0 //加三转技能点
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\III.bmp",000000,1.00,0,logoX,logoY
+    while 1>0 //加四转技能点
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\IV.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\I_Off.bmp",000000,1.00,0,logoX,logoY
-            loopA = 0
-            for 4
-                loopB = 1
-                for 2
-                    MoveTo logoX+94+loopB*144,logoY+86+loopA*40
-                    DelayRandom 239,242
-                    LeftClick
-                    DelayRandom 339,342
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
-                    If intX >= 0 Then
-                        KeyDown Enter
-                        DelayRandom 69,72
-                        KeyUp Enter
-                    End If
-                    DelayRandom 339,342
-                    loopB = loopB - 1
-                Next
-                loopA = loopA + 1
+            //先滚轮
+            MoveTo logoX+50,logoY+86
+            Delay 100
+            LeftClick
+            Delay 100
+            MouseWheel -1
+            Delay 100
+            MoveTo logoX,logoY-50
+            Delay 100
+
+            MoveTo logoX+94+1*144,logoY+86+1*40
+
+            a = 1
+            for 6
+                if a == 1 then
+                    loopA = 1
+                    loopB = 1
+                else if a == 2 then
+                    loopA = 3
+                    loopB = 0
+                else if a == 3 then
+                    loopA = 4
+                    loopB = 0
+                else if a == 4 then
+                    loopA = 5
+                    loopB = 0
+                else if a == 5 then
+                    loopA = 5
+                    loopB = 1
+                else
+                    loopA = 4
+                    loopB = 1
+                End If
+
+                MoveTo logoX+94+loopB*144,logoY+86+loopA*40
+                DelayRandom 239,242
+                LeftClick
+                DelayRandom 339,342
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
+                If intX >= 0 Then
+                    DelayRandom 39,42
+                    KeyDown 1
+                    DelayRandom 69,72
+                    KeyUp 1
+                    DelayRandom 39,42
+                    KeyDown Enter
+                    DelayRandom 69,72
+                    KeyUp Enter
+                End If
+                DelayRandom 339,342
+                a = a + 1
             Next
 
-            Call CloseSkill() //关闭技能栏
 
+            //拖动释放到键盘布局里
+            MoveTo logoX-18,logoY+198
+            LeftClick
+            DelayRandom 339,342
+
+            while 1>0 //打开装备栏的宠物界面
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,logoX,logoY
+                if logoX >= 0 Then //找到了标签
+                    MoveTo logoX+86,logoY+50
+                    LeftClick
+                    DelayRandom 339,342
+                    break
+                else
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_Off.bmp",000000,1.00,0,intX,intY
+                    if intX < 0 then //A图没找到就找B图
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_On.bmp",000000,1.00,0,intX,intY
+                    End If
+                    if intX >= 0 Then
+                        DelayRandom 39,42
+                        KeyDown tab
+                        DelayRandom 69,72
+                        KeyUp tab
+                        DelayRandom 39,42
+                    else
+                        DelayRandom 39,42
+                        KeyDown u
+                        DelayRandom 69,72
+                        KeyUp u
+                        DelayRandom 39,42
+                    End If
+                End If
+            Wend
+
+            Call CloseEquit() //关闭装备栏
+            Call CloseSkill() //关闭技能栏
             break
         else
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
@@ -535,5 +625,6 @@ End Sub
             End If
         End If
     Wend
+End Sub
 
 Beep 200,500

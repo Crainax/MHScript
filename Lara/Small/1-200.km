@@ -795,6 +795,32 @@ Sub Loading //加载抽离函数(人先消失再出现)
         End If
     Wend
 End Sub
+Sub Loading2 //(鸟2垃圾地图)
+    while 1>0 //等进入加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+    while 1>0 //等加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX > 0 Then //加载完成了
+            break
+        else
+            DelayRandom 39,42
+            KeyDown Down
+            DelayRandom 39,42
+            KeyDown Space
+            DelayRandom 69,72
+            KeyUp Space
+            DelayRandom 39,42
+            KeyUp Down
+            DelayRandom 139,142
+        End If
+    Wend
+End Sub
 Sub Channel //有人就换频
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Player.bmp",000000,1.00,0,intX,intY
@@ -987,30 +1013,7 @@ Sub Teleport //换地图(Caps键亮)
                             DelayRandom 39,42
                         End If
 
-                        while 1>0 //等进入加载
-                            FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-                            if intX <= 0 Then //加载完成了
-                                break
-                            else
-                                DelayRandom 100,150
-                            End If
-                        Wend
-                        while 1>0 //等加载
-                            FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-                            if intX > 0 Then //加载完成了
-                                break
-                            else
-                                DelayRandom 39,42
-                                KeyDown Down
-                                DelayRandom 39,42
-                                KeyDown Space
-                                DelayRandom 69,72
-                                KeyUp Space
-                                DelayRandom 39,42
-                                KeyUp Down
-                                DelayRandom 139,142
-                            End If
-                        Wend
+                        Call Loading2()
 
                         DelayRandom 39,42
                         KeyDown CapsLock
@@ -1019,16 +1022,54 @@ Sub Teleport //换地图(Caps键亮)
                         DelayRandom 39,42 //关闭找图
                     else
                         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Bird2.bmp",000000,1.00,0,intX,intY
-                        If intX >= 0 Then //去小狗
+                        If intX >= 0 Then //去四转
+                            //Call 4Job() //四转
                             Call AddSP() //加点
-                            Call OpenMap()
-                            MoveTo logoX-225,logoY+105
-                            LeftClick
-                            DelayRandom 139,142
-                            MoveTo logoX-286,logoY+160
-                            Call AfterMap()
-                        else
+                            Beep 500,100
+                            Delay 50
+                            Beep 500,100
+                            Delay 50
+                            Beep 500,100
+                            Delay 50
+                            Pause //暂停去解
+                            //通过指导回鸟2
+                            while 1>0
+                                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Cancel2.bmp",000000,1.00,0,intX,intY
+                                if intX >= 0 Then
+                                    MoveTo intX-90,intY
+                                    LeftClick
+                                    DelayRandom 139,142
+                                    break
+                                else
+                                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Bird2.bmp",000000,1.00,0,intX,intY
+                                    if intX >= 0 Then
+                                        MoveTo intX+37,intY+31
+                                        LeftClick
+                                        DelayRandom 139,142
+                                    else
+                                        DelayRandom 39,42
+                                        KeyDown F2
+                                        DelayRandom 69,72
+                                        KeyUp F2
+                                        DelayRandom 39,42
+                                    End If
+                                End If
+                            Wend
 
+                            Call Loading2()
+                        else
+                            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Warrior.bmp",000000,1.00,0,intX,intY
+                            If intX >= 0 Then //勇士出发才是去小狗的
+                                Call AddSP() //加点
+                                Call OpenMap()
+                                MoveTo logoX-225,logoY+105
+                                LeftClick
+                                DelayRandom 139,142
+                                MoveTo logoX-286,logoY+160
+                                Call AfterMap()
+                            else
+
+                            End If
                         End If
                     End If
                 End If
