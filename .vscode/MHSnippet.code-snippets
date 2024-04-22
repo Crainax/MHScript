@@ -149,4 +149,20 @@
 		],
 		"description": "For循环"
 	},
+	"防卡": {
+		"prefix": "jamAnit",
+		"body": [
+			"wJam = 0 //放在循环外面位置",
+			"wJam = 0 //放在成功的位置",
+			"",
+			"wJam = wJam + 1  //循环内部",
+			"if wJam > 3 then //三次失败,",
+			"    //todo:多次失败",
+			"else",
+			"    Delay 200",
+			"    wJam = wJam + 1",
+			"End If",
+		],
+		"description": "防卡循环"
+	},
 }

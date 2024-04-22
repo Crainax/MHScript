@@ -451,6 +451,52 @@ Sub Move_B()  //纯移动不用技能 Ver2.9(把JumpAttack改成
     Wend
 End Sub
 
+
+Sub CloseEquit //关闭装备栏
+    while 1>0 //关闭装备栏
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown u
+            DelayRandom 69,72
+            KeyUp u
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
+
+Sub CloseBag //关闭装备栏
+    while 1>0 //关闭背包
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown i
+            DelayRandom 69,72
+            KeyUp i
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
+
+Sub CloseSkill //关闭技能窗口
+    while 1>0 //关闭技能窗口
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown k
+            DelayRandom 69,72
+            KeyUp k
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
+
 Sub Step1 //创角-回城这一步
 
     while 1>0 //判断一下
@@ -841,18 +887,7 @@ Sub Step1 //创角-回城这一步
         End If
     Wend
 
-    while 1>0 //关闭技能窗口
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
-        if intX < 0 Then
-            break
-        else
-            DelayRandom 39,42
-            KeyDown k
-            DelayRandom 69,72
-            KeyUp k
-            DelayRandom 39,42
-        End If
-    Wend
+    Call CloseSkill() //关闭技能窗口
 
     while 1>0 //关闭键位窗口
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Key\Reset.bmp",000000,1.00,0,intX,intY
@@ -1293,18 +1328,7 @@ Sub Step3
     Wend
 
     //这里关一次背包防闪烁
-    while 1>0 //关闭背包
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
-        if intX < 0 Then
-            break
-        else
-            DelayRandom 39,42
-            KeyDown i
-            DelayRandom 69,72
-            KeyUp i
-            DelayRandom 39,42
-        End If
-    Wend
+    Call CloseBag()
 
     while 1>0 //处理特殊标签(宠物)
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Tag_spec.bmp",000000,1.00,0,logoX,logoY
@@ -1480,57 +1504,28 @@ Sub Step3
             break
         else
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_Off.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then //切标签页
+            if intX < 0 then //A图没找到就找B图
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_On.bmp",000000,1.00,0,intX,intY
+            End If
+            if intX >= 0 Then
                 DelayRandom 39,42
                 KeyDown tab
                 DelayRandom 69,72
                 KeyUp tab
                 DelayRandom 39,42
             else
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_On.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //切标签页
-                    DelayRandom 39,42
-                    KeyDown tab
-                    DelayRandom 69,72
-                    KeyUp tab
-                    DelayRandom 39,42
-                else //打开装备
-                    DelayRandom 39,42
-                    KeyDown u
-                    DelayRandom 69,72
-                    KeyUp u
-                    DelayRandom 39,42
-                End If
+                DelayRandom 39,42
+                KeyDown u
+                DelayRandom 69,72
+                KeyUp u
+                DelayRandom 39,42
             End If
         End If
     Wend
 
 
-    while 1>0 //关闭背包
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
-        if intX < 0 Then
-            break
-        else
-            DelayRandom 39,42
-            KeyDown i
-            DelayRandom 69,72
-            KeyUp i
-            DelayRandom 39,42
-        End If
-    Wend
-
-    while 1>0 //关闭装备栏
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,intX,intY
-        if intX < 0 Then
-            break
-        else
-            DelayRandom 39,42
-            KeyDown u
-            DelayRandom 69,72
-            KeyUp u
-            DelayRandom 39,42
-        End If
-    Wend
+    Call CloseBag() //关闭背包
+    Call CloseEquit() //关闭装备栏
 
 End Sub
 

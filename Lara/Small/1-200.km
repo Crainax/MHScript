@@ -679,6 +679,48 @@ Sub ReleaseRune //定期解轮 ver2.1
     End If
 End Sub
 
+Sub CloseEquit //关闭装备栏
+    while 1>0 //关闭装备栏
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown u
+            DelayRandom 69,72
+            KeyUp u
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
+Sub CloseSkill //关闭技能窗口
+    while 1>0 //关闭技能窗口
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown k
+            DelayRandom 69,72
+            KeyUp k
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
+Sub CloseBag //关闭装备栏
+    while 1>0 //关闭背包
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown i
+            DelayRandom 69,72
+            KeyUp i
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
 Sub OpenMap //打开世界地图
     wJam = 0
     while 1>0
@@ -714,7 +756,6 @@ Sub OpenMap //打开世界地图
         End If
     Wend
 End Sub
-
 Sub AfterMap //夹在中间的抽离后
     LeftDoubleClick
     DelayRandom 339,342
@@ -736,7 +777,6 @@ Sub AfterMap //夹在中间的抽离后
     KeyUp CapsLock
     DelayRandom 39,42 //关闭找图
 End Sub
-
 Sub Loading //加载抽离函数(人先消失再出现)
     while 1>0 //等进入加载
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -755,7 +795,6 @@ Sub Loading //加载抽离函数(人先消失再出现)
         End If
     Wend
 End Sub
-
 Sub Channel //有人就换频
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Player.bmp",000000,1.00,0,intX,intY
@@ -763,29 +802,28 @@ Sub Channel //有人就换频
             Delay 200
             break
         else
-            DelayRandom 39,42
+            DelayRandom 339,342
             KeyDown Esc
             DelayRandom 69,72
             KeyUp Esc
-            DelayRandom 339,342
+            DelayRandom 539,542
             KeyDown Enter
             DelayRandom 69,72
             KeyUp Enter
-            DelayRandom 339,342
+            DelayRandom 539,542
             KeyDown Right
             DelayRandom 69,72
             KeyUp Right
-            DelayRandom 339,342
+            DelayRandom 539,542
             KeyDown Enter
             DelayRandom 69,72
             KeyUp Enter
-            DelayRandom 139,142
+            DelayRandom 339,342
             Call Loading() //等加载
             DelayRandom 239,242
         End If
     Wend
 End Sub
-
 Sub AddSP //加点
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Mark.bmp",000000,1.00,0,logoX,logoY
@@ -842,6 +880,52 @@ Sub AddSP //加点
         End If
     Wend
 End Sub
+Sub BirdSkill //进鸟前的加点
+    while 1>0 //加二转技能点
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\III.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\I_Off.bmp",000000,1.00,0,logoX,logoY
+            loopA = 0
+            for 2
+                loopB = 0
+                for 2
+                    MoveTo logoX+94+loopB*144,logoY+86+loopA*40
+                    DelayRandom 239,242
+                    LeftClick
+                    DelayRandom 339,342
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
+                    If intX >= 0 Then
+                        KeyDown Enter
+                        DelayRandom 69,72
+                        KeyUp Enter
+                    End If
+                    DelayRandom 339,342
+                    loopB = loopB + 1
+                Next
+                loopA = loopA + 1
+            Next
+
+            Call CloseSkill() //关闭技能栏
+
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //切下标签页
+                DelayRandom 39,42
+                KeyDown Tab
+                DelayRandom 69,72
+                KeyUp Tab
+                DelayRandom 39,42
+            else
+                DelayRandom 39,42
+                KeyDown k
+                DelayRandom 69,72
+                KeyUp k
+                DelayRandom 39,42
+            End If
+        End If
+    Wend
+End Sub
 
 Sub Teleport //换地图(Caps键亮)
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Nalin.bmp",000000,1.00,0,intX,intY
@@ -872,7 +956,82 @@ Sub Teleport //换地图(Caps键亮)
                 MoveTo logoX-286,logoY+160
                 Call AfterMap()
             else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Tulong.bmp",000000,1.00,0,intX,intY
+                If intX >= 0 Then //当前在土龙,三转后再去沙漠
+                    Call AddSP() //加点
+                    Call OpenMap()
+                    MoveTo logoX-210,logoY+359
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo logoX-147,logoY+188
+                    Call AfterMap()
+                else
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\RedSand.bmp",000000,1.00,0,intX,intY
+                    If intX >= 0 Then //去打鸟
+                        Call BirdSkill()
+                        Call AddSP() //加点
+                        Call OpenMap()
+                        MoveTo logoX-204,logoY+313
+                        LeftClick
+                        DelayRandom 139,142
+                        MoveTo logoX+148,logoY+388
+                        LeftDoubleClick
+                        DelayRandom 339,342
 
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                        If intX >= 0 Then
+                            DelayRandom 39,42
+                            KeyDown Enter
+                            DelayRandom 69,72
+                            KeyUp Enter
+                            DelayRandom 39,42
+                        End If
+
+                        while 1>0 //等进入加载
+                            FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+                            if intX <= 0 Then //加载完成了
+                                break
+                            else
+                                DelayRandom 100,150
+                            End If
+                        Wend
+                        while 1>0 //等加载
+                            FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+                            if intX > 0 Then //加载完成了
+                                break
+                            else
+                                DelayRandom 39,42
+                                KeyDown Down
+                                DelayRandom 39,42
+                                KeyDown Space
+                                DelayRandom 69,72
+                                KeyUp Space
+                                DelayRandom 39,42
+                                KeyUp Down
+                                DelayRandom 139,142
+                            End If
+                        Wend
+
+                        DelayRandom 39,42
+                        KeyDown CapsLock
+                        DelayRandom 69,72
+                        KeyUp CapsLock
+                        DelayRandom 39,42 //关闭找图
+                    else
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Bird2.bmp",000000,1.00,0,intX,intY
+                        If intX >= 0 Then //去小狗
+                            Call AddSP() //加点
+                            Call OpenMap()
+                            MoveTo logoX-225,logoY+105
+                            LeftClick
+                            DelayRandom 139,142
+                            MoveTo logoX-286,logoY+160
+                            Call AfterMap()
+                        else
+
+                        End If
+                    End If
+                End If
             End If
         End If
     End If

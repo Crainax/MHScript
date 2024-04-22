@@ -132,6 +132,51 @@ alterX = 0            //备用地点
 alterY = 0            //备用地点
 facing = 0            //面向初始归0
 
+Sub CloseEquit //关闭装备栏
+    while 1>0 //关闭装备栏
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown u
+            DelayRandom 69,72
+            KeyUp u
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
+
+Sub CloseSkill //关闭技能窗口
+    while 1>0 //关闭技能窗口
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown k
+            DelayRandom 69,72
+            KeyUp k
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
+
+Sub CloseBag //关闭装备栏
+    while 1>0 //关闭背包
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown i
+            DelayRandom 69,72
+            KeyUp i
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
+
 Sub Loading //加载抽离函数
     while 1>0 //等进入加载
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -231,6 +276,7 @@ Sub AddSP //加点
     Wend
 End Sub
 
+
 Sub Fun1
 
     while 1>0 //打开指导
@@ -254,6 +300,9 @@ Sub Fun1
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Auto\Job.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
             MoveTo intX+30,intY
+            Delay 20
+            MoveTo intX+30,intY+5
+            Delay 20
             LeftClick
             DelayRandom 339,342
             break
@@ -269,9 +318,11 @@ Sub Fun1
         End If
     Wend
 
+    wJam = 0 //放在循环外面位置
     while 1>0 //二转进行中
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then //如果还卡在上一步就按
+            wJam = 0 //放在成功的位置
             DelayRandom 39,42
             KeyDown Enter
             DelayRandom 69,72
@@ -280,13 +331,20 @@ Sub Fun1
         else
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\EndChat.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then
+                wJam = 0 //放在成功的位置
                 DelayRandom 39,42
                 KeyDown PageDown
                 DelayRandom 69,72
                 KeyUp PageDown
                 DelayRandom 169,172
             else  //停止对话UI没有就下一步
-                break
+                wJam = wJam + 1  //循环内部
+                if wJam > 3 then //三次失败,
+                    break
+                else
+                    Delay 200
+                    wJam = wJam + 1
+                End If
             End If
         End If
     Wend
@@ -436,18 +494,7 @@ Sub Fun1
         End If
     Wend
 
-    while 1>0 //关闭技能窗口
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
-        if intX < 0 Then
-            break
-        else
-            DelayRandom 39,42
-            KeyDown k
-            DelayRandom 69,72
-            KeyUp k
-            DelayRandom 339,342
-        End If
-    Wend
+    Call CloseSkill()
 
     while 1>0 //先处理装备标签
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Tag_Equit.bmp",000000,1.00,0,logoX,logoY
@@ -474,7 +521,7 @@ Sub Fun1
             DelayRandom 139,142
             MoveTo logoX+178,logoY+391
             LeftClick
-            DelayRandom 139,142
+            DelayRandom 539,542
 
             loopA = 0
             for 3
@@ -499,6 +546,8 @@ Sub Fun1
                 Next
                 loopA = loopA + 1
             Next
+
+            Call CloseBag()
             break
         else
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
