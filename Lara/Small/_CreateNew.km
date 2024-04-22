@@ -571,7 +571,7 @@ Sub Step1 //创角-回城这一步
 
 
     while 1>0 //关闭角色窗口
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\F5_Mark.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Mark.bmp",000000,1.00,0,intX,intY
         if intX < 0 Then
             break
         else

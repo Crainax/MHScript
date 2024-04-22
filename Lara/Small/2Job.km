@@ -151,6 +151,86 @@ Sub Loading //加载抽离函数
     Wend
 End Sub
 
+Sub Drop //扔掉道具抽离
+    If intX >= 0 Then
+        MoveTo intX,intY
+        DelayRandom 369,372
+        LeftClick
+        DelayRandom 339,342
+
+        MoveTo intX-210,intY
+        DelayRandom 369,372
+        LeftClick
+        DelayRandom 339,342
+
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+        If intX >= 0 Then
+            DelayRandom 39,42
+            KeyDown Enter
+            DelayRandom 69,72
+            KeyUp Enter
+            DelayRandom 239,242
+        End If
+    End If
+End Sub
+
+Sub AddSP //加点
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Mark.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //展开页面了吗
+            DelayRandom 139,142
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\SP.bmp",000000,1.00,0,intX,intY
+            If intX >= 0 Then //能不能加点
+                MoveTo intX,intY
+                LeftClick
+                DelayRandom 339,342
+
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                If intX >= 0 Then
+                    DelayRandom 39,42
+                    KeyDown Enter
+                    DelayRandom 69,72
+                    KeyUp Enter
+                    DelayRandom 339,342
+                End If
+            End If
+
+            while 1>0 //关闭技能窗口
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Mark.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then
+                    break
+                else
+                    DelayRandom 39,42
+                    KeyDown F5
+                    DelayRandom 69,72
+                    KeyUp F5
+                    DelayRandom 339,342
+                End If
+            Wend
+
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Extend.bmp",000000,1.00,0,intX,intY
+            if intX < 0 then //A图没找到就找B图
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Extend_On.bmp",000000,1.00,0,intX,intY
+            End If
+            if intX >= 0 Then
+                MoveTo intX-100,intY
+                LeftClick
+                DelayRandom 139,142
+            else
+                DelayRandom 39,42
+                KeyDown F5
+                DelayRandom 69,72
+                KeyUp F5
+                DelayRandom 39,42
+            End If
+
+
+        End If
+    Wend
+End Sub
+
 Sub Fun1
 
     while 1>0 //打开指导
@@ -256,7 +336,6 @@ Sub Fun1
             End If
         End If
     Wend
-End Sub
 
     while 1>0 //加二转技能点(4个就行)
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\II.bmp",000000,1.00,0,logoX,logoY
@@ -293,19 +372,19 @@ End Sub
             DelayRandom 339,342
 
             //种子右键
-            MoveTo intX+128,intY+160
+            MoveTo logoX+128,logoY+160
             RightClick
             DelayRandom 339,342
 
             //拖动释放到键盘布局里
-            MoveTo intX+150,intY+53
+            MoveTo logoX+127,logoY+75
             LeftClick
             DelayRandom 339,342
 
             while 1>0 //打开键盘 并清空所有设定 摆好位置
                 FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Key\Reset.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then
-                    MoveTo intX+85,intY+8
+                    MoveTo intX-51,intY-261
                     LeftClick
                     DelayRandom 139,142
 
@@ -342,6 +421,105 @@ End Sub
             End If
         End If
     Wend
+
+    //关闭键盘页和技能页
+    while 1>0 //关闭键位窗口
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Key\Reset.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown \
+            DelayRandom 69,72
+            KeyUp \
+            DelayRandom 339,342
+        End If
+    Wend
+
+    while 1>0 //关闭技能窗口
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown k
+            DelayRandom 69,72
+            KeyUp k
+            DelayRandom 339,342
+        End If
+    Wend
+
+    while 1>0 //先处理装备标签
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Tag_Equit.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //找到了标签
+
+            //丢掉4个垃圾
+            DelayRandom 200,210
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Auto\Drop_1.bmp",000000,1.00,0,intX,intY
+            Call Drop() //丢到外面
+            DelayRandom 200,210
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Auto\Drop_2.bmp",000000,1.00,0,intX,intY
+            Call Drop() //丢到外面
+            DelayRandom 200,210
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Auto\Drop_3.bmp",000000,1.00,0,intX,intY
+            Call Drop() //丢到外面
+            DelayRandom 200,210
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Auto\Drop_4.bmp",000000,1.00,0,intX,intY
+            Call Drop() //丢到外面
+            //-210
+
+            //整理背包
+            MoveTo logoX+150,logoY+368
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+178,logoY+391
+            LeftClick
+            DelayRandom 139,142
+
+            loopA = 0
+            for 3
+                loopB = 0
+                for 4
+                    //9,36
+                    MoveTo logoX+9+43*loopB,logoY+36+43*loopA
+                    DelayRandom 369,372
+                    LeftDoubleClick
+                    DelayRandom 339,342 //等一会判断有没有弹窗
+
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                    If intX >= 0 Then
+                        DelayRandom 39,42
+                        KeyDown Enter
+                        DelayRandom 69,72
+                        KeyUp Enter
+                        DelayRandom 239,242
+                    End If
+
+                    loopB = loopB + 1
+                Next
+                loopA = loopA + 1
+            Next
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //切标签页
+                DelayRandom 39,42
+                KeyDown tab
+                DelayRandom 69,72
+                KeyUp tab
+                DelayRandom 39,42
+            else //打开背包
+                DelayRandom 39,42
+                KeyDown i
+                DelayRandom 69,72
+                KeyUp i
+                DelayRandom 39,42
+            End If
+        End If
+    Wend
+
+End Sub
+
 
 
 Beep 200,500

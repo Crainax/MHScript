@@ -67,8 +67,8 @@
 		"prefix": "click",
 		"body": [
 			"MoveTo intX${1:+138},intY${2:-17}",
-        	"LeftClick",
-        	"DelayRandom 139,142"
+			"LeftClick",
+			"DelayRandom 139,142"
 		],
 		"description": "点击一下鼠标"
 	},
@@ -125,12 +125,27 @@
 		],
 		"description": "无限循环找图"
 	},
+	"循环找图-找两张": {
+		"prefix": "whileFind2",
+		"body": [
+			"FindPic x1,y1,xEnd,yEnd,\"E:\\MHImg\\Lara\\Create\\Confirm.bmp\",000000,1.00,0,intX,intY",
+			"if intX < 0 then //A图没找到就找B图",
+			"    FindPic x1,y1,xEnd,yEnd,\"E:\\MHImg\\Lara\\Create\\Confirm.bmp\",000000,1.00,0,intX,intY",
+			"End If",
+			"if intX >= 0 Then",
+			"    //todo:找到后干嘛",
+			"else",
+			"    //todo:重复的动作",
+			"End If"
+		],
+		"description": "无限循环找图-找两张"
+	},
 	"For循环": {
 		"prefix": "for",
 		"body": [
-                "for ${1:6}",
-                "    ${2://todo}",
-                "Next"
+			"for ${1:6}",
+			"    ${2://todo}",
+			"Next"
 		],
 		"description": "For循环"
 	},
