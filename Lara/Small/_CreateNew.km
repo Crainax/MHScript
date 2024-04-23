@@ -451,7 +451,20 @@ Sub Move_B()  //纯移动不用技能 Ver2.9(把JumpAttack改成
     Wend
 End Sub
 
-
+Sub EnterOK //清除一下OK对话框
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown Enter
+            DelayRandom 69,72
+            KeyUp Enter
+            DelayRandom 239,242
+        End If
+    Wend
+End Sub
 Sub CloseEquit //关闭装备栏
     while 1>0 //关闭装备栏
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,intX,intY
@@ -998,35 +1011,35 @@ Sub Step2 //回城后-商店买完东西这一步
             MoveTo intX-214,intY+38
             LeftDoubleClick
             DelayRandom 139,142
-            wJam2 = 0
-            while 1>0 //取出仓库的东西
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-                if intX < 0 Then //找不到就是
-                    wJam2 = wJam2 + 1
-                    if wJam2 > 3 then
-                        break
-                    else //防卡再点几次
-                        LeftDoubleClick
-                        DelayRandom 339,342
-                    End If
-                else
-                    wJam2 = 0
-                    DelayRandom 39,42
-                    KeyDown Enter
-                    DelayRandom 69,72
-                    KeyUp Enter
-                    DelayRandom 539,542
-                    LeftDoubleClick
-                    DelayRandom 339,342
-                End If
-            Wend
+            // wJam2 = 0
+            // while 1>0 //取出仓库的东西
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,// intX,intY
+                // if intX < 0 Then //找不到就是
+                    // wJam2 = wJam2 + 1
+                    // if wJam2 > 3 then
+                        // break
+                    // else //防卡再点几次
+                        // LeftDoubleClick
+                        // DelayRandom 339,342
+                    // End If
+                // else
+                    // wJam2 = 0
+                    // DelayRandom 39,42
+                    // KeyDown Enter
+                    // DelayRandom 69,72
+                    // KeyUp Enter
+                    // DelayRandom 539,542
+                    // LeftDoubleClick
+                    // DelayRandom 339,342
+                // End If
+            // Wend
+            Call EnterOK()
             break
         else
-            wJam = 0
             while 1>0 //打开仓库
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Psw2Type.bmp",000000,1.00,0,intX,intY
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Box\Psw2Type.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Psw_1.bmp",000000,1.00,0,logoX,logoY
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Box\Psw_1.bmp",000000,1.00,0,logoX,logoY
                     MoveTo logoX,logoY
                     for 6
                         LeftClick
@@ -1037,21 +1050,11 @@ Sub Step2 //回城后-商店买完东西这一步
                     DelayRandom 1039,1042
                     break
                 else
-                    wJam = wJam + 1
-                    if wJam > 5 then //重复的动作太多就暂停提醒
-                        wJam = 0
-                        Beep 100,200
-                        Beep 200,200
-                        Beep 300,200
-                        Pause
-                    else
-                        DelayRandom 39,42
-                        KeyDown PageDown
-                        DelayRandom 69,72
-                        KeyUp PageDown
-                        DelayRandom 139,142
-                        wJam = wJam + 1
-                    End If
+                    DelayRandom 39,42
+                    KeyDown PageDown
+                    DelayRandom 69,72
+                    KeyUp PageDown
+                    DelayRandom 139,142
                 End If
             Wend
         End If
@@ -1179,7 +1182,7 @@ Sub Step3
         if intX <= 0 Then //开始进入了(找不到XY轴了)
             break
         else
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\cashEntry.bmp",000000,1.00,0,intX,intY
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\Entry.bmp",000000,1.00,0,intX,intY
             If intX >= 0 Then
                 MoveTo intX-30,intY
                 LeftClick
@@ -1190,37 +1193,30 @@ Sub Step3
     Wend
 
     while 1>0 //等待商城加载完毕
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Cash_Mark.bmp",000000,1.00,0,logoX,logoY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\Mark.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then
             MoveTo logoX,logoY //移走鼠标
             wJam2 = 0
             while 1>0
-                FindPic logoX,logoY,logoX+369,logoY+189,"E:\MHImg\Lara\Create\Cash_icon.bmp",000000,1.00,0,intX,intY
-                if intX < 0 Then //找不到就找图2
-                    FindPic logoX,logoY,logoX+369,logoY+189,"E:\MHImg\Lara\Create\Cash_icon2.bmp",000000,1.00,0,intX,intY
-                    if intX < 0 Then //找不到图1和图2就退出
-                        wJam2 = wJam2 + 1
-                        if wJam2 > 3 then
-                            break
-                        else //防卡移走鼠标
-                            MoveTo logoX,logoY //移走鼠标
-                            DelayRandom 139,142
-                        End If
-                    else
-                        wJam2 = 0
-                        MoveTo intX,intY //移走鼠标
-                        LeftDoubleClick
-                        DelayRandom 339,342
-                        MoveTo logoX,logoY //移走鼠标
-                        DelayRandom 139,142
-                    End If
-                else //找到图1
+                FindPic logoX,logoY,logoX+369,logoY+189,"E:\MHImg\UI\Cash\icon.bmp",000000,1.00,0,intX,intY
+                if intX < 0 then //A图没找到就找B图
+                    FindPic logoX,logoY,logoX+369,logoY+189,"E:\MHImg\UI\Cash\icon2.bmp",000000,1.00,0,intX,intY
+                End If
+                if intX >= 0 Then
                     wJam2 = 0
                     MoveTo intX,intY //移走鼠标
                     LeftDoubleClick
                     DelayRandom 339,342
                     MoveTo logoX,logoY //移走鼠标
                     DelayRandom 139,142
+                else
+                    wJam2 = wJam2 + 1
+                    if wJam2 > 3 then
+                        break
+                    else //防卡移走鼠标
+                        MoveTo logoX,logoY //移走鼠标
+                        DelayRandom 139,142
+                    End If
                 End If
             Wend
 
@@ -1229,7 +1225,7 @@ Sub Step3
             DelayRandom 139,142
             break
         else
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Cash_Mark2.bmp",000000,1.00,0,intX,intY
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\Mark2.bmp",000000,1.00,0,intX,intY
             If intX >= 0 Then
                 MoveTo intX+80,intY
                 LeftClick
@@ -1240,7 +1236,7 @@ Sub Step3
     Wend
 
     while 1>0 //等进入加载
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Cash_Mark2.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\Mark2.bmp",000000,1.00,0,intX,intY
         if intX <= 0 Then //找不到图代表正在加载中
             break
         else
@@ -1273,14 +1269,7 @@ Sub Step3
                     LeftDoubleClick
                     DelayRandom 339,342 //等一会判断有没有弹窗
 
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-                    If intX >= 0 Then
-                        DelayRandom 39,42
-                        KeyDown Enter
-                        DelayRandom 69,72
-                        KeyUp Enter
-                        DelayRandom 239,242
-                    End If
+                    Call EnterOK()
 
                     loopB = loopB + 1
                 Next
@@ -1347,14 +1336,7 @@ Sub Step3
                     LeftDoubleClick
                     DelayRandom 339,342 //等一会判断有没有弹窗
 
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-                    If intX >= 0 Then
-                        DelayRandom 39,42
-                        KeyDown Enter
-                        DelayRandom 69,72
-                        KeyUp Enter
-                        DelayRandom 339,342
-                    End If
+                    Call EnterOK()
 
                     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\Mark.bmp",000000,1.00,0,intX,intY
                     If intX >= 0 Then

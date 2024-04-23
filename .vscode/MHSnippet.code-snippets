@@ -160,6 +160,21 @@
 		],
 		"description": "For循环-变量"
 	},
+	"For二重循环": {
+		"prefix": "for2",
+		"body": [
+			"loopA = 0",
+			"for 5",
+			"    loopB = 0",
+			"    for 4",
+			"        //todo",
+			"        loopB = loopB + 1",
+			"    Next",
+			"    loopA = loopA + 1",
+			"Next",
+		],
+		"description": "For循环-二重"
+	},
 	"防卡": {
 		"prefix": "jamAnit",
 		"body": [
