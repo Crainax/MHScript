@@ -758,7 +758,9 @@ Sub OpenMap //打开世界地图
 End Sub
 Sub AfterMap //夹在中间的抽离后
     LeftDoubleClick
-    DelayRandom 339,342
+    DelayRandom 139,142
+    MoveTo logoX-50,logoY-50
+    DelayRandom 239,242
 
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
     If intX >= 0 Then
@@ -952,6 +954,80 @@ Sub BirdSkill //进鸟前的加点
         End If
     Wend
 End Sub
+Sub DogPre //进狗前的加点
+    while 1>0 //加四转技能点
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\IV.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\I_Off.bmp",000000,1.00,0,logoX,logoY
+            //先滚轮
+            MoveTo logoX+50,logoY+86
+            Delay 100
+            LeftClick
+            Delay 100
+            MouseWheel -1
+            Delay 100
+            MoveTo logoX,logoY-50
+            Delay 100
+
+            MoveTo logoX+94+1*144,logoY+86+1*40
+
+            a = 1
+            for 6
+                if a == 1 then
+                    loopA = 5
+                    loopB = 1
+                else if a == 2 then
+                    loopA = 1
+                    loopB = 1
+                else if a == 3 then
+                    loopA = 5
+                    loopB = 0
+                else if a == 4 then
+                    loopA = 4
+                    loopB = 0
+                else if a == 5 then
+                    loopA = 4
+                    loopB = 1
+                else
+                    loopA = 3
+                    loopB = 0
+                End If
+
+                MoveTo logoX+94+loopB*144,logoY+86+loopA*40
+                DelayRandom 239,242
+                LeftClick
+                DelayRandom 339,342
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
+                If intX >= 0 Then
+                    DelayRandom 139,142
+                    KeyDown Enter
+                    DelayRandom 69,72
+                    KeyUp Enter
+                End If
+                DelayRandom 339,342
+                a = a + 1
+            Next
+
+            Call CloseSkill() //关闭技能栏
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //切下标签页
+                DelayRandom 39,42
+                KeyDown Tab
+                DelayRandom 69,72
+                KeyUp Tab
+                DelayRandom 39,42
+            else
+                DelayRandom 39,42
+                KeyDown k
+                DelayRandom 69,72
+                KeyUp k
+                DelayRandom 39,42
+            End If
+        End If
+    Wend
+End Sub
 
 Sub Teleport //换地图(Caps键亮)
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Nalin.bmp",000000,1.00,0,intX,intY
@@ -1060,15 +1136,28 @@ Sub Teleport //换地图(Caps键亮)
                         else
                             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Warrior.bmp",000000,1.00,0,intX,intY
                             If intX >= 0 Then //勇士出发才是去小狗的
+                                Call DogPre() //加点
                                 Call AddSP() //加点
                                 Call OpenMap()
-                                MoveTo logoX-225,logoY+105
+                                MoveTo logoX-210,logoY+200
                                 LeftClick
                                 DelayRandom 139,142
-                                MoveTo logoX-286,logoY+160
+                                MoveTo logoX+85,logoY+285
                                 Call AfterMap()
                             else
+                                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Warrior.bmp",000000,1.00,0,intX,intY
+                                If intX >= 0 Then //维多利亚归还装备准备下一个号
+                                    Call DogPre() //加点
+                                    Call AddSP() //加点
+                                    Call OpenMap()
+                                    MoveTo logoX-210,logoY+200
+                                    LeftClick
+                                    DelayRandom 139,142
+                                    MoveTo logoX+85,logoY+285
+                                    Call AfterMap()
+                                else //小狗后面的地图了
 
+                                End If
                             End If
                         End If
                     End If

@@ -149,6 +149,17 @@
 		],
 		"description": "For循环"
 	},
+	"For循环-带变量": {
+		"prefix": "forA",
+		"body": [
+			"loopA = 1",
+			"for ${1:4}",
+			"    ${0}",
+			"    loopA = loopA + 1",
+			"Next",
+		],
+		"description": "For循环-变量"
+	},
 	"防卡": {
 		"prefix": "jamAnit",
 		"body": [

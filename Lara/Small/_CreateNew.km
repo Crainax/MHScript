@@ -976,7 +976,7 @@ Sub Step2 //回城后-商店买完东西这一步
     Call Move_B()
 
     while 1>0 //仓库取东西
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Box_Mark.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Box\Mark.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
             DelayRandom 300,400
             MoveTo intX-72,intY+315
@@ -1058,7 +1058,7 @@ Sub Step2 //回城后-商店买完东西这一步
     Wend
 
     while 1>0 //关闭仓库
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Box_Mark.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Box\Mark.bmp",000000,1.00,0,intX,intY
         if intX < 0 Then
             break
         else
