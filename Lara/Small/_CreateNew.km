@@ -475,6 +475,8 @@ Sub Skill1 //加1点(技能抽离)
                 DelayRandom 139,142
                 LeftClick
                 DelayRandom 139,142
+                MoveTo logoX,logoY
+                DelayRandom 39,42
                 wJam = wJam + 1
             End If
 
@@ -482,7 +484,7 @@ Sub Skill1 //加1点(技能抽离)
     Wend
     DelayRandom 339,342
 End Sub
-Sub Skill3 //加3点(技能抽离)
+Sub Skill3 //加1点(技能抽离)
     wJam = 0 //放在循环外面位置
     while 1>0 //加点
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
@@ -506,6 +508,8 @@ Sub Skill3 //加3点(技能抽离)
                 DelayRandom 139,142
                 LeftClick
                 DelayRandom 139,142
+                MoveTo logoX,logoY
+                DelayRandom 39,42
                 wJam = wJam + 1
             End If
 
@@ -513,6 +517,7 @@ Sub Skill3 //加3点(技能抽离)
     Wend
     DelayRandom 339,342
 End Sub
+
 Sub EnterOK //清除一下OK对话框
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY

@@ -1,7 +1,7 @@
 [General]
 ScreenX=1440
 ScreenY=2560
-Times=0
+Times=1
 
 [Script]
 Dim x1,           x2,           y1,       y2         // 矩形区域:小地图采样点
@@ -18,7 +18,7 @@ Dim staticCount,  staticX,      staticY              //防卡计数器
 Dim SavedX,       SavedY,       SavedTor, SavedTorY  //保存一下临时处理的XY
 Dim min,          minType,      state                //预移动
 Dim wJam,         wJam2,        loopA,    loopB      //找图防卡,loopAB是循环数
-
+Dim Times //四转同地图的判断
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -2254,6 +2254,23 @@ Sub 4Job
 End Sub
 Sub 140Back //归还装备
 
+    while 1>0 //打开指导
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            MoveTo intX-210,intY+86
+            LeftClick
+            DelayRandom 139,142
+            break
+        else
+            DelayRandom 39,42
+            KeyDown F2
+            DelayRandom 69,72
+            KeyUp F2
+            DelayRandom 39,42
+        End If
+    Wend
+    Call Loading()
+
     FindPic x1,y1,x2,y2,"E:\MHImg\Lara\Create\ZoomMap.bmp",000000,1.00,0,intX,intY
     If intX >= 0 Then //放大一下地图
         MoveTo intX,intY
@@ -2700,43 +2717,50 @@ Sub Teleport //换地图(Caps键亮)
                     else
                         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Bird2.bmp",000000,1.00,0,intX,intY
                         If intX >= 0 Then //去四转
-                            Call 4Job() //四转
-                            Call AddSP() //加点
-                            Beep 500,100
-                            Delay 50
-                            Beep 500,100
-                            Delay 50
-                            Beep 500,100
-                            Delay 50
-                            Pause //暂停去解
-                            //通过指导回鸟2
-                            while 1>0
-                                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Cancel2.bmp",000000,1.00,0,intX,intY
-                                if intX >= 0 Then
-                                    MoveTo intX-90,intY
-                                    LeftClick
-                                    DelayRandom 139,142
-                                    break
-                                else
-                                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Bird2.bmp",000000,1.00,0,intX,intY
+                            if Times == 0 then //去四转
+                                Call 4Job() //四转
+                                Call AddSP() //加点
+                                Beep 500,100
+                                Delay 50
+                                Beep 500,100
+                                Delay 50
+                                Beep 500,100
+                                Delay 50
+                                if GetLED(1) == 1 then //暂停前关闭大写
+                                    DelayRandom 39,42
+                                    KeyDown CapsLock
+                                    DelayRandom 69,72
+                                    KeyUp CapsLock
+                                    DelayRandom 39,42
+                                End If
+                                Pause //暂停去解
+                                //通过指导回鸟2
+                                while 1>0
+                                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Cancel2.bmp",000000,1.00,0,intX,intY
                                     if intX >= 0 Then
-                                        MoveTo intX+37,intY+31
+                                        MoveTo intX-90,intY
                                         LeftClick
                                         DelayRandom 139,142
+                                        break
                                     else
-                                        DelayRandom 39,42
-                                        KeyDown F2
-                                        DelayRandom 69,72
-                                        KeyUp F2
-                                        DelayRandom 39,42
+                                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Bird2.bmp",000000,1.00,0,intX,intY
+                                        if intX >= 0 Then
+                                            MoveTo intX+37,intY+31
+                                            LeftClick
+                                            DelayRandom 139,142
+                                        else
+                                            DelayRandom 39,42
+                                            KeyDown F2
+                                            DelayRandom 69,72
+                                            KeyUp F2
+                                            DelayRandom 39,42
+                                        End If
                                     End If
-                                End If
-                            Wend
+                                Wend
 
-                            Call Loading2()
-                        else
-                            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Warrior.bmp",000000,1.00,0,intX,intY
-                            If intX >= 0 Then //勇士出发才是去小狗的
+                                Call Loading2()
+                                Times = 1 //下次就是去狗了
+                            else
                                 Call DogPre() //加点
                                 Call AddSP() //加点
                                 Call OpenMap()
@@ -2745,17 +2769,18 @@ Sub Teleport //换地图(Caps键亮)
                                 DelayRandom 139,142
                                 MoveTo logoX+85,logoY+285
                                 Call AfterMap()
-                            else
-                                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\VDLY2.bmp",000000,1.00,0,intX,intY
-                                If intX >= 0 Then //维多利亚归还装备准备下一个号
-                                    Call 140Back() //归还
-                                    Beep 200,500
-                                    Beep 300,500
-                                    Beep 400,500
-                                    Pause
-                                else //小狗后面的地图了
-                                    MsgBox 传送之不认识现在的图
-                                End If
+                                Times = 0 //下次就是去狗了
+                            End If
+                        else
+                            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Dog1.bmp",000000,1.00,0,intX,intY
+                            If intX >= 0 Then //去狗
+                                Call 140Back() //归还
+                                Beep 200,500
+                                Beep 300,500
+                                Beep 400,500
+                                Pause
+                            else //小狗后面的地图了
+                                MsgBox 传送之不认识现在的图
                             End If
                         End If
                     End If
@@ -2769,21 +2794,22 @@ End Sub
 
 //分辨率初始化
 GetScreenResolution intX, intY
-x1 = intX - 1440
-y1 = intY - 950
-x2 = intX - 1140
-y2 = intY - 600
-x3 = intX - 640
-y3 = intY - 260
-xEnd = intX
-yEnd = intY
-ReleaseTime1   = 0         //施放冷却1
-ReleaseTime2   = 0         //施放冷却2
-seedTime1      = 0         //上次种子的时间
-state          = 0         //轮换
-fountainTime   = 0         //上次喷泉的时间
-RuneCooldown   = 0         //解轮冷却
-yTolerance     = 0         //初始化
+x1           = intX - 1440
+y1           = intY - 950
+x2           = intX - 1140
+y2           = intY - 600
+x3           = intX - 640
+y3           = intY - 260
+xEnd         = intX
+yEnd         = intY
+ReleaseTime1 = 0            //施放冷却1
+ReleaseTime2 = 0            //施放冷却2
+seedTime1    = 0            //上次种子的时间
+state        = 0            //轮换
+fountainTime = 0            //上次喷泉的时间
+RuneCooldown = 0            //解轮冷却
+yTolerance   = 0            //初始化
+Times        = 0            //初始化四转判断
 while 1 > 0
     if GetLED(1) == 1 then //换地图
         Call Teleport() //传送到下个地图(大写亮时)
