@@ -128,15 +128,18 @@
 	"循环找图-找两张": {
 		"prefix": "whileFind2",
 		"body": [
-			"FindPic x1,y1,xEnd,yEnd,\"E:\\MHImg\\Lara\\Create\\Confirm.bmp\",000000,1.00,0,intX,intY",
-			"if intX < 0 then //A图没找到就找B图",
+			"while 1>0",
 			"    FindPic x1,y1,xEnd,yEnd,\"E:\\MHImg\\Lara\\Create\\Confirm.bmp\",000000,1.00,0,intX,intY",
-			"End If",
-			"if intX >= 0 Then",
-			"    //todo:找到后干嘛",
-			"else",
-			"    //todo:重复的动作",
-			"End If"
+			"    if intX < 0 then //A图没找到就找B图",
+			"        FindPic x1,y1,xEnd,yEnd,\"E:\\MHImg\\Lara\\Create\\Confirm.bmp\",000000,1.00,0,intX,intY",
+			"    End If",
+			"    if intX >= 0 Then",
+			"        //todo:找到后干嘛",
+			"        break",
+			"    else",
+			"        //todo:重复的动作",
+			"    End If",
+			"Wend",
 		],
 		"description": "无限循环找图-找两张"
 	},

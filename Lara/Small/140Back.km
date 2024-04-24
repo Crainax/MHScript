@@ -60,12 +60,12 @@ Sub AntiJam //一般跟随GetXY后用
     End If
 End Sub
 
-Sub Move_A() //移动种类:创角
+Sub Move_A  //移动种类:创角
     csTimes	= -1  //初始就启用指南针判断
     csMax		= 3   //降落默认值为4
     Hooking				= 0 //钩子初始是关的
     while  1 > 0
-        Call GetXY()
+        Call GetXY
         if tolerance > 2 Then
             tolLoc = tolerance
         else  //速走的默认为4
@@ -119,7 +119,7 @@ Sub Move_A() //移动种类:创角
 End Sub
 
 
-Sub Move_B()  //纯移动不用技能 Ver2.9(把JumpAttack改成
+Sub Move_B  //纯移动不用技能 Ver2.9(把JumpAttack改成
     csTimes	= -1  //初始就启用指南针判断
     csMax		= 3   //降落默认值为4
     Hooking				= 0 //钩子初始是关的
@@ -481,16 +481,19 @@ Sub EnterOK //清除一下OK对话框
     Wend
 End Sub
 Sub CloseEquit //关闭装备栏
-    while 1>0 //关闭装备栏
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,intX,intY
-        if intX < 0 Then
-            break
-        else
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_Off.bmp",000000,1.00,0,intX,intY
+        if intX < 0 then //A图没找到就找B图
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_On.bmp",000000,1.00,0,intX,intY
+        End If
+        if intX >= 0 Then
             DelayRandom 39,42
             KeyDown u
             DelayRandom 69,72
             KeyUp u
             DelayRandom 39,42
+        else
+            break
         End If
     Wend
 End Sub
@@ -807,6 +810,10 @@ Sub Fun1
                     MoveTo logoX+99+36*loopB,logoY+34+36*loopA
                     DelayRandom 369,372
                     LeftDoubleClick
+                    Delay 100
+                    LeftDoubleClick
+                    Delay 100
+                    LeftDoubleClick
                     DelayRandom 339,342 //等一会判断有没有弹窗
 
                     Call EnterOK()
@@ -827,6 +834,10 @@ Sub Fun1
                     MoveTo logoX+99+36*loopB,logoY+34+36*loopA
                     DelayRandom 369,372
                     LeftDoubleClick
+                    Delay 100
+                    LeftDoubleClick
+                    Delay 100
+                    LeftDoubleClick
                     DelayRandom 339,342 //等一会判断有没有弹窗
 
                     Call EnterOK()
@@ -841,6 +852,10 @@ Sub Fun1
             DelayRandom 139,142
             MoveTo logoX+99,logoY+34
             DelayRandom 369,372
+            LeftDoubleClick
+            Delay 100
+            LeftDoubleClick
+            Delay 100
             LeftDoubleClick
             DelayRandom 339,342 //等一会判断有没有弹窗
             Call EnterOK()
@@ -1010,5 +1025,6 @@ Sub Fun1
         End If
     Wend
 End Sub
+
 
 Beep 200,500

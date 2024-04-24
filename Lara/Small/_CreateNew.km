@@ -466,20 +466,22 @@ Sub EnterOK //清除一下OK对话框
     Wend
 End Sub
 Sub CloseEquit //关闭装备栏
-    while 1>0 //关闭装备栏
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,intX,intY
-        if intX < 0 Then
-            break
-        else
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_Off.bmp",000000,1.00,0,intX,intY
+        if intX < 0 then //A图没找到就找B图
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_On.bmp",000000,1.00,0,intX,intY
+        End If
+        if intX >= 0 Then
             DelayRandom 39,42
             KeyDown u
             DelayRandom 69,72
             KeyUp u
             DelayRandom 39,42
+        else
+            break
         End If
     Wend
 End Sub
-
 Sub CloseBag //关闭装备栏
     while 1>0 //关闭背包
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
@@ -494,7 +496,6 @@ Sub CloseBag //关闭装备栏
         End If
     Wend
 End Sub
-
 Sub CloseSkill //关闭技能窗口
     while 1>0 //关闭技能窗口
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
@@ -509,7 +510,62 @@ Sub CloseSkill //关闭技能窗口
         End If
     Wend
 End Sub
+Sub AddSP //加点
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Mark.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //展开页面了吗
+            DelayRandom 139,142
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\SP.bmp",000000,1.00,0,intX,intY
+            If intX >= 0 Then //能不能加点
+                MoveTo intX,intY
+                LeftClick
+                DelayRandom 339,342
 
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                If intX >= 0 Then
+                    DelayRandom 39,42
+                    KeyDown Enter
+                    DelayRandom 69,72
+                    KeyUp Enter
+                    DelayRandom 339,342
+                End If
+            End If
+
+            while 1>0 //关闭技能窗口
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Mark.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then
+                    break
+                else
+                    DelayRandom 39,42
+                    KeyDown F5
+                    DelayRandom 69,72
+                    KeyUp F5
+                    DelayRandom 339,342
+                End If
+            Wend
+
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Extend.bmp",000000,1.00,0,intX,intY
+            if intX < 0 then //A图没找到就找B图
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Extend_On.bmp",000000,1.00,0,intX,intY
+            End If
+            if intX >= 0 Then
+                MoveTo intX-100,intY
+                LeftClick
+                DelayRandom 139,142
+            else
+                DelayRandom 39,42
+                KeyDown F5
+                DelayRandom 69,72
+                KeyUp F5
+                DelayRandom 39,42
+            End If
+
+
+        End If
+    Wend
+End Sub
 Sub Loading //加载抽离函数
     while 1>0 //等进入加载
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -647,9 +703,12 @@ Sub Step1 //创角-回城这一步
     KeyUp Esc
     DelayRandom 113,115
 
-
-    while 1>0 //关闭角色窗口
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Mark.bmp",000000,1.00,0,intX,intY
+    //关闭角色窗口
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Extend.bmp",000000,1.00,0,intX,intY
+        if intX < 0 then //A图没找到就找B图
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Extend_On.bmp",000000,1.00,0,intX,intY
+        End If
         if intX < 0 Then
             break
         else
@@ -661,23 +720,15 @@ Sub Step1 //创角-回城这一步
         End If
     Wend
 
-    while 1>0 //打开技能窗口
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then
-            break
-        else
-            DelayRandom 39,42
-            KeyDown k
-            DelayRandom 69,72
-            KeyUp k
-            DelayRandom 39,42
-        End If
-    Wend
+    while 1>0 //加一转技能点
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\I.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //一转技能
 
-        wJam = 0
-        while 1>0 //加点
+            MoveTo logoX+94+0*144,logoY+86+0*40
+            LeftClick
+            DelayRandom 239,242
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then
+            If intX >= 0 Then
                 DelayRandom 39,42
                 KeyDown 1
                 DelayRandom 69,72
@@ -687,31 +738,14 @@ Sub Step1 //创角-回城这一步
                 DelayRandom 69,72
                 KeyUp Enter
                 DelayRandom 39,42
-                break
-            else
-                wJam = wJam + 1
-                if wJam > 10 then //重复的动作太多就暂停提醒
-                    wJam = 0
-                    Beep 100,200
-                    Beep 200,200
-                    Beep 300,200
-                    Beep 400,200
-                    Pause
-                else
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
-                    If intX >= 0 Then
-                        MoveTo intX+120,intY+58
-                        LeftClick
-                        DelayRandom 39,42
-                    End If
-                End If
             End If
-        Wend
+            DelayRandom 439,442
 
-        wJam = 0
-        while 1>0 //加点
+            MoveTo logoX+94+1*144,logoY+86+0*40
+            LeftClick
+            DelayRandom 239,242
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then
+            If intX >= 0 Then
                 DelayRandom 39,42
                 KeyDown 3
                 DelayRandom 69,72
@@ -721,31 +755,14 @@ Sub Step1 //创角-回城这一步
                 DelayRandom 69,72
                 KeyUp Enter
                 DelayRandom 39,42
-                break
-            else
-                wJam = wJam + 1
-                if wJam > 10 then //重复的动作太多就暂停提醒
-                    wJam = 0
-                    Beep 100,200
-                    Beep 200,200
-                    Beep 300,200
-                    Beep 400,200
-                    Pause
-                else
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
-                    If intX >= 0 Then
-                        MoveTo intX+266,intY+60
-                        LeftClick
-                        DelayRandom 39,42
-                    End If
-                End If
             End If
-        Wend
+            DelayRandom 439,442
 
-        wJam = 0
-        while 1>0 //加点
+            MoveTo logoX+94+0*144,logoY+86+1*40
+            LeftClick
+            DelayRandom 239,242
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then
+            If intX >= 0 Then
                 DelayRandom 39,42
                 KeyDown 1
                 DelayRandom 69,72
@@ -755,31 +772,33 @@ Sub Step1 //创角-回城这一步
                 DelayRandom 69,72
                 KeyUp Enter
                 DelayRandom 39,42
-                break
-            else
-                wJam = wJam + 1
-                if wJam > 10 then //重复的动作太多就暂停提醒
-                    wJam = 0
-                    Beep 100,200
-                    Beep 200,200
-                    Beep 300,200
-                    Beep 400,200
-                    Pause
-                else
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
-                    If intX >= 0 Then
-                        MoveTo intX+123,intY+100
-                        LeftClick
-                        DelayRandom 39,42
-                    End If
-                End If
             End If
-        Wend
+            DelayRandom 439,442
+
+            Call CloseSkill() //关闭技能页
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //切下标签页
+                DelayRandom 39,42
+                KeyDown Tab
+                DelayRandom 69,72
+                KeyUp Tab
+                DelayRandom 39,42
+            else
+                DelayRandom 39,42
+                KeyDown k
+                DelayRandom 69,72
+                KeyUp k
+                DelayRandom 39,42
+            End If
+        End If
+    Wend
 
     while 1>0 //打开键盘 并清空所有设定 摆好位置
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Key\Reset.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then
-            MoveTo intX+85,intY+8
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Key\Reset.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then
+            MoveTo logoX+85,logoY+8
             LeftClick
             DelayRandom 139,142
             KeyDown Enter
@@ -788,124 +807,148 @@ Sub Step1 //创角-回城这一步
             DelayRandom 39,42
 
             //这里的intX和intY都基于这个清空键
-            MoveTo intX+392,intY-148
+            MoveTo logoX+392,logoY-148
             LeftClick
             DelayRandom 139,142
-            MoveTo intX+421,intY-300
+            MoveTo logoX+421,logoY-300
             LeftClick
             DelayRandom 139,142
-            MoveTo intX+242,intY-148
+            MoveTo logoX+242,logoY-148
             LeftClick
             DelayRandom 139,142
-            MoveTo intX+421,intY-332
-            LeftClick
-            DelayRandom 139,142
-
-            MoveTo intX+431,intY-112
-            LeftClick
-            DelayRandom 139,142
-            MoveTo intX+309,intY-300
+            MoveTo logoX+421,logoY-332
             LeftClick
             DelayRandom 139,142
 
-            MoveTo intX+206,intY-145
+            MoveTo logoX+431,logoY-112
             LeftClick
             DelayRandom 139,142
-            MoveTo intX+262,intY-300
-            LeftClick
-            DelayRandom 139,142
-
-            MoveTo intX+315,intY-145
-            LeftClick
-            DelayRandom 139,142
-            MoveTo intX+215,intY-267
+            MoveTo logoX+309,logoY-300
             LeftClick
             DelayRandom 139,142
 
-            MoveTo intX+246,intY-109
+            MoveTo logoX+206,logoY-145
             LeftClick
             DelayRandom 139,142
-            MoveTo intX-89,intY-367
-            LeftClick
-            DelayRandom 139,142
-
-            MoveTo intX+208,intY-77
-            LeftClick
-            DelayRandom 139,142
-            MoveTo intX-150,intY-367
+            MoveTo logoX+262,logoY-300
             LeftClick
             DelayRandom 139,142
 
-            MoveTo intX+347,intY-114
+            MoveTo logoX+315,logoY-145
             LeftClick
             DelayRandom 139,142
-            MoveTo intX+129,intY-235
-            LeftClick
-            DelayRandom 139,142
-
-            MoveTo intX+354,intY-150
-            LeftClick
-            DelayRandom 139,142
-            MoveTo intX+84,intY-201
+            MoveTo logoX+215,logoY-267
             LeftClick
             DelayRandom 139,142
 
-            MoveTo intX+134,intY-151
+            MoveTo logoX+246,logoY-109
             LeftClick
             DelayRandom 139,142
-            MoveTo intX+65,intY-367
-            LeftClick
-            DelayRandom 139,142
-
-            MoveTo intX-47,intY-76
-            LeftClick
-            DelayRandom 139,142
-            MoveTo intX-51,intY-367
+            MoveTo logoX-89,logoY-367
             LeftClick
             DelayRandom 139,142
 
-            MoveTo intX+98,intY-114
+            MoveTo logoX+208,logoY-77
             LeftClick
             DelayRandom 139,142
-            MoveTo intX+147,intY-265
-            LeftClick
-            DelayRandom 139,142
-
-            MoveTo intX+100,intY-151
-            LeftClick
-            DelayRandom 139,142
-            MoveTo intX+129,intY-303
-            LeftClick
-            DelayRandom 139,142
-            MoveTo intX+67,intY-151
-            LeftClick
-            DelayRandom 139,142
-            MoveTo intX+97,intY-303
+            MoveTo logoX-150,logoY-367
             LeftClick
             DelayRandom 139,142
 
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Skill\Alt.bmp",000000,1.00,0,logoX,logoY
-            If intX >= 0 Then
-                MoveTo logoX+10,logoY+10
-                LeftClick
-                DelayRandom 139,142
-            End If
-            MoveTo intX-45,intY-209
+            MoveTo logoX+347,logoY-114
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+129,logoY-235
             LeftClick
             DelayRandom 139,142
 
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Skill\F.bmp",000000,1.00,0,logoX,logoY
-            If intX >= 0 Then
-                MoveTo logoX+10,logoY+10
-                LeftClick
-                DelayRandom 139,142
-            End If
-            MoveTo intX+14,intY-269
+            MoveTo logoX+354,logoY-150
             LeftClick
             DelayRandom 139,142
+            MoveTo logoX+84,logoY-201
+            LeftClick
+            DelayRandom 139,142
+
+            MoveTo logoX+134,logoY-151
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+65,logoY-367
+            LeftClick
+            DelayRandom 139,142
+
+            MoveTo logoX-47,logoY-76
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX-51,logoY-367
+            LeftClick
+            DelayRandom 139,142
+
+            MoveTo logoX+98,logoY-114
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+147,logoY-265
+            LeftClick
+            DelayRandom 139,142
+
+            MoveTo logoX+100,logoY-151
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+129,logoY-303
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+67,logoY-151
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+97,logoY-303
+            LeftClick
+            DelayRandom 139,142
+
+            while 1>0 //打开技能页移进去
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\I.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //一转技能
+
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Skill\Alt.bmp",000000,1.00,0,intX,intY
+                    If intX >= 0 Then
+                        MoveTo intX+10,intY+10
+                        LeftClick
+                        DelayRandom 139,142
+                    End If
+                    MoveTo logoX-45,logoY-209
+                    LeftClick
+                    DelayRandom 139,142
+
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Skill\F.bmp",000000,1.00,0,intX,intY
+                    If intX >= 0 Then
+                        MoveTo intX+10,intY+10
+                        LeftClick
+                        DelayRandom 139,142
+                    End If
+                    MoveTo logoX+14,logoY-269
+                    LeftClick
+                    DelayRandom 139,142
+
+                    Call CloseSkill() //关闭技能页
+                    break
+                else
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then //切下标签页
+                        DelayRandom 39,42
+                        KeyDown Tab
+                        DelayRandom 69,72
+                        KeyUp Tab
+                        DelayRandom 39,42
+                    else
+                        DelayRandom 39,42
+                        KeyDown k
+                        DelayRandom 69,72
+                        KeyUp k
+                        DelayRandom 39,42
+                    End If
+                End If
+            Wend
 
             //确认修改
-            MoveTo intX+408,intY+10
+            MoveTo logoX+408,logoY+10
             LeftClick
             DelayRandom 139,142
 
@@ -918,8 +961,6 @@ Sub Step1 //创角-回城这一步
             DelayRandom 39,42
         End If
     Wend
-
-    Call CloseSkill() //关闭技能窗口
 
     while 1>0 //关闭键位窗口
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Key\Reset.bmp",000000,1.00,0,intX,intY
@@ -1011,29 +1052,25 @@ Sub Step2 //回城后-商店买完东西这一步
             MoveTo intX-214,intY+38
             LeftDoubleClick
             DelayRandom 139,142
-            // wJam2 = 0
-            // while 1>0 //取出仓库的东西
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,// intX,intY
-                // if intX < 0 Then //找不到就是
-                    // wJam2 = wJam2 + 1
-                    // if wJam2 > 3 then
-                        // break
-                    // else //防卡再点几次
-                        // LeftDoubleClick
-                        // DelayRandom 339,342
-                    // End If
-                // else
-                    // wJam2 = 0
-                    // DelayRandom 39,42
-                    // KeyDown Enter
-                    // DelayRandom 69,72
-                    // KeyUp Enter
-                    // DelayRandom 539,542
-                    // LeftDoubleClick
-                    // DelayRandom 339,342
-                // End If
-            // Wend
-            Call EnterOK()
+            wJam2 = 0
+            while 1>0 //取出仓库的东西
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then //找不到就是
+                    wJam2 = wJam2 + 1
+                    if wJam2 > 3 then
+                        break
+                    else //防卡再点几次
+                        LeftDoubleClick
+                        DelayRandom 339,342
+                    End If
+                else
+                    wJam2 = 0
+                    Call EnterOK()
+                    DelayRandom 39,42
+                    LeftDoubleClick
+                    DelayRandom 139,142
+                End If
+            Wend
             break
         else
             while 1>0 //打开仓库
@@ -1220,7 +1257,7 @@ Sub Step3
                 End If
             Wend
 
-            MoveTo intX-577,intY+385
+            MoveTo logoX-577,logoY+385
             LeftClick
             DelayRandom 139,142
             break
@@ -1442,8 +1479,9 @@ Sub Step3
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Item_Option.bmp",000000,1.00,0,intX,intY
             If intX >= 0 Then //找药水
 
-                DelayRandom 300,400
+                DelayRandom 200,300
                 MoveTo intX,intY
+                DelayRandom 200,300
                 LeftClick
                 DelayRandom 339,342
 
@@ -1466,8 +1504,9 @@ Sub Step3
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Item_Option.bmp",000000,1.00,0,intX,intY
             If intX >= 0 Then //找药水
 
-                DelayRandom 300,400
+                DelayRandom 200,300
                 MoveTo intX,intY
+                DelayRandom 200,300
                 LeftClick
                 DelayRandom 339,342
 
@@ -1531,6 +1570,7 @@ facing = 0            //面向初始归0
 //Call Step1() //创角-回城这一步
 //Call Step2() //回城后-商店买完东西这一步
 Call Step3() //商城拿东西
+
 
 Beep 500,500
 

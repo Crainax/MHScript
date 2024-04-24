@@ -133,16 +133,19 @@ alterY = 0            //备用地点
 facing = 0            //面向初始归0
 
 Sub CloseEquit //关闭装备栏
-    while 1>0 //关闭装备栏
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,intX,intY
-        if intX < 0 Then
-            break
-        else
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_Off.bmp",000000,1.00,0,intX,intY
+        if intX < 0 then //A图没找到就找B图
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_On.bmp",000000,1.00,0,intX,intY
+        End If
+        if intX >= 0 Then
             DelayRandom 39,42
             KeyDown u
             DelayRandom 69,72
             KeyUp u
             DelayRandom 39,42
+        else
+            break
         End If
     Wend
 End Sub
@@ -296,23 +299,28 @@ Sub Fun1
     Call Loading()
 
     while 1>0 //进入转职对话
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Auto\Job.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then
-            MoveTo intX+30,intY
-            Delay 20
-            MoveTo intX+30,intY+5
-            Delay 20
-            LeftClick
-            DelayRandom 339,342
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\EndChat.bmp",000000,1.00,0,intX,intY //如果已经点掉了灯泡
+        if intX >= 0 then
             break
         else
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Auto\CharBulb.bmp",000000,1.00,0,intX,intY
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Auto\Job.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then
-                MoveTo intX,intY-10
-                LeftClick
-                DelayRandom 139,142
-            else
+                MoveTo intX+30,intY
                 Delay 20
+                MoveTo intX+30,intY+5
+                Delay 20
+                LeftClick
+                DelayRandom 339,342
+                break
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Auto\CharBulb.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    MoveTo intX,intY-10
+                    LeftClick
+                    DelayRandom 139,142
+                else
+                    Delay 20
+                End If
             End If
         End If
     Wend
@@ -364,7 +372,7 @@ Sub Fun1
                     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
                     If intX >= 0 Then
                         KeyDown Enter
-                        DelayRandom 69,72
+                        DelayRandom 169,172
                         KeyUp Enter
                     End If
                     DelayRandom 339,342
@@ -441,6 +449,7 @@ Sub Fun1
             Call Drop() //丢到外面
 
             //整理背包
+            DelayRandom 339,342
             MoveTo logoX+150,logoY+368
             LeftClick
             DelayRandom 139,142
@@ -484,15 +493,17 @@ Sub Fun1
                 DelayRandom 39,42
             else //打开背包
                 DelayRandom 39,42
-                KeyDown i
-                DelayRandom 69,72
-                KeyUp i
-                DelayRandom 39,42
+                for 3
+                    KeyDown i
+                    DelayRandom 69,72
+                    KeyUp i
+                    DelayRandom 39,42
+                Next
             End If
         End If
     Wend
 End Sub
 
-
+Call Fun1()
 
 Beep 200,500
