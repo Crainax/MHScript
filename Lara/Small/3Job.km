@@ -164,7 +164,6 @@ Sub CloseSkill //关闭技能窗口
         End If
     Wend
 End Sub
-
 Sub CloseBag //关闭装备栏
     while 1>0 //关闭背包
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
@@ -179,7 +178,6 @@ Sub CloseBag //关闭装备栏
         End If
     Wend
 End Sub
-
 Sub Loading //加载抽离函数
     while 1>0 //等进入加载
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -198,7 +196,6 @@ Sub Loading //加载抽离函数
         End If
     Wend
 End Sub
-
 Sub Drop //扔掉道具抽离
     If intX >= 0 Then
         MoveTo intX,intY
@@ -221,7 +218,6 @@ Sub Drop //扔掉道具抽离
         End If
     End If
 End Sub
-
 Sub AddSP //加点
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Mark.bmp",000000,1.00,0,logoX,logoY
@@ -278,8 +274,70 @@ Sub AddSP //加点
         End If
     Wend
 End Sub
+Sub SkillFull //加满点(技能抽离)
+    wJam = 0 //放在循环外面位置
+    while 1>0 //加点
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            wJam = 0 //放在成功的位置
+            DelayRandom 139,142
+            KeyDown Enter
+            DelayRandom 169,172
+            KeyUp Enter
+            break
+        else
+            wJam = wJam + 1  //循环内部
+            if wJam > 3 then //三次失败,
+                break
+            else
+                MoveTo logoX+94+loopB*144,logoY+86+loopA*40
+                DelayRandom 139,142
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX,logoY
+                DelayRandom 39,42
+                wJam = wJam + 1
+            End If
 
-Sub Fun1
+        End If
+    Wend
+    DelayRandom 339,342
+End Sub
+Sub Skill1 //加1点(技能抽离)
+    wJam = 0 //放在循环外面位置
+    while 1>0 //加点
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            wJam = 0 //放在成功的位置
+            DelayRandom 39,42
+            KeyDown 1
+            DelayRandom 169,172
+            KeyUp 1
+            DelayRandom 39,42
+            KeyDown Enter
+            DelayRandom 169,172
+            KeyUp Enter
+            break
+        else
+            wJam = wJam + 1  //循环内部
+            if wJam > 3 then //三次失败,
+                break
+            else
+                MoveTo logoX+94+loopB*144,logoY+86+loopA*40
+                DelayRandom 139,142
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX,logoY
+                DelayRandom 39,42
+                wJam = wJam + 1
+            End If
+
+        End If
+    Wend
+    DelayRandom 339,342
+End Sub
+
+Sub 3Job
 
     while 1>0 //打开指导
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
@@ -365,17 +423,7 @@ Sub Fun1
             for 5
                 loopB = 1
                 for 2
-                    MoveTo logoX+94+loopB*144,logoY+86+loopA*40
-                    DelayRandom 239,242
-                    LeftClick
-                    DelayRandom 339,342
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
-                    If intX >= 0 Then
-                        KeyDown Enter
-                        DelayRandom 169,172
-                        KeyUp Enter
-                    End If
-                    DelayRandom 339,342
+                    Call SkillFull() //加满这个位置的技能点
                     loopB = loopB - 1
                 Next
                 loopA = loopA + 1

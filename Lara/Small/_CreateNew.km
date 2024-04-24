@@ -451,6 +451,68 @@ Sub Move_B()  //纯移动不用技能 Ver2.9(把JumpAttack改成
     Wend
 End Sub
 
+Sub Skill1 //加1点(技能抽离)
+    wJam = 0 //放在循环外面位置
+    while 1>0 //加点
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            wJam = 0 //放在成功的位置
+            DelayRandom 39,42
+            KeyDown 1
+            DelayRandom 169,172
+            KeyUp 1
+            DelayRandom 39,42
+            KeyDown Enter
+            DelayRandom 169,172
+            KeyUp Enter
+            break
+        else
+            wJam = wJam + 1  //循环内部
+            if wJam > 3 then //三次失败,
+                break
+            else
+                MoveTo logoX+94+loopB*144,logoY+86+loopA*40
+                DelayRandom 139,142
+                LeftClick
+                DelayRandom 139,142
+                wJam = wJam + 1
+            End If
+
+        End If
+    Wend
+    DelayRandom 339,342
+End Sub
+Sub Skill3 //加3点(技能抽离)
+    wJam = 0 //放在循环外面位置
+    while 1>0 //加点
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            wJam = 0 //放在成功的位置
+            DelayRandom 39,42
+            KeyDown 3
+            DelayRandom 169,172
+            KeyUp 3
+            DelayRandom 39,42
+            KeyDown Enter
+            DelayRandom 169,172
+            KeyUp Enter
+            break
+        else
+            wJam = wJam + 1  //循环内部
+            if wJam > 3 then //三次失败,
+                break
+            else
+                MoveTo logoX+94+loopB*144,logoY+86+loopA*40
+                DelayRandom 139,142
+                LeftClick
+                DelayRandom 139,142
+                wJam = wJam + 1
+            End If
+
+        End If
+    Wend
+    DelayRandom 339,342
+End Sub
 Sub EnterOK //清除一下OK对话框
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
@@ -724,56 +786,17 @@ Sub Step1 //创角-回城这一步
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\I.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then //一转技能
 
-            MoveTo logoX+94+0*144,logoY+86+0*40
-            LeftClick
-            DelayRandom 239,242
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
-            If intX >= 0 Then
-                DelayRandom 39,42
-                KeyDown 1
-                DelayRandom 69,72
-                KeyUp 1
-                DelayRandom 39,42
-                KeyDown Enter
-                DelayRandom 69,72
-                KeyUp Enter
-                DelayRandom 39,42
-            End If
-            DelayRandom 439,442
+            loopA = 0
+            loopB = 0
+            Call Skill1()
 
-            MoveTo logoX+94+1*144,logoY+86+0*40
-            LeftClick
-            DelayRandom 239,242
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
-            If intX >= 0 Then
-                DelayRandom 39,42
-                KeyDown 3
-                DelayRandom 69,72
-                KeyUp 3
-                DelayRandom 39,42
-                KeyDown Enter
-                DelayRandom 69,72
-                KeyUp Enter
-                DelayRandom 39,42
-            End If
-            DelayRandom 439,442
+            loopA = 0
+            loopB = 1
+            Call Skill3()
 
-            MoveTo logoX+94+0*144,logoY+86+1*40
-            LeftClick
-            DelayRandom 239,242
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
-            If intX >= 0 Then
-                DelayRandom 39,42
-                KeyDown 1
-                DelayRandom 69,72
-                KeyUp 1
-                DelayRandom 39,42
-                KeyDown Enter
-                DelayRandom 69,72
-                KeyUp Enter
-                DelayRandom 39,42
-            End If
-            DelayRandom 439,442
+            loopA = 1
+            loopB = 0
+            Call Skill1()
 
             Call CloseSkill() //关闭技能页
             break
@@ -1567,10 +1590,11 @@ alterX = 0            //备用地点
 alterY = 0            //备用地点
 facing = 0            //面向初始归0
 
-//Call Step1() //创角-回城这一步
-//Call Step2() //回城后-商店买完东西这一步
+Call Step1() //创角-回城这一步
+Call Step2() //回城后-商店买完东西这一步
 Call Step3() //商城拿东西
 
+//todo:宠物老是放不上药水
 
 Beep 500,500
 

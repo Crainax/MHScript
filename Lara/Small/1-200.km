@@ -1145,11 +1145,13 @@ Sub AfterMap //夹在中间的抽离后
 
     Call Loading()
 
-    DelayRandom 39,42
-    KeyDown CapsLock
-    DelayRandom 69,72
-    KeyUp CapsLock
-    DelayRandom 39,42 //关闭找图
+    if GetLED(1) == 1 then //换地图
+        DelayRandom 39,42
+        KeyDown CapsLock
+        DelayRandom 69,72
+        KeyUp CapsLock
+        DelayRandom 39,42 //关闭找图
+    End If
 End Sub
 Sub Loading //加载抽离函数(人先消失再出现)
     while 1>0 //等进入加载
@@ -1280,6 +1282,69 @@ Sub AddSP //加点
         End If
     Wend
 End Sub
+Sub SkillFull //加满点(技能抽离)
+    wJam = 0 //放在循环外面位置
+    while 1>0 //加点
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            wJam = 0 //放在成功的位置
+            DelayRandom 139,142
+            KeyDown Enter
+            DelayRandom 169,172
+            KeyUp Enter
+            break
+        else
+            wJam = wJam + 1  //循环内部
+            if wJam > 3 then //三次失败,
+                break
+            else
+                MoveTo logoX+94+loopB*144,logoY+86+loopA*40
+                DelayRandom 139,142
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX,logoY
+                DelayRandom 39,42
+                wJam = wJam + 1
+            End If
+
+        End If
+    Wend
+    DelayRandom 339,342
+End Sub
+Sub Skill1 //加1点(技能抽离)
+    wJam = 0 //放在循环外面位置
+    while 1>0 //加点
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            wJam = 0 //放在成功的位置
+            DelayRandom 39,42
+            KeyDown 1
+            DelayRandom 169,172
+            KeyUp 1
+            DelayRandom 39,42
+            KeyDown Enter
+            DelayRandom 169,172
+            KeyUp Enter
+            break
+        else
+            wJam = wJam + 1  //循环内部
+            if wJam > 3 then //三次失败,
+                break
+            else
+                MoveTo logoX+94+loopB*144,logoY+86+loopA*40
+                DelayRandom 139,142
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX,logoY
+                DelayRandom 39,42
+                wJam = wJam + 1
+            End If
+
+        End If
+    Wend
+    DelayRandom 339,342
+End Sub
+
 Sub BirdSkill //进鸟前的加点
     while 1>0 //加二转技能点
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\III.bmp",000000,1.00,0,logoX,logoY
@@ -1289,17 +1354,7 @@ Sub BirdSkill //进鸟前的加点
             for 2
                 loopB = 0
                 for 2
-                    MoveTo logoX+94+loopB*144,logoY+86+loopA*40
-                    DelayRandom 239,242
-                    LeftClick
-                    DelayRandom 339,342
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
-                    If intX >= 0 Then
-                        KeyDown Enter
-                        DelayRandom 169,172
-                        KeyUp Enter
-                    End If
-                    DelayRandom 339,342
+                    Call SkillFull() //加满这个位置的技能点
                     loopB = loopB + 1
                 Next
                 loopA = loopA + 1
@@ -1364,19 +1419,7 @@ Sub DogPre //进狗前的加点
                     loopA = 3
                     loopB = 0
                 End If
-
-                MoveTo logoX+94+loopB*144,logoY+86+loopA*40
-                DelayRandom 239,242
-                LeftClick
-                DelayRandom 339,342
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
-                If intX >= 0 Then
-                    DelayRandom 139,142
-                    KeyDown Enter
-                    DelayRandom 169,172
-                    KeyUp Enter
-                End If
-                DelayRandom 339,342
+                Call SkillFull() //加满这个位置的技能点
                 a = a + 1
             Next
 
@@ -1391,16 +1434,18 @@ Sub DogPre //进狗前的加点
                 KeyUp Tab
                 DelayRandom 39,42
             else
-                DelayRandom 39,42
-                KeyDown k
-                DelayRandom 69,72
-                KeyUp k
-                DelayRandom 39,42
+                for 3 //傻逼提醒
+                    DelayRandom 39,42
+                    KeyDown k
+                    DelayRandom 69,72
+                    KeyUp k
+                    DelayRandom 39,42
+                Next
             End If
         End If
     Wend
 End Sub
-Sub 2Job //去二转
+Sub 2Job
 
     while 1>0 //打开指导
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
@@ -1531,22 +1576,7 @@ Sub 2Job //去二转
             for 2
                 loopB = 0
                 for 2
-                    MoveTo logoX+94+loopB*144,logoY+86+loopA*40
-                    DelayRandom 139,142
-                    LeftClick
-                    DelayRandom 339,342
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
-                    If intX >= 0 Then
-                        DelayRandom 39,42
-                        KeyDown 1
-                        DelayRandom 169,172
-                        KeyUp 1
-                        DelayRandom 39,42
-                        KeyDown Enter
-                        DelayRandom 169,172
-                        KeyUp Enter
-                    End If
-                    DelayRandom 339,342
+                    Call Skill1() //加满这个位置的技能点
                     loopB = loopB + 1
                 Next
                 loopA = loopA + 1
@@ -1698,7 +1728,7 @@ Sub 2Job //去二转
     Wend
 
 End Sub
-Sub 3Job //去三转
+Sub 3Job
 
     while 1>0 //打开指导
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
@@ -1784,17 +1814,7 @@ Sub 3Job //去三转
             for 5
                 loopB = 1
                 for 2
-                    MoveTo logoX+94+loopB*144,logoY+86+loopA*40
-                    DelayRandom 239,242
-                    LeftClick
-                    DelayRandom 339,342
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
-                    If intX >= 0 Then
-                        KeyDown Enter
-                        DelayRandom 169,172
-                        KeyUp Enter
-                    End If
-                    DelayRandom 339,342
+                    Call SkillFull() //加满这个位置的技能点
                     loopB = loopB - 1
                 Next
                 loopA = loopA + 1
@@ -1922,7 +1942,7 @@ Sub 3Job //去三转
         End If
     Wend
 End Sub
-Sub 4Job //去四转(未完成)
+Sub 4Job
 
     while 1>0 //打开指导
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
@@ -2016,6 +2036,7 @@ Sub 4Job //去四转(未完成)
                     break
                 End If
             Wend
+            break
         else
             DelayRandom 39,42
             KeyDown PageDown
@@ -2108,17 +2129,7 @@ Sub 4Job //去四转(未完成)
             for 4
                 loopB = 1
                 for 2
-                    MoveTo logoX+94+loopB*144,logoY+86+loopA*40
-                    DelayRandom 239,242
-                    LeftClick
-                    DelayRandom 339,342
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
-                    If intX >= 0 Then
-                        KeyDown Enter
-                        DelayRandom 69,72
-                        KeyUp Enter
-                    End If
-                    DelayRandom 339,342
+                    Call SkillFull() //加满这个位置的技能点
                     loopB = loopB - 1
                 Next
                 loopA = loopA + 1
@@ -2181,23 +2192,7 @@ Sub 4Job //去四转(未完成)
                     loopA = 4
                     loopB = 1
                 End If
-
-                MoveTo logoX+94+loopB*144,logoY+86+loopA*40
-                DelayRandom 239,242
-                LeftClick
-                DelayRandom 339,342
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
-                If intX >= 0 Then
-                    DelayRandom 39,42
-                    KeyDown 1
-                    DelayRandom 69,72
-                    KeyUp 1
-                    DelayRandom 39,42
-                    KeyDown Enter
-                    DelayRandom 69,72
-                    KeyUp Enter
-                End If
-                DelayRandom 339,342
+                Call Skill1() //只加1点
                 a = a + 1
             Next
 
@@ -2255,6 +2250,7 @@ Sub 4Job //去四转(未完成)
             End If
         End If
     Wend
+
 End Sub
 Sub 140Back //归还装备
 
@@ -2595,7 +2591,7 @@ Sub 140Back //归还装备
                 End If
             Wend
 
-            MoveTo intX-577,intY+385
+            MoveTo logoX-577,logoY+385
             LeftClick
             DelayRandom 139,142
             break
@@ -2750,7 +2746,7 @@ Sub Teleport //换地图(Caps键亮)
                                 MoveTo logoX+85,logoY+285
                                 Call AfterMap()
                             else
-                                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\VDLY.bmp",000000,1.00,0,intX,intY
+                                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\VDLY2.bmp",000000,1.00,0,intX,intY
                                 If intX >= 0 Then //维多利亚归还装备准备下一个号
                                     Call 140Back() //归还
                                     Beep 200,500
@@ -2758,7 +2754,7 @@ Sub Teleport //换地图(Caps键亮)
                                     Beep 400,500
                                     Pause
                                 else //小狗后面的地图了
-
+                                    MsgBox 传送之不认识现在的图
                                 End If
                             End If
                         End If

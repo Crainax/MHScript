@@ -990,7 +990,7 @@ Sub Fun1
                 End If
             Wend
 
-            MoveTo intX-577,intY+385
+            MoveTo logoX-577,logoY+385
             LeftClick
             DelayRandom 139,142
             break
