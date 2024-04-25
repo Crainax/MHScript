@@ -4,26 +4,26 @@ ScreenY=2560
 Times=1
 
 [Script]
-Dim x1,          x2,      y1,      y2     // ¾ØÐÎÇøÓò:Ð¡µØÍ¼²ÉÑùµã
-Dim x3,          y3,      xEnd,    yEnd   // 2¸ö¶¥µã:¼¼ÄÜÇø/ÆÁÄ»ÓÒÏÂ½Ç¶¥µã
-Dim tarX,        tarY,    Hooking, a      //Ä¿±ê
-Dim logoX,       logoY,   intX,    intY   //ËãÄ¿µÄµØ²îÖµ
-Dim alterX,      alterY,  facing          //±¸ÓÃµØµã,´«ËÍÃÅ½Å²½¿ª¹Ø,´«ËÍÃÅµÄÃæÏò
-Dim cY,          csTimes, csMax           //ÓÃÕâ¸ö¶«Î÷ÅÐ¶Ï½ÇÉ«ÊÇ²»ÊÇÃ»ÓÐX»òYÖá±ä»¯ÁË
-Dim tolerance,   tolLoc,  yTolerance      //¿ìËÙÒÆ¶¯µÄÈÝ²î,0´ú±í¾«È·ÒÆ¶¯,ÁíÍâ¸öÊÇ¾Ö²¿±äÁ¿
-Dim staticCount, staticX, staticY         //·À¿¨¼ÆÊýÆ÷
-Dim wJam,        wJam2,   loopA,   loopB  //ÕÒÍ¼·À¿¨,loopABÊÇÑ­»·Êý
+Dim x1,          x2,      y1,      y2     // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:Ð¡ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+Dim x3,          y3,      xEnd,    yEnd   // 2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½Ä»ï¿½ï¿½ï¿½Â½Ç¶ï¿½ï¿½ï¿½
+Dim tarX,        tarY,    Hooking, a      //Ä¿ï¿½ï¿½
+Dim logoX,       logoY,   intX,    intY   //ï¿½ï¿½Ä¿ï¿½ÄµØ²ï¿½Öµ
+Dim alterX,      alterY,  facing          //ï¿½ï¿½ï¿½ÃµØµï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½Å½Å²ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½ï¿½ï¿½ï¿½
+Dim cY,          csTimes, csMax           //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ï½ï¿½É«ï¿½Ç²ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Xï¿½ï¿½Yï¿½ï¿½ä»¯ï¿½ï¿½
+Dim tolerance,   tolLoc,  yTolerance      //ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½Ý²ï¿½,0ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È·ï¿½Æ¶ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¾Ö²ï¿½ï¿½ï¿½ï¿½ï¿½
+Dim staticCount, staticX, staticY         //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+Dim wJam,        wJam2,   loopA,   loopB  //ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½,loopABï¿½ï¿½Ñ­ï¿½ï¿½ï¿½ï¿½
 
-Sub GetXY //»ñÈ¡½ÇÉ«µÄXYÖá(Èç¹ûÕÒ²»µ½»á×óÓÒÒÆ¶¯)
+Sub GetXY //ï¿½ï¿½È¡ï¿½ï¿½É«ï¿½ï¿½XYï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
 
-    if intX < 0 Then //ÈËÎïÅÜµ½ÁË±ß½ç  ´¦ÀíÒ»ÏÂ
+    if intX < 0 Then //ï¿½ï¿½ï¿½ï¿½ï¿½Üµï¿½ï¿½Ë±ß½ï¿½  ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
         KeyDown Left
         DelayRandom 200,250
         KeyUp Left
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX < 0 Then //×óÒÆÁË»¹ÊÇÃ»ÕÒµ½,¾ÍÓÒÒÆ
+        if intX < 0 Then //ï¿½ï¿½ï¿½ï¿½ï¿½Ë»ï¿½ï¿½ï¿½Ã»ï¿½Òµï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             KeyDown Right
             DelayRandom 200,250
             KeyUp Right
@@ -35,8 +35,8 @@ Sub GetXY //»ñÈ¡½ÇÉ«µÄXYÖá(Èç¹ûÕÒ²»µ½»á×óÓÒÒÆ¶¯)
     intY = intY - logoY
 End Sub
 
-Sub AntiJam //Ò»°ã¸úËæGetXYºóÓÃ
-    if staticX ==  intX and staticY == intY then //Èç¹ûÏàµÈ¾ÍÀÛ¼Ó¼ÆÊýÆ÷
+Sub AntiJam //Ò»ï¿½ï¿½ï¿½ï¿½ï¿½GetXYï¿½ï¿½ï¿½ï¿½
+    if staticX ==  intX and staticY == intY then //ï¿½ï¿½ï¿½ï¿½ï¿½È¾ï¿½ï¿½Û¼Ó¼ï¿½ï¿½ï¿½ï¿½ï¿½
         staticCount = staticCount + 1
     else
         staticX     = intX
@@ -46,7 +46,7 @@ Sub AntiJam //Ò»°ã¸úËæGetXYºóÓÃ
     if staticCount >= 3 Then //
 
         Beep 500,500
-        // Ä£Äâ´ÓÉþ×ÓÌø×ß
+        // Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         DelayRandom 13,15
         KeyDown Right
         DelayRandom 21,22
@@ -56,22 +56,22 @@ Sub AntiJam //Ò»°ã¸úËæGetXYºóÓÃ
         DelayRandom 44,45
         KeyUp Right
         DelayRandom 13,15
-        RestartScript //ÖØÆô
+        RestartScript //ï¿½ï¿½ï¿½ï¿½
     End If
 End Sub
 
-Sub Move_A() //ÒÆ¶¯ÖÖÀà:´´½Ç
-    csTimes	= -1  //³õÊ¼¾ÍÆôÓÃÖ¸ÄÏÕëÅÐ¶Ï
-    csMax		= 3   //½µÂäÄ¬ÈÏÖµÎª4
-    Hooking				= 0 //¹³×Ó³õÊ¼ÊÇ¹ØµÄ
+Sub Move_A() //ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½:ï¿½ï¿½ï¿½ï¿½
+    csTimes	= -1  //ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½
+    csMax		= 3   //ï¿½ï¿½ï¿½ï¿½Ä¬ï¿½ï¿½ÖµÎª4
+    Hooking				= 0 //ï¿½ï¿½ï¿½Ó³ï¿½Ê¼ï¿½Ç¹Øµï¿½
     while  1 > 0
         Call GetXY()
         if tolerance > 2 Then
             tolLoc = tolerance
-        else  //ËÙ×ßµÄÄ¬ÈÏÎª4
+        else  //ï¿½ï¿½ï¿½ßµï¿½Ä¬ï¿½ï¿½Îª4
             tolLoc = 2
         End If
-        If intX < (tarX-tolLoc) Then //ÏòÓÒ×ß
+        If intX < (tarX-tolLoc) Then //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             KeyDown Right
             a = (tarX - tolLoc - intX) * 52
             if a < 52 then
@@ -81,7 +81,7 @@ Sub Move_A() //ÒÆ¶¯ÖÖÀà:´´½Ç
             End If
             Delay a
             KeyUp Right
-        Else If intX > (tarX+tolLoc) Then //Ïò×ó×ß
+        Else If intX > (tarX+tolLoc) Then //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             KeyDown Left
             a = (intX - tarX - tolLoc) * 52
             if a < 52 then
@@ -93,13 +93,13 @@ Sub Move_A() //ÒÆ¶¯ÖÖÀà:´´½Ç
             KeyUp Left
         else
             yTolerance = 0
-            if tolerance < 4 Then //ÈÝÈÌ¶ÈÐ¡ÓÚ4»¹ÊÇÒªÐ¡Ëé²½
+            if tolerance < 4 Then //ï¿½ï¿½ï¿½Ì¶ï¿½Ð¡ï¿½ï¿½4ï¿½ï¿½ï¿½ï¿½ÒªÐ¡ï¿½é²½
                 for 10
-                    If intX < (tarX-tolerance) Then //ÏòÓÒÐ¡Ëé²½
+                    If intX < (tarX-tolerance) Then //ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½é²½
                         KeyDown Right
                         Delay (tarX - tolerance - intX) * 14
                         KeyUp Right
-                    Else If intX > (tarX+tolerance) Then //Ïò×óÐ¡Ëé²½
+                    Else If intX > (tarX+tolerance) Then //ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½é²½
                         KeyDown Left
                         Delay (intX - tarX - tolerance) * 14
                         KeyUp Left
@@ -107,10 +107,10 @@ Sub Move_A() //ÒÆ¶¯ÖÖÀà:´´½Ç
                         Exit Sub
                     End If
 
-                    Call GetXY() //¸üÐÂÈËÎï×ø±ê
+                    Call GetXY() //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 Next
-                Exit Sub //´ÎÊýµ½ÁËÖ±½Ó½áÊø
-            else //ÈÝÈÌ¶È´óÓÚµÈÓÚ4¿ÉÒÔÖ±½Ó½áÊø
+                Exit Sub //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½Ó½ï¿½ï¿½ï¿½
+            else //ï¿½ï¿½ï¿½Ì¶È´ï¿½ï¿½Úµï¿½ï¿½ï¿½4ï¿½ï¿½ï¿½ï¿½Ö±ï¿½Ó½ï¿½ï¿½ï¿½
                 Exit Sub
             End If
         End If
@@ -118,7 +118,7 @@ Sub Move_A() //ÒÆ¶¯ÖÖÀà:´´½Ç
     Wend
 End Sub
 
-//·Ö±æÂÊ³õÊ¼»¯
+//ï¿½Ö±ï¿½ï¿½Ê³ï¿½Ê¼ï¿½ï¿½
 GetScreenResolution intX, intY
 x1     = intX - 1440
 y1     = intY - 950
@@ -128,14 +128,14 @@ x3     = intX - 640
 y3     = intY - 260
 xEnd   = intX
 yEnd   = intY
-alterX = 0            //±¸ÓÃµØµã
-alterY = 0            //±¸ÓÃµØµã
-facing = 0            //ÃæÏò³õÊ¼¹é0
+alterX = 0            //ï¿½ï¿½ï¿½ÃµØµï¿½
+alterY = 0            //ï¿½ï¿½ï¿½ÃµØµï¿½
+facing = 0            //ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½0
 
-Sub CloseEquit //¹Ø±Õ×°±¸À¸
+Sub CloseEquit //ï¿½Ø±ï¿½×°ï¿½ï¿½ï¿½ï¿½
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_Off.bmp",000000,1.00,0,intX,intY
-        if intX < 0 then //AÍ¼Ã»ÕÒµ½¾ÍÕÒBÍ¼
+        if intX < 0 then //AÍ¼Ã»ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½BÍ¼
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_On.bmp",000000,1.00,0,intX,intY
         End If
         if intX >= 0 Then
@@ -150,8 +150,8 @@ Sub CloseEquit //¹Ø±Õ×°±¸À¸
     Wend
 End Sub
 
-Sub CloseSkill //¹Ø±Õ¼¼ÄÜ´°¿Ú
-    while 1>0 //¹Ø±Õ¼¼ÄÜ´°¿Ú
+Sub CloseSkill //ï¿½Ø±Õ¼ï¿½ï¿½Ü´ï¿½ï¿½ï¿½
+    while 1>0 //ï¿½Ø±Õ¼ï¿½ï¿½Ü´ï¿½ï¿½ï¿½
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
         if intX < 0 Then
             break
@@ -164,8 +164,8 @@ Sub CloseSkill //¹Ø±Õ¼¼ÄÜ´°¿Ú
         End If
     Wend
 End Sub
-Sub CloseBag //¹Ø±Õ×°±¸À¸
-    while 1>0 //¹Ø±Õ±³°ü
+Sub CloseBag //ï¿½Ø±ï¿½×°ï¿½ï¿½ï¿½ï¿½
+    while 1>0 //ï¿½Ø±Õ±ï¿½ï¿½ï¿½
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
         if intX < 0 Then
             break
@@ -178,25 +178,25 @@ Sub CloseBag //¹Ø±Õ×°±¸À¸
         End If
     Wend
 End Sub
-Sub Loading //¼ÓÔØ³éÀëº¯Êý
-    while 1>0 //µÈ½øÈë¼ÓÔØ
+Sub Loading //ï¿½ï¿½ï¿½Ø³ï¿½ï¿½ëº¯ï¿½ï¿½
+    while 1>0 //ï¿½È½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX <= 0 Then //¼ÓÔØÍê³ÉÁË
+        if intX <= 0 Then //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             break
         else
             DelayRandom 100,150
         End If
     Wend
-    while 1>0 //µÈ¼ÓÔØ
+    while 1>0 //ï¿½È¼ï¿½ï¿½ï¿½
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX > 0 Then //¼ÓÔØÍê³ÉÁË
+        if intX > 0 Then //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             break
         else
             DelayRandom 100,150
         End If
     Wend
 End Sub
-Sub Drop //ÈÓµôµÀ¾ß³éÀë
+Sub Drop //ï¿½Óµï¿½ï¿½ï¿½ï¿½ß³ï¿½ï¿½ï¿½
     If intX >= 0 Then
         MoveTo intX,intY
         DelayRandom 369,372
@@ -218,13 +218,13 @@ Sub Drop //ÈÓµôµÀ¾ß³éÀë
         End If
     End If
 End Sub
-Sub AddSP //¼Óµã
+Sub AddSP //ï¿½Óµï¿½
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Mark.bmp",000000,1.00,0,logoX,logoY
-        if logoX >= 0 Then //Õ¹¿ªÒ³ÃæÁËÂð
+        if logoX >= 0 Then //Õ¹ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             DelayRandom 139,142
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\SP.bmp",000000,1.00,0,intX,intY
-            If intX >= 0 Then //ÄÜ²»ÄÜ¼Óµã
+            If intX >= 0 Then //ï¿½Ü²ï¿½ï¿½Ü¼Óµï¿½
                 MoveTo intX,intY
                 LeftClick
                 DelayRandom 339,342
@@ -239,7 +239,7 @@ Sub AddSP //¼Óµã
                 End If
             End If
 
-            while 1>0 //¹Ø±Õ¼¼ÄÜ´°¿Ú
+            while 1>0 //ï¿½Ø±Õ¼ï¿½ï¿½Ü´ï¿½ï¿½ï¿½
                 FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Mark.bmp",000000,1.00,0,intX,intY
                 if intX < 0 Then
                     break
@@ -255,7 +255,7 @@ Sub AddSP //¼Óµã
             break
         else
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Extend.bmp",000000,1.00,0,intX,intY
-            if intX < 0 then //AÍ¼Ã»ÕÒµ½¾ÍÕÒBÍ¼
+            if intX < 0 then //AÍ¼Ã»ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½BÍ¼
                 FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Extend_On.bmp",000000,1.00,0,intX,intY
             End If
             if intX >= 0 Then
@@ -274,20 +274,20 @@ Sub AddSP //¼Óµã
         End If
     Wend
 End Sub
-Sub SkillFull //¼ÓÂúµã(¼¼ÄÜ³éÀë)
-    wJam = 0 //·ÅÔÚÑ­»·ÍâÃæÎ»ÖÃ
-    while 1>0 //¼Óµã
+Sub SkillFull //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½Ü³ï¿½ï¿½ï¿½)
+    wJam = 0 //ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
+    while 1>0 //ï¿½Óµï¿½
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
-            wJam = 0 //·ÅÔÚ³É¹¦µÄÎ»ÖÃ
+            wJam = 0 //ï¿½ï¿½ï¿½Ú³É¹ï¿½ï¿½ï¿½Î»ï¿½ï¿½
             DelayRandom 139,142
             KeyDown Enter
             DelayRandom 169,172
             KeyUp Enter
             break
         else
-            wJam = wJam + 1  //Ñ­»·ÄÚ²¿
-            if wJam > 3 then //Èý´ÎÊ§°Ü,
+            wJam = wJam + 1  //Ñ­ï¿½ï¿½ï¿½Ú²ï¿½
+            if wJam > 3 then //ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½,
                 break
             else
                 MoveTo logoX+94+loopB*144,logoY+86+loopA*40
@@ -303,12 +303,12 @@ Sub SkillFull //¼ÓÂúµã(¼¼ÄÜ³éÀë)
     Wend
     DelayRandom 339,342
 End Sub
-Sub Skill1 //¼Ó1µã(¼¼ÄÜ³éÀë)
-    wJam = 0 //·ÅÔÚÑ­»·ÍâÃæÎ»ÖÃ
-    while 1>0 //¼Óµã
+Sub Skill1 //ï¿½ï¿½1ï¿½ï¿½(ï¿½ï¿½ï¿½Ü³ï¿½ï¿½ï¿½)
+    wJam = 0 //ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
+    while 1>0 //ï¿½Óµï¿½
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Confirm.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
-            wJam = 0 //·ÅÔÚ³É¹¦µÄÎ»ÖÃ
+            wJam = 0 //ï¿½ï¿½ï¿½Ú³É¹ï¿½ï¿½ï¿½Î»ï¿½ï¿½
             DelayRandom 39,42
             KeyDown 1
             DelayRandom 169,172
@@ -319,8 +319,8 @@ Sub Skill1 //¼Ó1µã(¼¼ÄÜ³éÀë)
             KeyUp Enter
             break
         else
-            wJam = wJam + 1  //Ñ­»·ÄÚ²¿
-            if wJam > 3 then //Èý´ÎÊ§°Ü,
+            wJam = wJam + 1  //Ñ­ï¿½ï¿½ï¿½Ú²ï¿½
+            if wJam > 3 then //ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½,
                 break
             else
                 MoveTo logoX+94+loopB*144,logoY+86+loopA*40
@@ -339,7 +339,7 @@ End Sub
 
 Sub 3Job
 
-    while 1>0 //´ò¿ªÖ¸µ¼
+    while 1>0 //ï¿½ï¿½Ö¸ï¿½ï¿½
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
             MoveTo intX-260,intY+86
@@ -356,8 +356,8 @@ Sub 3Job
     Wend
     Call Loading()
 
-    while 1>0 //½øÈë×ªÖ°¶Ô»°
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\EndChat.bmp",000000,1.00,0,intX,intY //Èç¹ûÒÑ¾­µãµôÁËµÆÅÝ
+    while 1>0 //ï¿½ï¿½ï¿½ï¿½×ªÖ°ï¿½Ô»ï¿½
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\EndChat.bmp",000000,1.00,0,intX,intY //ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½
         if intX >= 0 then
             break
         else
@@ -383,11 +383,11 @@ Sub 3Job
         End If
     Wend
 
-    wJam = 0 //·ÅÔÚÑ­»·ÍâÃæÎ»ÖÃ
-    while 1>0 //Èý×ª½øÐÐÖÐ
+    wJam = 0 //ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
+    while 1>0 //ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then //Èç¹û»¹¿¨ÔÚÉÏÒ»²½¾Í°´
-            wJam = 0 //·ÅÔÚ³É¹¦µÄÎ»ÖÃ
+        if intX >= 0 Then //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Í°ï¿½
+            wJam = 0 //ï¿½ï¿½ï¿½Ú³É¹ï¿½ï¿½ï¿½Î»ï¿½ï¿½
             DelayRandom 39,42
             KeyDown Enter
             DelayRandom 69,72
@@ -396,15 +396,15 @@ Sub 3Job
         else
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\EndChat.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then
-                wJam = 0 //·ÅÔÚ³É¹¦µÄÎ»ÖÃ
+                wJam = 0 //ï¿½ï¿½ï¿½Ú³É¹ï¿½ï¿½ï¿½Î»ï¿½ï¿½
                 DelayRandom 39,42
                 KeyDown PageDown
                 DelayRandom 69,72
                 KeyUp PageDown
                 DelayRandom 169,172
-            else  //Í£Ö¹¶Ô»°UIÃ»ÓÐ¾ÍÏÂÒ»²½
-                wJam = wJam + 1  //Ñ­»·ÄÚ²¿
-                if wJam > 3 then //Èý´ÎÊ§°Ü,
+            else  //Í£Ö¹ï¿½Ô»ï¿½UIÃ»ï¿½Ð¾ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
+                wJam = wJam + 1  //Ñ­ï¿½ï¿½ï¿½Ú²ï¿½
+                if wJam > 3 then //ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½,
                     break
                 else
                     Delay 200
@@ -415,35 +415,37 @@ Sub 3Job
     Wend
 
 
-    while 1>0 //¼Ó¶þ×ª¼¼ÄÜµã
+    while 1>0 //ï¿½Ó¶ï¿½×ªï¿½ï¿½ï¿½Üµï¿½
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\II.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then
+            MoveTo logoX,logoY
+            Delay 100
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\I_Off.bmp",000000,1.00,0,logoX,logoY
             loopA = 0
             for 5
                 loopB = 1
                 for 2
-                    Call SkillFull() //¼ÓÂúÕâ¸öÎ»ÖÃµÄ¼¼ÄÜµã
+                    Call SkillFull() //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ÃµÄ¼ï¿½ï¿½Üµï¿½
                     loopB = loopB - 1
                 Next
                 loopA = loopA + 1
             Next
 
-            //ÍÏ¶¯ÊÍ·Åµ½¼üÅÌ²¼¾ÖÀï
+            //ï¿½Ï¶ï¿½ï¿½Í·Åµï¿½ï¿½ï¿½ï¿½Ì²ï¿½ï¿½ï¿½ï¿½ï¿½
             MoveTo logoX-18,logoY+198
             LeftClick
             DelayRandom 339,342
 
-            while 1>0 //´ò¿ª×°±¸À¸µÄ³èÎï½çÃæ
+            while 1>0 //ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,logoX,logoY
-                if logoX >= 0 Then //ÕÒµ½ÁË±êÇ©
+                if logoX >= 0 Then //ï¿½Òµï¿½ï¿½Ë±ï¿½Ç©
                     MoveTo logoX+42,logoY+49
                     LeftClick
                     DelayRandom 339,342
                     break
                 else
                     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_Off.bmp",000000,1.00,0,intX,intY
-                    if intX < 0 then //AÍ¼Ã»ÕÒµ½¾ÍÕÒBÍ¼
+                    if intX < 0 then //AÍ¼Ã»ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½BÍ¼
                         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_On.bmp",000000,1.00,0,intX,intY
                     End If
                     if intX >= 0 Then
@@ -462,13 +464,13 @@ Sub 3Job
                 End If
             Wend
 
-            Call CloseEquit() //¹Ø±Õ×°±¸À¸
-            Call CloseSkill() //¹Ø±Õ¼¼ÄÜÀ¸
+            Call CloseEquit() //ï¿½Ø±ï¿½×°ï¿½ï¿½ï¿½ï¿½
+            Call CloseSkill() //ï¿½Ø±Õ¼ï¿½ï¿½ï¿½ï¿½ï¿½
 
             break
         else
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then //ÇÐÏÂ±êÇ©Ò³
+            if intX >= 0 Then //ï¿½ï¿½ï¿½Â±ï¿½Ç©Ò³
                 DelayRandom 39,42
                 KeyDown Tab
                 DelayRandom 69,72
@@ -484,19 +486,19 @@ Sub 3Job
         End If
     Wend
 
-     while 1>0 //ÏÈ´¦Àí×°±¸±êÇ©
+     while 1>0 //ï¿½È´ï¿½ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½Ç©
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Tag_Equit.bmp",000000,1.00,0,logoX,logoY
-        if logoX >= 0 Then //ÕÒµ½ÁË±êÇ©
+        if logoX >= 0 Then //ï¿½Òµï¿½ï¿½Ë±ï¿½Ç©
 
-            //¶ªµô4¸öÀ¬»ø
+            //ï¿½ï¿½ï¿½ï¿½4ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             DelayRandom 200,210
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Auto\Drop_5.bmp",000000,1.00,0,intX,intY
-            Call Drop() //¶ªµ½ÍâÃæ
+            Call Drop() //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             DelayRandom 200,210
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Auto\Drop_6.bmp",000000,1.00,0,intX,intY
-            Call Drop() //¶ªµ½ÍâÃæ
+            Call Drop() //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-            //ÕûÀí±³°ü
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             DelayRandom 339,342
             MoveTo logoX+150,logoY+368
             LeftClick
@@ -513,7 +515,7 @@ Sub 3Job
                     MoveTo logoX+9+43*loopB,logoY+36+43*loopA
                     DelayRandom 369,372
                     LeftDoubleClick
-                    DelayRandom 339,342 //µÈÒ»»áÅÐ¶ÏÓÐÃ»ÓÐµ¯´°
+                    DelayRandom 339,342 //ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½Ã»ï¿½Ðµï¿½ï¿½ï¿½
 
                     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
                     If intX >= 0 Then
@@ -533,13 +535,13 @@ Sub 3Job
             break
         else
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then //ÇÐ±êÇ©Ò³
+            if intX >= 0 Then //ï¿½Ð±ï¿½Ç©Ò³
                 DelayRandom 39,42
                 KeyDown tab
                 DelayRandom 69,72
                 KeyUp tab
                 DelayRandom 39,42
-            else //´ò¿ª±³°ü
+            else //ï¿½ò¿ª±ï¿½ï¿½ï¿½
                 DelayRandom 39,42
                 for 3
                     KeyDown i

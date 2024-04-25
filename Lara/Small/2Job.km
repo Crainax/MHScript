@@ -462,6 +462,8 @@ Sub 2Job
     while 1>0 //加二转技能点(4个就行)
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\II.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then
+            MoveTo logoX,logoY
+            Delay 100
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\I_Off.bmp",000000,1.00,0,logoX,logoY
             loopA = 1
             for 2

@@ -544,6 +544,8 @@ Sub 4Job
     while 1>0 //加三转技能点
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\III.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then
+            MoveTo logoX,logoY
+            Delay 100
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\I_Off.bmp",000000,1.00,0,logoX,logoY
             loopA = 0
             for 4
@@ -578,6 +580,8 @@ Sub 4Job
     while 1>0 //加四转技能点
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\IV.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then
+            MoveTo logoX,logoY
+            Delay 100
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\I_Off.bmp",000000,1.00,0,logoX,logoY
             //先滚轮
             MoveTo logoX+50,logoY+86
@@ -662,16 +666,21 @@ Sub 4Job
                 KeyUp Tab
                 DelayRandom 39,42
             else
-                DelayRandom 39,42
-                KeyDown k
-                DelayRandom 69,72
-                KeyUp k
-                DelayRandom 39,42
+                for 3
+                    DelayRandom 39,42
+                    KeyDown k
+                    DelayRandom 69,72
+                    KeyUp k
+                    DelayRandom 39,42
+                Next
             End If
         End If
     Wend
 
 End Sub
+
+
+
 
 
 Beep 200,500

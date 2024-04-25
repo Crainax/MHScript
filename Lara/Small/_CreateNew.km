@@ -823,6 +823,7 @@ Sub Step1 //创角-回城这一步
         End If
     Wend
 
+
     while 1>0 //打开键盘 并清空所有设定 摆好位置
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Key\Reset.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then
@@ -928,6 +929,13 @@ Sub Step1 //创角-回城这一步
             LeftClick
             DelayRandom 139,142
             MoveTo logoX+97,logoY-303
+            LeftClick
+            DelayRandom 139,142
+
+            MoveTo logoX+177,logoY-111
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+355,logoY-333
             LeftClick
             DelayRandom 139,142
 
@@ -1491,7 +1499,6 @@ Sub Step3
         End If
     Wend
 
-
     while 1>0 //打开装备栏的宠物界面
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then //找到了标签
@@ -1503,55 +1510,70 @@ Sub Step3
                 DelayRandom 139,142
             End If
 
-            //宠物的喝药
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Item_Option.bmp",000000,1.00,0,intX,intY
-            If intX >= 0 Then //找药水
 
-                DelayRandom 200,300
-                MoveTo intX,intY
-                DelayRandom 200,300
-                LeftClick
-                DelayRandom 339,342
+            wJam = 0
+            while 1>0 //宠物的喝药
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Item_Option.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    while 1>0 //红
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Option_Cancel.bmp",000000,1.00,0,tarX,tarY
+                        if tarX >= 0 Then
+                            DelayRandom 39,42
+                            KeyDown Esc
+                            DelayRandom 69,72
+                            KeyUp Esc
+                            DelayRandom 339,342
+                            break
+                        else
+                            DelayRandom 200,300
+                            MoveTo intX,intY
+                            DelayRandom 200,300
+                            LeftClick
+                            DelayRandom 339,342
 
-                MoveTo logoX+6,logoY+213
-                LeftClick
-                DelayRandom 339,342
+                            MoveTo logoX+6,logoY+213
+                            LeftClick
+                            DelayRandom 339,342
+                        End If
+                    Wend
 
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Option_Cancel.bmp",000000,1.00,0,intX,intY
-                If intX >= 0 Then
-                    DelayRandom 39,42
-                    KeyDown Esc
-                    DelayRandom 69,72
-                    KeyUp Esc
-                    DelayRandom 339,342
+                    while 1>0 //蓝
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Option_Cancel.bmp",000000,1.00,0,tarX,tarY
+                        if tarX >= 0 Then
+                            DelayRandom 39,42
+                            KeyDown Esc
+                            DelayRandom 69,72
+                            KeyUp Esc
+                            DelayRandom 339,342
+                            break
+                        else
+                            DelayRandom 200,300
+                            MoveTo intX,intY
+                            DelayRandom 200,300
+                            LeftClick
+                            DelayRandom 339,342
+
+                            MoveTo logoX+49,logoY+213
+                            LeftClick
+                            DelayRandom 339,342
+                        End If
+                    Wend
+
+                    break
+                else
+                    wJam = wJam + 1
+                    if wJam > 3 then //重复的动作太多就暂停提醒
+                        wJam = 0
+                        Beep 100,200
+                        Beep 200,200
+                        Beep 300,200
+                        Pause
+                    else
+                        DelayRandom 339,342
+                        wJam = wJam + 1
+                    End If
                 End If
-
-            End If
-
-            //宠物的喝药
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\Item_Option.bmp",000000,1.00,0,intX,intY
-            If intX >= 0 Then //找药水
-
-                DelayRandom 200,300
-                MoveTo intX,intY
-                DelayRandom 200,300
-                LeftClick
-                DelayRandom 339,342
-
-                MoveTo logoX+49,logoY+213
-                LeftClick
-                DelayRandom 339,342
-
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Option_Cancel.bmp",000000,1.00,0,intX,intY
-                If intX >= 0 Then
-                    DelayRandom 39,42
-                    KeyDown Esc
-                    DelayRandom 69,72
-                    KeyUp Esc
-                    DelayRandom 339,342
-                End If
-
-            End If
+            Wend
 
             break
         else
@@ -1598,8 +1620,6 @@ facing = 0            //面向初始归0
 Call Step1() //创角-回城这一步
 Call Step2() //回城后-商店买完东西这一步
 Call Step3() //商城拿东西
-
-//todo:宠物老是放不上药水
 
 Beep 500,500
 

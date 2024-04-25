@@ -1094,7 +1094,6 @@ Sub CloseBag //关闭装备栏
     Wend
 End Sub
 Sub OpenMap //打开世界地图
-    wJam = 0
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\Mark.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then //瞬移到
@@ -1110,21 +1109,11 @@ Sub OpenMap //打开世界地图
 
             break
         else
-            wJam = wJam + 1
-            if wJam > 3 then //重复的动作太多就暂停提醒
-                wJam = 0
-                Beep 100,200
-                Beep 200,200
-                Beep 300,200
-                Pause
-            else //打开大地图
-                DelayRandom 39,42
-                KeyDown m
-                DelayRandom 69,72
-                KeyUp m
-                DelayRandom 39,42
-                wJam = wJam + 1
-            End If
+            DelayRandom 39,42
+            KeyDown m
+            DelayRandom 69,72
+            KeyUp m
+            DelayRandom 39,42
         End If
     Wend
 End Sub
@@ -1203,26 +1192,29 @@ Sub Channel //有人就换频
         if intX < 0 Then //地图没人,直接开刷
             Delay 200
             break
-        else
-            DelayRandom 339,342
-            KeyDown Esc
-            DelayRandom 69,72
-            KeyUp Esc
-            DelayRandom 539,542
-            KeyDown Enter
-            DelayRandom 69,72
-            KeyUp Enter
-            DelayRandom 539,542
-            KeyDown Right
-            DelayRandom 69,72
-            KeyUp Right
-            DelayRandom 539,542
-            KeyDown Enter
-            DelayRandom 69,72
-            KeyUp Enter
-            DelayRandom 339,342
-            Call Loading() //等加载
-            DelayRandom 239,242
+        else //切频
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Switch.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    KeyDown Right
+                    DelayRandom 69,72
+                    KeyUp Right
+                    DelayRandom 539,542
+                    KeyDown Enter
+                    DelayRandom 69,72
+                    KeyUp Enter
+                    DelayRandom 339,342
+                    Call Loading() //等加载
+                    DelayRandom 239,242
+                    break
+                else
+                    DelayRandom 39,42
+                    KeyDown Insert
+                    DelayRandom 69,72
+                    KeyUp Insert
+                    DelayRandom 39,42
+                End If
+            Wend
         End If
     Wend
 End Sub
@@ -1349,6 +1341,8 @@ Sub BirdSkill //进鸟前的加点
     while 1>0 //加二转技能点
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\III.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then
+            MoveTo logoX,logoY
+            Delay 100
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\I_Off.bmp",000000,1.00,0,logoX,logoY
             loopA = 0
             for 2
@@ -1385,6 +1379,8 @@ Sub DogPre //进狗前的加点
     while 1>0 //加四转技能点
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\IV.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then
+            MoveTo logoX,logoY
+            Delay 100
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\I_Off.bmp",000000,1.00,0,logoX,logoY
             //先滚轮
             MoveTo logoX+50,logoY+86
@@ -1571,6 +1567,8 @@ Sub 2Job
     while 1>0 //加二转技能点(4个就行)
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\II.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then
+            MoveTo logoX,logoY
+            Delay 100
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\I_Off.bmp",000000,1.00,0,logoX,logoY
             loopA = 1
             for 2
@@ -1809,6 +1807,8 @@ Sub 3Job
     while 1>0 //加二转技能点
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\II.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then
+            MoveTo logoX,logoY
+            Delay 100
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\I_Off.bmp",000000,1.00,0,logoX,logoY
             loopA = 0
             for 5
@@ -2124,6 +2124,8 @@ Sub 4Job
     while 1>0 //加三转技能点
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\III.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then
+            MoveTo logoX,logoY
+            Delay 100
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\I_Off.bmp",000000,1.00,0,logoX,logoY
             loopA = 0
             for 4
@@ -2158,6 +2160,8 @@ Sub 4Job
     while 1>0 //加四转技能点
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\IV.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then
+            MoveTo logoX,logoY
+            Delay 100
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\I_Off.bmp",000000,1.00,0,logoX,logoY
             //先滚轮
             MoveTo logoX+50,logoY+86
@@ -2196,8 +2200,6 @@ Sub 4Job
                 a = a + 1
             Next
 
-
-            //拖动释放到键盘布局里
             MoveTo logoX-18,logoY+198
             LeftClick
             DelayRandom 339,342
@@ -2242,11 +2244,13 @@ Sub 4Job
                 KeyUp Tab
                 DelayRandom 39,42
             else
-                DelayRandom 39,42
-                KeyDown k
-                DelayRandom 69,72
-                KeyUp k
-                DelayRandom 39,42
+                for 3
+                    DelayRandom 39,42
+                    KeyDown k
+                    DelayRandom 69,72
+                    KeyUp k
+                    DelayRandom 39,42
+                Next
             End If
         End If
     Wend
