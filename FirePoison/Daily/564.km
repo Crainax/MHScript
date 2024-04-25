@@ -351,20 +351,99 @@ Sub Fun1
             End If
         End If
     Wend
-End Sub
 
     Call CloseBag()//先关掉背包防止出现问题
-
-    while 1>0 重新装上药水
+    while 1>0 //重新装上药水
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then //找到了标签
-            //移回药水
-            DelayRandom 39,42
-            MoveTo logoX+6,logoY+213
-            DelayRandom 39,42
-            LeftClick
-            DelayRandom 339,342
+            wJam = 0
+            while 1>0 //宠物的喝药
 
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\Item\PotionD.bmp",000000,1.00,0,intX,intY
+                if intX < 0 then //A图没找到就找B图
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\Item\Potion2.bmp",000000,1.00,0,intX,intY
+                End If
+                if intX >= 0 Then //两种药水找到其中一种
+                    wJam = 0
+                    while 1>0
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Option_Cancel.bmp",000000,1.00,0,tarX,tarY
+                        if tarX >= 0 Then
+                            DelayRandom 39,42
+                            KeyDown Esc
+                            DelayRandom 69,72
+                            KeyUp Esc
+                            DelayRandom 339,342
+                            break
+                        else
+                            wJam = wJam + 1
+                            if wJam > 4 then //重复的动作太多就暂停提醒
+                                wJam = 0
+                                for 3
+                                    Beep 100,200
+                                    Beep 200,200
+                                    Beep 300,200
+                                    Beep 400,200
+                                    Beep 500,200
+                                Next
+                                Pause
+                            else
+                                DelayRandom 200,300
+                                MoveTo intX,intY
+                                DelayRandom 200,300
+                                LeftClick
+                                DelayRandom 339,342
+
+                                MoveTo logoX+6,logoY+213
+                                LeftClick
+                                DelayRandom 339,342
+                                wJam = wJam + 1
+                            End If
+                        End If
+                    Wend
+
+                    break
+                else //没找到药水,就打开背包
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Tag_Coms.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then //当前背包标签:消耗品
+                        wJam = wJam + 1
+                        if wJam > 5 then //重复的动作太多就暂停提醒
+                            wJam = 0
+                            for 3
+                                Beep 100,200
+                                Beep 200,200
+                                Beep 300,200
+                                Beep 400,200
+                                Beep 500,200
+                            Next
+                            Pause
+                        else
+                            break
+                            wJam = wJam + 1
+                        End If
+                    else
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //切标签页
+                            DelayRandom 39,42
+                            MoveTo intX+100,intY+50
+                            DelayRandom 39,42
+                            KeyDown tab
+                            DelayRandom 69,72
+                            KeyUp tab
+                            DelayRandom 39,42
+                        else //打开背包
+                            for 3
+                                DelayRandom 39,42
+                                KeyDown i
+                                DelayRandom 69,72
+                                KeyUp i
+                                DelayRandom 39,42
+                            Next
+                        End If
+                    End If
+                End If
+            Wend
+
+            Call CloseBag()
             Call CloseEquit()
             break
         else
@@ -387,5 +466,6 @@ End Sub
             End If
         End If
     Wend
+End Sub
 
 Beep 200,500
