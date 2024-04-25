@@ -1,0 +1,391 @@
+[General]
+ScreenX=1440
+ScreenY=2560
+Times=1
+
+[Script]
+Dim x1,          x2,      y1,      y2     // 矩形区域:小地图采样点
+Dim x3,          y3,      xEnd,    yEnd   // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,        tarY,    Hooking, a      //目标
+Dim logoX,       logoY,   intX,    intY   //算目的地差值
+Dim alterX,      alterY,  facing          //备用地点,传送门脚步开关,传送门的面向
+Dim cY,          csTimes, csMax           //用这个东西判断角色是不是没有X或Y轴变化了
+Dim tolerance,   tolLoc,  yTolerance      //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim staticCount, staticX, staticY         //防卡计数器
+Dim wJam,        wJam2,   loopA,   loopB  //找图防卡,loopAB是循环数
+
+Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
+    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+
+    if intX < 0 Then //人物跑到了边界  处理一下
+        KeyDown Left
+        DelayRandom 200,250
+        KeyUp Left
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then //左移了还是没找到,就右移
+            KeyDown Right
+            DelayRandom 200,250
+            KeyUp Right
+            FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        End if
+    End if
+
+    intX = intX - logoX
+    intY = intY - logoY
+End Sub
+
+Sub AntiJam //一般跟随GetXY后用
+    if staticX ==  intX and staticY == intY then //如果相等就累加计数器
+        staticCount = staticCount + 1
+    else
+        staticX     = intX
+        staticY     = intY
+        staticCount = 0
+    End If
+    if staticCount >= 3 Then //
+
+        Beep 500,500
+        // 模拟从绳子跳走
+        DelayRandom 13,15
+        KeyDown Right
+        DelayRandom 21,22
+        KeyDown Space
+        DelayRandom 76,77
+        KeyUp Space
+        DelayRandom 44,45
+        KeyUp Right
+        DelayRandom 13,15
+        RestartScript //重启
+    End If
+End Sub
+
+Sub Move_A() //移动种类:创角
+    csTimes	= -1  //初始就启用指南针判断
+    csMax		= 3   //降落默认值为4
+    Hooking				= 0 //钩子初始是关的
+    while  1 > 0
+        Call GetXY()
+        if tolerance > 2 Then
+            tolLoc = tolerance
+        else  //速走的默认为4
+            tolLoc = 2
+        End If
+        If intX < (tarX-tolLoc) Then //向右走
+            KeyDown Right
+            a = (tarX - tolLoc - intX) * 52
+            if a < 52 then
+                a = 52
+            else if a > 1800 then
+                a = 1800
+            End If
+            Delay a
+            KeyUp Right
+        Else If intX > (tarX+tolLoc) Then //向左走
+            KeyDown Left
+            a = (intX - tarX - tolLoc) * 52
+            if a < 52 then
+                a = 52
+            else if a > 1800 then
+                a = 1800
+            End If
+            Delay a
+            KeyUp Left
+        else
+            yTolerance = 0
+            if tolerance < 4 Then //容忍度小于4还是要小碎步
+                for 10
+                    If intX < (tarX-tolerance) Then //向右小碎步
+                        KeyDown Right
+                        Delay (tarX - tolerance - intX) * 14
+                        KeyUp Right
+                    Else If intX > (tarX+tolerance) Then //向左小碎步
+                        KeyDown Left
+                        Delay (intX - tarX - tolerance) * 14
+                        KeyUp Left
+                    else
+                        Exit Sub
+                    End If
+
+                    Call GetXY() //更新人物坐标
+                Next
+                Exit Sub //次数到了直接结束
+            else //容忍度大于等于4可以直接结束
+                Exit Sub
+            End If
+        End If
+        Delay 5
+    Wend
+End Sub
+
+
+//分辨率初始化
+GetScreenResolution intX, intY
+x1     = intX - 1440
+y1     = intY - 950
+x2     = intX - 1000
+y2     = intY - 600
+x3     = intX - 640
+y3     = intY - 260
+xEnd   = intX
+yEnd   = intY
+alterX = 0            //备用地点
+alterY = 0            //备用地点
+facing = 0            //面向初始归0
+
+Sub EnterOK //清除一下OK对话框
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown Enter
+            DelayRandom 69,72
+            KeyUp Enter
+            DelayRandom 239,242
+        End If
+    Wend
+End Sub
+Sub CloseEquit //关闭装备栏
+    while 1>0 //关闭装备栏
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown u
+            DelayRandom 69,72
+            KeyUp u
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
+Sub CloseSkill //关闭技能窗口
+    while 1>0 //关闭技能窗口
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown k
+            DelayRandom 69,72
+            KeyUp k
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
+Sub CloseBag //关闭装备栏
+    while 1>0 //关闭背包
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown i
+            DelayRandom 69,72
+            KeyUp i
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
+
+Sub Loading //加载抽离函数
+    while 1>0 //等进入加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+    while 1>0 //等加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX > 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+End Sub
+Sub Loading2 //(鸟2垃圾地图)
+    while 1>0 //等进入加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+    while 1>0 //等加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX > 0 Then //加载完成了
+            break
+        else
+            DelayRandom 39,42
+            KeyDown Down
+            DelayRandom 39,42
+            KeyDown Space
+            DelayRandom 69,72
+            KeyUp Space
+            DelayRandom 39,42
+            KeyUp Down
+            DelayRandom 139,142
+        End If
+    Wend
+End Sub
+
+Sub Drop //扔掉道具抽离
+    If intX >= 0 Then
+        MoveTo intX,intY
+        DelayRandom 369,372
+        LeftClick
+        DelayRandom 339,342
+
+        MoveTo intX-210,intY
+        DelayRandom 369,372
+        LeftClick
+        DelayRandom 339,342
+
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+        If intX >= 0 Then
+            DelayRandom 39,42
+            KeyDown Enter
+            DelayRandom 69,72
+            KeyUp Enter
+            DelayRandom 239,242
+        End If
+    End If
+End Sub
+
+Sub AddSP //加点
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Mark.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //展开页面了吗
+            DelayRandom 139,142
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\SP.bmp",000000,1.00,0,intX,intY
+            If intX >= 0 Then //能不能加点
+                MoveTo intX,intY
+                LeftClick
+                DelayRandom 339,342
+
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                If intX >= 0 Then
+                    DelayRandom 39,42
+                    KeyDown Enter
+                    DelayRandom 69,72
+                    KeyUp Enter
+                    DelayRandom 339,342
+                End If
+            End If
+
+            while 1>0 //关闭技能窗口
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Mark.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then
+                    break
+                else
+                    DelayRandom 39,42
+                    KeyDown F5
+                    DelayRandom 69,72
+                    KeyUp F5
+                    DelayRandom 339,342
+                End If
+            Wend
+
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Extend.bmp",000000,1.00,0,intX,intY
+            if intX < 0 then //A图没找到就找B图
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Extend_On.bmp",000000,1.00,0,intX,intY
+            End If
+            if intX >= 0 Then
+                MoveTo intX-100,intY
+                LeftClick
+                DelayRandom 139,142
+            else
+                DelayRandom 39,42
+                KeyDown F5
+                DelayRandom 69,72
+                KeyUp F5
+                DelayRandom 39,42
+            End If
+
+
+        End If
+    Wend
+End Sub
+
+Sub Fun1
+
+    while 1>0 //打开装备栏的宠物界面
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //找到了标签
+            //移走药水
+            DelayRandom 39,42
+            MoveTo logoX+6,logoY+213
+            LeftClick
+            DelayRandom 339,342
+            MoveTo logoX+186,logoY+213
+            LeftClick
+            DelayRandom 339,342
+
+            Call CloseEquit()
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_Off.bmp",000000,1.00,0,intX,intY
+            if intX < 0 then //A图没找到就找B图
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_On.bmp",000000,1.00,0,intX,intY
+            End If
+            if intX >= 0 Then
+                DelayRandom 39,42
+                KeyDown tab
+                DelayRandom 69,72
+                KeyUp tab
+                DelayRandom 39,42
+            else
+                DelayRandom 39,42
+                KeyDown u
+                DelayRandom 69,72
+                KeyUp u
+                DelayRandom 39,42
+            End If
+        End If
+    Wend
+End Sub
+
+    Call CloseBag()//先关掉背包防止出现问题
+
+    while 1>0 重新装上药水
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //找到了标签
+            //移回药水
+            DelayRandom 39,42
+            MoveTo logoX+6,logoY+213
+            DelayRandom 39,42
+            LeftClick
+            DelayRandom 339,342
+
+            Call CloseEquit()
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_Off.bmp",000000,1.00,0,intX,intY
+            if intX < 0 then //A图没找到就找B图
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_On.bmp",000000,1.00,0,intX,intY
+            End If
+            if intX >= 0 Then
+                DelayRandom 39,42
+                KeyDown tab
+                DelayRandom 69,72
+                KeyUp tab
+                DelayRandom 39,42
+            else
+                DelayRandom 39,42
+                KeyDown u
+                DelayRandom 69,72
+                KeyUp u
+                DelayRandom 39,42
+            End If
+        End If
+    Wend
+
+Beep 200,500
