@@ -688,6 +688,46 @@ Sub PreMove6 //提前移动到特定地点 Ver2.0 提前移动先judge,不然怕重复移动
     End If
 End Sub
 
+Sub PreMoveBF //提前移动到特定地点 Ver2.0 提前移动先judge,不然怕重复移动
+    min = seedTime1 + 18 //先从种子开始排序
+    minType = 3
+    if min > ReleaseTime2 + 13 then //
+        min = ReleaseTime2 + 13
+        minType = 2
+    end if
+    if min > ReleaseTime1 + 13 then //
+        min = ReleaseTime1 + 13
+        minType = 1
+    end if
+    if min > fountainTime + 55 then //
+        min = fountainTime + 55
+        minType = 0
+    end if
+
+    if minType = 0 then
+        tarX = 18
+        tarY = 122
+        tolerance = 4
+    else if minType = 1 then
+        tarX = 36
+        tarY = 88
+        tolerance = 4
+    else if minType = 2 then
+        tarX       = -21
+        tarY       = 92
+        tolerance  = 4
+    else if minType = 3 then
+        tarX       = -21
+        tarY       = 118
+        yTolerance = 6
+        tolerance  = 6
+    End If
+    call GetXY()
+    if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
+        Call Navigate()
+    End If
+End Sub
+
 Sub Accept //同意加入组队
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Team\plus.bmp",000000,1.00,0,intX,intY	//找图
     If intX >= 0 Then
@@ -951,7 +991,123 @@ while 1 > 0
             End If
 
         else
-            MsgBox 不认识当前的地图
+            FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Dog1.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //僵尸1
+
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+                a = GetTimeStamp() - fountainTime
+                if a > 55 or intX >= 0 then //可以喷泉了
+                    tarX = 18
+                    tarY = 122
+                    tolerance = 4
+                    call GetXY()
+                    if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
+                        Call Navigate()
+                    End If
+                    DelayRandom 56,58
+                    KeyDown Right
+                    DelayRandom 62,68
+                    KeyUp Right
+                    DelayRandom 106,109
+                    KeyDown 1
+                    DelayRandom 194,196
+                    KeyUp 1
+                    DelayRandom 712,721
+                    fountainTime = GetTimeStamp()
+                    Call ReleaseRune() //定期解轮
+                End If
+
+                a = GetTimeStamp() - ReleaseTime1
+                if a > 13 then //施放1 Ver2.0
+                    tarX = 36
+                    tarY = 88
+                    tolerance = 4
+                    call GetXY()
+                    if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
+                        Call Navigate()
+                    End If
+                    DelayRandom 56,58
+                    KeyDown Right
+                    DelayRandom 91,93
+                    KeyUp Right
+                    DelayRandom 32,33
+                    KeyDown A
+                    DelayRandom 136,138
+                    KeyUp A
+                    DelayRandom 165,167
+                    KeyDown S
+                    DelayRandom 119,121
+                    KeyUp S
+                    DelayRandom 248,251
+                    KeyDown Right
+                    DelayRandom 106,108
+                    KeyUp Right
+                    DelayRandom 342,347
+                    ReleaseTime1 = GetTimeStamp()
+                End If
+
+                Call ReleaseRune() //定期解轮
+
+                a = GetTimeStamp() - ReleaseTime2
+                if a > 13 then //施放2 Ver2.0
+                    tarX       = -21
+                    tarY       = 92
+                    tolerance  = 4
+                    call GetXY()
+                    if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
+                        Call Navigate()
+                    End If
+                    DelayRandom 56,58
+                    KeyDown Left
+                    DelayRandom 91,93
+                    KeyUp Left
+                    DelayRandom 32,33
+                    KeyDown A
+                    DelayRandom 136,138
+                    KeyUp A
+                    DelayRandom 165,167
+                    KeyDown S
+                    DelayRandom 119,121
+                    KeyUp S
+                    DelayRandom 248,251
+                    KeyDown Left
+                    DelayRandom 106,108
+                    KeyUp Left
+                    DelayRandom 342,347
+                    ReleaseTime2 = GetTimeStamp()
+                else
+                    a = GetTimeStamp() - seedTime1
+                    if a > 18 then //可以放种子了 Ver2.0
+                        tarX       = -21
+                        tarY       = 118
+                        yTolerance = 6
+                        tolerance  = 6
+                        call GetXY()
+                        if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
+                            Call Navigate()
+                        End If
+                        DelayRandom 56,58
+                        KeyDown Down
+                        DelayRandom 95,98
+                        KeyDown `
+                        DelayRandom 251,259
+                        KeyUp `
+                        DelayRandom 119,123
+                        KeyUp Down
+                        DelayRandom 455,469
+                        seedTime1 = GetTimeStamp()
+                    else //前往牛马地方放技能
+                        Call PreMoveBF()
+                        DelayRandom 56,58
+                        Call SpellList()
+                        DelayRandom 155,169
+                    End If
+
+                End If
+
+            else
+                MsgBox 不认识当前的地图
+            End If
         End If
     End If
 
