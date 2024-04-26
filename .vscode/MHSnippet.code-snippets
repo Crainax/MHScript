@@ -198,4 +198,17 @@
 		],
 		"description": "防卡循环"
 	},
+	"提醒": {
+		"prefix": "beep",
+		"body": [
+			"for 3",
+			"    Beep 100,200",
+			"    Beep 200,200",
+			"    Beep 300,200",
+			"    Beep 400,200",
+			"    Beep 500,200",
+			"Next",
+		],
+		"description": "蜂鳴"
+	},
 }
