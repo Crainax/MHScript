@@ -189,7 +189,6 @@ Sub CloseBag //关闭装备栏
         End If
     Wend
 End Sub
-
 Sub Loading //加载抽离函数
     while 1>0 //等进入加载
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -208,33 +207,6 @@ Sub Loading //加载抽离函数
         End If
     Wend
 End Sub
-Sub Loading2 //(鸟2垃圾地图)
-    while 1>0 //等进入加载
-        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX <= 0 Then //加载完成了
-            break
-        else
-            DelayRandom 100,150
-        End If
-    Wend
-    while 1>0 //等加载
-        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX > 0 Then //加载完成了
-            break
-        else
-            DelayRandom 39,42
-            KeyDown Down
-            DelayRandom 39,42
-            KeyDown Space
-            DelayRandom 69,72
-            KeyUp Space
-            DelayRandom 39,42
-            KeyUp Down
-            DelayRandom 139,142
-        End If
-    Wend
-End Sub
-
 Sub Drop //扔掉道具抽离
     If intX >= 0 Then
         MoveTo intX,intY
@@ -257,7 +229,64 @@ Sub Drop //扔掉道具抽离
         End If
     End If
 End Sub
+Sub NewTeam //新建一个组队
+    while 1>0 //组个队(重新退队重组)
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Confirm.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            DelayRandom 39,42
+            KeyDown Enter
+            DelayRandom 69,72
+            KeyUp Enter
+            DelayRandom 39,42
 
+            while 1>0 //关闭窗口
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then
+                    break
+                else
+                    DelayRandom 39,42
+                    KeyDown F1
+                    DelayRandom 69,72
+                    KeyUp F1
+                    DelayRandom 39,42
+                End If
+            Wend
+
+            break
+        else
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //狂点组队位置
+                    MoveTo intX+15,intY+311
+                    LeftClick
+                    DelayRandom 139,142
+                    break
+                else
+                    while 1>0 //切到组队标签页
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp",000000,1.00,0,intX,intY
+                        if intX < 0 then //A图没找到就找B图
+                            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_Off.bmp",000000,1.00,0,intX,intY
+                        End If
+                        if intX >= 0 Then
+                            DelayRandom 39,42
+                            KeyDown Tab
+                            DelayRandom 69,72
+                            KeyUp Tab
+                            DelayRandom 39,42
+                            break
+                        else
+                            DelayRandom 39,42
+                            KeyDown F1
+                            DelayRandom 69,72
+                            KeyUp F1
+                            DelayRandom 39,42
+                        End If
+                    Wend
+                End If
+            Wend
+        End If
+    Wend
+End Sub
 Sub AddSP //加点
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Mark.bmp",000000,1.00,0,logoX,logoY
@@ -351,6 +380,8 @@ Sub Fun1
             End If
         End If
     Wend
+
+    Call NewTeam() //建个新组队
 
     Call CloseBag()//先关掉背包防止出现问题
     while 1>0 //重新装上药水
@@ -466,6 +497,94 @@ Sub Fun1
             End If
         End If
     Wend
+
+    while 1>0 //进入564
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag2_1_On.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            MoveTo intX+418,intY+488
+            LeftClick
+            DelayRandom 139,142
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag2_1_On.bmp",000000,1.00,0,intX,intY
+            if intX < 0 then //A图没找到就找B图
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag2_1_Off.bmp",000000,1.00,0,intX,intY
+            End If
+            if intX >= 0 Then
+                DelayRandom 39,42
+                KeyDown tab
+                DelayRandom 69,72
+                KeyUp tab
+                DelayRandom 39,42
+            else
+                DelayRandom 39,42
+                KeyDown [
+                DelayRandom 69,72
+                KeyUp [
+                DelayRandom 39,42
+            End If
+        End If
+    Wend
+
+
+    while 1>0 //该点击Ready了
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\564\Mark2A.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\564\Mark2A.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    MoveTo intX-160,intY+315
+                    LeftClick
+                    DelayRandom 139,142
+                else
+                    break
+                End If
+            Wend
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                MoveTo intX+45,intY-40
+                LeftClick
+                DelayRandom 139,142 //开始对话框
+
+                wJam = 0 //放在循环外面位置
+                while 1>0 //对话
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\EndChat.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        wJam = 0 //放在成功的位置
+                        DelayRandom 39,42
+                        KeyDown PageDown
+                        DelayRandom 69,72
+                        KeyUp PageDown
+                        DelayRandom 139,142
+                    else //累计5次没找到就是结束了
+                        wJam = wJam + 1  //循环内部
+                        if wJam > 4 then //结束
+                            break
+                        else
+                            Delay 200
+                            wJam = wJam + 1
+                        End If
+                        break
+                    End If
+                Wend
+
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\564\Mark1.bmp",000000,1.00,0,intX,intY
+                if intX > 0 Then //加载完成了
+                    MoveTo intX-326,intY+151
+                    LeftClick
+                    DelayRandom 139,142
+                else
+                    DelayRandom 100,150
+                End If
+            End If
+        End If
+    Wend
 End Sub
+
+    //-56的确认
+    //右小碎步
 
 Beep 200,500

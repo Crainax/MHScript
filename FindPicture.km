@@ -20,11 +20,11 @@ xEnd           = intX
 yEnd           = intY
 
 while 1 > 0
-    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Create\EndChat.bmp",000000,1.00,0,intX,intY
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\564\Mark1A.bmp",000000,1.00,0,intX,intY
     If intX >= 0 Then
-        MsgBox ’“µΩ[ & intX & , & intY & ]
+        MsgBox find & intX & , & intY & ]
     else
-        MsgBox "õ]’“µΩ"	 //
+        MsgBox "notFound"	 //
     End If
     Delay 300
 Wend
