@@ -133,20 +133,6 @@ alterX = 0            //备用地点
 alterY = 0            //备用地点
 facing = 0            //面向初始归0
 
-Sub EnterOK //清除一下OK对话框
-    while 1>0
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-        if intX < 0 Then
-            break
-        else
-            DelayRandom 39,42
-            KeyDown Enter
-            DelayRandom 69,72
-            KeyUp Enter
-            DelayRandom 239,242
-        End If
-    Wend
-End Sub
 Sub CloseEquit //关闭装备栏
     while 1>0 //关闭装备栏
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,intX,intY
@@ -157,20 +143,6 @@ Sub CloseEquit //关闭装备栏
             KeyDown u
             DelayRandom 69,72
             KeyUp u
-            DelayRandom 39,42
-        End If
-    Wend
-End Sub
-Sub CloseSkill //关闭技能窗口
-    while 1>0 //关闭技能窗口
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Skill\Mark.bmp",000000,1.00,0,intX,intY
-        if intX < 0 Then
-            break
-        else
-            DelayRandom 39,42
-            KeyDown k
-            DelayRandom 69,72
-            KeyUp k
             DelayRandom 39,42
         End If
     Wend
@@ -188,46 +160,6 @@ Sub CloseBag //关闭装备栏
             DelayRandom 39,42
         End If
     Wend
-End Sub
-Sub Loading //加载抽离函数
-    while 1>0 //等进入加载
-        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX <= 0 Then //加载完成了
-            break
-        else
-            DelayRandom 100,150
-        End If
-    Wend
-    while 1>0 //等加载
-        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX > 0 Then //加载完成了
-            break
-        else
-            DelayRandom 100,150
-        End If
-    Wend
-End Sub
-Sub Drop //扔掉道具抽离
-    If intX >= 0 Then
-        MoveTo intX,intY
-        DelayRandom 369,372
-        LeftClick
-        DelayRandom 339,342
-
-        MoveTo intX-210,intY
-        DelayRandom 369,372
-        LeftClick
-        DelayRandom 339,342
-
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-        If intX >= 0 Then
-            DelayRandom 39,42
-            KeyDown Enter
-            DelayRandom 69,72
-            KeyUp Enter
-            DelayRandom 239,242
-        End If
-    End If
 End Sub
 Sub NewTeam //新建一个组队
     while 1>0 //组个队(重新退队重组)
@@ -287,65 +219,28 @@ Sub NewTeam //新建一个组队
         End If
     Wend
 End Sub
-Sub AddSP //加点
-    while 1>0
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Mark.bmp",000000,1.00,0,logoX,logoY
-        if logoX >= 0 Then //展开页面了吗
-            DelayRandom 139,142
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\SP.bmp",000000,1.00,0,intX,intY
-            If intX >= 0 Then //能不能加点
-                MoveTo intX,intY
-                LeftClick
-                DelayRandom 339,342
-
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-                If intX >= 0 Then
-                    DelayRandom 39,42
-                    KeyDown Enter
-                    DelayRandom 69,72
-                    KeyUp Enter
-                    DelayRandom 339,342
-                End If
-            End If
-
-            while 1>0 //关闭技能窗口
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Mark.bmp",000000,1.00,0,intX,intY
-                if intX < 0 Then
-                    break
-                else
-                    DelayRandom 39,42
-                    KeyDown F5
-                    DelayRandom 69,72
-                    KeyUp F5
-                    DelayRandom 339,342
-                End If
-            Wend
-
-            break
-        else
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Extend.bmp",000000,1.00,0,intX,intY
-            if intX < 0 then //A图没找到就找B图
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F5\Extend_On.bmp",000000,1.00,0,intX,intY
-            End If
-            if intX >= 0 Then
-                MoveTo intX-100,intY
-                LeftClick
-                DelayRandom 139,142
-            else
-                DelayRandom 39,42
-                KeyDown F5
-                DelayRandom 69,72
-                KeyUp F5
-                DelayRandom 39,42
-            End If
-
-
-        End If
-    Wend
+Sub DoubleJump //二段跳
+    //回到了地图原点
+    for 2 //右跳2次,还不行就等向右自动走
+        DelayRandom 115,125
+        KeyDown Right
+        DelayRandom 250,251
+        KeyDown Space
+        DelayRandom 80,81
+        KeyUp Space
+        DelayRandom 30,31
+        KeyDown Space
+        DelayRandom 75,76
+        KeyUp Space
+        DelayRandom 85,86
+        KeyUp Right
+        DelayRandom 41,42
+        DelayRandom 313,315
+        DelayRandom 256,261
+    Next
 End Sub
 
-Sub Fun1
-End Sub
+Sub Before564 //开始前的准备
     while 1>0 //点掉右上角的龙脉
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Setting.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then //400,710  间隔33
@@ -436,6 +331,8 @@ End Sub
             End If
         End If
     Wend
+End Sub
+Sub Start564 //开始刷
 
 
     while 1>0 //该点击Ready了
@@ -539,7 +436,7 @@ End Sub
         End If
     Wend
 
-    while 1>0 //回到首页,开始回老地图
+    while 1>0 //回到首页
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\MiniMark.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
             DelayRandom 100,150
@@ -547,6 +444,9 @@ End Sub
             break
         End If
     Wend
+
+End Sub
+Sub After564 //结束回城
 
     while 1>0 //回到老地图成功
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -676,30 +576,16 @@ End Sub
             End If
         End If
     Wend
-//End Sub
-
-
-
-Sub Fun2
-
-    //回到了地图原点
-    for 2 //右跳2次,还不行就等向右自动走
-        DelayRandom 115,125
-        KeyDown Right
-        DelayRandom 250,251
-        KeyDown Space
-        DelayRandom 80,81
-        KeyUp Space
-        DelayRandom 30,31
-        KeyDown Space
-        DelayRandom 75,76
-        KeyUp Space
-        DelayRandom 85,86
-        KeyUp Right
-        DelayRandom 41,42
-        DelayRandom 313,315
-        DelayRandom 256,261
-    Next
-
 End Sub
+
+Call Before564() //前置
+Call Start564() //前置
+Call DoubleJump() //二段跳
+Call Start564() //前置
+Call DoubleJump() //二段跳
+Call Start564() //前置
+Call After564() //前置
+
+
+
 Beep 200,500
