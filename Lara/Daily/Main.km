@@ -355,7 +355,7 @@ Sub Gugu //菇菇神社
 
 End Sub
 
-Sub QuestTake //接任务
+Sub Quest //接任务和交任务一体
     //接每日任务
     wJam = 0 //放在循环外面位置
     while 1>0
@@ -393,6 +393,7 @@ Sub QuestTake //接任务
     Wend
 End Sub
 
+Call Quest()
 Call Gugu()
 
 Beep 200,500

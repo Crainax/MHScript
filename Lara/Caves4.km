@@ -19,6 +19,24 @@ Dim staticCount,  staticX,        staticY              //防卡计数器
 Dim SavedX,       SavedY,         SavedTor, SavedTorY  //保存一下临时处理的XY
 Dim min,          minType                              //预移动
 
+Sub Loading //加载地图
+    while 1>0 //等进入加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+    while 1>0 //等加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX > 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+End Sub
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
@@ -39,7 +57,6 @@ Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     intX = intX - logoX
     intY = intY - logoY
 End Sub
-
 Sub AntiJam //一般跟随GetXY后用
     if staticX ==  intX and staticY == intY then //如果相等就累加计数器
         staticCount = staticCount + 1
@@ -669,6 +686,74 @@ Sub PreMove //提前移动到特定地点 Ver2.0 提前移动先judge,不然怕重复移动
     End If
 End Sub
 
+Sub CheckMap //核对地图
+    while 1>0 //传送地图
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //找到人影了
+            a = 0
+            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
+            FindPic x1,y1,x2,y2,"E:\MHImg\Teleport.bmp",000000,1.00,0,intX,intY	//找图
+            intX = intX - logoX
+            intY = intY - logoY
+            if intX == -123 and intY == 109 then //判断地图是不是要练的地图
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\AUT6.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 then
+                    a = 1
+                End If
+            End If
+
+            if a == 0 then //不在洞4,传送吧
+                while 1>0
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\Mark.bmp",000000,1.00,0,logoX,logoY
+                    if logoX >= 0 Then //瞬移到
+                        MoveTo logoX-284,logoY+1
+                        LeftClick
+                        DelayRandom 139,142
+                        MoveTo logoX-354,logoY+38 //选择格兰蒂斯
+                        LeftClick
+                        DelayRandom 139,142
+                        MoveTo logoX-142,logoY+1
+                        LeftClick
+                        DelayRandom 139,142
+
+                        break
+                    else
+                        DelayRandom 39,42
+                        KeyDown m
+                        DelayRandom 69,72
+                        KeyUp m
+                        DelayRandom 39,42
+                    End If
+                Wend
+
+                MoveTo logoX-225,logoY+360 //选择卡尔西温
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX+147,logoY+55 //选择地图洞4
+                LeftDoubleClick
+                DelayRandom 139,142
+                MoveTo logoX-50,logoY-50
+                DelayRandom 239,242
+
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                If intX >= 0 Then
+                    DelayRandom 39,42
+                    KeyDown Enter
+                    DelayRandom 69,72
+                    KeyUp Enter
+                    DelayRandom 39,42
+                End If
+
+                Call Loading()
+            End If
+
+            break
+        else //无限循环:找人的位置
+            Delay 100
+        End If
+    Wend
+End Sub
+
 //分辨率初始化
 GetScreenResolution intX, intY
 x1             = intX - 1440
@@ -688,6 +773,7 @@ fountainTime   = 0               //上次喷泉的时间
 RuneCooldown   = 0               //解轮冷却
 stoneSteleTime = 0               //上次轮回的时间
 yTolerance     = 0               //初始化
+Call CheckMap() //核对一下地图是否正确,不对自动传送
 while 1 > 0
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
     a = GetTimeStamp() - fountainTime
