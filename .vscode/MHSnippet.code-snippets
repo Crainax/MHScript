@@ -193,7 +193,6 @@
 			"    //todo:多次失败",
 			"else",
 			"    Delay 200",
-			"    wJam = wJam + 1",
 			"End If",
 		],
 		"description": "防卡循环"
