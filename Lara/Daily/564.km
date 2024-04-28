@@ -219,8 +219,9 @@ Sub NewTeam //新建一个组队
         End If
     Wend
 End Sub
-Sub DoubleJump //二段跳
+Sub DoubleJump //三瞬
     //回到了地图原点
+    Delay 500
     for 2 //右跳2次,还不行就等向右自动走
         DelayRandom 115,125
         KeyDown Right
@@ -238,6 +239,25 @@ Sub DoubleJump //二段跳
         DelayRandom 313,315
         DelayRandom 256,261
     Next
+End Sub
+Sub SingleJump //二瞬
+    //回到了地图原点
+    Delay 500
+        DelayRandom 115,125
+        KeyDown Right
+        DelayRandom 250,251
+        KeyDown Space
+        DelayRandom 80,81
+        KeyUp Space
+        DelayRandom 30,31
+        KeyDown Space
+        DelayRandom 75,76
+        KeyUp Space
+        DelayRandom 85,86
+        KeyUp Right
+        DelayRandom 41,42
+        DelayRandom 313,315
+        DelayRandom 256,261
 End Sub
 
 Sub Before564 //开始前的准备
@@ -418,7 +438,7 @@ Sub Start564 //开始刷
             DelayRandom 100,150
         End If
     Wend
-    loopA = 0 //循环,当前是右跳还是小碎步
+    Call SingleJump() //小跳一下
     while 1>0 //不断
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\MiniMark.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
