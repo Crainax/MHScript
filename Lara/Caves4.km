@@ -686,6 +686,38 @@ Sub PreMove //提前移动到特定地点 Ver2.0 提前移动先judge,不然怕重复移动
     End If
 End Sub
 
+Sub Channel //有人就换频
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Player.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then //地图没人,直接开刷
+            Delay 200
+            break
+        else //切频
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Switch.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    KeyDown Right
+                    DelayRandom 69,72
+                    KeyUp Right
+                    DelayRandom 539,542
+                    KeyDown Enter
+                    DelayRandom 69,72
+                    KeyUp Enter
+                    DelayRandom 339,342
+                    Call Loading() //等加载
+                    DelayRandom 239,242
+                    break
+                else
+                    DelayRandom 39,42
+                    KeyDown Insert
+                    DelayRandom 69,72
+                    KeyUp Insert
+                    DelayRandom 39,42
+                End If
+            Wend
+        End If
+    Wend
+End Sub
 Sub CheckMap //核对地图
     while 1>0 //传送地图
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -745,6 +777,7 @@ Sub CheckMap //核对地图
                 End If
 
                 Call Loading()
+                Call Channel()
             End If
 
             break

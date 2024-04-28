@@ -23,6 +23,24 @@ Sub on_timer1 //扔技能CD2秒
     SpellOK = 1
 EndSub
 
+Sub Loading //加载地图
+    while 1>0 //等进入加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+    while 1>0 //等加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX > 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+End Sub
 Sub Attack //放技能,然后再瞬移(注意要先获取XY再放招)  Ver2.4 修复问题和终极无限卡着不放招
     a = GetTimeStamp() - InfiTime
     if a > 110 then //该补充终极无限了
@@ -707,6 +725,107 @@ Sub ReleaseRune //定期解轮 ver2.2 加入蘑菇公主侦测
     End If
 End Sub
 
+Sub Channel //有人就换频
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Player.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then //地图没人,直接开刷
+            Delay 200
+            break
+        else //切频
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Switch.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    KeyDown Right
+                    DelayRandom 69,72
+                    KeyUp Right
+                    DelayRandom 539,542
+                    KeyDown Enter
+                    DelayRandom 69,72
+                    KeyUp Enter
+                    DelayRandom 339,342
+                    Call Loading() //等加载
+                    DelayRandom 239,242
+                    break
+                else
+                    DelayRandom 39,42
+                    KeyDown Insert
+                    DelayRandom 69,72
+                    KeyUp Insert
+                    DelayRandom 39,42
+                End If
+            Wend
+        End If
+    Wend
+End Sub
+Sub CheckMap //核对地图
+    while 1>0 //传送地图
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //找到人影了
+            a = 0
+            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
+            FindPic x1,y1,x2,y2,"E:\MHImg\Teleport.bmp",000000,1.00,0,intX,intY	//找图
+            intX = intX - logoX
+            intY = intY - logoY
+            if intX == -123 and intY == 109 then //判断地图是不是要练的地图
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\AUT6.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 then
+                    a = 1
+                End If
+            End If
+
+            if a == 0 then //不在洞3,传送吧
+                while 1>0
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\Mark.bmp",000000,1.00,0,logoX,logoY
+                    if logoX >= 0 Then //瞬移到
+                        MoveTo logoX-284,logoY+1
+                        LeftClick
+                        DelayRandom 139,142
+                        MoveTo logoX-354,logoY+38 //选择格兰蒂斯
+                        LeftClick
+                        DelayRandom 139,142
+                        MoveTo logoX-142,logoY+1
+                        LeftClick
+                        DelayRandom 139,142
+
+                        break
+                    else
+                        DelayRandom 39,42
+                        KeyDown m
+                        DelayRandom 69,72
+                        KeyUp m
+                        DelayRandom 39,42
+                    End If
+                Wend
+
+                MoveTo logoX-225,logoY+360 //选择卡尔西温
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX+91,logoY+61 //选择地图洞4
+                LeftDoubleClick
+                DelayRandom 139,142
+                MoveTo logoX-50,logoY-50
+                DelayRandom 239,242
+
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                If intX >= 0 Then
+                    DelayRandom 39,42
+                    KeyDown Enter
+                    DelayRandom 69,72
+                    KeyUp Enter
+                    DelayRandom 39,42
+                End If
+
+                Call Loading()
+                Call Channel()
+            End If
+
+            break
+        else //无限循环:找人的位置
+            Delay 100
+        End If
+    Wend
+End Sub
+
 //Main函数
 GetScreenResolution intX, intY
 x1             = intX - 1440
@@ -730,6 +849,7 @@ pick1          = GetTimeStamp()        //捡钱中间
 pick2          = GetTimeStamp()        //捡钱中间
 yTolerance     = 0                     //初始化
 Timer          1, 1, 1000              //无限循环
+Call CheckMap() //核对一下地图是否正确,不对自动传送
 while 1 > 0
     a = GetTimeStamp() - stoneSteleTime
     if a > 570 then //可以放轮了
