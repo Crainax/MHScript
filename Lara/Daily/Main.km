@@ -393,6 +393,16 @@ Sub Quest //接任务和交任务一体
     Wend
 End Sub
 
+
+Call Quest()
+for 3
+    Beep 400,200
+    Beep 100,200
+    Beep 200,200
+    Beep 300,200
+    Beep 500,200
+Next
+Pause
 Call Quest()
 Call Gugu()
 
