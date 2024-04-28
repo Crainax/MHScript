@@ -240,25 +240,6 @@ Sub DoubleJump //三瞬
         DelayRandom 256,261
     Next
 End Sub
-Sub SingleJump //二瞬
-    //回到了地图原点
-    Delay 500
-        DelayRandom 115,125
-        KeyDown Right
-        DelayRandom 250,251
-        KeyDown Space
-        DelayRandom 80,81
-        KeyUp Space
-        DelayRandom 30,31
-        KeyDown Space
-        DelayRandom 75,76
-        KeyUp Space
-        DelayRandom 85,86
-        KeyUp Right
-        DelayRandom 41,42
-        DelayRandom 313,315
-        DelayRandom 256,261
-End Sub
 
 Sub Before564 //开始前的准备
     while 1>0 //点掉右上角的龙脉
@@ -438,14 +419,14 @@ Sub Start564 //开始刷
             DelayRandom 100,150
         End If
     Wend
-    Call SingleJump() //小跳一下
+    Call DoubleJump() //小跳一下
     while 1>0 //不断
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\MiniMark.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
             DelayRandom 39,42
-            KeyDown Right
+            KeyDown Left
             DelayRandom 69,72
-            KeyUp Right
+            KeyUp Left
             DelayRandom 39,42
             KeyDown Up
             DelayRandom 69,72
