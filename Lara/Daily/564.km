@@ -248,7 +248,7 @@ Sub Before564 //开始前的准备
             loopA = 0
             for 6
                 DelayRandom 69,72
-                MoveTo logoX+400 - 33*loopA,logoY-710
+                MoveTo logoX+400 - 33*loopA,logoY-699
                 DelayRandom 69,72
                 FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Skill\F12.bmp",000000,1.00,0,intX,intY
                 If intX >= 0 Then
