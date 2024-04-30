@@ -89,8 +89,13 @@ Sub Channel //有人就换频 ver2.1防止动作没结束就转的OK確定
     Wend
 End Sub
 
+Sub on_timer4 //查红点
+                    if GetTimeStamp() % 120 < 90 then //向左
 
-Call Channel()
+EndSub
+
+
+Timer          4, 1, 1000              //检测地图红点
 
 for 3
     Beep 100,200
