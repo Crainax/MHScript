@@ -18,7 +18,6 @@ Dim staticCount,  staticX,      staticY              //防卡计数器
 Dim SavedX,       SavedY,       SavedTor, SavedTorY  //保存一下临时处理的XY
 Dim min,          minType,      state                //预移动
 Dim wJam,         wJam2,        loopA,    loopB      //找图防卡,loopAB是循环数
-Dim Times //四转同地图的判断
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -2721,7 +2720,6 @@ Sub Teleport //换地图(Caps键亮)
                     else
                         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Bird2.bmp",000000,1.00,0,intX,intY
                         If intX >= 0 Then //去四转
-                            if Times == 0 then //去四转
                                 Call 4Job() //四转
                                 Call AddSP() //加点
                                 Beep 500,100
@@ -2761,10 +2759,10 @@ Sub Teleport //换地图(Caps键亮)
                                         End If
                                     End If
                                 Wend
-
                                 Call Loading2()
-                                Times = 1 //下次就是去狗了
-                            else
+                        else //还是得去勇士
+                            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Warrior.bmp",000000,1.00,0,intX,intY
+                            If intX >= 0 Then //去四转
                                 Call DogPre() //加点
                                 Call AddSP() //加点
                                 Call OpenMap()
@@ -2773,18 +2771,17 @@ Sub Teleport //换地图(Caps键亮)
                                 DelayRandom 139,142
                                 MoveTo logoX+85,logoY+285
                                 Call AfterMap()
-                                Times = 0 //下次就是去狗了
-                            End If
-                        else
-                            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Dog1.bmp",000000,1.00,0,intX,intY
-                            If intX >= 0 Then //去狗
-                                Call 140Back() //归还
-                                Beep 200,500
-                                Beep 300,500
-                                Beep 400,500
-                                Pause
-                            else //小狗后面的地图了
-                                MsgBox 传送之不认识现在的图
+                            else
+                                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Dog1.bmp",000000,1.00,0,intX,intY
+                                If intX >= 0 Then //去狗
+                                    Call 140Back() //归还
+                                    Beep 200,500
+                                    Beep 300,500
+                                    Beep 400,500
+                                    Pause
+                                else //小狗后面的地图了
+                                    MsgBox 传送之不认识现在的图
+                                End If
                             End If
                         End If
                     End If
@@ -2813,7 +2810,6 @@ state        = 0            //轮换
 fountainTime = 0            //上次喷泉的时间
 RuneCooldown = 0            //解轮冷却
 yTolerance   = 0            //初始化
-Times        = 0            //初始化四转判断
 while 1 > 0
     if GetLED(1) == 1 then //换地图
         Call Teleport() //传送到下个地图(大写亮时)
