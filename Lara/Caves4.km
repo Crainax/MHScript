@@ -792,23 +792,24 @@ Sub on_timer4 //查红点
 EndSub
 //分辨率初始化
 GetScreenResolution intX, intY
-x1             = intX - 1440
-y1             = intY - 950
-x2             = intX - 1140
-y2             = intY - 600
-x3             = intX - 640
-y3             = intY - 260
-xEnd           = intX
-yEnd           = intY
-ReleaseTime1   = 0               //施放冷却1
-ReleaseTime2   = 0               //施放冷却2
-ReleaseTime3   = 0               //施放冷却3
-seedTime1      = 0               //上次种子的时间
-pick1          = GetTimeStamp()  //捡钱时间
-fountainTime   = 0               //上次喷泉的时间
-RuneCooldown   = 0               //解轮冷却
-stoneTime = 0               //上次轮回的时间
-yTolerance     = 0               //初始化
+x1           = intX - 1440
+y1           = intY - 950
+x2           = intX - 1140
+y2           = intY - 600
+x3           = intX - 640
+y3           = intY - 260
+xEnd         = intX
+yEnd         = intY
+ReleaseTime1 = 0               //施放冷却1
+ReleaseTime2 = 0               //施放冷却2
+ReleaseTime3 = 0               //施放冷却3
+seedTime1    = 0               //上次种子的时间
+pick1        = GetTimeStamp()  //捡钱时间
+fountainTime = 0               //上次喷泉的时间
+RuneCooldown = 0               //解轮冷却
+stoneTime    = 0               //上次轮回的时间
+red          = 0               //上次轮回的时间
+yTolerance   = 0               //初始化
 Call           CheckMap()        //核对一下地图是否正确,不对自动传送
 Timer          4, 1, 1000        //检测地图红点
 while 1 > 0
