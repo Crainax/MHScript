@@ -17,7 +17,8 @@ Dim pick1,        pick2                              //捡钱
 Dim tolerance,    tolLoc,       yTolerance           //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim staticCount,  staticX,      staticY              //防卡计数器
 Dim SavedX,       SavedY,       SavedTor, SavedTorY  //保存一下临时处理的XY
-Dim currentState                                     //状态阶段
+Dim wJam,         red                                //牛马
+
 
 Sub on_timer1 //扔技能CD2秒
     SpellOK = 1
