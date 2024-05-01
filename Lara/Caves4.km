@@ -4,19 +4,19 @@ ScreenY=1440
 Times=0
 
 [Script]
-Dim x1,           x2,             y1,       y2         // 矩形区域:小地图采样点
-Dim x3,           y3,             xEnd,     yEnd       // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,         tarY,           cY                   //目标
-Dim logoX,        logoY,          intX,     intY       //算目的地差值
-Dim alterX,       alterY,         facing               //备用地点,传送门脚步开关
-Dim tolerance,    tolLoc,         yTolerance           //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim ReleaseTime1, ReleaseTime2,   ReleaseTime3         //各种冷却
-Dim a,            stoneSteleTime, fountainTime         //各种冷却
-Dim RuneCooldown, seedTime1,      WGTime               //各种冷却
-Dim pick1                                              //捡钱冷卻
-Dim staticCount,  staticX,        staticY              //防卡计数器
-Dim SavedX,       SavedY,         SavedTor, SavedTorY  //保存一下临时处理的XY
-Dim min,          minType                              //预移动
+Dim x1,           x2,           y1,       y2         // 矩形区域:小地图采样点
+Dim x3,           y3,           xEnd,     yEnd       // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,         tarY,         cY                   //目标
+Dim logoX,        logoY,        intX,     intY       //算目的地差值
+Dim alterX,       alterY,       facing               //备用地点,传送门脚步开关
+Dim tolerance,    tolLoc,       yTolerance           //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim ReleaseTime1, ReleaseTime2, ReleaseTime3         //各种冷却
+Dim a,            stoneTime,    fountainTime         //各种冷却
+Dim RuneCooldown, seedTime1,    WGTime               //各种冷却
+Dim pick1                                            //捡钱冷卻
+Dim staticCount,  staticX,      staticY              //防卡计数器
+Dim SavedX,       SavedY,       SavedTor, SavedTorY  //保存一下临时处理的XY
+Dim min,          minType,      wJam,     red        //预移动
 
 Sub Loading //加载地图
     while 1>0 //等进入加载
@@ -768,6 +768,28 @@ Sub CheckMap //核对地图
         End If
     Wend
 End Sub
+Sub on_timer4 //查红点
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Player.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then //地图里有其他玩家
+        red = red + 1
+    End If
+    if red > 0 then //红点存在过才会一直累计
+        if red % 10 == 0 then //其他玩家在地图逗留超过10秒就提醒
+            Beep 261,100
+            Beep 261,100
+            Beep 392,100
+            Beep 392,100
+            Beep 440,100
+            Beep 440,100
+            Beep 392,100
+        End If
+        red = red + 100
+    End If
+    if red >= 6000 then //每1分钟重置一次计数
+        red = 0
+    End If
+    Timer          4, 1, 1000              //检测地图红点
+EndSub
 //分辨率初始化
 GetScreenResolution intX, intY
 x1             = intX - 1440
@@ -785,9 +807,10 @@ seedTime1      = 0               //上次种子的时间
 pick1          = GetTimeStamp()  //捡钱时间
 fountainTime   = 0               //上次喷泉的时间
 RuneCooldown   = 0               //解轮冷却
-stoneSteleTime = 0               //上次轮回的时间
+stoneTime = 0               //上次轮回的时间
 yTolerance     = 0               //初始化
-Call CheckMap() //核对一下地图是否正确,不对自动传送
+Call           CheckMap()        //核对一下地图是否正确,不对自动传送
+Timer          4, 1, 1000        //检测地图红点
 while 1 > 0
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
     a = GetTimeStamp() - fountainTime
@@ -846,14 +869,14 @@ while 1 > 0
         Call ReleaseRune() //定期解轮
     End If
 
-    a = GetTimeStamp() - stoneSteleTime
+    a = GetTimeStamp() - stoneTime
     if a > 570 then //可以放轮了
         DelayRandom 56,58
         KeyDown O
         DelayRandom 137,139
         KeyUp O
         DelayRandom 736,747
-        stoneSteleTime = GetTimeStamp()
+        stoneTime = GetTimeStamp()
     End If
 
     a = GetTimeStamp() - ReleaseTime1

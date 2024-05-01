@@ -11,96 +11,48 @@ Dim logoX,       logoY,   intX,  intY   //算目的地差值
 Dim alterX,      alterY,  facing        //备用地点,传送门脚步开关,传送门的面向
 Dim tolerance,   tolLoc,  yTolerance    //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim staticCount, staticX, staticY       //防卡计数器
+Dim red                                 //红点侦测
 Dim wJam,        wJam2,   loopA, loopB  //找图防卡,loopAB是循环数
 
-Sub Loading //加载地图
-    while 1>0 //等进入加载
-        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX <= 0 Then //加载完成了
-            break
-        else
-            DelayRandom 100,150
-        End If
-    Wend
-    while 1>0 //等加载
-        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX > 0 Then //加载完成了
-            break
-        else
-            DelayRandom 100,150
-        End If
-    Wend
-End Sub
 
 GetScreenResolution intX, intY
-x1     = intX - 1440
-y1     = intY - 950
-x2     = intX - 1000
-y2     = intY - 600
-x3     = intX - 640
-y3     = intY - 260
-xEnd   = intX
-yEnd   = intY
-
-Sub Channel //有人就换频 ver2.1防止动作没结束就转的OK確定
-    wJam = 0 //放在循环外面位置
-    while 1>0
-        FindPic x1,y1,x2,y2,"E:\MHImg\Player.bmp",000000,1.00,0,intX,intY
-        if intX < 0 Then //地图没人(5次判断防人物重合)
-            wJam = wJam + 1  //循环内部
-            if wJam > 5 then //多次没找到人就确实没人
-                break
-            else
-                Delay 200
-            End If
-        else //有找到人,直接换频
-            wJam = 0 //放在成功的位置
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Switch.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then
-
-                KeyDown Right
-                DelayRandom 69,72
-                KeyUp Right
-                DelayRandom 539,542
-                KeyDown Enter
-                DelayRandom 69,72
-                KeyUp Enter
-                DelayRandom 339,342
-
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-                if intX < 0 Then //没有OK就退出去
-                    Call Loading() //等加载
-                    DelayRandom 239,242
-                else
-                    DelayRandom 39,42
-                    KeyDown Esc
-                    DelayRandom 69,72
-                    KeyUp Esc
-                    DelayRandom 239,242
-                End If
-            else
-                DelayRandom 39,42
-                KeyDown Insert
-                DelayRandom 69,72
-                KeyUp Insert
-                DelayRandom 39,42
-            End If
-        End If
-    Wend
-End Sub
+x1   = intX - 1440
+y1   = intY - 950
+x2   = intX - 1000
+y2   = intY - 600
+x3   = intX - 640
+y3   = intY - 260
+xEnd = intX
+yEnd = intY
+red  = 0            //红点侦测初始化
 
 Sub on_timer4 //查红点
-                    if GetTimeStamp() % 120 < 90 then //向左
-
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Player.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then //地图里有其他玩家
+        red = red + 1
+    End If
+    if red > 0 then //红点存在过才会一直累计
+        if red % 10 == 0 then //其他玩家在地图逗留超过10秒就提醒
+            Beep 261,100
+            Beep 261,100
+            Beep 392,100
+            Beep 392,100
+            Beep 440,100
+            Beep 440,100
+            Beep 392,100
+        End If
+        red = red + 100
+    End If
+    if red >= 6000 then //每1分钟重置一次计数
+        red = 0
+    End If
+    TracePrint 当前[ & GetTimeStamp() & ]值[ & red & ]
+    Timer          4, 1, 1000              //检测地图红点
 EndSub
 
 
 Timer          4, 1, 1000              //检测地图红点
+while 1>0
+    Delay 100
+Wend
 
-for 3
-    Beep 100,200
-    Beep 200,200
-    Beep 300,200
-    Beep 400,200
-    Beep 500,200
-Next
