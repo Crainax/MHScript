@@ -4,20 +4,20 @@ ScreenY=1440
 Times=0
 
 [Script]
-Dim x1,             x2,           y1,       y2         // 矩形区域:小地图采样点
-Dim x3,             y3,           xEnd,     yEnd       // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,           tarY,         SpellOK              //目标
-Dim alterX,         alterY,       stuckTimes           //备用地点,传送门脚步开关
-Dim cX,             cY,           csTimes              //用这个东西判断角色是不是没有X或Y轴变化了
-Dim logoX,          logoY,        intX,     intY       //寻位置相关:当前地点
-Dim InfiTime,       BarlogTime,   a,        facing     //放技能时间冷却
-Dim stoneSteleTime, fountainTime, RuneCooldown         //各种时间间隔
-Dim currentState,   AuraTime,     DTime                //技能间隔
-Dim pick1,          pick2                              //捡钱
-Dim tolerance,      tolLoc,       yTolerance           //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim staticCount,    staticX,      staticY              //防卡计数器
-Dim SavedX,         SavedY,       SavedTor, SavedTorY  //保存一下临时处理的XY
-Dim currentState                                       //状态阶段
+Dim x1,           x2,           y1,       y2         // 矩形区域:小地图采样点
+Dim x3,           y3,           xEnd,     yEnd       // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,         tarY,         SpellOK,  tempX      //目标
+Dim alterX,       alterY,       stuckTimes           //备用地点,传送门脚步开关
+Dim cX,           cY,           csTimes              //用这个东西判断角色是不是没有X或Y轴变化了
+Dim logoX,        logoY,        intX,     intY       //寻位置相关:当前地点
+Dim InfiTime,     BarlogTime,   a,        facing     //放技能时间冷却
+Dim stoneTime,    fountainTime, RuneCooldown         //各种时间间隔
+Dim currentState, AuraTime,     DTime                //技能间隔
+Dim pick1,        pick2                              //捡钱
+Dim tolerance,    tolLoc,       yTolerance           //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim staticCount,  staticX,      staticY              //防卡计数器
+Dim SavedX,       SavedY,       SavedTor, SavedTorY  //保存一下临时处理的XY
+Dim currentState                                     //状态阶段
 
 Sub on_timer1 //扔技能CD2秒
     SpellOK = 1
@@ -839,6 +839,28 @@ Sub CheckMap //核对地图
         End If
     Wend
 End Sub
+Sub on_timer4 //查红点
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Player.bmp",000000,1.00,0,tempX,a
+    if tempX >= 0 Then //地图里有其他玩家
+        red = red + 1
+    End If
+    if red > 0 then //红点存在过才会一直累计
+        if red % 10 == 0 then //其他玩家在地图逗留超过10秒就提醒
+            Beep 261,100
+            Beep 261,100
+            Beep 392,100
+            Beep 392,100
+            Beep 440,100
+            Beep 440,100
+            Beep 392,100
+        End If
+        red = red + 100
+    End If
+    if red >= 6000 then //每1分钟重置一次计数
+        red = 0
+    End If
+    Timer          4, 1, 1000              //检测地图红点
+EndSub
 
 //Main函数
 GetScreenResolution intX, intY
@@ -854,7 +876,7 @@ InfiTime       = GetTimeStamp() - 110  //上次终极无限的时间
 BarlogTime     = 0                     //上次召炎魔的时间
 SpellOK        = 1                     //技能冷却
 RuneCooldown   = 0                     //解轮时间
-stoneSteleTime = 0                     //放轮时间
+stoneTime = 0                     //放轮时间
 currentState   = 0                     //初始状态不要去放喷泉
 fountainTime   = 0                     //喷泉时间
 AuraTime       = 0                     //领域时间
@@ -863,16 +885,17 @@ pick1          = GetTimeStamp()        //捡钱中间
 pick2          = GetTimeStamp()        //捡钱中间
 yTolerance     = 0                     //初始化
 Timer          1, 1, 1000              //无限循环
+Timer          4, 1, 1000              //无限循环
 Call CheckMap() //核对一下地图是否正确,不对自动传送
 while 1 > 0
-    a = GetTimeStamp() - stoneSteleTime
+    a = GetTimeStamp() - stoneTime
     if a > 570 then //可以放轮了
         DelayRandom 356,358
         KeyDown O
         DelayRandom 337,339
         KeyUp O
         DelayRandom 736,747
-        stoneSteleTime = GetTimeStamp()
+        stoneTime = GetTimeStamp()
     End If
 
 
