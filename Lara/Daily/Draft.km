@@ -132,54 +132,6 @@ alterX = 0            //备用地点
 alterY = 0            //备用地点
 facing = 0            //面向初始归0
 
-Sub CloseEquit //关闭装备栏
-    while 1>0 //关闭装备栏
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,intX,intY
-        if intX < 0 Then
-            break
-        else
-            DelayRandom 39,42
-            KeyDown u
-            DelayRandom 69,72
-            KeyUp u
-            DelayRandom 39,42
-        End If
-    Wend
-End Sub
-Sub CloseBag //关闭装备栏
-    while 1>0 //关闭背包
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
-        if intX < 0 Then
-            break
-        else
-            DelayRandom 39,42
-            KeyDown i
-            DelayRandom 69,72
-            KeyUp i
-            DelayRandom 39,42
-        End If
-    Wend
-End Sub
-Sub DoubleJump //二段跳
-    //回到了地图原点
-    for 2 //右跳2次,还不行就等向右自动走
-        DelayRandom 115,125
-        KeyDown Right
-        DelayRandom 250,251
-        KeyDown Space
-        DelayRandom 80,81
-        KeyUp Space
-        DelayRandom 30,31
-        KeyDown Space
-        DelayRandom 75,76
-        KeyUp Space
-        DelayRandom 85,86
-        KeyUp Right
-        DelayRandom 41,42
-        DelayRandom 313,315
-        DelayRandom 256,261
-    Next
-End Sub
 Sub Loading //加载地图
     while 1>0 //等进入加载
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -198,75 +150,127 @@ Sub Loading //加载地图
         End If
     Wend
 End Sub
-
-Sub Fun1
-    while 1>0 //传送地图
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then //找到人影了
-            a = 0
-            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
-            FindPic x1,y1,x2,y2,"E:\MHImg\Teleport.bmp",000000,1.00,0,intX,intY	//找图
-            intX = intX - logoX
-            intY = intY - logoY
-            if intX == -123 and intY == 109 then //判断地图是不是要练的地图
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\AUT6.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 then
-                    a = 1
-                End If
-            End If
-
-            if a == 0 then //不在洞4,传送吧
-                while 1>0
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\Mark.bmp",000000,1.00,0,logoX,logoY
-                    if logoX >= 0 Then //瞬移到
-                        MoveTo logoX-284,logoY+1
-                        LeftClick
-                        DelayRandom 139,142
-                        MoveTo logoX-354,logoY+38 //选择格兰蒂斯
-                        LeftClick
-                        DelayRandom 139,142
-                        MoveTo logoX-142,logoY+1
-                        LeftClick
-                        DelayRandom 139,142
-
-                        break
-                    else
-                        DelayRandom 39,42
-                        KeyDown m
-                        DelayRandom 69,72
-                        KeyUp m
-                        DelayRandom 39,42
-                    End If
-                Wend
-
-                MoveTo logoX-225,logoY+360 //选择卡尔西温
-                LeftClick
-                DelayRandom 139,142
-                MoveTo logoX+147,logoY+55 //选择地图洞4
-                LeftDoubleClick
-                DelayRandom 139,142
-                MoveTo logoX-50,logoY-50
-                DelayRandom 239,242
-
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-                If intX >= 0 Then
-                    DelayRandom 39,42
-                    KeyDown Enter
-                    DelayRandom 69,72
-                    KeyUp Enter
-                    DelayRandom 39,42
-                End If
-
-                Call Loading()
-            End If
-
+Sub OpenMap //打开世界地图
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\Mark.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //瞬移到
+            MoveTo logoX-284,logoY+1
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX-354,logoY+38 //选择格兰蒂斯
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX-142,logoY+1
+            LeftClick
+            DelayRandom 139,142
             break
-        else //无限循环:找人的位置
-            Delay 100
+        else
+            DelayRandom 39,42
+            KeyDown m
+            DelayRandom 69,72
+            KeyUp m
+            DelayRandom 39,42
         End If
     Wend
 End Sub
+Sub AfterMap //夹在中间的抽离后
+    LeftDoubleClick
+    DelayRandom 139,142
+    MoveTo logoX-50,logoY-50
+    DelayRandom 239,242
 
-Call Fun1()
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+    If intX >= 0 Then
+        DelayRandom 39,42
+        KeyDown Enter
+        DelayRandom 69,72
+        KeyUp Enter
+        DelayRandom 39,42
+    End If
+
+    Call Loading()
+    Call Channel() //检测是否要换频
+End Sub
+Sub Wheel //到地图先放轮
+    DelayRandom 56,58
+    KeyDown O
+    DelayRandom 137,139
+    KeyUp O
+    DelayRandom 736,747
+End Sub
+
+
+
+Call BeforeMap()
+MoveTo logoX-225,logoY+360 //选择卡尔西温
+LeftClick
+DelayRandom 139,142
+MoveTo logoX+147,logoY+55 //选择地图洞4
+Call AfterMap() //到达
+startTime = GetTimeStamp() //记录时间
+Call Wheel() //放轮
+while getTimeStamp() > startTime + 180 //刷个180秒
+
+Wend
+
+Sub Fun1 //后面一步步来
+
+    Call BeforeMap()
+    MoveTo logoX-225,logoY+360 //选择战舰
+    LeftClick
+    DelayRandom 139,142
+    MoveTo logoX+147,logoY+55 //选择地图上6
+    Call AfterMap() //到达
+    startTime = GetTimeStamp() //记录时间
+
+    while getTimeStamp() > startTime + 70 //刷个70秒
+
+    Wend
+
+    Call BeforeMap()
+    MoveTo logoX-225,logoY+360 //选择桃源境
+    LeftClick
+    DelayRandom 139,142
+    MoveTo logoX+147,logoY+55 //选择地图冬3
+    Call AfterMap() //到达洞4
+    startTime = GetTimeStamp() //记录时间
+
+    while getTimeStamp() > startTime + 70 //刷个70秒
+
+    Wend
+
+    Call BeforeMap()
+    MoveTo logoX-225,logoY+360 //选择奥迪温
+    LeftClick
+    DelayRandom 139,142
+    MoveTo logoX+147,logoY+55 //选择地图实验室2
+    Call AfterMap() //到达
+    startTime = GetTimeStamp() //记录时间
+
+    while getTimeStamp() > startTime + 70 //刷个70秒
+
+    Wend
+
+    //回去六岛
+
+    while 1>0 //打开指导
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            MoveTo intX-260,intY+86
+            LeftClick
+            DelayRandom 139,142
+            break
+        else
+            DelayRandom 39,42
+            KeyDown F2
+            DelayRandom 69,72
+            KeyUp F2
+            DelayRandom 39,42
+        End If
+    Wend
+    Call Loading()
+End Sub
+
+//
 
 Beep 200,500
