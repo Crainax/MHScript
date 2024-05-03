@@ -118,22 +118,16 @@ Sub NewTeam //新建一个组队
 End Sub
 Sub DoubleJump //二段跳
     //回到了地图原点
-    for 2 //右跳2次,还不行就等向右自动走
-        DelayRandom 115,125
+    Delay 500
+    for 3 //右跳2次,还不行就等向右自动走
+        DelayRandom 37,41
         KeyDown Right
-        DelayRandom 250,251
-        KeyDown Space
-        DelayRandom 80,81
-        KeyUp Space
-        DelayRandom 30,31
-        KeyDown Space
-        DelayRandom 75,76
-        KeyUp Space
-        DelayRandom 85,86
+        DelayRandom 159,161
+        KeyDown LShift
+        DelayRandom 93,94
+        KeyUp LShift
+        DelayRandom 432,437
         KeyUp Right
-        DelayRandom 41,42
-        DelayRandom 313,315
-        DelayRandom 256,261
     Next
 End Sub
 Sub Loading //加载地图
@@ -474,8 +468,8 @@ Sub Quest //接任务和交任务一体
 End Sub
 Sub ClearQuest //清理下任务
     SavedTorY = 360
-    SavedX    = 164
-    SavedY    = 322
+    SavedX    = 91
+    SavedY    = 59
     Call AfterMap() //去6
     startTime = GetTimeStamp() //记录时间
     Call Wheel() //放轮
@@ -485,8 +479,8 @@ Sub ClearQuest //清理下任务
     Call Home() //回城
 
     SavedTorY = 341
-    SavedX    = -120
-    SavedY    = 160
+    SavedX    = 79
+    SavedY    = 149
     Call AfterMap() //到达
     startTime = GetTimeStamp() //记录时间
     Call Wheel() //放轮
@@ -496,8 +490,8 @@ Sub ClearQuest //清理下任务
     Call Home() //回城
 
     SavedTorY = 328
-    SavedX    = -276
-    SavedY    = 289
+    SavedX    = 121
+    SavedY    = 220
     Call AfterMap() //到达
     startTime = GetTimeStamp() //记录时间
     Call Wheel() //放轮
@@ -574,7 +568,6 @@ Sub Before564 //开始前的准备
     Wend
 End Sub
 Sub Start564 //开始刷
-
 
     while 1>0 //该点击Ready了
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\564\Mark2A.bmp",000000,1.00,0,intX,intY
@@ -659,7 +652,7 @@ Sub Start564 //开始刷
             DelayRandom 100,150
         End If
     Wend
-    Call DoubleJump()
+    Call DoubleJump() //二段跳
     while 1>0 //不断
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\MiniMark.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then

@@ -118,22 +118,21 @@ Sub NewTeam //新建一个组队
 End Sub
 Sub DoubleJump //二段跳
     //回到了地图原点
+    Delay 1000
     for 2 //右跳2次,还不行就等向右自动走
-        DelayRandom 115,125
+        DelayRandom 44,48
         KeyDown Right
-        DelayRandom 250,251
+        DelayRandom 96,97
         KeyDown Space
-        DelayRandom 80,81
+        DelayRandom 45,46
         KeyUp Space
-        DelayRandom 30,31
+        DelayRandom 79,80
         KeyDown Space
-        DelayRandom 75,76
-        KeyUp Space
-        DelayRandom 85,86
+        DelayRandom 4,5
         KeyUp Right
-        DelayRandom 41,42
-        DelayRandom 313,315
-        DelayRandom 256,261
+        DelayRandom 77,78
+        KeyUp Space
+        DelayRandom 575,582
     Next
 End Sub
 Sub Loading //加载地图

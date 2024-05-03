@@ -265,8 +265,8 @@ End Sub
 
 Sub Fun1 //后面一步步来
     SavedTorY = 360
-    SavedX    = 164
-    SavedY    = 322
+    SavedX    = 91
+    SavedY    = 59
     Call AfterMap() //去6
     startTime = GetTimeStamp() //记录时间
     Call Wheel() //放轮
@@ -276,8 +276,8 @@ Sub Fun1 //后面一步步来
     Call Home() //回城
 
     SavedTorY = 341
-    SavedX    = -120
-    SavedY    = 160
+    SavedX    = 79
+    SavedY    = 149
     Call AfterMap() //到达
     startTime = GetTimeStamp() //记录时间
     Call Wheel() //放轮
@@ -287,8 +287,8 @@ Sub Fun1 //后面一步步来
     Call Home() //回城
 
     SavedTorY = 328
-    SavedX    = -276
-    SavedY    = 289
+    SavedX    = 121
+    SavedY    = 220
     Call AfterMap() //到达
     startTime = GetTimeStamp() //记录时间
     Call Wheel() //放轮
