@@ -94,32 +94,9 @@ Sub Loading //加载地图
         End If
     Wend
 End Sub
-Sub OpenMap //打开世界地图
-    while 1>0
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\Mark.bmp",000000,1.00,0,logoX,logoY
-        if logoX >= 0 Then //瞬移到
-            MoveTo logoX-284,logoY+1
-            LeftClick
-            DelayRandom 139,142
-            MoveTo logoX-354,logoY+38 //选择格兰蒂斯
-            LeftClick
-            DelayRandom 139,142
-            MoveTo logoX-142,logoY+1
-            LeftClick
-            DelayRandom 139,142
-            break
-        else
-            DelayRandom 39,42
-            KeyDown m
-            DelayRandom 69,72
-            KeyUp m
-            DelayRandom 39,42
-        End If
-    Wend
-End Sub
+
 Sub AfterMap //夹在中间的抽离后 v1.1用savedX 和savedY来传
-    LeftClick
-    DelayRandom 139,142
+
 
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
@@ -131,11 +108,34 @@ Sub AfterMap //夹在中间的抽离后 v1.1用savedX 和savedY来传
             DelayRandom 39,42
             break
         else
-            MoveTo logoX+SavedX,logoY+SavedY
-            LeftDoubleClick
-            DelayRandom 139,142
-            MoveTo logoX-50,logoY-50
-            DelayRandom 239,242
+
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\Mark.bmp",000000,1.00,0,logoX,logoY
+            if logoX >= 0 Then //瞬移到
+                MoveTo logoX-284,logoY+1
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX-354,logoY+38 //选择格兰蒂斯
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX-142,logoY+1
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX-225,logoY+SavedTorY //选择卡尔西温
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX+SavedX,logoY+SavedY
+                LeftDoubleClick
+                DelayRandom 139,142
+                MoveTo logoX-50,logoY-50
+                DelayRandom 239,242
+            else
+                DelayRandom 39,42
+                KeyDown m
+                DelayRandom 69,72
+                KeyUp m
+                DelayRandom 39,42
+            End If
+
         End If
     Wend
 
@@ -195,6 +195,54 @@ Sub Channel //有人就换频 ver2.1防止动作没结束就转的OK確定
         End If
     Wend
 End Sub
+Sub Home //回城
+    while 1>0 //指导回城一波
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Cancel2.bmp",000000,1.00,0,intX,intY
+        if intX < 0 then //A图没找到就找B图
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Cancel.bmp",000000,1.00,0,intX,intY
+        End If
+        if intX >= 0 Then
+            MoveTo intX-90,intY
+            LeftClick
+            DelayRandom 139,142 //点击确认
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,logoX,logoY
+                if logoX >= 0 Then //正在本地图
+                    while 1>0
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+                        if intX < 0 Then //一直关闭F2页面
+                            break
+                        else
+                            DelayRandom 39,42
+                            KeyDown Esc
+                            DelayRandom 69,72
+                            KeyUp Esc
+                            DelayRandom 39,42
+                        End If
+                    Wend
+                    break
+                else
+                    Call Loading() //加载新地图
+                    break
+                End If
+            Wend
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                MoveTo intX-408,intY-100
+                LeftClick
+                DelayRandom 139,142
+            else
+                DelayRandom 39,42
+                KeyDown F2
+                DelayRandom 69,72
+                KeyUp F2
+                DelayRandom 39,42
+            End If
+        End If
+    Wend
+End Sub
 Sub Pause1 //暂时用这个代替刷图
     Beep 392,100
     Beep 392,100
@@ -212,82 +260,55 @@ End Sub
 
 
 
-Call OpenMap()
-MoveTo logoX-225,logoY+360 //选择卡尔西温
-SavedX = 147
-SavedY = 55
-Call AfterMap() //到达
-startTime = GetTimeStamp() //记录时间
-Call Wheel() //放轮
-//while getTimeStamp() > startTime + 180 //刷个180秒
-//Wend
-Call Pause1() //暂时用这个代替刷图
-
-Call OpenMap()
-MoveTo logoX-225,logoY+341 //选择战舰
-SavedX = -120
-SavedY = 160
-Call AfterMap() //到达
-startTime = GetTimeStamp() //记录时间
-Call Wheel() //放轮
-//while getTimeStamp() > startTime + 180 //刷个180秒
-//Wend
-Call Pause1() //暂时用这个代替刷图
-
-Call OpenMap()
-MoveTo logoX-225,logoY+328 //选择桃源境
-SavedX = 71
-SavedY = 220
-Call AfterMap() //到达
-startTime = GetTimeStamp() //记录时间
-Call Wheel() //放轮
-//while getTimeStamp() > startTime + 180 //刷个180秒
-//Wend
-Call Pause1() //暂时用这个代替刷图
-
-Call OpenMap()
-MoveTo logoX-225,logoY+311 //选择奥迪温
-SavedX = 1
-SavedY = 107
-Call AfterMap() //到达
-startTime = GetTimeStamp() //记录时间
-Call Wheel() //放轮
-//while getTimeStamp() > startTime + 180 //刷个180秒
-//Wend
-Call Pause1() //暂时用这个代替刷图
-
-    while 1>0
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Cancel2.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then
-            MoveTo intX-90,intY
-            LeftClick
-            DelayRandom 139,142
-            break
-        else
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then
-                MoveTo intX-408,intY-100
-                LeftClick
-                DelayRandom 139,142
-                break
-            else
-                DelayRandom 39,42
-                KeyDown F2
-                DelayRandom 69,72
-                KeyUp F2
-                DelayRandom 39,42
-            End If
-        End If
-    Wend
-    Call Loading()
-
 Sub Fun1 //后面一步步来
 
-    //回去六岛
+    SavedTorY = 360
+    SavedX    = 147
+    SavedY    = 55
+    Call AfterMap() //去6
+    startTime = GetTimeStamp() //记录时间
+    Call Wheel() //放轮
+    //while getTimeStamp() > startTime + 180 //刷个180秒
+    //Wend
+    Call Pause1() //暂时用这个代替刷图
+    Call Home() //回城
 
+    SavedTorY = 341
+    SavedX    = -120
+    SavedY    = 160
+    Call AfterMap() //到达
+    startTime = GetTimeStamp() //记录时间
+    Call Wheel() //放轮
+    //while getTimeStamp() > startTime + 180 //刷个180秒
+    //Wend
+    Call Pause1() //暂时用这个代替刷图
+    Call Home() //回城
+
+    SavedTorY = 328
+    SavedX    = 71
+    SavedY    = 220
+    Call AfterMap() //到达
+    startTime = GetTimeStamp() //记录时间
+    Call Wheel() //放轮
+    //while getTimeStamp() > startTime + 180 //刷个180秒
+    //Wend
+    Call Pause1() //暂时用这个代替刷图
+    Call Home() //回城
+
+    SavedTorY = 311
+    SavedX    = 1
+    SavedY    = 107
+    Call AfterMap() //到达
+    startTime = GetTimeStamp() //记录时间
+    Call Wheel() //放轮
+    //while getTimeStamp() > startTime + 180 //刷个180秒
+    //Wend
+    Call Pause1() //暂时用这个代替刷图
+    Call Home() //回城
 
 End Sub
 
+Call Fun1()
 //
 
 Beep 200,500
