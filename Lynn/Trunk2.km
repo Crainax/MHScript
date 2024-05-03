@@ -691,10 +691,16 @@ Sub Spell //右下放技能
     End If
 End Sub
 
-Sub Channel //有人就换频 ver2.1防止动作没结束就转的OK確定
+Sub Channel //有人就换频 ver2.2 加入了公会成员和好友的判断
     wJam = 0 //放在循环外面位置
     while 1>0
         FindPic x1,y1,x2,y2,"E:\MHImg\Player.bmp",000000,1.00,0,intX,intY
+        if intX < 0 then //A图没找到就找B图
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Ally.bmp",000000,1.00,0,intX,intY
+        End If
+        if intX < 0 then //A图没找到就找B图
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Ally2.bmp",000000,1.00,0,intX,intY
+        End If
         if intX < 0 Then //地图没人(5次判断防人物重合)
             wJam = wJam + 1  //循环内部
             if wJam > 5 then //多次没找到人就确实没人

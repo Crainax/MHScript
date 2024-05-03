@@ -474,8 +474,8 @@ Sub Quest //接任务和交任务一体
 End Sub
 Sub ClearQuest //清理下任务
     SavedTorY = 360
-    SavedX    = 147
-    SavedY    = 55
+    SavedX    = 164
+    SavedY    = 322
     Call AfterMap() //去6
     startTime = GetTimeStamp() //记录时间
     Call Wheel() //放轮
@@ -496,19 +496,8 @@ Sub ClearQuest //清理下任务
     Call Home() //回城
 
     SavedTorY = 328
-    SavedX    = 71
-    SavedY    = 220
-    Call AfterMap() //到达
-    startTime = GetTimeStamp() //记录时间
-    Call Wheel() //放轮
-    //while getTimeStamp() > startTime + 180 //刷个180秒
-    //Wend
-    Call Pause1() //暂时用这个代替刷图
-    Call Home() //回城
-
-    SavedTorY = 311
-    SavedX    = 1
-    SavedY    = 107
+    SavedX    = -276
+    SavedY    = 289
     Call AfterMap() //到达
     startTime = GetTimeStamp() //记录时间
     Call Wheel() //放轮
@@ -518,31 +507,6 @@ Sub ClearQuest //清理下任务
     Call Home() //回城
 End Sub
 Sub Before564 //开始前的准备
-    while 1>0 //点掉右上角的龙脉
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Setting.bmp",000000,1.00,0,logoX,logoY
-        if logoX >= 0 Then //400,710  间隔33
-            loopA = 0
-            for 6
-                DelayRandom 69,72
-                MoveTo logoX+400 - 33*loopA,logoY-699
-                DelayRandom 69,72
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Skill\F12.bmp",000000,1.00,0,intX,intY
-                If intX >= 0 Then
-                    RightClick
-                    DelayRandom 139,142
-                    break
-                End If
-                loopA = loopA + 1
-            Next
-            break
-        else
-            DelayRandom 39,42
-            KeyDown ]
-            DelayRandom 69,72
-            KeyUp ]
-            DelayRandom 539,542
-        End If
-    Wend
 
     while 1>0 //打开装备栏的宠物界面
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,logoX,logoY
@@ -695,7 +659,7 @@ Sub Start564 //开始刷
             DelayRandom 100,150
         End If
     Wend
-    Call DoubleJump() //小跳一下
+    Call DoubleJump()
     while 1>0 //不断
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\MiniMark.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
