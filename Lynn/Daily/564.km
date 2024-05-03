@@ -221,7 +221,7 @@ Sub NewTeam //新建一个组队
 End Sub
 Sub DoubleJump //二段跳
     //回到了地图原点
-    Delay 500
+    Delay 1000
     for 2 //右跳2次,还不行就等向右自动走
         DelayRandom 44,48
         KeyDown Right
