@@ -1618,8 +1618,8 @@ alterY = 0            //备用地点
 facing = 0            //面向初始归0
 
 Call Step1() //创角-回城这一步
-Call Step2() //回城后-商店买完东西这一步
-Call Step3() //商城拿东西
+//Call Step2() //回城后-商店买完东西这一步
+//Call Step3() //商城拿东西
 
 Beep 500,500
 

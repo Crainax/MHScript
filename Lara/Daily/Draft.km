@@ -4,14 +4,16 @@ ScreenY=2560
 Times=1
 
 [Script]
-Dim x1,          x2,      y1,    y2     // 矩形区域:小地图采样点
-Dim x3,          y3,      xEnd,  yEnd   // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,        tarY,    a,     cY     //目标
-Dim logoX,       logoY,   intX,  intY   //算目的地差值
-Dim alterX,      alterY,  facing        //备用地点,传送门脚步开关,传送门的面向
-Dim tolerance,   tolLoc,  yTolerance    //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim staticCount, staticX, staticY       //防卡计数器
-Dim wJam,        wJam2,   loopA, loopB  //找图防卡,loopAB是循环数
+Dim x1,          x2,      y1,       y2         // 矩形区域:小地图采样点
+Dim x3,          y3,      xEnd,     yEnd       // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,        tarY,    a,        cY         //目标
+Dim logoX,       logoY,   intX,     intY       //算目的地差值
+Dim alterX,      alterY,  facing               //备用地点,传送门脚步开关,传送门的面向
+Dim tolerance,   tolLoc,  yTolerance           //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim staticCount, staticX, staticY              //防卡计数器
+Dim SavedX,      SavedY,  SavedTor, SavedTorY  //保存一下临时处理的XY
+Dim wJam,        wJam2,   loopA,    loopB      //找图防卡,loopAB是循环数
+Dim startTime                                  //定格
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -59,78 +61,20 @@ Sub AntiJam //一般跟随GetXY后用
     End If
 End Sub
 
-Sub Move_A() //移动种类:创角
-    csTimes	= -1  //初始就启用指南针判断
-    csMax		= 3   //降落默认值为4
-    Hooking				= 0 //钩子初始是关的
-    while  1 > 0
-        Call GetXY()
-        if tolerance > 2 Then
-            tolLoc = tolerance
-        else  //速走的默认为4
-            tolLoc = 2
-        End If
-        If intX < (tarX-tolLoc) Then //向右走
-            KeyDown Right
-            a = (tarX - tolLoc - intX) * 52
-            if a < 52 then
-                a = 52
-            else if a > 1800 then
-                a = 1800
-            End If
-            Delay a
-            KeyUp Right
-        Else If intX > (tarX+tolLoc) Then //向左走
-            KeyDown Left
-            a = (intX - tarX - tolLoc) * 52
-            if a < 52 then
-                a = 52
-            else if a > 1800 then
-                a = 1800
-            End If
-            Delay a
-            KeyUp Left
-        else
-            yTolerance = 0
-            if tolerance < 4 Then //容忍度小于4还是要小碎步
-                for 10
-                    If intX < (tarX-tolerance) Then //向右小碎步
-                        KeyDown Right
-                        Delay (tarX - tolerance - intX) * 14
-                        KeyUp Right
-                    Else If intX > (tarX+tolerance) Then //向左小碎步
-                        KeyDown Left
-                        Delay (intX - tarX - tolerance) * 14
-                        KeyUp Left
-                    else
-                        Exit Sub
-                    End If
-
-                    Call GetXY() //更新人物坐标
-                Next
-                Exit Sub //次数到了直接结束
-            else //容忍度大于等于4可以直接结束
-                Exit Sub
-            End If
-        End If
-        Delay 5
-    Wend
-End Sub
-
-
 //分辨率初始化
 GetScreenResolution intX, intY
-x1     = intX - 1440
-y1     = intY - 950
-x2     = intX - 1000
-y2     = intY - 600
-x3     = intX - 640
-y3     = intY - 260
-xEnd   = intX
-yEnd   = intY
-alterX = 0            //备用地点
-alterY = 0            //备用地点
-facing = 0            //面向初始归0
+x1        = intX - 1440
+y1        = intY - 950
+x2        = intX - 1000
+y2        = intY - 600
+x3        = intX - 640
+y3        = intY - 260
+xEnd      = intX
+yEnd      = intY
+alterX    = 0            //备用地点
+alterY    = 0            //备用地点
+facing    = 0            //面向初始归0
+startTime = 0            //面向初始归0
 
 Sub Loading //加载地图
     while 1>0 //等进入加载
@@ -173,20 +117,27 @@ Sub OpenMap //打开世界地图
         End If
     Wend
 End Sub
-Sub AfterMap //夹在中间的抽离后
-    LeftDoubleClick
+Sub AfterMap //夹在中间的抽离后 v1.1用savedX 和savedY来传
+    LeftClick
     DelayRandom 139,142
-    MoveTo logoX-50,logoY-50
-    DelayRandom 239,242
 
-    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-    If intX >= 0 Then
-        DelayRandom 39,42
-        KeyDown Enter
-        DelayRandom 69,72
-        KeyUp Enter
-        DelayRandom 39,42
-    End If
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            DelayRandom 39,42
+            KeyDown Enter
+            DelayRandom 69,72
+            KeyUp Enter
+            DelayRandom 39,42
+            break
+        else
+            MoveTo logoX+SavedX,logoY+SavedY
+            LeftDoubleClick
+            DelayRandom 139,142
+            MoveTo logoX-50,logoY-50
+            DelayRandom 239,242
+        End If
+    Wend
 
     Call Loading()
     Call Channel() //检测是否要换频
@@ -198,77 +149,143 @@ Sub Wheel //到地图先放轮
     KeyUp O
     DelayRandom 736,747
 End Sub
+Sub Channel //有人就换频 ver2.1防止动作没结束就转的OK確定
+    wJam = 0 //放在循环外面位置
+    while 1>0
+        FindPic x1,y1,x2,y2,"E:\MHImg\Player.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then //地图没人(5次判断防人物重合)
+            wJam = wJam + 1  //循环内部
+            if wJam > 5 then //多次没找到人就确实没人
+                break
+            else
+                Delay 200
+            End If
+        else //有找到人,直接换频
+            wJam = 0 //放在成功的位置
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Switch.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+
+                KeyDown Right
+                DelayRandom 69,72
+                KeyUp Right
+                DelayRandom 539,542
+                KeyDown Enter
+                DelayRandom 69,72
+                KeyUp Enter
+                DelayRandom 339,342
+
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then //没有OK就退出去
+                    Call Loading() //等加载
+                    DelayRandom 239,242
+                else
+                    DelayRandom 39,42
+                    KeyDown Esc
+                    DelayRandom 69,72
+                    KeyUp Esc
+                    DelayRandom 239,242
+                End If
+            else
+                DelayRandom 39,42
+                KeyDown Insert
+                DelayRandom 69,72
+                KeyUp Insert
+                DelayRandom 39,42
+            End If
+        End If
+    Wend
+End Sub
+Sub Pause1 //暂时用这个代替刷图
+    Beep 392,100
+    Beep 392,100
+    Beep 440,100
+    Beep 440,100
+    Beep 392,100
+    Beep 392,100
+    Beep 440,100
+    Beep 440,100
+    Beep 392,100
+    Beep 392,100
+    Beep 329,100
+    Pause
+End Sub
 
 
 
-Call BeforeMap()
+Call OpenMap()
 MoveTo logoX-225,logoY+360 //选择卡尔西温
-LeftClick
-DelayRandom 139,142
-MoveTo logoX+147,logoY+55 //选择地图洞4
+SavedX = 147
+SavedY = 55
 Call AfterMap() //到达
 startTime = GetTimeStamp() //记录时间
 Call Wheel() //放轮
-while getTimeStamp() > startTime + 180 //刷个180秒
+//while getTimeStamp() > startTime + 180 //刷个180秒
+//Wend
+Call Pause1() //暂时用这个代替刷图
 
-Wend
+Call OpenMap()
+MoveTo logoX-225,logoY+341 //选择战舰
+SavedX = -120
+SavedY = 160
+Call AfterMap() //到达
+startTime = GetTimeStamp() //记录时间
+Call Wheel() //放轮
+//while getTimeStamp() > startTime + 180 //刷个180秒
+//Wend
+Call Pause1() //暂时用这个代替刷图
 
-Sub Fun1 //后面一步步来
+Call OpenMap()
+MoveTo logoX-225,logoY+328 //选择桃源境
+SavedX = 71
+SavedY = 220
+Call AfterMap() //到达
+startTime = GetTimeStamp() //记录时间
+Call Wheel() //放轮
+//while getTimeStamp() > startTime + 180 //刷个180秒
+//Wend
+Call Pause1() //暂时用这个代替刷图
 
-    Call BeforeMap()
-    MoveTo logoX-225,logoY+360 //选择战舰
-    LeftClick
-    DelayRandom 139,142
-    MoveTo logoX+147,logoY+55 //选择地图上6
-    Call AfterMap() //到达
-    startTime = GetTimeStamp() //记录时间
+Call OpenMap()
+MoveTo logoX-225,logoY+311 //选择奥迪温
+SavedX = 1
+SavedY = 107
+Call AfterMap() //到达
+startTime = GetTimeStamp() //记录时间
+Call Wheel() //放轮
+//while getTimeStamp() > startTime + 180 //刷个180秒
+//Wend
+Call Pause1() //暂时用这个代替刷图
 
-    while getTimeStamp() > startTime + 70 //刷个70秒
-
-    Wend
-
-    Call BeforeMap()
-    MoveTo logoX-225,logoY+360 //选择桃源境
-    LeftClick
-    DelayRandom 139,142
-    MoveTo logoX+147,logoY+55 //选择地图冬3
-    Call AfterMap() //到达洞4
-    startTime = GetTimeStamp() //记录时间
-
-    while getTimeStamp() > startTime + 70 //刷个70秒
-
-    Wend
-
-    Call BeforeMap()
-    MoveTo logoX-225,logoY+360 //选择奥迪温
-    LeftClick
-    DelayRandom 139,142
-    MoveTo logoX+147,logoY+55 //选择地图实验室2
-    Call AfterMap() //到达
-    startTime = GetTimeStamp() //记录时间
-
-    while getTimeStamp() > startTime + 70 //刷个70秒
-
-    Wend
-
-    //回去六岛
-
-    while 1>0 //打开指导
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Cancel2.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
-            MoveTo intX-260,intY+86
+            MoveTo intX-90,intY
             LeftClick
             DelayRandom 139,142
             break
         else
-            DelayRandom 39,42
-            KeyDown F2
-            DelayRandom 69,72
-            KeyUp F2
-            DelayRandom 39,42
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                MoveTo intX-408,intY-100
+                LeftClick
+                DelayRandom 139,142
+                break
+            else
+                DelayRandom 39,42
+                KeyDown F2
+                DelayRandom 69,72
+                KeyUp F2
+                DelayRandom 39,42
+            End If
         End If
     Wend
     Call Loading()
+
+Sub Fun1 //后面一步步来
+
+    //回去六岛
+
+
 End Sub
 
 //
