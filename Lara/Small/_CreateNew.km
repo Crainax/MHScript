@@ -1255,13 +1255,22 @@ Sub Step3
         if intX <= 0 Then //开始进入了(找不到XY轴了)
             break
         else
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\Entry.bmp",000000,1.00,0,intX,intY
-            If intX >= 0 Then
-                MoveTo intX-30,intY
-                LeftClick
-                DelayRandom 139,142
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                DelayRandom 39,42
+                KeyDown Enter
+                DelayRandom 69,72
+                KeyUp Enter
+                DelayRandom 239,242
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\Entry.bmp",000000,1.00,0,intX,intY
+                If intX >= 0 Then
+                    MoveTo intX-30,intY
+                    LeftClick
+                    DelayRandom 139,142
+                End If
+                DelayRandom 100,150
             End If
-            DelayRandom 100,150
         End If
     Wend
 

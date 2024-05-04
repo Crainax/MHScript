@@ -641,9 +641,7 @@ Sub Loading //加载地图
         End If
     Wend
 End Sub
-Sub AfterMap //夹在中间的抽离后 v1.1用savedX 和savedY来传
-
-
+Sub AfterMap //夹在中间的抽离后 v1.2 世界也能选
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
@@ -654,13 +652,12 @@ Sub AfterMap //夹在中间的抽离后 v1.1用savedX 和savedY来传
             DelayRandom 39,42
             break
         else
-
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\Mark.bmp",000000,1.00,0,logoX,logoY
             if logoX >= 0 Then //瞬移到
                 MoveTo logoX-284,logoY+1
                 LeftClick
                 DelayRandom 139,142
-                MoveTo logoX-354,logoY+38 //选择格兰蒂斯
+                MoveTo logoX-354,logoY+SavedTor //选择世界 38格兰  20世界  46奥术之河
                 LeftClick
                 DelayRandom 139,142
                 MoveTo logoX-142,logoY+1
@@ -809,7 +806,7 @@ End Sub
 
 Sub Fun1 //后面一步步来
     SavedTorY = 360
-    SavedTor  = 38
+    SavedTor  = popo38
     SavedX    = 147
     SavedY    = 55
     Call AfterMap() //去6
