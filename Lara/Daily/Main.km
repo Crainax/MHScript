@@ -1063,9 +1063,11 @@ Sub Quest //接任务和交任务一体
 End Sub
 Sub ClearQuest //清理下任务
     SavedTorY = 360
+    SavedTor  = 38
     SavedX    = 147
     SavedY    = 55
     Call AfterMap() //去6
+    Call Channel()
     Call BeforeStart() //开始前的准备
     while 1>0 //开刷洞4
 
@@ -1220,9 +1222,11 @@ Sub ClearQuest //清理下任务
     Call Home() //回城
 
     SavedTorY = 341
+    SavedTor  = 38
     SavedX    = -120
     SavedY    = 160
     Call AfterMap() //到达
+    Call Channel()
     Call BeforeStart() //开始前的准备
     while 1>0 //开刷上6
 
@@ -1414,9 +1418,11 @@ Sub ClearQuest //清理下任务
     Call Home() //回城
 
     SavedTorY = 328
+    SavedTor  = 38
     SavedX    = 71
     SavedY    = 220
     Call AfterMap() //到达
+    Call Channel()
     Call BeforeStart() //开始前的准备
     while 1>0 //开刷冬3
 
@@ -1618,9 +1624,11 @@ Sub ClearQuest //清理下任务
     Call Home() //回城
 
     SavedTorY = 311
+    SavedTor  = 38
     SavedX    = 1
     SavedY    = 107
     Call AfterMap() //到达
+    Call Channel()
     Call BeforeStart() //开始前的准备
     while 1>0 //开刷实验室2
 

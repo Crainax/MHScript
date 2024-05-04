@@ -686,7 +686,6 @@ Sub AfterMap //夹在中间的抽离后 v1.1用savedX 和savedY来传
     Wend
 
     Call Loading()
-    Call Channel() //检测是否要换频
 End Sub
 Sub Wheel //到地图先放轮
     DelayRandom 56,58
@@ -810,9 +809,11 @@ End Sub
 
 Sub Fun1 //后面一步步来
     SavedTorY = 360
+    SavedTor  = 38
     SavedX    = 147
     SavedY    = 55
     Call AfterMap() //去6
+    Call Channel()
     Call BeforeStart() //开始前的准备
     while 1>0 //开刷洞4
 
@@ -967,9 +968,11 @@ Sub Fun1 //后面一步步来
     Call Home() //回城
 
     SavedTorY = 341
+    SavedTor  = 38
     SavedX    = -120
     SavedY    = 160
     Call AfterMap() //到达
+    Call Channel()
     Call BeforeStart() //开始前的准备
     while 1>0 //开刷上6
 
@@ -1161,9 +1164,11 @@ Sub Fun1 //后面一步步来
     Call Home() //回城
 
     SavedTorY = 328
+    SavedTor  = 38
     SavedX    = 71
     SavedY    = 220
     Call AfterMap() //到达
+    Call Channel()
     Call BeforeStart() //开始前的准备
     while 1>0 //开刷冬3
 
@@ -1365,9 +1370,11 @@ Sub Fun1 //后面一步步来
     Call Home() //回城
 
     SavedTorY = 311
+    SavedTor  = 38
     SavedX    = 1
     SavedY    = 107
     Call AfterMap() //到达
+    Call Channel()
     Call BeforeStart() //开始前的准备
     while 1>0 //开刷实验室2
 
