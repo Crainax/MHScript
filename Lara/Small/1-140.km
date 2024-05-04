@@ -1092,47 +1092,48 @@ Sub CloseBag //关闭装备栏
         End If
     Wend
 End Sub
-Sub OpenMap //打开世界地图
+Sub AfterMap //夹在中间的抽离后 v1.2 世界也能选
     while 1>0
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\Mark.bmp",000000,1.00,0,logoX,logoY
-        if logoX >= 0 Then //瞬移到
-            MoveTo logoX-284,logoY+1
-            LeftClick
-            DelayRandom 139,142
-            MoveTo logoX-354,logoY+20
-            LeftClick
-            DelayRandom 139,142 //选择枫之谷世界
-            MoveTo logoX-142,logoY+1
-            LeftClick
-            DelayRandom 139,142
-
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            DelayRandom 39,42
+            KeyDown Enter
+            DelayRandom 69,72
+            KeyUp Enter
+            DelayRandom 39,42
             break
         else
-            DelayRandom 39,42
-            KeyDown m
-            DelayRandom 69,72
-            KeyUp m
-            DelayRandom 39,42
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\Mark.bmp",000000,1.00,0,logoX,logoY
+            if logoX >= 0 Then //瞬移到
+                MoveTo logoX-284,logoY+1
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX-354,logoY+SavedTor //选择世界 38格兰  20世界  46奥术之河
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX-142,logoY+1
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX-225,logoY+SavedTorY //选择卡尔西温
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX+SavedX,logoY+SavedY
+                LeftDoubleClick
+                DelayRandom 139,142
+                MoveTo logoX-50,logoY-50
+                DelayRandom 239,242
+            else
+                DelayRandom 39,42
+                KeyDown m
+                DelayRandom 69,72
+                KeyUp m
+                DelayRandom 39,42
+            End If
+
         End If
     Wend
 End Sub
-Sub AfterMap //夹在中间的抽离后
-    LeftDoubleClick
-    DelayRandom 139,142
-    MoveTo logoX-50,logoY-50
-    DelayRandom 239,242
-
-    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-    If intX >= 0 Then
-        DelayRandom 39,42
-        KeyDown Enter
-        DelayRandom 69,72
-        KeyUp Enter
-        DelayRandom 39,42
-    End If
-
-    Call Loading()
-
+Sub CloseCaps //关闭Caps键
     if GetLED(1) == 1 then //换地图
         DelayRandom 39,42
         KeyDown CapsLock
@@ -2672,128 +2673,92 @@ End Sub
 Sub Teleport //换地图(Caps键亮)
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Nalin.bmp",000000,1.00,0,intX,intY
     If intX >= 0 Then //当前在纳林,前往火独眼兽
-        Call OpenMap()
-        MoveTo logoX-225,logoY+38
-        LeftClick
-        DelayRandom 139,142
-        MoveTo logoX+23,logoY+197
-        Call AfterMap()
+        SavedTor = 20
+        SavedTorY  = 38
+        SavedX    = 23
+        SavedY    = 197
+        Call AfterMap() //到达
+        Call Loading() //加载中
+        Call CloseCaps() //关闭Caps键
     else
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\HuoDYS.bmp",000000,1.00,0,intX,intY
         If intX >= 0 Then //当前在火毒眼兽,先二转,加点再去小青蛇
             Call 2Job()
-            DelayRandom 139,142
-            Call OpenMap()
-            MoveTo logoX-225,logoY+38
-            LeftClick
-            DelayRandom 139,142
-            MoveTo logoX-240,logoY+175
-            Call AfterMap()
+            SavedTor = 20
+            SavedTorY = 38
+            SavedX = -240
+            SavedY = 175
+            Call AfterMap() //到达
+            Call Loading() //加载中
+            Call CloseCaps() //关闭Caps键
         else
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Snake2.bmp",000000,1.00,0,intX,intY
             If intX >= 0 Then //当前在青蛇,加了点后直接去土龙
                 Call AddSP() //加点
-                Call OpenMap()
-                MoveTo logoX-225,logoY+105
-                LeftClick
-                DelayRandom 139,142
-                MoveTo logoX-286,logoY+160
-                Call AfterMap()
+                SavedTor = 20
+                SavedTorY  = 105
+                SavedX    = -286
+                SavedY    = 160
+                Call AfterMap() //到达
+                Call Loading() //加载中
+                Call CloseCaps() //关闭Caps键
             else
                 FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Tulong.bmp",000000,1.00,0,intX,intY
                 If intX >= 0 Then //当前在土龙,三转后再去沙漠
                     Call 3Job()
                     DelayRandom 139,142
                     Call AddSP() //加点
-                    Call OpenMap()
-                    MoveTo logoX-210,logoY+359
-                    LeftClick
-                    DelayRandom 139,142
-                    MoveTo logoX-147,logoY+188
-                    Call AfterMap()
+                    SavedTor = 20
+                    SavedTorY  = 359
+                    SavedX    = -147
+                    SavedY    = 188
+                    Call AfterMap() //到达
+                    Call Loading() //加载中
+                    Call CloseCaps() //关闭Caps键
                 else
                     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\RedSand.bmp",000000,1.00,0,intX,intY
                     If intX >= 0 Then //去打鸟
                         Call BirdSkill()
                         Call AddSP() //加点
-                        Call OpenMap()
-                        MoveTo logoX-204,logoY+313
-                        LeftClick
-                        DelayRandom 139,142
-                        MoveTo logoX+148,logoY+388
-                        LeftDoubleClick
-                        DelayRandom 339,342
-
-                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-                        If intX >= 0 Then
-                            DelayRandom 39,42
-                            KeyDown Enter
-                            DelayRandom 69,72
-                            KeyUp Enter
-                            DelayRandom 39,42
-                        End If
-
+                        SavedTor = 20
+                        SavedTorY  = 313
+                        SavedX    = 148
+                        SavedY    = 388
+                        Call AfterMap() //到达
                         Call Loading2()
-
-                        DelayRandom 39,42
-                        KeyDown CapsLock
-                        DelayRandom 69,72
-                        KeyUp CapsLock
-                        DelayRandom 39,42 //关闭找图
+                        Call CloseCaps() //关闭Caps键
                     else
                         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Bird2.bmp",000000,1.00,0,intX,intY
                         If intX >= 0 Then //去四转
-                                Call 4Job() //四转
-                                Call AddSP() //加点
-                                Beep 500,100
-                                Delay 50
-                                Beep 500,100
-                                Delay 50
-                                Beep 500,100
-                                Delay 50
-                                if GetLED(1) == 1 then //暂停前关闭大写
-                                    DelayRandom 39,42
-                                    KeyDown CapsLock
-                                    DelayRandom 69,72
-                                    KeyUp CapsLock
-                                    DelayRandom 39,42
-                                End If
-                                Pause //暂停去解
-                                //通过指导回鸟2
-                                while 1>0
-                                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Cancel2.bmp",000000,1.00,0,intX,intY
-                                    if intX >= 0 Then
-                                        MoveTo intX-90,intY
-                                        LeftClick
-                                        DelayRandom 139,142
-                                        break
-                                    else
-                                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Bird2.bmp",000000,1.00,0,intX,intY
-                                        if intX >= 0 Then
-                                            MoveTo intX+37,intY+31
-                                            LeftClick
-                                            DelayRandom 139,142
-                                        else
-                                            DelayRandom 39,42
-                                            KeyDown F2
-                                            DelayRandom 69,72
-                                            KeyUp F2
-                                            DelayRandom 39,42
-                                        End If
-                                    End If
-                                Wend
-                                Call Loading2()
-                        else //还是得去勇士
+                            Call 4Job() //四转
+                            Call AddSP() //加点
+                            Beep 500,100
+                            Delay 50
+                            Beep 500,100
+                            Delay 50
+                            Beep 500,100
+                            Delay 50
+                            Call CloseCaps() //关闭Caps键
+                            Pause //暂停去解东西
+                            SavedTor = 20
+                            SavedTorY  = 313
+                            SavedX    = 148
+                            SavedY    = 388
+                            Call AfterMap() //到达
+                            Call Loading2()
+                            Call CloseCaps() //关闭Caps键
+                        else //勇士出发去狗
                             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Warrior.bmp",000000,1.00,0,intX,intY
                             If intX >= 0 Then //去四转
                                 Call DogPre() //加点
                                 Call AddSP() //加点
-                                Call OpenMap()
-                                MoveTo logoX-210,logoY+200
-                                LeftClick
-                                DelayRandom 139,142
-                                MoveTo logoX+85,logoY+285
-                                Call AfterMap()
+                                SavedTor = 20
+                                SavedTorY  = 200
+                                SavedX    = 85
+                                SavedY    = 285
+                                Call AfterMap() //到达
+                                Call Loading() //加载中
+                                Call CloseCaps() //关闭Caps键
                             else
                                 FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Dog1.bmp",000000,1.00,0,intX,intY
                                 If intX >= 0 Then //去狗

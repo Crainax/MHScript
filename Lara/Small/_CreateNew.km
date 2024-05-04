@@ -1255,22 +1255,13 @@ Sub Step3
         if intX <= 0 Then //开始进入了(找不到XY轴了)
             break
         else
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then
-                DelayRandom 39,42
-                KeyDown Enter
-                DelayRandom 69,72
-                KeyUp Enter
-                DelayRandom 239,242
-            else
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\Entry.bmp",000000,1.00,0,intX,intY
-                If intX >= 0 Then
-                    MoveTo intX-30,intY
-                    LeftClick
-                    DelayRandom 139,142
-                End If
-                DelayRandom 100,150
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\Entry.bmp",000000,1.00,0,intX,intY
+            If intX >= 0 Then
+                MoveTo intX-30,intY
+                LeftClick
+                DelayRandom 139,142
             End If
+            DelayRandom 100,150
         End If
     Wend
 
@@ -1624,7 +1615,7 @@ alterX = 0            //备用地点
 alterY = 0            //备用地点
 facing = 0            //面向初始归0
 
-//Call Step1() //创角-回城这一步
+Call Step1() //创角-回城这一步
 Call Step2() //回城后-商店买完东西这一步
 Call Step3() //商城拿东西
 

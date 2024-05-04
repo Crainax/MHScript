@@ -48,8 +48,33 @@ Sub Loading //加载地图
         End If
     Wend
 End Sub
-
-Sub AfterMap //夹在中间的抽离后 v1.2 世界也能选
+Sub Loading2 //(鸟2垃圾地图)
+    while 1>0 //等进入加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+    while 1>0 //等加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX > 0 Then //加载完成了
+            break
+        else
+            DelayRandom 39,42
+            KeyDown Down
+            DelayRandom 39,42
+            KeyDown Space
+            DelayRandom 69,72
+            KeyUp Space
+            DelayRandom 39,42
+            KeyUp Down
+            DelayRandom 139,142
+        End If
+    Wend
+End Sub
+Sub AfterMap //夹在中间的抽离后 v1.2 世界也能选,抽离2个Loading
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
@@ -84,13 +109,12 @@ Sub AfterMap //夹在中间的抽离后 v1.2 世界也能选
                 KeyDown m
                 DelayRandom 69,72
                 KeyUp m
-                DelayRandom 39,42
+                DelayRandom 239,242
             End If
 
         End If
     Wend
 
-    Call Loading()
 End Sub
 Sub CloseCaps //关闭Caps键
     if GetLED(1) == 1 then //换地图
@@ -112,6 +136,7 @@ while 1>0 //无限循环
             SavedX = -240
             SavedY = 175
             Call AfterMap() //到达
+            Call Loading() //加载中
             Call CloseCaps() //关闭Caps键
         else
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Snake2.bmp",000000,1.00,0,intX,intY
@@ -121,6 +146,7 @@ while 1>0 //无限循环
                 SavedX    = -286
                 SavedY    = 160
                 Call AfterMap() //到达
+                Call Loading() //加载中
                 Call CloseCaps() //关闭Caps键
             else
                 FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Tulong.bmp",000000,1.00,0,intX,intY
@@ -130,6 +156,7 @@ while 1>0 //无限循环
                     SavedX    = -147
                     SavedY    = 188
                     Call AfterMap() //到达
+                    Call Loading() //加载中
                     Call CloseCaps() //关闭Caps键
                 else
                     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\RedSand.bmp",000000,1.00,0,intX,intY
@@ -139,6 +166,7 @@ while 1>0 //无限循环
                         SavedX    = 148
                         SavedY    = 388
                         Call AfterMap() //到达
+                        Call Loading2() //加载中(鸟专属)
                         Call CloseCaps() //关闭Caps键
                     else
                         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Bird2.bmp",000000,1.00,0,intX,intY
@@ -148,6 +176,7 @@ while 1>0 //无限循环
                             SavedX    = 85
                             SavedY    = 285
                             Call AfterMap() //到达
+                            Call Loading() //加载中
                             Call CloseCaps() //关闭Caps键
                         else //循环回火独眼兽
                             SavedTor = 20
@@ -155,6 +184,7 @@ while 1>0 //无限循环
                             SavedX    = 23
                             SavedY    = 197
                             Call AfterMap() //到达
+                            Call Loading() //加载中
                             Call CloseCaps() //关闭Caps键
                         End If
                     End If
