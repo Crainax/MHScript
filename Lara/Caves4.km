@@ -80,7 +80,6 @@ Sub AntiJam //一般跟随GetXY后用
         // RestartScript //重启
     End If
 End Sub
-
 Sub JumpAttack()
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\G.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then
@@ -114,7 +113,6 @@ Sub JumpAttack()
         End If
     End If
 End Sub
-
 Sub Stable //稳定(前面自行getXY)
     cY = intY
     for 3 //确定不动了再跳
