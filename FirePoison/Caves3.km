@@ -9,7 +9,7 @@ Dim x3,           y3,           xEnd,     yEnd       // 2∏ˆ∂•µ„:ººƒ‹«¯/∆¡ƒª”“œ¬Ω
 Dim tarX,         tarY,         cX,       cY         //ƒø±Í
 Dim alterX,       alterY,       a,        facing     //±∏”√µÿµ„,¥´ÀÕ√≈Ω≈≤Ωø™πÿ
 Dim logoX,        logoY,        intX,     intY       //—∞Œª÷√œ‡πÿ:µ±«∞µÿµ„
-Dim InfiTime,     BarlogTime,                        //∑≈ººƒ‹ ±º‰¿‰»¥
+Dim InfiTime,                                        //∑≈ººƒ‹ ±º‰¿‰»¥
 Dim stoneTime,    fountainTime, RuneCooldown         //∏˜÷÷ ±º‰º‰∏Ù
 Dim currentState, AuraTime,     DTime,    SpellOK    //ººƒ‹º‰∏Ù
 Dim pick1,        pick2                              //ºÒ«Æ
@@ -42,7 +42,7 @@ Sub Loading //º”‘ÿµÿÕº
         End If
     Wend
 End Sub
-Sub Attack //∑≈ººƒ‹,»ª∫Û‘ŸÀ≤“∆(◊¢“‚“™œ»ªÒ»°XY‘Ÿ∑≈’–)  Ver2.4 –ﬁ∏¥Œ Ã‚∫Õ÷’º´Œﬁœﬁø®◊≈≤ª∑≈’–
+Sub Attack //∑≈ººƒ‹,»ª∫Û‘ŸÀ≤“∆(◊¢“‚“™œ»ªÒ»°XY‘Ÿ∑≈’–)  Ver2.5 barlog∂¿¡¢”⁄v3÷–∑¿ø’÷–
     a = GetTimeStamp() - InfiTime
     if a > 110 then //∏√≤π≥‰÷’º´Œﬁœﬁ¡À
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\InfiR.bmp",000000,1.00,0,intX,intY
@@ -80,14 +80,10 @@ Sub Attack //∑≈ººƒ‹,»ª∫Û‘ŸÀ≤“∆(◊¢“‚“™œ»ªÒ»°XY‘Ÿ∑≈’–)  Ver2.4 –ﬁ∏¥Œ Ã‚∫Õ÷’º´Œﬁœﬁø
                 else
                     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\V.bmp",000000,1.00,0,intX,intY
                     if intX >= 0 Then //V4ººƒ‹∫√¡À
-                        a = GetTimeStamp() - BarlogTime
-                        if a > 240 then //’ŸªΩ–¬µƒ—◊ƒß
-                            KeyDown E
-                            DelayRandom 185,187
-                            KeyUp E
-                            DelayRandom 670,677
-                            BarlogTime = GetTimeStamp()
-                        End If
+                        KeyDown E
+                        DelayRandom 185,187
+                        KeyUp E
+                        DelayRandom 670,677
                         KeyDown V
                         DelayRandom 301,305
                         KeyUp V
@@ -163,7 +159,6 @@ Sub Attack //∑≈ººƒ‹,»ª∫Û‘ŸÀ≤“∆(◊¢“‚“™œ»ªÒ»°XY‘Ÿ∑≈’–)  Ver2.4 –ﬁ∏¥Œ Ã‚∫Õ÷’º´Œﬁœﬁø
         End If
     End If
 End Sub
-
 Sub GetXY //ªÒ»°Ω«…´µƒXY÷·(»Áπ˚’“≤ªµΩª·◊Û”““∆∂Ø)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
@@ -858,7 +853,6 @@ y3           = intY - 260
 xEnd         = intX
 yEnd         = intY
 InfiTime     = GetTimeStamp() - 110  //…œ¥Œ÷’º´Œﬁœﬁµƒ ±º‰
-BarlogTime   = 0                     //…œ¥Œ’Ÿ—◊ƒßµƒ ±º‰
 SpellOK      = 1                     //ººƒ‹¿‰»¥
 RuneCooldown = 0                     //Ω‚¬÷ ±º‰
 stoneTime    = 0                     //∑≈¬÷ ±º‰
@@ -915,6 +909,21 @@ while 1 > 0
             tarY		= 97
             tolerance	= 2
             Call Navigate()
+
+
+            if GetTimeStamp() - pick1 > 110 then //”“±ﬂºÒ«Æ
+                tarX		= 44
+                tarY		= 97
+                tolerance	= 2
+                Call Navigate()
+
+
+                tarX		= 44
+                tarY		= 84
+                tolerance	= 2
+                Call Navigate()
+                pick1 = GetTimeStamp()
+            End If
         else if currentState == 2 then //”“…œŒª÷√
             tarX		= 28
             tarY		= 84

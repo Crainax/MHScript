@@ -20,8 +20,7 @@ Sub on_timer1 //ÈÓ¼¼ÄÜCD2Ãë
     SpellOK = 1
 EndSub
 
-
-Sub Attack //·Å¼¼ÄÜ,È»ºóÔÙË²ÒÆ(×¢ÒâÒªÏÈ»ñÈ¡XYÔÙ·ÅÕĞ)  Ver2.3 barlog¶ÀÁ¢ÓÚv3ÖĞ·À¿ÕÖĞ
+Sub Attack //·Å¼¼ÄÜ,È»ºóÔÙË²ÒÆ(×¢ÒâÒªÏÈ»ñÈ¡XYÔÙ·ÅÕĞ)  Ver2.5 barlog¶ÀÁ¢ÓÚv3ÖĞ·À¿ÕÖĞ
     a = GetTimeStamp() - InfiTime
     if a > 110 then //¸Ã²¹³äÖÕ¼«ÎŞÏŞÁË
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\InfiR.bmp",000000,1.00,0,intX,intY
@@ -30,6 +29,7 @@ Sub Attack //·Å¼¼ÄÜ,È»ºóÔÙË²ÒÆ(×¢ÒâÒªÏÈ»ñÈ¡XYÔÙ·ÅÕĞ)  Ver2.3 barlog¶ÀÁ¢ÓÚv3ÖĞ·À¿
             DelayRandom 351,355
             KeyUp R
             InfiTime = GetTimeStamp()
+            a = -1001
         else
             FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\InfiG.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then //`Î»ÖÃµÄÖÕ¼«ÎŞÏŞ
@@ -37,9 +37,11 @@ Sub Attack //·Å¼¼ÄÜ,È»ºóÔÙË²ÒÆ(×¢ÒâÒªÏÈ»ñÈ¡XYÔÙ·ÅÕĞ)  Ver2.3 barlog¶ÀÁ¢ÓÚv3ÖĞ·À¿
                 DelayRandom 1251,1255
                 KeyUp `
                 InfiTime = GetTimeStamp()
+                a = -1001
             End If
         End If
-    else //Ã»µ½ÖÕ¼«ÎŞÏŞ
+    End If
+    if a != -1001 then
         if SpellOK == 1 Then
             SpellOK = 0
             FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\Q.bmp",000000,1.00,0,intX,intY
@@ -122,7 +124,7 @@ Sub Attack //·Å¼¼ÄÜ,È»ºóÔÙË²ÒÆ(×¢ÒâÒªÏÈ»ñÈ¡XYÔÙ·ÅÕĞ)  Ver2.3 barlog¶ÀÁ¢ÓÚv3ÖĞ·À¿
             Timer 1,1,2000
         else
             a = GetTimeStamp() - DTime
-            if a > 2 and intY >= 85 and intY < 112 then //¿ÉÒÔ·ÅÄ©ÈÕÁË(½öÏŞµÚ¶ş²ã)
+            if a > 2 and intY > 84 and intY < 110 then //¿ÉÒÔ·ÅÄ©ÈÕÁË(½öÏŞµÚ¶ş²ã)
                 KeyDown D
                 DelayRandom 101,103
                 KeyUp D
