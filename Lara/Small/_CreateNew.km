@@ -1518,8 +1518,6 @@ Sub Step3
                     while 1>0 //红
                         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Option_Cancel.bmp",000000,1.00,0,tarX,tarY
                         if tarX >= 0 Then
-                            DelayRandom 39,42
-                            KeyDown Esc
                             DelayRandom 69,72
                             KeyUp Esc
                             DelayRandom 339,342
@@ -1617,9 +1615,9 @@ alterX = 0            //备用地点
 alterY = 0            //备用地点
 facing = 0            //面向初始归0
 
-Call Step1() //创角-回城这一步
-//Call Step2() //回城后-商店买完东西这一步
-//Call Step3() //商城拿东西
+//Call Step1() //创角-回城这一步
+Call Step2() //回城后-商店买完东西这一步
+Call Step3() //商城拿东西
 
 Beep 500,500
 

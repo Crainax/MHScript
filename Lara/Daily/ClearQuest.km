@@ -15,7 +15,7 @@ Dim SavedX,       SavedY,       SavedTor, SavedTorY  //保存一下临时处理的XY
 Dim wJam,         wJam2,        loopA,    loopB      //找图防卡,loopAB是循环数
 Dim ReleaseTime1, ReleaseTime2, ReleaseTime3         //各种冷却
 Dim RuneCooldown, seedTime1,    WGTime               //各种冷却
-Dim fountainTime                                     //各种冷却
+Dim fountains                                         //能放的喷泉的次数
 Dim startTime                                        //定格
 
 Sub Loading //加载地图
@@ -797,12 +797,12 @@ End Sub
 Sub BeforeStart //开刷前的参数初始化
     startTime = GetTimeStamp() //记录时间
     Call Wheel() //放轮
-    ReleaseTime1 = 0               //施放冷却1
-    ReleaseTime2 = 0               //施放冷却2
-    ReleaseTime3 = 0               //施放冷却3
-    seedTime1    = 0               //上次种子的时间
-    fountainTime = 0               //上次喷泉的时间
-    yTolerance   = 0               //初始化
+    ReleaseTime1	= 0               //施放冷却1
+    ReleaseTime2	= 0               //施放冷却2
+    ReleaseTime3	= 0               //施放冷却3
+    seedTime1		= 0               //上次种子的时间
+    fountains		= 1               //喷泉的次数
+    yTolerance		= 0               //初始化
 End Sub
 
 
@@ -815,15 +815,15 @@ Sub Fun1 //后面一步步来
     Call AfterMap() //去6
     Call Channel()
     Call BeforeStart() //开始前的准备
+    fountains = 2
     while 1>0 //开刷洞4
 
-        if getTimeStamp() > startTime+180 then //只刷180秒
+        if getTimeStamp() > startTime+140 then //只刷140秒
             break
         End If
 
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
-        a = GetTimeStamp() - fountainTime
-        if a > 55 or intX >= 0 then //可以喷泉了
+        if fountains > 0 and intX >= 0 then //可以喷泉了
             tarX = -98
             tarY = 93
             tolerance = 4
@@ -840,7 +840,7 @@ Sub Fun1 //后面一步步来
             DelayRandom 194,196
             KeyUp 1
             DelayRandom 712,721
-            fountainTime = GetTimeStamp()
+            fountains = fountains - 1
             Call ReleaseRune() //定期解轮
         End If
 
@@ -981,8 +981,7 @@ Sub Fun1 //后面一步步来
         End If
 
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
-        a = GetTimeStamp() - fountainTime
-        if a > 55 or intX >= 0 then //可以喷泉了
+        if fountains > 0 and intX >= 0 then //可以喷泉了
             tarX = -85
             tarY = 117
             tolerance = 6
@@ -999,7 +998,7 @@ Sub Fun1 //后面一步步来
             DelayRandom 194,196
             KeyUp 1
             DelayRandom 712,721
-            fountainTime = GetTimeStamp()
+            fountains = fountains - 1
 
             Call ReleaseRune() //定期解轮
         End If
@@ -1177,8 +1176,7 @@ Sub Fun1 //后面一步步来
         End If
 
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
-        a = GetTimeStamp() - fountainTime
-        if a > 55 or intX >= 0 then //可以喷泉了
+        if fountains > 0 and intX >= 0 then //可以喷泉了
             tarX = 29
             tarY = 84
             tolerance = 4
@@ -1195,7 +1193,7 @@ Sub Fun1 //后面一步步来
             DelayRandom 194,196
             KeyUp 1
             DelayRandom 712,721
-            fountainTime = GetTimeStamp()
+            fountains = fountains - 1
 
             Call ReleaseRune() //定期解轮
         End If
@@ -1383,8 +1381,7 @@ Sub Fun1 //后面一步步来
         End If
 
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
-        a = GetTimeStamp() - fountainTime
-        if a > 55 or intX >= 0 then //可以喷泉了
+        if fountains > 0 and intX >= 0 then //可以喷泉了
             tarX		= 29
             tarY		= 88
             tolerance	= 4
@@ -1401,7 +1398,7 @@ Sub Fun1 //后面一步步来
             DelayRandom 194,196
             KeyUp 1
             DelayRandom 712,721
-            fountainTime = GetTimeStamp()
+            fountains = fountains - 1
 
             Call ReleaseRune() //定期解轮
         End If
