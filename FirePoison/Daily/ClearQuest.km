@@ -690,7 +690,7 @@ Sub AfterMap //夹在中间的抽离后 v1.3 世界也能选,抽离2个Loading
 
 End Sub
 Sub Wheel //到地图先放轮
-    DelayRandom 56,58
+    DelayRandom 256,258
     KeyDown O
     DelayRandom 137,139
     KeyUp O
@@ -806,38 +806,7 @@ Sub BeforeStart //开刷前的参数初始化
     yTolerance		= 0 //初始化
 End Sub
 
-Sub Fun1 //后面一步步来
-    SavedTorY = 360
-    SavedX    = 91
-    SavedY    = 59
-    Call AfterMap() //去6
-    startTime = GetTimeStamp() //记录时间
-    Call Wheel() //放轮
-    //while getTimeStamp() > startTime + 180 //刷个180秒
-    //Wend
-    Call Home() //回城
-
-    SavedTorY = 341
-    SavedX    = 79
-    SavedY    = 149
-    Call AfterMap() //到达
-    startTime = GetTimeStamp() //记录时间
-    Call Wheel() //放轮
-    //while getTimeStamp() > startTime + 180 //刷个180秒
-    //Wend
-    Call Home() //回城
-
-    SavedTorY = 328
-    SavedX    = 121
-    SavedY    = 220
-    Call AfterMap() //到达
-    startTime = GetTimeStamp() //记录时间
-    Call Wheel() //放轮
-    //while getTimeStamp() > startTime + 180 //刷个180秒
-    //Wend
-    Call Home() //回城
-End Sub
-
+Sub ClearQuest //清理下任务
     SavedTorY = 360
     SavedTor  = 38
     SavedX    = 91
@@ -867,7 +836,7 @@ End Sub
             DelayRandom 194,196
             KeyUp 1
             DelayRandom 712,721
-
+            fountains = fountains - 1
         else
             if currentState == 1 then //右下位置
                 tarX		= 28
@@ -922,6 +891,171 @@ End Sub
         Call ReleaseRune() //定期解轮
     Wend
     Call Home() //回城
+
+    SavedTor  = 38
+    SavedTorY = 341
+    SavedX    = 40
+    SavedY    = 192
+    Call AfterMap() //去6
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    while 1>0 //开刷上1
+
+        if getTimeStamp() > startTime+70 then //只刷70秒
+            break
+        End if
+
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if fountains > 0 and intX >= 0 then //可以喷泉了
+            tarX = -34
+            tarY = 98
+            tolerance = 2
+            Call Move()
+            DelayRandom 56,58
+            KeyDown Left
+            DelayRandom 62,68
+            KeyUp Left
+            DelayRandom 106,109
+            KeyDown 1
+            DelayRandom 194,196
+            KeyUp 1
+            DelayRandom 712,721
+            fountains = fountains - 1
+        else
+
+            a = GetTimeStamp() - AuraTime
+            if a > 55 Then //前往领域点
+                //前往领域点
+                call GetXY()
+                if intX <= -22 then //左边领域
+                    tarX      = -22
+                else if intX >= 17 //右边领域
+                    tarX      = 17
+                else
+                    tarX = intX
+                End If
+                tarY      = 124
+                tolerance = 6
+                Call Move()
+                DelayRandom 123,130
+                KeyDown A
+                DelayRandom 130,132
+                KeyUp A
+                DelayRandom 405,413
+                AuraTime = GetTimeStamp()
+            else
+                if currentState == 1 then //前往楼上
+                    tarX		= -2
+                    tarY		= 111
+                    tolerance	= 3
+                    Call Move()
+                else if currentState == 2 then //前往楼上
+                    tarX		= -2
+                    tarY		= 98
+                    tolerance	= 3
+                    Call Move()
+                else if currentState == 3  then //前往楼上
+                    tarX		= 14
+                    tarY		= 98
+                    tolerance	= 3
+                    Call Move()
+                else
+                    tarX		= 14
+                    tarY		= 111
+                    tolerance	= 3
+                    Call Move()
+                End If
+                currentState = currentState + 1
+                if currentState > 3 then
+                    currentState = 0
+                End If
+            End If
+        End If
+        DelayRandom 100,103
+        Call ReleaseRune() //定期解轮
+    Wend
+    Call Home() //回城
+
+    SavedTor  = 38
+    SavedTorY = 328
+    SavedX    = 121
+    SavedY    = 220
+    Call AfterMap() //去6
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    while 1>0 //开刷冬4
+
+        if getTimeStamp() > startTime+70 then //只刷70秒
+            break
+        End if
+
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if fountains > 0 and intX >= 0 then //可以喷泉了
+            tarX = -80
+            tarY = 91
+            tolerance = 4
+            Call Move()
+            DelayRandom 56,58
+            KeyDown Left
+            DelayRandom 62,68
+            KeyUp Left
+            DelayRandom 106,109
+            KeyDown 1
+            DelayRandom 194,196
+            KeyUp 1
+            DelayRandom 712,721
+            fountains = fountains - 1
+        else
+
+            a = GetTimeStamp() - AuraTime
+            if a > 55 Then //前往领域点
+                //前往领域点
+                tarX      = -36
+                tarY      = 120
+                tolerance = 6
+                Call Move()
+                DelayRandom 123,130
+                KeyDown A
+                DelayRandom 130,132
+                KeyUp A
+                DelayRandom 405,413
+                AuraTime = GetTimeStamp()
+            else
+                if currentState == 1 then //前往楼上
+                    tarX		= -11
+                    tarY		= 106
+                    tolerance	= 6
+                    Call Move()
+                else if currentState == 2 then //前往楼上
+                    tarX		= 12
+                    tarY		= 106
+                    tolerance	= 6
+                    Call Move()
+                else if currentState == 3  then //前往楼上
+                    tarX		= 12
+                    tarY		= 91
+                    tolerance	= 6
+                    Call Move()
+                else
+                    tarX		= 12
+                    tarY		= 106
+                    tolerance	= 6
+                    Call Move()
+                End If
+                currentState = currentState + 1
+                if currentState > 3 then
+                    currentState = 0
+                End If
+            End If
+        End If
+        DelayRandom 100,103
+        Call ReleaseRune() //定期解轮
+    Wend
+    Call Home() //回城
+
+End Sub
+
+
 
 
 
