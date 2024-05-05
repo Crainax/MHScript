@@ -4,16 +4,15 @@ ScreenY=1440
 Times=0
 
 [Script]
-Dim x1,          x2,         y1,   y2    // 矩形区域:小地图采样点
-Dim x3,          y3,         xEnd, yEnd  // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,        tarY,       cX,   cY    //目标
-Dim alterX,      alterY,     stuckTimes  //备用地点,传送门脚步开关
-Dim logoX,       logoY,      intX, intY  //算目的地差值
-Dim InfiTime,    BarlogTime, a           //放技能时间冷却
-Dim DTime,       facing,     SpellOK     //末日烈焰冷却
-Dim tolerance,   tolLoc,     yTolerance  //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim staticCount, staticX,    staticY     //防卡计数器
-Dim LEDState                             //测试用:开大写键就是获取点位,不要切来切去的了
+Dim x1,          x2,      y1,   y2      // 矩形区域:小地图采样点
+Dim x3,          y3,      xEnd, yEnd    // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,        tarY,    cX,   cY      //目标
+Dim alterX,      alterY,  a,    facing  //备用地点,传送门脚步开关
+Dim logoX,       logoY,   intX, intY    //算目的地差值
+Dim DTime,       InfiTime      SpellOK  //末日烈焰冷却
+Dim tolerance,   tolLoc,  yTolerance    //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim staticCount, staticX, staticY       //防卡计数器
+Dim LEDState                            //测试用:开大写键就是获取点位,不要切来切去的了
 
 //左上传送点(-96,90),喷泉点(-81,104),左下传送点(-73,118),右下传送点(5,118),右上传送点(29,88),右下捡钱点(48,118),普攻(-8,107),上巡(-8,79),测试上瞬(15,68),测试上瞬(-58,90),左下捡钱(-98,118)
 
@@ -22,7 +21,7 @@ Sub on_timer1 //扔技能CD2秒
 EndSub
 
 
-Sub Attack //放技能,然后再瞬移(注意要先获取XY再放招)  Ver2.2 加入末日烈焰
+Sub Attack //放技能,然后再瞬移(注意要先获取XY再放招)  Ver2.3 barlog独立于v3中防空中
     a = GetTimeStamp() - InfiTime
     if a > 110 then //该补充终极无限了
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\InfiR.bmp",000000,1.00,0,intX,intY
@@ -41,79 +40,75 @@ Sub Attack //放技能,然后再瞬移(注意要先获取XY再放招)  Ver2.2 加入末日烈焰
             End If
         End If
     else //没到终极无限
-        a = GetTimeStamp() - BarlogTime
-        if a > 240 then //召唤新的炎魔
-            KeyDown E
-            DelayRandom 985,989
-            KeyUp E
-            BarlogTime = GetTimeStamp()
-        else
-            if SpellOK == 1 Then
-                SpellOK = 0
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\Q.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //V1技能好了
-                    KeyDown Q
-                    DelayRandom 101,103
-                    KeyUp Q
+        if SpellOK == 1 Then
+            SpellOK = 0
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\Q.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //V1技能好了
+                KeyDown Q
+                DelayRandom 101,103
+                KeyUp Q
+            else
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\W.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //V2技能好了
+                    KeyDown W
+                    DelayRandom 301,305
+                    KeyUp W
                 else
-                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\W.bmp",000000,1.00,0,intX,intY
-                    if intX >= 0 Then //V2技能好了
-                        KeyDown W
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\V.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then //V4技能好了
+                        KeyDown E
+                        DelayRandom 185,187
+                        KeyUp E
+                        DelayRandom 670,677
+                        KeyDown V
                         DelayRandom 301,305
-                        KeyUp W
+                        KeyUp V
                     else
-                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\V.bmp",000000,1.00,0,intX,intY
-                        if intX >= 0 Then //V4技能好了
-                            KeyDown V
-                            DelayRandom 301,305
-                            KeyUp V
+                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\B.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //流星技能好了
+                            KeyDown B
+                            DelayRandom 1251,1255
+                            KeyUp B
                         else
-                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\B.bmp",000000,1.00,0,intX,intY
-                            if intX >= 0 Then //流星技能好了
-                                KeyDown B
-                                DelayRandom 1251,1255
-                                KeyUp B
+                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\S.bmp",000000,1.00,0,intX,intY
+                            if intX >= 0 Then //V3技能好了
+                                KeyDown S
+                                DelayRandom 201,205
+                                KeyUp S
                             else
-                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\S.bmp",000000,1.00,0,intX,intY
-                                if intX >= 0 Then //V3技能好了
-                                    KeyDown S
-                                    DelayRandom 201,205
-                                    KeyUp S
+                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\Z.bmp",000000,1.00,0,intX,intY
+                                if intX >= 0 Then //蓝焰斩技能好了
+                                    KeyDown Z
+                                    DelayRandom 301,305
+                                    KeyUp Z
                                 else
-                                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\Z.bmp",000000,1.00,0,intX,intY
-                                    if intX >= 0 Then //蓝焰斩技能好了
-                                        KeyDown Z
-                                        DelayRandom 301,305
-                                        KeyUp Z
+                                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\H.bmp",000000,1.00,0,intX,intY
+                                    if intX >= 0 Then //找蜘蛛
+                                        KeyDown H
+                                        DelayRandom 901,905
+                                        KeyUp H
                                     else
-                                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\H.bmp",000000,1.00,0,intX,intY
-                                        if intX >= 0 Then //找蜘蛛
-                                            KeyDown H
-                                            DelayRandom 901,905
-                                            KeyUp H
+                                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Y.bmp",000000,1.00,0,intX,intY
+                                        if intX >= 0 Then //找烈阳
+                                            KeyDown Y
+                                            DelayRandom 801,805
+                                            KeyUp Y
                                         else
-                                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Y.bmp",000000,1.00,0,intX,intY
-                                            if intX >= 0 Then //找烈阳
-                                                KeyDown Y
-                                                DelayRandom 801,805
-                                                KeyUp Y
-                                            else
-                                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\4.bmp",000000,1.00,0,intX,intY
-                                                if intX >= 0 Then //找武公
-                                                    KeyDown 4
-                                                    DelayRandom 801,809
-                                                    KeyUp 4
-                                                else //什么都没有就普攻一下
-                                                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\5A.bmp",000000,1.00,0,intX,intY
-                                                    if intX >= 0 Then //补充个大祝福
-                                                        KeyDown 5
-                                                        DelayRandom 301,309
-                                                        KeyUp 5
-                                                    else //实在没有就普攻一下
-                                                        KeyDown F
-                                                        DelayRandom 101,103
-                                                        KeyUp F
-                                                    End If
+                                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\4.bmp",000000,1.00,0,intX,intY
+                                            if intX >= 0 Then //找武公
+                                                KeyDown 4
+                                                DelayRandom 801,809
+                                                KeyUp 4
+                                            else //什么都没有就普攻一下
+                                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\5A.bmp",000000,1.00,0,intX,intY
+                                                if intX >= 0 Then //补充个大祝福
+                                                    KeyDown 5
+                                                    DelayRandom 301,309
+                                                    KeyUp 5
+                                                else //实在没有就普攻一下
+                                                    KeyDown F
+                                                    DelayRandom 101,103
+                                                    KeyUp F
                                                 End If
                                             End If
                                         End If
@@ -123,19 +118,19 @@ Sub Attack //放技能,然后再瞬移(注意要先获取XY再放招)  Ver2.2 加入末日烈焰
                         End If
                     End If
                 End If
-                Timer 1,1,2000
-            else
-                a = GetTimeStamp() - DTime
-                if a > 2 and intY >= 85 and intY < 112 then //可以放末日了(仅限第二层)
-                    KeyDown D
-                    DelayRandom 101,103
-                    KeyUp D
-                    DTime = GetTimeStamp()
-                else //平时就放扫荡
-                    KeyDown F
-                    DelayRandom 101,103
-                    KeyUp F
-                End If
+            End If
+            Timer 1,1,2000
+        else
+            a = GetTimeStamp() - DTime
+            if a > 2 and intY >= 85 and intY < 112 then //可以放末日了(仅限第二层)
+                KeyDown D
+                DelayRandom 101,103
+                KeyUp D
+                DTime = GetTimeStamp()
+            else //平时就放扫荡
+                KeyDown F
+                DelayRandom 101,103
+                KeyUp F
             End If
         End If
     End If
@@ -207,8 +202,7 @@ Sub Stable //稳定Y轴(外面不要使用变量a哦)
         End If
     Wend
 End Sub
-Sub Move //精确的移动:V3.1重构上下跳的csTimes等待
-    stuckTimes = 0 //防卡检测初始次数为0
+Sub Move //精确的移动:V3.11 重构卡住的情况
     cX = -100
     cY = 0
     KeyAllup //施放所有按键防止卡住
@@ -220,60 +214,48 @@ Sub Move //精确的移动:V3.1重构上下跳的csTimes等待
             tolLoc = 2
         End If
         if intX < (tarX-12) Then //右瞬:这里的shit必须要抬起来 不然好像下面会出问题
-            If stuckTimes < 2 Then
-                if cX != intX Then //有变化了,就重置计数器
-                    cX = intX
-                    stuckTimes = 0
-                else
-                    stuckTimes = stuckTimes + 1 //原地就计数器+1
-                End If
-                Call AntiJam()
-                Call Attack()
-                DelayRandom 115,117
-                KeyDown Right
-                DelayRandom 53,54
-                KeyDown LShift
-                DelayRandom 86,87
-                KeyUp LShift
-                DelayRandom 22,23
-                KeyUp Right
-                DelayRandom 356,360
-            else //计数器达到5次Y轴不动了,下跳
+            cX = intX
+            Call AntiJam()
+            Call Attack()
+            DelayRandom 115,117
+            KeyDown Right
+            DelayRandom 53,54
+            KeyDown LShift
+            DelayRandom 86,87
+            KeyUp LShift
+            DelayRandom 22,23
+            KeyUp Right
+            DelayRandom 356,360
+            call GetXY()
+            if cX == intX Then //卡住了
                 DelayRandom 53,54
                 KeyDown Right
                 DelayRandom 186,187
                 KeyUp Right
                 DelayRandom 22,23
-                stuckTimes = 0
-                cX = -100
+                Call Stable() //稳定Y轴再继续
             End If
         Else If intX > (tarX+12) Then //向左瞬
-            If stuckTimes < 2 Then
-                if cX != intX Then //有变化了,就重置计数器
-                    cX = intX
-                    stuckTimes = 0
-                else
-                    stuckTimes = stuckTimes + 1 //原地就计数器+1
-                End If
-                Call AntiJam()
-                Call Attack()
-                DelayRandom 115,117
-                KeyDown Left
+            cX = intX
+            Call AntiJam()
+            Call Attack()
+            DelayRandom 115,117
+            KeyDown Left
+            DelayRandom 53,54
+            KeyDown LShift
+            DelayRandom 86,87
+            KeyUp LShift
+            DelayRandom 22,23
+            KeyUp Left
+            DelayRandom 356,360
+            call GetXY()
+            if cX == intX Then //卡住了
                 DelayRandom 53,54
-                KeyDown LShift
-                DelayRandom 86,87
-                KeyUp LShift
-                DelayRandom 22,23
-                KeyUp Left
-                DelayRandom 356,360
-            else //计数器达到5次Y轴不动了,下跳
-                DelayRandom 53,54
-                KeyDown Left
+                KeyDown Right
                 DelayRandom 186,187
-                KeyUp Left
+                KeyUp Right
                 DelayRandom 22,23
-                stuckTimes = 0
-                cX = -100
+                Call Stable() //稳定Y轴再继续
             End If
         Else If intX < (tarX-tolLoc) Then //向右走
             Call AntiJam()
@@ -299,27 +281,20 @@ Sub Move //精确的移动:V3.1重构上下跳的csTimes等待
             KeyUp Left
         else //到Y方向的了
             If intY < (tarY - yTolerance) Then //如果人在目标之上,就下瞬(Y轴是用相反比较符)
-                KeyUp Up
-                If stuckTimes < 2 Then //普通下瞬
-                    if cY != intY Then //有变化了,就重置计数器
-                        cY = intY
-                        stuckTimes = 0
-                    else
-                        stuckTimes = stuckTimes + 1 //原地就计数器+1
-                    End If
-                    Call Attack()
-                    DelayRandom 115,117
-                    KeyDown Down
-                    DelayRandom 53,54
-                    KeyDown LShift
-                    DelayRandom 86,87
-                    KeyUp LShift
-                    DelayRandom 22,23
-                    KeyUp Down
-                    DelayRandom 356,360
-                else //计数器达到5次Y轴不动了,下跳
+                cY = intY
+                Call Attack()
+                DelayRandom 115,117
+                KeyDown Down
+                DelayRandom 53,54
+                KeyDown LShift
+                DelayRandom 86,87
+                KeyUp LShift
+                DelayRandom 22,23
+                KeyUp Down
+                DelayRandom 356,360
+                call GetXY()
+                if cY == intY Then //卡住了
                     TracePrint 下跳一次
-                    stuckTimes = 0
                     KeyDown Down
                     DelayRandom 134,136
                     KeyDown Space
@@ -337,27 +312,19 @@ Sub Move //精确的移动:V3.1重构上下跳的csTimes等待
                     Call Stable() //稳定Y轴
                 End If
             Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上瞬(Y轴是用相反比较符)
-                KeyUp Down
-                If stuckTimes < 2 Then //普通上瞬
-                    if cY != intY Then //有变化了,就重置计数器
-                        cY = intY
-                        stuckTimes = 0
-                    else
-                        stuckTimes = stuckTimes + 1 //原地就计数器+1
-                    End If
-                    Call Attack()
-                    DelayRandom 115,117
-                    KeyDown Up
-                    DelayRandom 53,54
-                    KeyDown LShift
-                    DelayRandom 86,87
-                    KeyUp LShift
-                    DelayRandom 22,23
-                    KeyUp Up
-                    DelayRandom 356,360
-                else //计数器达到5次Y轴不动了,钩子
-                    cY               = intY
-                    stuckTimes       = 0
+                cY = intY
+                Call Attack()
+                DelayRandom 115,117
+                KeyDown Up
+                DelayRandom 53,54
+                KeyDown LShift
+                DelayRandom 86,87
+                KeyUp LShift
+                DelayRandom 22,23
+                KeyUp Up
+                DelayRandom 356,360
+                call GetXY()
+                if cY == intY Then //卡住了
                     DelayRandom 12,13
                     KeyDown Alt
                     DelayRandom 328,430
@@ -601,7 +568,6 @@ xEnd = intX
 yEnd = intY
 InfiTime   = GetTimeStamp() - 110  //上次终极无限的时间
 DTime      = 0                     //上次放末日烈焰的时间
-BarlogTime = 0                     //上次召炎魔的时间
 SpellOK    = 1                     //技能冷却
 Timer 1,1,1000
 while 1 > 0
