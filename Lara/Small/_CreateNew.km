@@ -1181,13 +1181,11 @@ Sub Step2 //回城后-商店买完东西这一步
                     MoveTo logoX+30,logoY
                     LeftDoubleClick
                     DelayRandom 339,342
-                    for 3
-                        DelayRandom 39,42
-                        KeyDown 5
-                        DelayRandom 69,72
-                        KeyUp 5
-                        DelayRandom 39,42
-                    Next
+                    DelayRandom 39,42
+                    KeyDown 5
+                    DelayRandom 69,72
+                    KeyUp 5
+                    DelayRandom 39,42
                     DelayRandom 39,42
                     KeyDown Enter
                     DelayRandom 69,72
