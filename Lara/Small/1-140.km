@@ -1127,7 +1127,7 @@ Sub AfterMap //夹在中间的抽离后 v1.2 世界也能选
                 KeyDown m
                 DelayRandom 69,72
                 KeyUp m
-                DelayRandom 39,42
+                DelayRandom 239,242
             End If
 
         End If

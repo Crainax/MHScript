@@ -6,7 +6,7 @@ Times=0
 [Script]
 Dim x1,           x2,           y1,       y2         // 矩形区域:小地图采样点
 Dim x3,           y3,           xEnd,     yEnd       // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,         tarY,         cY,       tempX      //目标
+Dim tarX,         tarY,         cY                   //目标
 Dim logoX,        logoY,        intX,     intY       //算目的地差值
 Dim alterX,       alterY,       facing               //备用地点,传送门脚步开关
 Dim tolerance,    tolLoc,       yTolerance           //快速移动的容差,0代表精确移动,另外个是局部变量
@@ -16,7 +16,9 @@ Dim RuneCooldown, seedTime1,    WGTime               //各种冷却
 Dim pick1                                            //捡钱冷卻
 Dim staticCount,  staticX,      staticY              //防卡计数器
 Dim SavedX,       SavedY,       SavedTor, SavedTorY  //保存一下临时处理的XY
-Dim min,          minType,      wJam,     red        //预移动
+Dim min,          minType,      wJam                 //预移动
+Dim red,          tempX,        tempY                //红点侦测
+
 
 Sub Loading //加载地图
     while 1>0 //等进入加载
@@ -772,8 +774,8 @@ Sub CheckMap //核对地图
         End If
     Wend
 End Sub
-Sub on_timer4 //查红点
-    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Player.bmp",000000,1.00,0,tempX,a
+Sub on_timer4 //查红点 ver1.1 使用了tempX和Y防干扰
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Player.bmp",000000,1.00,0,tempX,tempY
     if tempX >= 0 Then //地图里有其他玩家
         red = red + 1
     End If
