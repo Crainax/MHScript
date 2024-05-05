@@ -1092,7 +1092,7 @@ Sub CloseBag //关闭装备栏
         End If
     Wend
 End Sub
-Sub AfterMap //夹在中间的抽离后 v1.2 世界也能选
+Sub AfterMap //夹在中间的抽离后 v1.3 世界也能选,抽离2个Loading
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then

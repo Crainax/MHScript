@@ -806,7 +806,7 @@ End Sub
 
 Sub Fun1 //后面一步步来
     SavedTorY = 360
-    SavedTor  = popo38
+    SavedTor  = 38
     SavedX    = 147
     SavedY    = 55
     Call AfterMap() //去6

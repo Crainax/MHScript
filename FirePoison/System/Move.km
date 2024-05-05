@@ -253,9 +253,9 @@ Sub Move //精确的移动:V3.11 重构卡住的情况
             call GetXY()
             if cX == intX Then //卡住了
                 DelayRandom 53,54
-                KeyDown Right
+                KeyDown Left
                 DelayRandom 186,187
-                KeyUp Right
+                KeyUp Left
                 DelayRandom 22,23
                 Call Stable() //稳定Y轴再继续
             End If
