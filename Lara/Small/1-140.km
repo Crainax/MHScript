@@ -2650,7 +2650,7 @@ Sub Event101 //活动地图领东西
                 if intX >= 0 Then
                     MoveTo intX,intY+45
                     LeftClick
-                    DelayRandom 539,542
+                    DelayRandom 3539,3542
                 else
                     MoveTo 50,50 //找图标
                     DelayRandom 139,142
@@ -2723,6 +2723,8 @@ Sub Event101 //活动地图领东西
                 DelayRandom 239,242
             End If
         Wend
+
+        Delay 3000
     Next
 
     while 1>0 //点头顶的灯泡
@@ -2778,6 +2780,7 @@ Sub Event101 //活动地图领东西
         End If
     Wend
 
+    Delay 3000
     while 1>0 //再进入灯泡(1)
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,logoX,logoY //停止对话
         if logoX >= 0 Then
@@ -2837,7 +2840,7 @@ Sub Event101 //活动地图领东西
                 if intX >= 0 Then
                     MoveTo intX,intY+45
                     LeftClick
-                    DelayRandom 539,542
+                    DelayRandom 3539,3542
                 else
                     MoveTo 50,50 //找图标
                     DelayRandom 139,142
@@ -2846,6 +2849,7 @@ Sub Event101 //活动地图领东西
         End If
     Wend
 
+    Delay 3000
     while 1>0 //再进入灯泡(2)
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,logoX,logoY //停止对话
         if logoX >= 0 Then
@@ -2905,7 +2909,7 @@ Sub Event101 //活动地图领东西
                 if intX >= 0 Then
                     MoveTo intX,intY+45
                     LeftClick
-                    DelayRandom 539,542
+                    DelayRandom 3539,3542
                 else
                     MoveTo 50,50 //找图标
                     DelayRandom 139,142
