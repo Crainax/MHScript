@@ -551,7 +551,7 @@ Sub Fun1
                 if intX >= 0 Then
                     MoveTo intX,intY+45
                     LeftClick
-                    DelayRandom 139,142
+                    DelayRandom 539,542
                 else
                     MoveTo 50,50 //找图标
                     DelayRandom 139,142
@@ -563,10 +563,69 @@ Sub Fun1
     Call Loading()
 End Sub
 
+    FindPic x1,y1,x2,y2,"E:\MHImg\UI\Map\ZoomInMap.bmp",000000,1.00,0,intX,intY
+    If intX >= 0 Then //放小地图
+        MoveTo intX,intY
+        LeftClick
+        DelayRandom 139,142
+    End If
+
     tarX = 39
     tarY = 146
     tolerance = 2
     Call Move_B() //多莉处
+
+    for 2
+        while 1>0 //解兩次對話
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY //停止对话
+            if intX >= 0 Then
+                wJam = 0 //放在循环外面位置
+                while 1>0 //对话框内部(找不到停止对话即结束)
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY //停止对话
+                    if intX < 0 Then
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\Next.bmp",000000,1.00,0,intX,intY //停止对话
+                    End If
+                    if intX < 0 Then
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY //停止对话
+                    End If
+                    if intX < 0 Then //结束了(以几次判断来看)
+                        wJam = wJam + 1  //循环内部
+                        if wJam > 3 then //三次失败,
+                            break
+                        End If
+                    else
+                        wJam = 0 //放在成功的位置
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Event\202404\Mark1.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then
+                            MoveTo intX+100,intY+5
+                            LeftClick
+                            DelayRandom 139,142
+                        else
+                            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp",000000,1.00,0,intX,intY
+                            if intX >= 0 Then //否
+                                MoveTo intX-50,intY
+                                LeftClick
+                                DelayRandom 139,142
+                            else
+                                DelayRandom 39,42
+                                KeyDown PageDown
+                                DelayRandom 69,72
+                                KeyUp PageDown
+                                DelayRandom 39,42
+                            End If
+                        End If
+                    End If
+                Wend
+                break
+            else
+                DelayRandom 39,42
+                KeyDown PageDown
+                DelayRandom 69,72
+                KeyUp PageDown
+                DelayRandom 239,242
+            End If
+        Wend
+    Next
 
 Sub Fun2
     //黑屏代表(alter 都取-1)
