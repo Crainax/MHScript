@@ -4,45 +4,45 @@ ScreenY=2560
 Times=1
 
 [Script]
-Dim x1,          x2,      y1,    y2     // ¾ØĞÎÇøÓò:Ğ¡µØÍ¼²ÉÑùµã
-Dim x3,          y3,      xEnd,  yEnd   // 2¸ö¶¥µã:¼¼ÄÜÇø/ÆÁÄ»ÓÒÏÂ½Ç¶¥µã
-Dim tarX,        tarY,    cY,    a      //Ä¿±ê
-Dim logoX,       logoY,   intX,  intY   //ËãÄ¿µÄµØ²îÖµ
-Dim red,         tempX,   tempY         //ºìµãÕì²â
-Dim wJam,        wJam2,   loopA, loopB  //ÕÒÍ¼·À¿¨,loopABÊÇÑ­»·Êı
-Dim alterX,      alterY,  facing        //±¸ÓÃµØµã,´«ËÍÃÅ½Å²½¿ª¹Ø,´«ËÍÃÅµÄÃæÏò
-Dim tolerance,   tolLoc,  yTolerance    //¿ìËÙÒÆ¶¯µÄÈİ²î,0´ú±í¾«È·ÒÆ¶¯,ÁíÍâ¸öÊÇ¾Ö²¿±äÁ¿
-Dim staticCount, staticX, staticY       //·À¿¨¼ÆÊıÆ÷
+Dim x1,          x2,      y1,    y2     // çŸ©å½¢åŒºåŸŸ:å°åœ°å›¾é‡‡æ ·ç‚¹
+Dim x3,          y3,      xEnd,  yEnd   // 2ä¸ªé¡¶ç‚¹:æŠ€èƒ½åŒº/å±å¹•å³ä¸‹è§’é¡¶ç‚¹
+Dim tarX,        tarY,    cY,    a      //ç›®æ ‡
+Dim logoX,       logoY,   intX,  intY   //ç®—ç›®çš„åœ°å·®å€¼
+Dim red,         tempX,   tempY         //çº¢ç‚¹ä¾¦æµ‹
+Dim wJam,        wJam2,   loopA, loopB  //æ‰¾å›¾é˜²å¡,loopABæ˜¯å¾ªç¯æ•°
+Dim alterX,      alterY,  facing        //å¤‡ç”¨åœ°ç‚¹,ä¼ é€é—¨è„šæ­¥å¼€å…³,ä¼ é€é—¨çš„é¢å‘
+Dim tolerance,   tolLoc,  yTolerance    //å¿«é€Ÿç§»åŠ¨çš„å®¹å·®,0ä»£è¡¨ç²¾ç¡®ç§»åŠ¨,å¦å¤–ä¸ªæ˜¯å±€éƒ¨å˜é‡
+Dim staticCount, staticX, staticY       //é˜²å¡è®¡æ•°å™¨
 
 
-Sub Loading //¼ÓÔØµØÍ¼
-    while 1>0 //µÈ½øÈë¼ÓÔØ
+Sub Loading //åŠ è½½åœ°å›¾
+    while 1>0 //ç­‰è¿›å…¥åŠ è½½
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX <= 0 Then //¼ÓÔØÍê³ÉÁË
+        if intX <= 0 Then //åŠ è½½å®Œæˆäº†
             break
         else
             DelayRandom 100,150
         End If
     Wend
-    while 1>0 //µÈ¼ÓÔØ
+    while 1>0 //ç­‰åŠ è½½
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX > 0 Then //¼ÓÔØÍê³ÉÁË
+        if intX > 0 Then //åŠ è½½å®Œæˆäº†
             break
         else
             DelayRandom 100,150
         End If
     Wend
 End Sub
-Sub GetXY //»ñÈ¡½ÇÉ«µÄXYÖá(Èç¹ûÕÒ²»µ½»á×óÓÒÒÆ¶¯)
+Sub GetXY //è·å–è§’è‰²çš„XYè½´(å¦‚æœæ‰¾ä¸åˆ°ä¼šå·¦å³ç§»åŠ¨)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
 
-    if intX < 0 Then //ÈËÎïÅÜµ½ÁË±ß½ç  ´¦ÀíÒ»ÏÂ
+    if intX < 0 Then //äººç‰©è·‘åˆ°äº†è¾¹ç•Œ  å¤„ç†ä¸€ä¸‹
         KeyDown Left
         DelayRandom 200,250
         KeyUp Left
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX < 0 Then //×óÒÆÁË»¹ÊÇÃ»ÕÒµ½,¾ÍÓÒÒÆ
+        if intX < 0 Then //å·¦ç§»äº†è¿˜æ˜¯æ²¡æ‰¾åˆ°,å°±å³ç§»
             KeyDown Right
             DelayRandom 200,250
             KeyUp Right
@@ -54,8 +54,8 @@ Sub GetXY //»ñÈ¡½ÇÉ«µÄXYÖá(Èç¹ûÕÒ²»µ½»á×óÓÒÒÆ¶¯)
     intY = intY - logoY
 End Sub
 
-Sub AntiJam //Ò»°ã¸úËæGetXYºóÓÃ
-    if staticX ==  intX and staticY == intY then //Èç¹ûÏàµÈ¾ÍÀÛ¼Ó¼ÆÊıÆ÷
+Sub AntiJam //ä¸€èˆ¬è·ŸéšGetXYåç”¨
+    if staticX ==  intX and staticY == intY then //å¦‚æœç›¸ç­‰å°±ç´¯åŠ è®¡æ•°å™¨
         staticCount = staticCount + 1
     else
         staticX     = intX
@@ -65,7 +65,7 @@ Sub AntiJam //Ò»°ã¸úËæGetXYºóÓÃ
     if staticCount >= 3 Then //
 
         Beep 500,500
-        // Ä£Äâ´ÓÉş×ÓÌø×ß
+        // æ¨¡æ‹Ÿä»ç»³å­è·³èµ°
         DelayRandom 13,15
         KeyDown Right
         DelayRandom 21,22
@@ -75,34 +75,34 @@ Sub AntiJam //Ò»°ã¸úËæGetXYºóÓÃ
         DelayRandom 44,45
         KeyUp Right
         DelayRandom 13,15
-        RestartScript //ÖØÆô
+        RestartScript //é‡å¯
     End If
 End Sub
-Sub Stable //ÎÈ¶¨(Ç°Ãæ×ÔĞĞgetXY)
+Sub Stable //ç¨³å®š(å‰é¢è‡ªè¡ŒgetXY)
     cY = intY
-    for 3 //È·¶¨²»¶¯ÁËÔÙÌø
+    for 3 //ç¡®å®šä¸åŠ¨äº†å†è·³
         call GetXY()
-        if intY == cY Then //YÖáÃ»±ä»¯
+        if intY == cY Then //Yè½´æ²¡å˜åŒ–
             Delay 2
-        else //»¹ÔÚÔË¶¯,¾ÍÍ£ÁË°É
+        else //è¿˜åœ¨è¿åŠ¨,å°±åœäº†å§
             break
         End If
     Next
 End Sub
-Sub Move_B  //´¿ÒÆ¶¯²»·Å¼¼ÄÜ(Ver3.11)
+Sub Move_B  //çº¯ç§»åŠ¨ä¸æ”¾æŠ€èƒ½(Ver3.11)
     while  1 > 0
         Call GetXY()
-        Call AntiJam() //·À¿¨
+        Call AntiJam() //é˜²å¡
         if tolerance > 2 Then
             tolLoc = tolerance
-        else  //ËÙ×ßµÄÄ¬ÈÏÎª4
+        else  //é€Ÿèµ°çš„é»˜è®¤ä¸º4
             tolLoc = 2
         End If
-        if intY > tarY +2 and intY <= tarY + 11 and intX >= (tarX-26) and intX <=(tarX+26) then //[ÌØÊâÇé¿ö1]¸ß¶ÈĞ¡ÓÚµÈÓÚ11
+        if intY > tarY +2 and intY <= tarY + 11 and intX >= (tarX-26) and intX <=(tarX+26) then //[ç‰¹æ®Šæƒ…å†µ1]é«˜åº¦å°äºç­‰äº11
             Call Stable()
             if intY == cY then
-                if intX < (tarX-4) then //ÓÒÖ±Ìø
-                    TracePrint ÓÒÖ±Ìø
+                if intX < (tarX-4) then //å³ç›´è·³
+                    TracePrint å³ç›´è·³
                     Delay 77
                     KeyDown Right
                     Delay 101
@@ -116,8 +116,8 @@ Sub Move_B  //´¿ÒÆ¶¯²»·Å¼¼ÄÜ(Ver3.11)
                     Delay 42
                     KeyUp Right
                     Delay 500
-                else if intX > (tarX+4) //×óÖ±Ìø
-                    TracePrint ×óÖ±Ìø
+                else if intX > (tarX+4) //å·¦ç›´è·³
+                    TracePrint å·¦ç›´è·³
                     Delay 77
                     KeyDown Left
                     Delay 101
@@ -131,8 +131,8 @@ Sub Move_B  //´¿ÒÆ¶¯²»·Å¼¼ÄÜ(Ver3.11)
                     Delay 42
                     KeyUp Left
                     Delay 500
-                else if intX <= tarX then //×ó·´Ç½Ìø
-                    TracePrint ×ó·´Ç½Ìø
+                else if intX <= tarX then //å·¦åå¢™è·³
+                    TracePrint å·¦åå¢™è·³
                     Delay 45
                     KeyDown Left
                     Delay 119
@@ -150,8 +150,8 @@ Sub Move_B  //´¿ÒÆ¶¯²»·Å¼¼ÄÜ(Ver3.11)
                     Delay 112
                     KeyUp Right
                     Delay 500
-                else //ÓÒ·´Ç½Ìø
-                    TracePrint ÓÒ·´Ç½Ìø
+                else //å³åå¢™è·³
+                    TracePrint å³åå¢™è·³
                     Delay 45
                     KeyDown Right
                     Delay 119
@@ -171,10 +171,10 @@ Sub Move_B  //´¿ÒÆ¶¯²»·Å¼¼ÄÜ(Ver3.11)
                     Delay 500
                 end if
             End If
-        else if intX < (tarX-24) Then //ÏòÓÒ¶ş¶ÎÌø
+        else if intX < (tarX-24) Then //å‘å³äºŒæ®µè·³
             // Call Stable()
             // if intY == cY then
-                TracePrint ÓÒÌø
+                TracePrint å³è·³
                 DelayRandom 15,25
                 KeyDown Right
                 DelayRandom 50,51
@@ -191,10 +191,10 @@ Sub Move_B  //´¿ÒÆ¶¯²»·Å¼¼ÄÜ(Ver3.11)
                 DelayRandom 313,315
                 DelayRandom 256,261
             // End If
-        Else If intX > (tarX+24) Then //Ïò×ó¶ş¶ÎÌø
+        Else If intX > (tarX+24) Then //å‘å·¦äºŒæ®µè·³
             // Call Stable()
             // if intY == cY then
-                TracePrint ×óÌø
+                TracePrint å·¦è·³
                 DelayRandom 15,25
                 KeyDown Left
                 DelayRandom 50,51
@@ -211,7 +211,7 @@ Sub Move_B  //´¿ÒÆ¶¯²»·Å¼¼ÄÜ(Ver3.11)
                 DelayRandom 313,315
                 DelayRandom 256,261
             // End If
-        Else If intX < (tarX-tolLoc) Then //ÏòÓÒ×ß
+        Else If intX < (tarX-tolLoc) Then //å‘å³èµ°
             KeyDown Right
             a = (tarX - tolLoc - intX) * 52
             if a < 52 then
@@ -221,7 +221,7 @@ Sub Move_B  //´¿ÒÆ¶¯²»·Å¼¼ÄÜ(Ver3.11)
             End If
             Delay a
             KeyUp Right
-        Else If intX > (tarX+tolLoc) Then //Ïò×ó×ß
+        Else If intX > (tarX+tolLoc) Then //å‘å·¦èµ°
             KeyDown Left
             a = (intX - tarX - tolLoc) * 52
             if a < 52 then
@@ -232,36 +232,36 @@ Sub Move_B  //´¿ÒÆ¶¯²»·Å¼¼ÄÜ(Ver3.11)
             Delay a
             KeyUp Left
         else
-            If intY < (tarY - yTolerance) Then //Èç¹ûÈËÔÚÄ¿±êÖ®ÉÏ,¾ÍÏÂÌø(YÖáÊÇÓÃÏà·´±È½Ï·û)
+            If intY < (tarY - yTolerance) Then //å¦‚æœäººåœ¨ç›®æ ‡ä¹‹ä¸Š,å°±ä¸‹è·³(Yè½´æ˜¯ç”¨ç›¸åæ¯”è¾ƒç¬¦)
                 Call Stable()
                 if intY == cY then
-                    TracePrint ÏÂÌøÒ»´Î
+                    TracePrint ä¸‹è·³ä¸€æ¬¡
                     KeyDown Down
                     DelayRandom 134,136
                     KeyDown Space
-                    if intY > (tarY - 13) //Ì«½Ó½ü¾ÍÖ»ÓÃÍ¬Ò»ÖÖ°ì·¨
+                    if intY > (tarY - 13) //å¤ªæ¥è¿‘å°±åªç”¨åŒä¸€ç§åŠæ³•
                         DelayRandom 162,164
-                        TracePrint ¶¨Ê½ & intY &: & tarY
+                        TracePrint å®šå¼ & intY &: & tarY
                     else
                         Delay (tarY - intY) * 49 - 520
-                        TracePrint ±äÊ½ & intY &: & tarY
+                        TracePrint å˜å¼ & intY &: & tarY
                     End If
                     KeyUp Space
                     DelayRandom 66,67
                     KeyUp Down
                     DelayRandom 548,554
                 End If
-            Else If intY > (tarY + yTolerance) Then //Èç¹ûÈËÔÚÄ¿±êÖ®ÏÂ,¾ÍÉÏÌø(YÖáÊÇÓÃÏà·´±È½Ï·û)
+            Else If intY > (tarY + yTolerance) Then //å¦‚æœäººåœ¨ç›®æ ‡ä¹‹ä¸‹,å°±ä¸Šè·³(Yè½´æ˜¯ç”¨ç›¸åæ¯”è¾ƒç¬¦)
                 Call Stable()
                 if intY == cY then
                     cY = intY
-                    if intY > (tarY+25) Then	//>=26ÉÏÌø¾Í¹»²»µ½ÁË
-                        TracePrint ¹³×ÓÒ»´Î
+                    if intY > (tarY+25) Then	//>=26ä¸Šè·³å°±å¤Ÿä¸åˆ°äº†
+                        TracePrint é’©å­ä¸€æ¬¡
                         KeyDown Ctrl
                         DelayRandom 328,430
                         KeyUp Ctrl
                     else
-                        TracePrint ÉÏÌøÒ»´Î
+                        TracePrint ä¸Šè·³ä¸€æ¬¡
                         KeyDown Alt
                         DelayRandom 328,430
                         KeyUp Alt
@@ -271,9 +271,9 @@ Sub Move_B  //´¿ÒÆ¶¯²»·Å¼¼ÄÜ(Ver3.11)
                 Call Stable()
                 if intY == cY then
                     yTolerance = 0
-                    if tolerance == 0 then //´«ËÍÃÅĞÍ
-                        TracePrint ´«ËÍÒ»·¢
-                        If intX < tarX Then //ÏòÓÒĞ¡Ëé²½
+                    if tolerance == 0 then //ä¼ é€é—¨å‹
+                        TracePrint ä¼ é€ä¸€å‘
+                        If intX < tarX Then //å‘å³å°ç¢æ­¥
                             DelayRandom 45,52
                             KeyDown Right
                             DelayRandom 37,38
@@ -282,28 +282,28 @@ Sub Move_B  //´¿ÒÆ¶¯²»·Å¼¼ÄÜ(Ver3.11)
                             KeyUp Up
                             DelayRandom 37,38
                             Call GetXY()
-                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //Ã»µ½Ä¿±ê
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //æ²¡åˆ°ç›®æ ‡
                                 KeyDown Up
                                 DelayRandom 70,71
                                 KeyUp Up
                                 DelayRandom 37,38
                             End if
                             Call GetXY()
-                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //Ã»µ½Ä¿±ê
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //æ²¡åˆ°ç›®æ ‡
                                 KeyDown Up
                                 DelayRandom 70,71
                                 KeyUp Up
                                 DelayRandom 37,38
                             End if
                             Call GetXY()
-                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //Ã»µ½Ä¿±ê
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //æ²¡åˆ°ç›®æ ‡
                                 KeyDown Up
                                 DelayRandom 77,78
                                 KeyUp Up
                                 DelayRandom 37,38
                             End if
                             Call GetXY()
-                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //Ã»µ½Ä¿±ê
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //æ²¡åˆ°ç›®æ ‡
                                 KeyDown Up
                                 DelayRandom 82,83
                                 KeyUp Up
@@ -311,7 +311,7 @@ Sub Move_B  //´¿ÒÆ¶¯²»·Å¼¼ÄÜ(Ver3.11)
                             End if
                             KeyUp Right
                             DelayRandom 11,12
-                        Else If intX > tarX Then //Ïò×óĞ¡Ëé²½
+                        Else If intX > tarX Then //å‘å·¦å°ç¢æ­¥
                             DelayRandom 45,52
                             KeyDown Left
                             DelayRandom 37,38
@@ -320,28 +320,28 @@ Sub Move_B  //´¿ÒÆ¶¯²»·Å¼¼ÄÜ(Ver3.11)
                             KeyUp Up
                             DelayRandom 37,38
                             Call GetXY()
-                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //Ã»µ½Ä¿±ê
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //æ²¡åˆ°ç›®æ ‡
                                 KeyDown Up
                                 DelayRandom 70,71
                                 KeyUp Up
                                 DelayRandom 37,38
                             End if
                             Call GetXY()
-                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //Ã»µ½Ä¿±ê
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //æ²¡åˆ°ç›®æ ‡
                                 KeyDown Up
                                 DelayRandom 70,71
                                 KeyUp Up
                                 DelayRandom 37,38
                             End if
                             Call GetXY()
-                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //Ã»µ½Ä¿±ê
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //æ²¡åˆ°ç›®æ ‡
                                 KeyDown Up
                                 DelayRandom 77,78
                                 KeyUp Up
                                 DelayRandom 37,38
                             End if
                             Call GetXY()
-                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //Ã»µ½Ä¿±ê
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //æ²¡åˆ°ç›®æ ‡
                                 KeyDown Up
                                 DelayRandom 82,83
                                 KeyUp Up
@@ -349,7 +349,7 @@ Sub Move_B  //´¿ÒÆ¶¯²»·Å¼¼ÄÜ(Ver3.11)
                             End if
                             KeyUp Left
                             DelayRandom 11,12
-                        else //Ö±½Ó°´ÉÏ
+                        else //ç›´æ¥æŒ‰ä¸Š
                             DelayRandom 45,52
                             KeyDown Up
                             DelayRandom 120,122
@@ -361,70 +361,70 @@ Sub Move_B  //´¿ÒÆ¶¯²»·Å¼¼ÄÜ(Ver3.11)
                         End If
                         Delay 125
                         Call GetXY()
-                        if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //µ½ÁË´«ËÍºóµÄµØµã
-                            TracePrint µ½´ïÄ¿µÄµØ
+                        if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //åˆ°äº†ä¼ é€åçš„åœ°ç‚¹
+                            TracePrint åˆ°è¾¾ç›®çš„åœ°
                             alterX    = 0
                             alterY    = 0
                             Exit Sub
                         else
-                            TracePrint Î´µ½´ï[ & intX & , & intY & ],´«ËÍ[ & alterX & , & alterY & ]
+                            TracePrint æœªåˆ°è¾¾[ & intX & , & intY & ],ä¼ é€[ & alterX & , & alterY & ]
                         End if
-                    else if tolerance == -1 then //¸º1´ú±íÃ¶¾Ù×ßµ½Ä¿µÄµØ
+                    else if tolerance == -1 then //è´Ÿ1ä»£è¡¨æšä¸¾èµ°åˆ°ç›®çš„åœ°
                         a = 0
                         if intX - tarX == 4 then
                             KeyDown Left
                             Delay 197
                             KeyUp Left
-                            if facing > 0 then //ÒªÇóÃæÏòÓÒ±ß
+                            if facing > 0 then //è¦æ±‚é¢å‘å³è¾¹
                                 a = 1
                             end if
                         else if intX - tarX == -4 then
                             KeyDown Right
                             Delay 197
                             KeyUp Right
-                            if facing < 0 then //ÒªÇóÃæÏò×ó±ß
+                            if facing < 0 then //è¦æ±‚é¢å‘å·¦è¾¹
                                 a = 1
                             end if
                         else if intX - tarX == 3 then
                             KeyDown Left
                             Delay 145
                             KeyUp Left
-                            if facing > 0 then //ÒªÇóÃæÏòÓÒ±ß
+                            if facing > 0 then //è¦æ±‚é¢å‘å³è¾¹
                                 a = 1
                             end if
                         else if intX - tarX == -3 then
                             KeyDown Right
                             Delay 145
                             KeyUp Right
-                            if facing < 0 then //ÒªÇóÃæÏò×ó±ß
+                            if facing < 0 then //è¦æ±‚é¢å‘å·¦è¾¹
                                 a = 1
                             end if
                         else if intX - tarX == 2 then
                             KeyDown Left
                             Delay 71
                             KeyUp Left
-                            if facing > 0 then //ÒªÇóÃæÏòÓÒ±ß
+                            if facing > 0 then //è¦æ±‚é¢å‘å³è¾¹
                                 a = 1
                             end if
                         else if intX - tarX == -2 then
                             KeyDown Right
                             Delay 71
                             KeyUp Right
-                            if facing < 0 then //ÒªÇóÃæÏò×ó±ß
+                            if facing < 0 then //è¦æ±‚é¢å‘å·¦è¾¹
                                 a = 1
                             end if
                         else if intX > tarX then
                             KeyDown Left
                             Delay 40
                             KeyUp Left
-                            if facing > 0 then //ÒªÇóÃæÏòÓÒ±ß
+                            if facing > 0 then //è¦æ±‚é¢å‘å³è¾¹
                                 a = 1
                             end if
                         else if intX < tarX then
                             KeyDown Right
                             Delay 40
                             KeyUp Right
-                            if facing < 0 then //ÒªÇóÃæÏò×ó±ß
+                            if facing < 0 then //è¦æ±‚é¢å‘å·¦è¾¹
                                 a = 1
                             end if
                         End If
@@ -434,12 +434,12 @@ Sub Move_B  //´¿ÒÆ¶¯²»·Å¼¼ÄÜ(Ver3.11)
                         KeyUp Up
                         DelayRandom 231,234
                         Call GetXY()
-                        if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //µ½ÁË´«ËÍºóµÄµØµã
-                            TracePrint µ½´ïÄ¿µÄµØ
+                        if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //åˆ°äº†ä¼ é€åçš„åœ°ç‚¹
+                            TracePrint åˆ°è¾¾ç›®çš„åœ°
                             alterX    = 0
                             alterY    = 0
-                            if a > 0 then //Òª»»·½Ïò
-                                if facing > 0 then  //¸ÄÃæÏòÓÒ±ß
+                            if a > 0 then //è¦æ¢æ–¹å‘
+                                if facing > 0 then  //æ”¹é¢å‘å³è¾¹
                                     KeyDown Left
                                     Delay 40
                                     KeyUp Left
@@ -448,7 +448,7 @@ Sub Move_B  //´¿ÒÆ¶¯²»·Å¼¼ÄÜ(Ver3.11)
                                     Delay 40
                                     KeyUp Right
                                     DelayRandom 62,65
-                                else if facing < 0 then //¸ÄÃæÏò×ó±ß
+                                else if facing < 0 then //æ”¹é¢å‘å·¦è¾¹
                                     KeyDown Right
                                     Delay 40
                                     KeyUp Right
@@ -462,14 +462,14 @@ Sub Move_B  //´¿ÒÆ¶¯²»·Å¼¼ÄÜ(Ver3.11)
                             facing = 0
                             Exit Sub
                         End if
-                    else //·Ç´«ËÍÃÅ
-                        if tolerance < 4 Then //ÈİÈÌ¶ÈĞ¡ÓÚ4»¹ÊÇÒªĞ¡Ëé²½
+                    else //éä¼ é€é—¨
+                        if tolerance < 4 Then //å®¹å¿åº¦å°äº4è¿˜æ˜¯è¦å°ç¢æ­¥
                             for 10
-                                If intX < (tarX-tolerance) Then //ÏòÓÒĞ¡Ëé²½
+                                If intX < (tarX-tolerance) Then //å‘å³å°ç¢æ­¥
                                     KeyDown Right
                                     Delay (tarX - tolerance - intX) * 14
                                     KeyUp Right
-                                Else If intX > (tarX+tolerance) Then //Ïò×óĞ¡Ëé²½
+                                Else If intX > (tarX+tolerance) Then //å‘å·¦å°ç¢æ­¥
                                     KeyDown Left
                                     Delay (intX - tarX - tolerance) * 14
                                     KeyUp Left
@@ -477,10 +477,10 @@ Sub Move_B  //´¿ÒÆ¶¯²»·Å¼¼ÄÜ(Ver3.11)
                                     Exit Sub
                                 End If
 
-                                Call GetXY() //¸üĞÂÈËÎï×ø±ê
+                                Call GetXY() //æ›´æ–°äººç‰©åæ ‡
                             Next
-                            Exit Sub //´ÎÊıµ½ÁËÖ±½Ó½áÊø
-                        else //ÈİÈÌ¶È´óÓÚµÈÓÚ4¿ÉÒÔÖ±½Ó½áÊø
+                            Exit Sub //æ¬¡æ•°åˆ°äº†ç›´æ¥ç»“æŸ
+                        else //å®¹å¿åº¦å¤§äºç­‰äº4å¯ä»¥ç›´æ¥ç»“æŸ
                             Exit Sub
                         End If
                     End if
@@ -500,22 +500,22 @@ x3   = intX - 640
 y3   = intY - 260
 xEnd = intX
 yEnd = intY
-red  = 0            //ºìµãÕì²â³õÊ¼»¯
+red  = 0            //çº¢ç‚¹ä¾¦æµ‹åˆå§‹åŒ–
 
-Sub Fun1
-    while 1>0 //½øÈëµÆÅİ
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY //Í£Ö¹¶Ô»°
+Sub 101Event //æ´»åŠ¨åœ°å›¾é¢†ä¸œè¥¿
+    while 1>0 //è¿›å…¥ç¯æ³¡
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY //åœæ­¢å¯¹è¯
         if intX >= 0 Then
-            wJam = 0 //·ÅÔÚÑ­»·ÍâÃæÎ»ÖÃ
-            while 1>0 //¶Ô»°¿òÄÚ²¿(ÕÒ²»µ½Í£Ö¹¶Ô»°¼´½áÊø)
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY //Í£Ö¹¶Ô»°
-                if intX < 0 Then //½áÊøÁË(ÒÔ¼¸´ÎÅĞ¶ÏÀ´¿´)
-                    wJam = wJam + 1  //Ñ­»·ÄÚ²¿
-                    if wJam > 3 then //Èı´ÎÊ§°Ü,
+            wJam = 0 //æ”¾åœ¨å¾ªç¯å¤–é¢ä½ç½®
+            while 1>0 //å¯¹è¯æ¡†å†…éƒ¨(æ‰¾ä¸åˆ°åœæ­¢å¯¹è¯å³ç»“æŸ)
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY //åœæ­¢å¯¹è¯
+                if intX < 0 Then //ç»“æŸäº†(ä»¥å‡ æ¬¡åˆ¤æ–­æ¥çœ‹)
+                    wJam = wJam + 1  //å¾ªç¯å†…éƒ¨
+                    if wJam > 3 then //ä¸‰æ¬¡å¤±è´¥,
                         break
                     End If
                 else
-                    wJam = 0 //·ÅÔÚ³É¹¦µÄÎ»ÖÃ
+                    wJam = 0 //æ”¾åœ¨æˆåŠŸçš„ä½ç½®
                     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Event\202404\Mark1.bmp",000000,1.00,0,intX,intY
                     if intX >= 0 Then
                         MoveTo intX+100,intY+5
@@ -523,7 +523,7 @@ Sub Fun1
                         DelayRandom 139,142
                     else
                         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp",000000,1.00,0,intX,intY
-                        if intX >= 0 Then //·ñ
+                        if intX >= 0 Then //å¦
                             MoveTo intX-50,intY
                             LeftClick
                             DelayRandom 139,142
@@ -540,20 +540,20 @@ Sub Fun1
             break
         else
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Event\StarInner.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then //ÕÒÄÚ²ãĞÇĞÇ
+            if intX >= 0 Then //æ‰¾å†…å±‚æ˜Ÿæ˜Ÿ
                 MoveTo intX,intY
                 LeftClick
                 DelayRandom 139,142
-                MoveTo 50,50 //ÕÒÍ¼±ê
+                MoveTo 50,50 //æ‰¾å›¾æ ‡
                 DelayRandom 139,142
             else
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Event\Bulb.bmp",000000,1.00,0,intX,intY //ÕÒµÆÅİ
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Event\Bulb.bmp",000000,1.00,0,intX,intY //æ‰¾ç¯æ³¡
                 if intX >= 0 Then
                     MoveTo intX,intY+45
                     LeftClick
                     DelayRandom 539,542
                 else
-                    MoveTo 50,50 //ÕÒÍ¼±ê
+                    MoveTo 50,50 //æ‰¾å›¾æ ‡
                     DelayRandom 139,142
                 End If
             End If
@@ -561,10 +561,9 @@ Sub Fun1
     Wend
 
     Call Loading()
-End Sub
 
     FindPic x1,y1,x2,y2,"E:\MHImg\UI\Map\ZoomInMap.bmp",000000,1.00,0,intX,intY
-    If intX >= 0 Then //·ÅĞ¡µØÍ¼
+    If intX >= 0 Then //æ”¾å°åœ°å›¾
         MoveTo intX,intY
         LeftClick
         DelayRandom 139,142
@@ -573,28 +572,28 @@ End Sub
     tarX = 39
     tarY = 146
     tolerance = 2
-    Call Move_B() //¶àÀò´¦
+    Call Move_B() //å¤šè‰å¤„
 
     for 2
-        while 1>0 //½âƒÉ´ÎŒ¦Ô’
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY //Í£Ö¹¶Ô»°
+        while 1>0 //è§£å…©æ¬¡å°è©±
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY //åœæ­¢å¯¹è¯
             if intX >= 0 Then
-                wJam = 0 //·ÅÔÚÑ­»·ÍâÃæÎ»ÖÃ
-                while 1>0 //¶Ô»°¿òÄÚ²¿(ÕÒ²»µ½Í£Ö¹¶Ô»°¼´½áÊø)
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY //Í£Ö¹¶Ô»°
+                wJam = 0 //æ”¾åœ¨å¾ªç¯å¤–é¢ä½ç½®
+                while 1>0 //å¯¹è¯æ¡†å†…éƒ¨(æ‰¾ä¸åˆ°åœæ­¢å¯¹è¯å³ç»“æŸ)
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY //åœæ­¢å¯¹è¯
                     if intX < 0 Then
-                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\Next.bmp",000000,1.00,0,intX,intY //Í£Ö¹¶Ô»°
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\Next.bmp",000000,1.00,0,intX,intY //åœæ­¢å¯¹è¯
                     End If
                     if intX < 0 Then
-                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY //Í£Ö¹¶Ô»°
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY //åœæ­¢å¯¹è¯
                     End If
-                    if intX < 0 Then //½áÊøÁË(ÒÔ¼¸´ÎÅĞ¶ÏÀ´¿´)
-                        wJam = wJam + 1  //Ñ­»·ÄÚ²¿
-                        if wJam > 3 then //Èı´ÎÊ§°Ü,
+                    if intX < 0 Then //ç»“æŸäº†(ä»¥å‡ æ¬¡åˆ¤æ–­æ¥çœ‹)
+                        wJam = wJam + 1  //å¾ªç¯å†…éƒ¨
+                        if wJam > 3 then //ä¸‰æ¬¡å¤±è´¥,
                             break
                         End If
                     else
-                        wJam = 0 //·ÅÔÚ³É¹¦µÄÎ»ÖÃ
+                        wJam = 0 //æ”¾åœ¨æˆåŠŸçš„ä½ç½®
                         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Event\202404\Mark1.bmp",000000,1.00,0,intX,intY
                         if intX >= 0 Then
                             MoveTo intX+100,intY+5
@@ -602,7 +601,7 @@ End Sub
                             DelayRandom 139,142
                         else
                             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp",000000,1.00,0,intX,intY
-                            if intX >= 0 Then //·ñ
+                            if intX >= 0 Then //å¦
                                 MoveTo intX-50,intY
                                 LeftClick
                                 DelayRandom 139,142
@@ -627,15 +626,207 @@ End Sub
         Wend
     Next
 
-Sub Fun2
-    //ºÚÆÁ´ú±í(alter ¶¼È¡-1)
+    while 1>0 //ç‚¹å¤´é¡¶çš„ç¯æ³¡
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY //åœæ­¢å¯¹è¯
+        if intX >= 0 Then
+            wJam = 0 //æ”¾åœ¨å¾ªç¯å¤–é¢ä½ç½®
+            while 1>0 //å¯¹è¯æ¡†å†…éƒ¨(æ‰¾ä¸åˆ°åœæ­¢å¯¹è¯å³ç»“æŸ)
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY //åœæ­¢å¯¹è¯
+                if intX < 0 Then
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\Next.bmp",000000,1.00,0,intX,intY //åœæ­¢å¯¹è¯
+                End If
+                if intX < 0 Then
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY //åœæ­¢å¯¹è¯
+                End If
+                if intX < 0 Then //ç»“æŸäº†(ä»¥å‡ æ¬¡åˆ¤æ–­æ¥çœ‹)
+                    wJam = wJam + 1  //å¾ªç¯å†…éƒ¨
+                    if wJam > 3 then //ä¸‰æ¬¡å¤±è´¥,
+                        break
+                    End If
+                else
+                    wJam = 0 //æ”¾åœ¨æˆåŠŸçš„ä½ç½®
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Event\202404\Mark1.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        MoveTo intX+100,intY+5
+                        LeftClick
+                        DelayRandom 139,142
+                    else
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //å¦
+                            MoveTo intX-50,intY
+                            LeftClick
+                            DelayRandom 139,142
+                        else
+                            DelayRandom 39,42
+                            KeyDown PageDown
+                            DelayRandom 69,72
+                            KeyUp PageDown
+                            DelayRandom 39,42
+                        End If
+                    End If
+                End If
+            Wend
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Lara\Auto\CharBulb.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                MoveTo intX,intY-10
+                LeftClick
+                DelayRandom 139,142
+            else
+                Delay 20
+            End If
+        End If
+    Wend
+
+    while 1>0 //å†è¿›å…¥ç¯æ³¡(1)
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,logoX,logoY //åœæ­¢å¯¹è¯
+        if logoX >= 0 Then
+            while 1>0 //æ»šè½®æ‰¾é€‰é¡¹
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Event\202404\Mark2.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    Delay 200 //é˜²æ­¢è¿˜åœ¨æ»šåŠ¨ä¸­
+
+                    MoveTo intX-60,intY+5
+                    LeftClick
+                    DelayRandom 139,142
+
+                    wJam = 0 //æ”¾åœ¨å¾ªç¯å¤–é¢ä½ç½®
+                    while 1>0 //å¯¹è¯æ¡†å†…éƒ¨(æ‰¾ä¸åˆ°åœæ­¢å¯¹è¯å³ç»“æŸ)
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY //åœæ­¢å¯¹è¯
+                        if intX < 0 Then //ç»“æŸäº†(ä»¥å‡ æ¬¡åˆ¤æ–­æ¥çœ‹)
+                            wJam = wJam + 1  //å¾ªç¯å†…éƒ¨
+                            if wJam > 3 then //ä¸‰æ¬¡å¤±è´¥,
+                                break
+                            End If
+                        else
+                            wJam = 0 //æ”¾åœ¨æˆåŠŸçš„ä½ç½®
+                            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp",000000,1.00,0,intX,intY
+                            if intX >= 0 Then //å¦
+                                MoveTo intX-50,intY
+                                LeftClick
+                                DelayRandom 139,142
+                            else
+                                DelayRandom 39,42
+                                KeyDown PageDown
+                                DelayRandom 69,72
+                                KeyUp PageDown
+                                DelayRandom 39,42
+                            End If
+                        End If
+                    Wend
+
+                    break
+                else
+                    MoveTo logoX+399,logoY-237
+                    MouseWheel -1
+                    Delay 10
+                End If
+            Wend
+
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Event\StarInner.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //æ‰¾å†…å±‚æ˜Ÿæ˜Ÿ
+                MoveTo intX,intY
+                LeftClick
+                DelayRandom 139,142
+                MoveTo 50,50 //æ‰¾å›¾æ ‡
+                DelayRandom 139,142
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Event\Bulb.bmp",000000,1.00,0,intX,intY //æ‰¾ç¯æ³¡
+                if intX >= 0 Then
+                    MoveTo intX,intY+45
+                    LeftClick
+                    DelayRandom 539,542
+                else
+                    MoveTo 50,50 //æ‰¾å›¾æ ‡
+                    DelayRandom 139,142
+                End If
+            End If
+        End If
+    Wend
+
+    while 1>0 //å†è¿›å…¥ç¯æ³¡(2)
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,logoX,logoY //åœæ­¢å¯¹è¯
+        if logoX >= 0 Then
+            while 1>0 //æ»šè½®æ‰¾é€‰é¡¹
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Event\202404\Mark3.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    Delay 200 //é˜²æ­¢è¿˜åœ¨æ»šåŠ¨ä¸­
+
+                    MoveTo intX-60,intY+5
+                    LeftClick
+                    DelayRandom 139,142
+
+                    wJam = 0 //æ”¾åœ¨å¾ªç¯å¤–é¢ä½ç½®
+                    while 1>0 //å¯¹è¯æ¡†å†…éƒ¨(æ‰¾ä¸åˆ°åœæ­¢å¯¹è¯å³ç»“æŸ)
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY //åœæ­¢å¯¹è¯
+                        if intX < 0 Then //ç»“æŸäº†(ä»¥å‡ æ¬¡åˆ¤æ–­æ¥çœ‹)
+                            wJam = wJam + 1  //å¾ªç¯å†…éƒ¨
+                            if wJam > 3 then //ä¸‰æ¬¡å¤±è´¥,
+                                break
+                            End If
+                        else
+                            wJam = 0 //æ”¾åœ¨æˆåŠŸçš„ä½ç½®
+                            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp",000000,1.00,0,intX,intY
+                            if intX >= 0 Then //å¦
+                                MoveTo intX-50,intY
+                                LeftClick
+                                DelayRandom 139,142
+                            else
+                                DelayRandom 39,42
+                                KeyDown PageDown
+                                DelayRandom 69,72
+                                KeyUp PageDown
+                                DelayRandom 39,42
+                            End If
+                        End If
+                    Wend
+
+                    break
+                else
+                    MoveTo logoX+399,logoY-237
+                    MouseWheel -1
+                    Delay 10
+                End If
+            Wend
+
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Event\StarInner.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //æ‰¾å†…å±‚æ˜Ÿæ˜Ÿ
+                MoveTo intX,intY
+                LeftClick
+                DelayRandom 139,142
+                MoveTo 50,50 //æ‰¾å›¾æ ‡
+                DelayRandom 139,142
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Event\Bulb.bmp",000000,1.00,0,intX,intY //æ‰¾ç¯æ³¡
+                if intX >= 0 Then
+                    MoveTo intX,intY+45
+                    LeftClick
+                    DelayRandom 539,542
+                else
+                    MoveTo 50,50 //æ‰¾å›¾æ ‡
+                    DelayRandom 139,142
+                End If
+            End If
+        End If
+    Wend
+
+    //é»‘å±ä»£è¡¨(alter éƒ½å–-1)
     tarX = -59
     tarY = 146
     tolerance = 0
     alterX = -1
     alterY = -1
-    Call Move_B() //Àë¿ª
+    Call Move_B() //ç¦»å¼€æ´»åŠ¨åœ°å›¾
+
+    Call Loading()
+
 End Sub
+
 
 for 3
     Beep 400,200
