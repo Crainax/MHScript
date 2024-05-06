@@ -1911,7 +1911,7 @@ while 1 > 0
             TracePrint [人物X轴 & intX & ,人物Y轴 & intY & ][传送X轴 & intX & ,传送Y轴 & intY & ]
             MsgBox [人物X轴 & intX & ,人物Y轴 & intY & ][传送X轴 & alterX & ,传送Y轴 & alterY & ]
         else
-            MsgBox "没找到"	 //弹窗
+            MsgBox [没找到 & intX & ,人物Y轴 & intY & ]	 //弹窗
         End If
     End If
 Wend
