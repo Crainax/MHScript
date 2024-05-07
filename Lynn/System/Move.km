@@ -60,45 +60,53 @@ Sub AntiJam //一般跟随GetXY后用
     End If
 End Sub
 
-Sub Spell //8秒CD的技能
+Sub Spell //7秒CD的技能
     if GetTimeStamp() - SpellOK > 8 then
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\V.bmp",000000,1.0,0,intX,intY//V1(空中不可)
-        if intX >= 0 Then
-            KeyDown V
-            DelayRandom 532,535
-            KeyUp V
-            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\V.bmp",000000,1.0,0,intX,intY//需要进入CD才判定成功
-            if intX < 0 then
-                SpellOK = GetTimeStamp()
-            End If
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\B.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //空中可放V2
+            KeyDown B
+            DelayRandom 522,535
+            KeyUp B
+            SpellOK = GetTimeStamp()
         else
-            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\B.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then //空中可放V2
-                KeyDown B
-                DelayRandom 522,535
-                KeyUp B
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\S.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //空中可放
+                KeyDown S
+                DelayRandom 462,465
+                KeyUp S
                 SpellOK = GetTimeStamp()
             else
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\H.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //空中可放H
-                    KeyDown H
-                    DelayRandom 682,685
-                    KeyUp H
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\G.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //空中可放
+                    KeyDown G
+                    DelayRandom 562,565
+                    KeyUp G
                     SpellOK = GetTimeStamp()
                 else
-                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Y.bmp",000000,1.00,0,intX,intY
-                    if intX >= 0 Then //空中可放
-                        KeyDown Y
-                        DelayRandom 482,485
-                        KeyUp Y
-                        SpellOK = GetTimeStamp()
-                    else
-                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\S.bmp",000000,1.00,0,intX,intY
-                        if intX >= 0 Then //空中可放
-                            KeyDown S
-                            DelayRandom 462,465
-                            KeyUp S
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\V.bmp",000000,1.0,0,intX,intY//V1(空中不可)
+                    if intX >= 0 Then
+                        KeyDown V
+                        DelayRandom 532,535
+                        KeyUp V
+                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\V.bmp",000000,1.0,0,intX,intY//需要进入CD才判定成功
+                        if intX < 0 then
                             SpellOK = GetTimeStamp()
+                        End If
+                    else
+                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\H.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //空中可放H
+                            KeyDown H
+                            DelayRandom 682,685
+                            KeyUp H
+                            SpellOK = GetTimeStamp()
+                        else
+                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Y.bmp",000000,1.00,0,intX,intY
+                            if intX >= 0 Then //空中可放
+                                KeyDown Y
+                                DelayRandom 512,525
+                                KeyUp Y
+                                SpellOK = GetTimeStamp()
+                            End If
                         End If
                     End If
                 End If
