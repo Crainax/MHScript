@@ -8,7 +8,7 @@ Dim x1,          x2,      y1,        y2          // 矩形区域:小地图采样
 Dim x3,          y3,      xEnd,      yEnd        // 2个顶点:技能区/屏幕右下角顶点
 Dim tarX,        tarY,    a,         cY          //目标
 Dim logoX,       logoY,   intX,      intY        //算目的地差值
-Dim tolLoc,      facing,  SpellOK                //移动相关
+Dim tolLoc,      facing,  SpellOK,                //移动相关
 Dim alterX,      alterY,  tolerance, yTolerance  //备用地点,传送门脚步开关
 Dim staticCount, staticX, staticY                //防卡计数器
 Dim LEDState                                     //测试位置
@@ -135,7 +135,86 @@ Sub Move  //1.5 移除cs加入Stable
             tolLoc = 2
         End If
 
-        if intX < (tarX-24) Then //向右二段跳
+        //斜跳极限(-25,65) -> (-6,84) 19
+        if intY > tarY +6 and intY <= tarY + 18 and intX >= (tarX-tolerance+19) and intX >= (tarX+tolerance) and intX <=(tarX+tolerance+19) then //左斜上飞
+            DelayRandom 15,25
+            KeyDown Down
+            Delay 52
+            KeyDown Up
+            Delay 5
+            KeyDown Left
+            Delay 43
+            KeyDown LShift
+            Delay 120
+            KeyUp LShift
+            Delay 86
+            KeyUp Up
+            Delay 25
+            KeyUp Down
+            Delay 1
+            KeyUp Left
+            Delay 326 //此时不一定清空在地上
+        else if intY > tarY +6 and intY <= tarY + 18 and intX <= (tar+tolerance-19) and intX <= (tarX-tolerance) and intX >=(tarX-tolerance-19) then //右斜上飞
+            DelayRandom 15,25
+            KeyDown Down
+            Delay 52
+            KeyDown Up
+            Delay 5
+            KeyDown Right
+            Delay 43
+            KeyDown LShift
+            Delay 120
+            KeyUp LShift
+            Delay 86
+            KeyUp Up
+            Delay 25
+            KeyUp Down
+            Delay 1
+            KeyUp Right
+            Delay 326 //此时不一定清空在地上
+        else if intY >= tarY + 13 and intX >= (tarX-tolerance+19) and intX >= (tarX+tolerance) and intX <=(tarX+tolerance+19) then //左斜下飞
+            Call Stable()
+            if intY == cY then
+                DelayRandom 15,25
+                KeyDown Space
+                Delay 94
+                KeyUp Space
+                Delay 78
+                KeyDown Left
+                Delay 26
+                KeyDown Down
+                Delay 59
+                KeyDown LShift
+                Delay 134
+                KeyUp LShift
+                Delay 63
+                KeyUp Down
+                Delay 12
+                KeyUp Left
+                Delay 305
+            End If
+        else if intY >= tarY + 13 and intY <= tarY + 18 and intX <= (tar+tolerance-19) and intX <= (tarX-tolerance) and intX >=(tarX-tolerance-19) then //右斜下飞
+            Call Stable()
+            if intY == cY then
+                DelayRandom 15,25
+                KeyDown Space
+                Delay 94
+                KeyUp Space
+                Delay 78
+                KeyDown Right
+                Delay 26
+                KeyDown Down
+                Delay 59
+                KeyDown LShift
+                Delay 134
+                KeyUp LShift
+                Delay 63
+                KeyUp Down
+                Delay 12
+                KeyUp Right
+                Delay 305
+            End If
+        else if intX < (tarX-24) Then //向右二段跳
             TracePrint jumpR
             DelayRandom 15,25
             KeyDown Right
@@ -174,6 +253,54 @@ Sub Move  //1.5 移除cs加入Stable
             Delay 103
             KeyUp F
             Delay 325
+            Call Spell() //内置8sCD
+        else if intX < (tarX-12) Then //反小跳:右
+            TracePrint jumpLL
+            DelayRandom 15,25
+            KeyDown Left
+            Delay 37
+            KeyDown Space
+            Delay 81
+            KeyUp Space
+            Delay 34
+            KeyUp Left
+            Delay 14
+            KeyDown Right
+            Delay 119
+            KeyDown Space
+            Delay 111
+            KeyUp Space
+            Delay 62
+            KeyUp Right
+            Delay 150
+            KeyDown F
+            Delay 95
+            KeyUp F
+            Delay 364
+            Call Spell() //内置8sCD
+        Else If intX > (tarX+12) Then //反小跳:左
+            TracePrint jumpLR
+            DelayRandom 15,25
+            KeyDown Right
+            Delay 37
+            KeyDown Space
+            Delay 81
+            KeyUp Space
+            Delay 34
+            KeyUp Right
+            Delay 14
+            KeyDown Left
+            Delay 119
+            KeyDown Space
+            Delay 111
+            KeyUp Space
+            Delay 62
+            KeyUp Left
+            Delay 150
+            KeyDown F
+            Delay 95
+            KeyUp F
+            Delay 364
             Call Spell() //内置8sCD
         Else If intX < (tarX-tolLoc) Then //向右走
             KeyDown Right
@@ -218,9 +345,10 @@ Sub Move  //1.5 移除cs加入Stable
                 if intY == cY then
                     if intY > (tarY+18) Then	//>=19上跳就够不到了
                         TracePrint hooking
-                        KeyDown Alt
-                        DelayRandom 328,430
-                        KeyUp Alt
+                        KeyDown LAlt
+                        DelayRandom 69,70
+                        KeyUp LAlt
+                        DelayRandom 921,931
                     else
                         TracePrint JumlU
                         DelayRandom 78,79
@@ -478,7 +606,21 @@ facing  = 0            //面向初始归0
 SpellOK = 0
 while 1 > 0
     LEDState = GetLED(1)
-    if LEDState == 0 then // 暂时测试用(利曼世界的眼泪)
+    if LEDState == 2 then // (利曼世界的眼泪) 左右单点跳A测转身延迟
+        while 1 > 0
+            tarX       = 3
+            tarY       = 93
+            tolerance  = 2
+            yTolerance = 0
+            Call Move()
+
+            tarX       = 32
+            tarY       = 93
+            tolerance  = 2
+            yTolerance = 0
+            Call Move()
+        Wend
+    else if LEDState == 3 then // (利曼世界的眼泪) 左右跳3下A测Spell的延迟
         while 1 > 0
             tarX       = -37
             tarY       = 93
@@ -492,7 +634,7 @@ while 1 > 0
             yTolerance = 0
             Call Move()
         Wend
-    elseif LEDState == 2 then // 标准公式,测试完后改回0
+    elseif LEDState == 0 then // 标准公式,测试完后改回0
         tolLoc = 1
         GetFileLine tarX,Move.Conf,tolLoc		//文件查找
         tolLoc = 2
@@ -508,7 +650,7 @@ while 1 > 0
         TracePrint goto[ & tarX & , & tarY & ],tole & tolerance & ,[ & alterX & , & alterY & ]
         //tolerance = 4 //容忍度,4为推荐值
         Call Move()
-        MsgBox 测试结束
+        MsgBox "Done"
     else //大写键亮的话就获取点
         FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY	//找图
