@@ -4,14 +4,17 @@ ScreenY=2560
 Times=0
 
 [Script]
-Dim x1,          x2,      y1,        y2          // 矩形区域:小地图采样点
-Dim x3,          y3,      xEnd,      yEnd        // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,        tarY,    a,         cY          //目标
-Dim logoX,       logoY,   intX,      intY        //算目的地差值
-Dim tolLoc,      facing,  SpellOK,   quickCD     //移动相关
-Dim alterX,      alterY,  tolerance, yTolerance  //备用地点,传送门脚步开关
-Dim staticCount, staticX, staticY,   patrol      //防卡计数器,还有巡逻(1:跳打2下,2:惯性3下)
-Dim LEDState                                     //测试位置
+Dim x1,           x2,           y1,        y2          // 矩形区域:小地图采样点
+Dim x3,           y3,           xEnd,      yEnd        // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,         tarY,         a,         cY          //目标
+Dim logoX,        logoY,        intX,      intY        //算目的地差值
+Dim tolLoc,       facing,       SpellOK,   quickCD     //移动相关
+Dim alterX,       alterY,       tolerance, yTolerance  //备用地点,传送门脚步开关
+Dim staticCount,  staticX,      staticY,   patrol      //防卡计数器,还有巡逻(1:跳打2下,2:惯性3下)
+Dim stoneTime,    fountainTime, fireTime               //冷却
+Dim pick1,        pick2                                //捡钱
+Dim SavedX,       SavedY,       SavedTor,  SavedTorY   //保存一下临时处理的XY
+Dim RuneCooldown, cycle1                               //找轮间隔
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -42,7 +45,8 @@ Sub AntiJam //一般跟随GetXY后用
         staticY     = intY
         staticCount = 0
     End If
-    if staticCount >= 3 Then //
+    if staticCount >= 5 Then //
+
         Beep 500,500
         KeyAllup //施放所有按键并重启
         // RestartScript //重启 和上面二选一即可
@@ -125,7 +129,7 @@ Sub Stable //稳定(前面自行getXY)
         End If
     Next
 End Sub
-Sub Move  //1.53 重构大范围代码
+Sub Move  //1.52 重构大范围代码
     while  1 > 0
         Call GetXY()
         Call AntiJam() //防卡
@@ -247,7 +251,6 @@ Sub Move  //1.53 重构大范围代码
                 Delay 346
                 quickCD = GetTimeStamp()
             else
-                TracePrint jumpR
                 DelayRandom 15,25
                 KeyDown Right
                 Delay 50
@@ -268,7 +271,7 @@ Sub Move  //1.53 重构大范围代码
                 Call Spell() //内置8sCD
             End If
         Else If intX > (tarX+24) Then //向左二段跳
-            if intX + (tarX+44) and GetTimeStamp() - quickCD > 7 then //不要频繁用这个赶路
+            if intX < (tarX-44) and GetTimeStamp() - quickCD > 7 then //不要频繁用这个赶路
                 DelayRandom 15,25
                 KeyDown Left
                 Delay 37
@@ -300,7 +303,6 @@ Sub Move  //1.53 重构大范围代码
                 Delay 346
                 quickCD = GetTimeStamp()
             else
-                TracePrint jumpR
                 DelayRandom 15,25
                 KeyDown Left
                 Delay 50
@@ -321,7 +323,6 @@ Sub Move  //1.53 重构大范围代码
                 Call Spell() //内置8sCD
             End If
         else if intX < (tarX-12) Then //反小跳:右
-            TracePrint jumpLL
             DelayRandom 15,25
             KeyDown Left
             Delay 37
@@ -345,7 +346,6 @@ Sub Move  //1.53 重构大范围代码
             Delay 364
             Call Spell() //内置8sCD
         Else If intX > (tarX+12) Then //反小跳:左
-            TracePrint jumpLR
             DelayRandom 15,25
             KeyDown Right
             Delay 37
@@ -392,7 +392,6 @@ Sub Move  //1.53 重构大范围代码
             If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
                 Call Stable()
                 if intY == cY then
-                    TracePrint JumlD
                     KeyDown Down
                     DelayRandom 134,136
                     KeyDown Space
@@ -410,7 +409,6 @@ Sub Move  //1.53 重构大范围代码
                 Call Stable()
                 if intY == cY then
                     if intY > (tarY+26) Then	//>=27以上才用钩子法
-                        TracePrint hooking
                         KeyDown LAlt
                         DelayRandom 69,70
                         KeyUp LAlt
@@ -442,7 +440,6 @@ Sub Move  //1.53 重构大范围代码
                         KeyUp Right
                         Delay 259
                     else
-                        TracePrint JumlU
                         DelayRandom 78,79
                         KeyDown Up
                         DelayRandom 105,107
@@ -467,7 +464,6 @@ Sub Move  //1.53 重构大范围代码
                 if intY == cY then
                     yTolerance = 0
                     if tolerance == 0 then //传送门型
-                        TracePrint "Mode-Teleport"
                         If intX < tarX Then //向右小碎步
                             DelayRandom 45,52
                             KeyDown Right
@@ -554,12 +550,10 @@ Sub Move  //1.53 重构大范围代码
                         Delay 125
                         Call GetXY()
                         if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
-                            TracePrint Arrived
                             alterX    = 0
                             alterY    = 0
                             Exit Sub
                         else
-                            TracePrint "non-Arrived[" & intX & , & intY & ],Tele[ & alterX & , & alterY & ]
                         End if
                     else if tolerance == -1 then //负1代表枚举走到目的地
                         a = 0
@@ -627,7 +621,6 @@ Sub Move  //1.53 重构大范围代码
                         DelayRandom 231,234
                         Call GetXY()
                         if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
-                            TracePrint Arrived
                             alterX    = 0
                             alterY    = 0
                             if a > 0 then //要换方向
@@ -682,80 +675,147 @@ Sub Move  //1.53 重构大范围代码
     Wend
 End Sub
 
-GetScreenResolution intX, intY
-x1      = intX - 1440
-y1      = intY - 950
-x2      = intX - 1140
-y2      = intY - 600
-x3      = intX - 640
-y3      = intY - 260
-xEnd    = intX
-yEnd    = intY
-alterX  = 0            //备用地点
-alterY  = 0            //备用地点
-facing  = 0            //面向初始归0
-SpellOK = 0
-quickCD = 0
-while 1 > 0
-    LEDState = GetLED(1)
-    if LEDState == 2 then // (利曼世界的眼泪) 左右单点跳A测转身延迟
-        while 1 > 0
-            tarX       = 3
-            tarY       = 93
-            tolerance  = 2
-            yTolerance = 0
-            Call Move()
+Sub Navigate //引導路線 V1.0 先抄一波菈菈的
+    call GetXY()
+    Call Move()
+End Sub
 
-            tarX       = 32
-            tarY       = 93
-            tolerance  = 2
-            yTolerance = 0
-            Call Move()
-        Wend
-    else if LEDState == 0 then // (利曼世界的眼泪) 左右跳3下A测Spell的延迟
-        while 1 > 0
-            tarX       = -37
-            tarY       = 93
-            tolerance  = 4
-            yTolerance = 0
-            Call Move()
-
-            tarX       = 49
-            tarY       = 93
-            tolerance  = 4
-            yTolerance = 0
-            Call Move()
-        Wend
-    elseif LEDState == 3 then // 标准公式,测试完后改回0
-        tolLoc = 1
-        GetFileLine tarX,Move.Conf,tolLoc		//文件查找
-        tolLoc = 2
-        GetFileLine tarY,Move.Conf,tolLoc		//文件查找
-        tolLoc = 3
-        GetFileLine tolerance,Move.Conf,tolLoc	//文件查找
-        tolLoc = 4
-        GetFileLine alterX,Move.Conf,tolLoc	//文件查找
-        tolLoc = 5
-        GetFileLine alterY,Move.Conf,tolLoc	//文件查找
-        tolLoc = 6
-        GetFileLine facing,Move.Conf,tolLoc	//文件查找
-        TracePrint goto[ & tarX & , & tarY & ],tole & tolerance & ,[ & alterX & , & alterY & ]
-        //tolerance = 4 //容忍度,4为推荐值
-        Call Move()
-        MsgBox "Done"
-    else //大写键亮的话就获取点
-        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
-        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY	//找图
-        FindPic x1,y1,x2,y2,"E:\MHImg\Teleport.bmp",000000,1.00,0,alterX,alterY	//找图
-        If intX >= 0 Then
+Sub ReleaseRune //定期解轮 ver2.1
+    if GetTimeStamp() - RuneCooldown > 600 then //可以放轮了
+        FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then
+            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
             intX = intX - logoX
-            intY = intY - logoY
-            alterX = alterX - logoX
-            alterY = alterY - logoY
-            TracePrint [charX & intX & ,charY & intY & ][teleX & intX & ,teleY & intY & ]
-            MsgBox [charX & intX & ,charY & intY & ][teleX & alterX & ,teleY & alterY & ]
+            intY = intY - logoY - 1 //图标的对准问题
+            tarX       = intX
+            tarY       = intY
+            tolerance  = 2
+            yTolerance = 3
+            KeyAllup //防错误
+            Call Navigate() //解轮也走捷径
+            //暂停脚本
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            DelayRandom 100,120
+            Beep 1000,200
+            Pause
+            RuneCooldown = GetTimeStamp()
         else
-            MsgBox "DontFind"	 //弹窗
         End If
     End If
+End Sub
+
+GetScreenResolution intX, intY
+x1           = intX - 1440
+y1           = intY - 950
+x2           = intX - 1140
+y2           = intY - 600
+x3           = intX - 640
+y3           = intY - 260
+xEnd         = intX
+yEnd         = intY
+SpellOK      = 0               //间
+quickCD      = 0               //间
+stoneTime    = 0               //上次轮回的时间
+RuneCooldown = 0               //解轮CD
+fireTime     = 0               //上次放熊屁的时间
+pick1        = 0               //捡钱
+pick2        = GetTimeStamp()  //捡钱
+fountainTime = 0               //上次喷泉时间
+cycle1       = 0               //循环
+yTolerance   = 0               //初始化容忍
+while 1 > 0
+
+    if GetTimeStamp() - stoneTime > 570 then //可以放轮了
+        call GetXY()
+        if intY == 117 or intY == 115 or intY == 91 then
+            DelayRandom 356,358
+            KeyDown O
+            DelayRandom 237,239
+            KeyUp O
+            DelayRandom 736,747
+            stoneTime = GetTimeStamp()
+        End If
+    End If
+
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+    a = GetTimeStamp() - fountainTime
+    if a > 55 or intX >= 0 then //可以喷泉了
+        tarX = -85
+        tarY = 117
+        tolerance = 6
+        call GetXY()
+        if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
+            Call Navigate()
+        End If
+        DelayRandom 56,58
+        if GetTimeStamp() - pick2 > 75 then
+            DelayRandom 256,258
+            KeyDown Space
+            Delay 86
+            KeyUp Space
+            Delay 76
+            KeyDown F
+            Delay 153
+            KeyUp F
+            Delay 485
+            KeyDown Space
+            Delay 80
+            KeyUp Space
+            Delay 133
+            KeyDown F
+            Delay 118
+            KeyUp F
+            Delay 520
+            pick2 = GetTimeStamp()
+        End If
+        KeyDown Right
+        DelayRandom 62,68
+        KeyUp Right
+        DelayRandom 106,109
+        KeyDown 1
+        DelayRandom 194,196
+        KeyUp 1
+        DelayRandom 712,721
+        fountainTime = GetTimeStamp()
+    End If
+
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\D.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 and GetTimeStamp() - fireTime > 28 Then //熊屁
+        tarX      = -18
+        tarY      = 115
+        tolerance = 4
+        Call Navigate()
+        DelayRandom 56,58
+        KeyDown Right
+        DelayRandom 62,68
+        KeyUp Right
+        DelayRandom 42,50
+        KeyDown D
+        DelayRandom 194,196
+        KeyUp D
+        fireTime = GetTimeStamp()
+        DelayRandom 412,421
+    else //左右跳A
+        if cycle1     == 0 then
+            tarX        = 20
+            tarY        = 91
+            tolerance   = 8
+        else if cycle1  == 1 then
+            tarX        = -14
+            tarY        = 91
+            tolerance   = 8
+            yTolerance  = 6
+        End If
+        Call Navigate()
+        cycle1 = cycle1 + 1
+        if cycle1 > 1 then
+            cycle1 = 0
+        End If
+    End If
+    Call ReleaseRune() //定期解轮
+    Delay 5
 Wend
