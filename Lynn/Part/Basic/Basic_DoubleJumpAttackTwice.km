@@ -1,0 +1,45 @@
+DelayRandom 15,25
+KeyDown Left
+Delay 69
+KeyDown Space
+Delay 75
+KeyUp Space
+Delay 33
+KeyUp Left
+Delay 23
+KeyDown Space
+Delay 110
+KeyUp Space
+Delay 68
+KeyDown F
+Delay 110
+KeyUp F
+Delay 359
+KeyDown F
+Delay 102
+KeyUp F
+Delay 296
+
+
+DelayRandom 15,25
+KeyDown Right
+Delay 69
+KeyDown Space
+Delay 75
+KeyUp Space
+Delay 33
+KeyUp Right
+Delay 23
+KeyDown Space
+Delay 110
+KeyUp Space
+Delay 68
+KeyDown F
+Delay 110
+KeyUp F
+Delay 359
+KeyDown F
+Delay 102
+KeyUp F
+Delay 296
+

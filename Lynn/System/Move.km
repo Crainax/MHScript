@@ -135,8 +135,108 @@ Sub Move  //1.53 重构大范围代码
             tolLoc = 2
         End If
 
+        if patrol == 1 and intY >= tarY -6 and intY <= tarY + 6 and intX >= (tarX-tolerance+40) and intX <=(tarX+tolerance+40) then //左巡逻1的条件
+            DelayRandom 15,25
+            KeyDown Left
+            Delay 120
+            KeyDown Space
+            Delay 21
+            KeyUp Left
+            Delay 37
+            KeyUp Space
+            Delay 88
+            KeyDown Space
+            Delay 60
+            KeyUp Space
+            Delay 43
+            KeyDown F
+            Delay 161
+            KeyUp F
+            Delay 404
+            KeyDown Space
+            Delay 61
+            KeyUp Space
+            Delay 18
+            KeyDown F
+            Delay 690
+            KeyUp F
+            Delay 233  //这个原版是263,提前加快了
+            Call Spell() //内置8sCD
+        else if patrol == 1 and intY >= tarY -6 and intY <= tarY + 6 and intX >= (tarX-tolerance-40) and intX <=(tarX+tolerance-40) then //右巡逻1的条件
+            DelayRandom 15,25
+            KeyDown Right
+            Delay 120
+            KeyDown Space
+            Delay 21
+            KeyUp Right
+            Delay 37
+            KeyUp Space
+            Delay 88
+            KeyDown Space
+            Delay 60
+            KeyUp Space
+            Delay 43
+            KeyDown F
+            Delay 161
+            KeyUp F
+            Delay 404
+            KeyDown Space
+            Delay 61
+            KeyUp Space
+            Delay 18
+            KeyDown F
+            Delay 690
+            KeyUp F
+            Delay 233
+            Call Spell() //内置8sCD
+        else if patrol == 0 and intY >= tarY -6 and intY <= tarY + 6 and intX >= (tarX-tolerance+29) and intX <=(tarX+tolerance+29) then //左巡逻2的条件
+            DelayRandom 15,25
+            KeyDown Left
+            Delay 69
+            KeyDown Space
+            Delay 75
+            KeyUp Space
+            Delay 33
+            KeyUp Left
+            Delay 23
+            KeyDown Space
+            Delay 110
+            KeyUp Space
+            Delay 68
+            KeyDown F
+            Delay 110
+            KeyUp F
+            Delay 359
+            KeyDown F
+            Delay 102
+            KeyUp F
+            Delay 296
+            Call Spell() //内置8sCD
+        else if patrol == 0 and intY >= tarY -6 and intY <= tarY + 6 and intX >= (tarX-tolerance-29) and intX <=(tarX+tolerance-29) then //右巡逻2的条件
+            DelayRandom 15,25
+            KeyDown Right
+            Delay 69
+            KeyDown Space
+            Delay 75
+            KeyUp Space
+            Delay 33
+            KeyUp Right
+            Delay 23
+            KeyDown Space
+            Delay 110
+            KeyUp Space
+            Delay 68
+            KeyDown F
+            Delay 110
+            KeyUp F
+            Delay 359
+            KeyDown F
+            Delay 102
+            KeyUp F
+            Delay 296
+            Call Spell() //内置8sCD
         //斜跳极限(-25,65) -> (-6,84) 19
-        if intY > tarY +6 and intY <= tarY + 18 and intX >= (tarX-tolerance+19) and intX >= (tarX+tolerance) and intX <=(tarX+tolerance+19) then //左斜上飞
+        elseif intY > tarY +6 and intY <= tarY + 18 and intX >= (tarX-tolerance+19) and intX >= (tarX+tolerance) and intX <=(tarX+tolerance+19) then //左斜上飞
             DelayRandom 15,25
             KeyDown Down
             Delay 52
@@ -268,7 +368,7 @@ Sub Move  //1.53 重构大范围代码
                 Call Spell() //内置8sCD
             End If
         Else If intX > (tarX+24) Then //向左二段跳
-            if intX + (tarX+44) and GetTimeStamp() - quickCD > 7 then //不要频繁用这个赶路
+            if intX > (tarX+44) and GetTimeStamp() - quickCD > 7 then //不要频繁用这个赶路
                 DelayRandom 15,25
                 KeyDown Left
                 Delay 37
@@ -698,21 +798,37 @@ SpellOK = 0
 quickCD = 0
 while 1 > 0
     LEDState = GetLED(1)
-    if LEDState == 2 then // (利曼世界的眼泪) 左右单点跳A测转身延迟
+    if LEDState == 0 then // (利曼世界的眼泪) 左右单点跳A测转身延迟(巡逻方式1)
+        patrol  = 1
         while 1 > 0
-            tarX       = 3
+            tarX       = -8
             tarY       = 93
-            tolerance  = 2
+            tolerance  = 4
             yTolerance = 0
             Call Move()
 
             tarX       = 32
             tarY       = 93
-            tolerance  = 2
+            tolerance  = 4
             yTolerance = 0
             Call Move()
         Wend
-    else if LEDState == 0 then // (利曼世界的眼泪) 左右跳3下A测Spell的延迟
+    else if LEDState == 4 then // (利曼世界的眼泪) 左右单点跳A测转身延迟(巡逻方式2)
+        patrol  = 0
+        while 1 > 0
+            tarX       = 3
+            tarY       = 93
+            tolerance  = 4
+            yTolerance = 0
+            Call Move()
+
+            tarX       = 32
+            tarY       = 93
+            tolerance  = 4
+            yTolerance = 0
+            Call Move()
+        Wend
+    else if LEDState == 2 then // (利曼世界的眼泪) 左右跳3下A测Spell的延迟
         while 1 > 0
             tarX       = -37
             tarY       = 93
@@ -739,6 +855,8 @@ while 1 > 0
         GetFileLine alterY,Move.Conf,tolLoc	//文件查找
         tolLoc = 6
         GetFileLine facing,Move.Conf,tolLoc	//文件查找
+        tolLoc = 7
+        GetFileLine patrol,Move.Conf,tolLoc	//文件查找(巡逻方式)
         TracePrint goto[ & tarX & , & tarY & ],tole & tolerance & ,[ & alterX & , & alterY & ]
         //tolerance = 4 //容忍度,4为推荐值
         Call Move()
