@@ -19,12 +19,21 @@ y3   = intY - 260
 xEnd = intX
 yEnd = intY
 
-FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Team\plus.bmp",000000,1.00,0,intX,intY	//找图
-If intX >= 0 Then
-    MoveTo intX+138,intY-17
-    LeftClick
-    MsgBox 找到坐标[ & intX & , & intY & ]
-else
-    MsgBox "没找到"	 //弹窗
-End If
-Delay 300
+//自动洗方块
+while 1>0
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then
+        KeyPress Enter
+    else
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\Confirm2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            MoveTo intX-100,intY+4
+            LeftClick
+            DelayRandom 139,142
+        else
+            MoveTo 50,50
+        End If
+    End If
+
+
+Wend

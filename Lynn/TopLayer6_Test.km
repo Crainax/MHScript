@@ -129,7 +129,7 @@ Sub Stable //稳定(前面自行getXY)
         End If
     Next
 End Sub
-Sub Move  //1.52 重构大范围代码
+Sub Move  //1.53 重构大范围代码
     while  1 > 0
         Call GetXY()
         Call AntiJam() //防卡
@@ -139,8 +139,108 @@ Sub Move  //1.52 重构大范围代码
             tolLoc = 2
         End If
 
+        if patrol == 1 and intY >= tarY -6 and intY <= tarY + 6 and intX >= (tarX-tolerance+40) and intX <=(tarX+tolerance+40) then //左巡逻1的条件
+            DelayRandom 15,25
+            KeyDown Left
+            Delay 120
+            KeyDown Space
+            Delay 21
+            KeyUp Left
+            Delay 37
+            KeyUp Space
+            Delay 88
+            KeyDown Space
+            Delay 60
+            KeyUp Space
+            Delay 43
+            KeyDown F
+            Delay 161
+            KeyUp F
+            Delay 404
+            KeyDown Space
+            Delay 61
+            KeyUp Space
+            Delay 18
+            KeyDown F
+            Delay 690
+            KeyUp F
+            Delay 233  //这个原版是263,提前加快了
+            Call Spell() //内置8sCD
+        else if patrol == 1 and intY >= tarY -6 and intY <= tarY + 6 and intX >= (tarX-tolerance-40) and intX <=(tarX+tolerance-40) then //右巡逻1的条件
+            DelayRandom 15,25
+            KeyDown Right
+            Delay 120
+            KeyDown Space
+            Delay 21
+            KeyUp Right
+            Delay 37
+            KeyUp Space
+            Delay 88
+            KeyDown Space
+            Delay 60
+            KeyUp Space
+            Delay 43
+            KeyDown F
+            Delay 161
+            KeyUp F
+            Delay 404
+            KeyDown Space
+            Delay 61
+            KeyUp Space
+            Delay 18
+            KeyDown F
+            Delay 690
+            KeyUp F
+            Delay 233
+            Call Spell() //内置8sCD
+        else if patrol == 0 and intY >= tarY -6 and intY <= tarY + 6 and intX >= (tarX-tolerance+29) and intX <=(tarX+tolerance+29) then //左巡逻2的条件
+            DelayRandom 15,25
+            KeyDown Left
+            Delay 69
+            KeyDown Space
+            Delay 75
+            KeyUp Space
+            Delay 33
+            KeyUp Left
+            Delay 23
+            KeyDown Space
+            Delay 110
+            KeyUp Space
+            Delay 68
+            KeyDown F
+            Delay 110
+            KeyUp F
+            Delay 359
+            KeyDown F
+            Delay 102
+            KeyUp F
+            Delay 296
+            Call Spell() //内置8sCD
+        else if patrol == 0 and intY >= tarY -6 and intY <= tarY + 6 and intX >= (tarX-tolerance-29) and intX <=(tarX+tolerance-29) then //右巡逻2的条件
+            DelayRandom 15,25
+            KeyDown Right
+            Delay 69
+            KeyDown Space
+            Delay 75
+            KeyUp Space
+            Delay 33
+            KeyUp Right
+            Delay 23
+            KeyDown Space
+            Delay 110
+            KeyUp Space
+            Delay 68
+            KeyDown F
+            Delay 110
+            KeyUp F
+            Delay 359
+            KeyDown F
+            Delay 102
+            KeyUp F
+            Delay 296
+            Call Spell() //内置8sCD
         //斜跳极限(-25,65) -> (-6,84) 19
-        if intY > tarY +6 and intY <= tarY + 18 and intX >= (tarX-tolerance+19) and intX >= (tarX+tolerance) and intX <=(tarX+tolerance+19) then //左斜上飞
+        elseif intY > tarY +6 and intY <= tarY + 18 and intX >= (tarX-tolerance+19) and intX >= (tarX+tolerance) and intX <=(tarX+tolerance+19) then //左斜上飞
             DelayRandom 15,25
             KeyDown Down
             Delay 52
@@ -271,7 +371,7 @@ Sub Move  //1.52 重构大范围代码
                 Call Spell() //内置8sCD
             End If
         Else If intX > (tarX+24) Then //向左二段跳
-            if intX < (tarX-44) and GetTimeStamp() - quickCD > 7 then //不要频繁用这个赶路
+            if intX > (tarX+44) and GetTimeStamp() - quickCD > 7 then //不要频繁用这个赶路
                 DelayRandom 15,25
                 KeyDown Left
                 Delay 37
@@ -675,11 +775,6 @@ Sub Move  //1.52 重构大范围代码
     Wend
 End Sub
 
-Sub Navigate //引導路線 V1.0 先抄一波菈菈的
-    call GetXY()
-    Call Move()
-End Sub
-
 Sub ReleaseRune //定期解轮 ver2.1
     if GetTimeStamp() - RuneCooldown > 600 then //可以放轮了
         FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
@@ -692,7 +787,7 @@ Sub ReleaseRune //定期解轮 ver2.1
             tolerance  = 2
             yTolerance = 3
             KeyAllup //防错误
-            Call Navigate() //解轮也走捷径
+            Call Move() //解轮也走捷径
             //暂停脚本
             Beep 1000,200
             DelayRandom 100,120
@@ -727,6 +822,7 @@ pick2        = GetTimeStamp()  //捡钱
 fountainTime = 0               //上次喷泉时间
 cycle1       = 0               //循环
 yTolerance   = 0               //初始化容忍
+patrol       = 0               //巡逻方式2
 while 1 > 0
 
     if GetTimeStamp() - stoneTime > 570 then //可以放轮了
@@ -749,7 +845,7 @@ while 1 > 0
         tolerance = 6
         call GetXY()
         if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-            Call Navigate()
+            Call Move()
         End If
         DelayRandom 56,58
         if GetTimeStamp() - pick2 > 75 then
@@ -788,7 +884,7 @@ while 1 > 0
         tarX      = -18
         tarY      = 115
         tolerance = 4
-        Call Navigate()
+        Call Move()
         DelayRandom 56,58
         KeyDown Right
         DelayRandom 62,68
@@ -810,12 +906,11 @@ while 1 > 0
             tolerance   = 8
             yTolerance  = 6
         End If
-        Call Navigate()
+        Call Move()
         cycle1 = cycle1 + 1
         if cycle1 > 1 then
             cycle1 = 0
         End If
     End If
     Call ReleaseRune() //定期解轮
-    Delay 5
 Wend

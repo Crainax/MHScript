@@ -52,14 +52,21 @@
 		],
 		"description": "打印一个坐标"
 	},
-	"按一个键": {
-		"prefix": "key",
+	"按一个键带自定义时间": {
+		"prefix": "keyTime",
 		"body": [
 			"${1:DelayRandom 39,42}",
 			"KeyDown ${2:Space}",
 			"DelayRandom 69,72",
 			"KeyUp ${2}",
 			"${1}"
+		],
+		"description": "按一个键(带时间)"
+	},
+	"按一个键": {
+		"prefix": "key",
+		"body": [
+			"KeyPress ${2:Space}",
 		],
 		"description": "按一个键"
 	},
