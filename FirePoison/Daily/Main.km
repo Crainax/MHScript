@@ -801,7 +801,7 @@ Sub AfterMap //夹在中间的抽离后 v1.3 世界也能选,抽离2个Loading
 
 End Sub
 Sub Wheel //到地图先放轮
-    DelayRandom 156,158
+    DelayRandom 356,358
     KeyDown O
     DelayRandom 137,139
     KeyUp O
@@ -1074,6 +1074,7 @@ Sub ClearQuest //清理下任务
     SavedX    = 91
     SavedY    = 59
     Call AfterMap() //去6
+    Call Loading()
     Call Channel()
     Call BeforeStart() //开始前的准备
     fountains = 3
@@ -1159,6 +1160,7 @@ Sub ClearQuest //清理下任务
     SavedX    = 40
     SavedY    = 192
     Call AfterMap() //去6
+    Call Loading()
     Call Channel()
     Call BeforeStart() //开始前的准备
     while 1>0 //开刷上1
@@ -1243,6 +1245,7 @@ Sub ClearQuest //清理下任务
     SavedX    = 121
     SavedY    = 220
     Call AfterMap() //去6
+    Call Loading()
     Call Channel()
     Call BeforeStart() //开始前的准备
     while 1>0 //开刷冬4

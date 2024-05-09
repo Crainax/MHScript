@@ -765,7 +765,7 @@ Sub Loading //加载地图
         End If
     Wend
 End Sub
-Sub AfterMap //夹在中间的抽离后 v1.2 世界也能选
+Sub AfterMap //夹在中间的抽离后 v1.3 世界也能选,抽离2个Loading
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
@@ -800,16 +800,15 @@ Sub AfterMap //夹在中间的抽离后 v1.2 世界也能选
                 KeyDown m
                 DelayRandom 69,72
                 KeyUp m
-                DelayRandom 39,42
+                DelayRandom 239,242
             End If
 
         End If
     Wend
 
-    Call Loading()
 End Sub
 Sub Wheel //到地图先放轮
-    DelayRandom 56,58
+    DelayRandom 156,158
     KeyDown O
     DelayRandom 137,139
     KeyUp O
@@ -1083,6 +1082,7 @@ Sub ClearQuest //清理任务
     SavedX    = 147
     SavedY    = 55
     Call AfterMap() //去6
+    Call Loading()
     Call Channel()
     Call BeforeStart() //开始前的准备
     fountains = 2
@@ -1242,6 +1242,7 @@ Sub ClearQuest //清理任务
     SavedX    = -120
     SavedY    = 160
     Call AfterMap() //到达
+    Call Loading()
     Call Channel()
     Call BeforeStart() //开始前的准备
     while 1>0 //开刷上6
@@ -1437,6 +1438,7 @@ Sub ClearQuest //清理任务
     SavedX    = 71
     SavedY    = 220
     Call AfterMap() //到达
+    Call Loading()
     Call Channel()
     Call BeforeStart() //开始前的准备
     while 1>0 //开刷冬3
@@ -1642,6 +1644,7 @@ Sub ClearQuest //清理任务
     SavedX    = 1
     SavedY    = 107
     Call AfterMap() //到达
+    Call Loading()
     Call Channel()
     Call BeforeStart() //开始前的准备
     while 1>0 //开刷实验室2
