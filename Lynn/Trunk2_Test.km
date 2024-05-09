@@ -4,18 +4,36 @@ ScreenY=2560
 Times=0
 
 [Script]
-Dim x1,           x2,           y1,        y2          // 矩形区域:小地图采样点
-Dim x3,           y3,           xEnd,      yEnd        // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,         tarY,         a,         cY          //目标
-Dim logoX,        logoY,        intX,      intY        //算目的地差值
-Dim tolLoc,       facing,       SpellOK,   quickCD     //移动相关
-Dim alterX,       alterY,       tolerance, yTolerance  //备用地点,传送门脚步开关
-Dim staticCount,  staticX,      staticY,   patrol      //防卡计数器,还有巡逻(1:跳打2下,2:惯性3下)
-Dim stoneTime,    fountainTime, fireTime               //冷却
-Dim pick1,        pick2                                //捡钱
-Dim SavedX,       SavedY,       SavedTor,  SavedTorY   //保存一下临时处理的XY
-Dim RuneCooldown, cycle1                               //找轮间隔
+Dim x1,             x2,           y1,        y2          // 矩形区域:小地图采样点
+Dim x3,             y3,           xEnd,      yEnd        // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,           tarY,         a,         cY          //目标
+Dim logoX,          logoY,        intX,      intY        //算目的地差值
+Dim tolLoc,         facing,       SpellOK,   quickCD     //移动相关
+Dim alterX,         alterY,       tolerance, yTolerance  //备用地点,传送门脚步开关
+Dim staticCount,    staticX,      staticY,   patrol      //防卡计数器,还有巡逻(1:跳打2下,2:惯性3下)
+Dim stoneSteleTime, fountainTime, fireTime,  cycle1      //冷却
+Dim SavedX,         SavedY,       SavedTor,  SavedTorY   //保存一下临时处理的XY
+Dim RuneCooldown,   wJam                                 //找轮间隔
+Dim red,            tempX,        tempY                  //红点侦测
 
+Sub Loading //加载地图
+    while 1>0 //等进入加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+    while 1>0 //等加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX > 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+End Sub
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
@@ -46,6 +64,14 @@ Sub AntiJam //一般跟随GetXY后用
         staticCount = 0
     End If
     if staticCount >= 5 Then //
+        if intY == 98 and intX >= (18-4) and intX <=(18+4) Then //白名单
+            staticCount = 0
+            Exit Sub
+        else if intY == 98 and intX >= (-82-4) and intX <=(-82+4) Then //白名单
+            staticCount = 0
+            Exit Sub
+        End If
+
 
         Beep 500,500
         KeyAllup //施放所有按键并重启
@@ -775,8 +801,21 @@ Sub Move  //1.53 重构大范围代码
     Wend
 End Sub
 
-Sub ReleaseRune //定期解轮 ver2.1
-    if GetTimeStamp() - RuneCooldown > 600 then //可以放轮了
+Sub ReleaseRune //定期解轮 ver2.2 加入蘑菇公主侦测
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Liar.bmp",000000,1.00,0,intX,intY
+    if intX < 0 then //A图没找到就找B图
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Liar2.bmp",000000,1.00,0,intX,intY
+    End If
+    if intX >= 0 Then //蘑菇公主來了
+        for 3
+            Beep 500,200
+            Beep 100,200
+            Beep 400,200
+            Beep 200,200
+            Beep 300,200
+        Next
+    End If
+    if GetTimeStamp() - RuneCooldown > 900 then //可以放轮了
         FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
         if intX >= 0 then
             FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
@@ -803,91 +842,229 @@ Sub ReleaseRune //定期解轮 ver2.1
     End If
 End Sub
 
-GetScreenResolution intX, intY
-x1           = intX - 1440
-y1           = intY - 950
-x2           = intX - 1140
-y2           = intY - 600
-x3           = intX - 640
-y3           = intY - 260
-xEnd         = intX
-yEnd         = intY
-SpellOK      = 0               //间
-quickCD      = 0               //间
-stoneTime    = 0               //上次轮回的时间
-RuneCooldown = 0               //解轮CD
-fireTime     = 0               //上次放熊屁的时间
-fountainTime = 0               //上次喷泉时间
-cycle1       = 0               //循环
-yTolerance   = 0               //初始化容忍
-patrol       = 0               //巡逻方式2
-while 1 > 0
-
-    if GetTimeStamp() - stoneTime > 570 then //可以放轮了
-        call GetXY()
-        if intY == 117 or intY == 115 or intY == 91 then
-            DelayRandom 356,358
-            KeyDown O
-            DelayRandom 237,239
-            KeyUp O
-            DelayRandom 736,747
-            stoneTime = GetTimeStamp()
+Sub Channel //有人就换频 ver2.2 加入了公会成员和好友的判断
+    wJam = 0 //放在循环外面位置
+    while 1>0
+        FindPic x1,y1,x2,y2,"E:\MHImg\Player.bmp",000000,1.00,0,intX,intY
+        if intX < 0 then //A图没找到就找B图
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Ally.bmp",000000,1.00,0,intX,intY
         End If
+        if intX < 0 then //A图没找到就找B图
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Ally2.bmp",000000,1.00,0,intX,intY
+        End If
+        if intX < 0 Then //地图没人(5次判断防人物重合)
+            wJam = wJam + 1  //循环内部
+            if wJam > 5 then //多次没找到人就确实没人
+                break
+            else
+                Delay 200
+            End If
+        else //有找到人,直接换频
+            wJam = 0 //放在成功的位置
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Switch.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+
+                KeyDown Right
+                DelayRandom 69,72
+                KeyUp Right
+                DelayRandom 539,542
+                KeyDown Enter
+                DelayRandom 69,72
+                KeyUp Enter
+                DelayRandom 339,342
+
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then //没有OK就退出去
+                    Call Loading() //等加载
+                    DelayRandom 239,242
+                else
+                    DelayRandom 39,42
+                    KeyDown Esc
+                    DelayRandom 69,72
+                    KeyUp Esc
+                    DelayRandom 239,242
+                End If
+            else
+                DelayRandom 39,42
+                KeyDown Insert
+                DelayRandom 69,72
+                KeyUp Insert
+                DelayRandom 39,42
+            End If
+        End If
+    Wend
+End Sub
+Sub CheckMap //核对地图并传送(有人就换频)
+    while 1>0 //传送地图
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //找到人影了
+            a = 0
+            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
+            FindPic x1,y1,x2,y2,"E:\MHImg\Teleport.bmp",000000,1.00,0,intX,intY	//找图
+            intX = intX - logoX
+            intY = intY - logoY
+            if intX == -93 and intY == 140 then //判断地图是不是要练的地图
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\AUT6.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 then
+                    a = 1
+                End If
+            End If
+
+            if a == 0 then //不在洞4,传送吧
+                while 1>0
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\Mark.bmp",000000,1.00,0,logoX,logoY
+                    if logoX >= 0 Then //瞬移到
+                        MoveTo logoX-284,logoY+1
+                        LeftClick
+                        DelayRandom 139,142
+                        MoveTo logoX-354,logoY+38 //选择格兰蒂斯
+                        LeftClick
+                        DelayRandom 139,142
+                        MoveTo logoX-142,logoY+1
+                        LeftClick
+                        DelayRandom 139,142
+
+                        break
+                    else
+                        DelayRandom 39,42
+                        KeyDown m
+                        DelayRandom 69,72
+                        KeyUp m
+                        DelayRandom 39,42
+                    End If
+                Wend
+
+                MoveTo logoX-225,logoY+360 //选择卡尔西温
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX+165,logoY+323 //选择地图树2
+                LeftDoubleClick
+                DelayRandom 139,142
+                MoveTo logoX-50,logoY-50
+                DelayRandom 239,242
+
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                If intX >= 0 Then
+                    DelayRandom 39,42
+                    KeyDown Enter
+                    DelayRandom 69,72
+                    KeyUp Enter
+                    DelayRandom 39,42
+                End If
+
+                Call Loading()
+                Call Channel() //换频
+            End If
+
+            break
+        else //无限循环:找人的位置
+            Delay 100
+        End If
+    Wend
+End Sub
+Sub on_timer4 //查红点 ver1.1 使用了tempX和Y防干扰
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Player.bmp",000000,1.00,0,tempX,tempY
+    if tempX >= 0 Then //地图里有其他玩家
+        red = red + 1
+    End If
+    if red > 0 then //红点存在过才会一直累计
+        if red % 10 == 0 then //其他玩家在地图逗留超过10秒就提醒
+            Beep 261,100
+            Beep 261,100
+            Beep 392,100
+            Beep 392,100
+            Beep 440,100
+            Beep 440,100
+            Beep 392,100
+        End If
+        red = red + 100
+    End If
+    if red >= 6000 then //每1分钟重置一次计数
+        red = 0
+    End If
+    Timer          4, 1, 1000              //检测地图红点
+EndSub
+
+GetScreenResolution intX, intY
+x1             = intX - 1440
+y1             = intY - 950
+x2             = intX - 1140
+y2             = intY - 600
+x3             = intX - 640
+y3             = intY - 260
+xEnd           = intX
+yEnd           = intY
+stoneSteleTime = 0            //上次轮回的时间
+RuneCooldown   = 0            //解轮CD
+fireTime       = 0            //上次放熊屁的时间
+fountainTime   = 0            //上次喷泉时间
+yTolerance     = 0            //初始化容忍
+red            = 0            //初始化red
+SpellOK        = 0            //间
+quickCD        = 0            //间
+cycle1       = 0               //循环
+patrol         = 1            //方式
+Call CheckMap()
+Timer          4, 1, 1000        //检测地图红点
+while 1 > 0
+    if GetTimeStamp() - stoneSteleTime > 570 then //可以放轮了
+        call GetXY()
+        DelayRandom 356,358
+        KeyDown O
+        DelayRandom 237,239
+        KeyUp O
+        DelayRandom 736,747
+        stoneSteleTime = GetTimeStamp()
     End If
 
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
-    a = GetTimeStamp() - fountainTime
-    if a > 55 or intX >= 0 then //可以喷泉了
-        tarX = -85
-        tarY = 117
-        tolerance = 6
-        call GetXY()
-        if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-            Call Move()
-        End If
+    if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
+        tarX = 43
+        tarY = 127
+        tolerance = 7
+        Call Move()
         DelayRandom 56,58
-        KeyDown Right
+        KeyDown Left
         DelayRandom 62,68
-        KeyUp Right
+        KeyUp Left
         DelayRandom 106,109
         KeyDown 1
         DelayRandom 194,196
         KeyUp 1
         DelayRandom 712,721
         fountainTime = GetTimeStamp()
-    End If
-
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\D.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 and GetTimeStamp() - fireTime > 28 Then //熊屁
-        tarX      = -18
-        tarY      = 115
-        tolerance = 4
-        Call Move()
-        DelayRandom 56,58
-        KeyDown Right
-        DelayRandom 62,68
-        KeyUp Right
-        DelayRandom 42,50
-        KeyDown D
-        DelayRandom 194,196
-        KeyUp D
-        fireTime = GetTimeStamp()
-        DelayRandom 312,321
-    else //左右跳A
-        if cycle1     == 0 then
-            tarX        = 20
-            tarY        = 91
-            tolerance   = 8
-        else if cycle1  == 1 then
-            tarX        = -14
-            tarY        = 91
-            tolerance   = 8
-            yTolerance  = 6
-        End If
-        Call Move()
-        cycle1 = cycle1 + 1
-        if cycle1 > 1 then
-            cycle1 = 0
+    else
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\D.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 and GetTimeStamp() - fireTime > 28 Then //地火
+            tarX = -9
+            tarY = 99
+            tolerance = 4
+            Call Move()
+            DelayRandom 56,58
+            KeyDown Right
+            DelayRandom 62,68
+            KeyUp Right
+            DelayRandom 42,50
+            KeyDown D
+            DelayRandom 194,196
+            KeyUp D
+            fireTime = GetTimeStamp()
+            DelayRandom 312,321
+        else //左右跳A
+            if cycle1     == 0 then
+                tarX      = -48
+                tarY      = 125
+                tolerance = 8
+            else if cycle1  == 1 then
+                tarX      = -6
+                tarY      = 125
+                tolerance = 7
+            End If
+            Call Move()
+            cycle1 = cycle1 + 1
+            if cycle1 > 1 then
+                cycle1 = 0
+            End If
         End If
     End If
     Call ReleaseRune() //定期解轮
