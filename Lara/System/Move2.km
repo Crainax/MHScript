@@ -548,24 +548,11 @@ Sub AroundS_T //左右释放(带2sCD)
         ReleaseTime1 = GetTimeStamp()
     End If
 End Sub
-Sub Stable_2 //稳定(前面自行getXY) 用于Move_2
-    cY = intY
-    for 3 //确定不动了再跳
-        call GetXY()
-        if intY == cY Then //Y轴没变化
-            Delay 2
-        else //还在运动,就停了吧
-            break
-        End If
-    Next
-    if intY == cY Then //Y轴没变化
-        Call AroundS_T() //稳定后再释放
-    End If
-End Sub
 //2改的部分:
 //1:跳只有平A
 //2:要放的地方补足AroundS_T
-Sub Move_2  //随机释放的移动 ( Ver3.11)
+//3:删钩子
+Sub Move_2  //随机释放的移动 ( Ver3.13)
     while  1 > 0
         Call GetXY()
         Call AntiJam() //防卡
@@ -575,8 +562,9 @@ Sub Move_2  //随机释放的移动 ( Ver3.11)
             tolLoc = 2
         End If
         if intY > tarY +2 and intY <= tarY + 11 and intX >= (tarX-26) and intX <=(tarX+26) then //[特殊情况1]高度小于等于11
-            Call Stable_2()
+            Call Stable()
             if intY == cY then
+                Call AroundS_T() //稳定后再释放
                 if intX < (tarX-4) then //右直跳
                     TracePrint 右直跳
                     Delay 77
@@ -648,7 +636,7 @@ Sub Move_2  //随机释放的移动 ( Ver3.11)
                 end if
             End If
         else if intX < (tarX-24) Then //向右二段跳
-            // Call Stable_2()
+            // Call Stable()
             // if intY == cY then
                 TracePrint 右跳
                 DelayRandom 15,25
@@ -670,7 +658,7 @@ Sub Move_2  //随机释放的移动 ( Ver3.11)
                 DelayRandom 256,261
             // End If
         Else If intX > (tarX+24) Then //向左二段跳
-            // Call Stable_2()
+            // Call Stable()
             // if intY == cY then
                 TracePrint 左跳
                 DelayRandom 15,25
@@ -713,8 +701,9 @@ Sub Move_2  //随机释放的移动 ( Ver3.11)
             KeyUp Left
         else
             If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
-                Call Stable_2()
+                Call Stable()
                 if intY == cY then
+                    Call AroundS_T() //稳定后再释放
                     TracePrint 下跳一次
                     KeyDown Down
                     DelayRandom 134,136
@@ -732,24 +721,18 @@ Sub Move_2  //随机释放的移动 ( Ver3.11)
                     DelayRandom 548,554
                 End If
             Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上跳(Y轴是用相反比较符)
-                Call Stable_2()
+                Call Stable()
                 if intY == cY then
-                    cY = intY
-                    if intY > (tarY+25) Then	//>=26上跳就够不到了
-                        TracePrint 钩子一次
-                        KeyDown Ctrl
-                        DelayRandom 328,430
-                        KeyUp Ctrl
-                    else
-                        TracePrint 上跳一次
-                        KeyDown Alt
-                        DelayRandom 328,430
-                        KeyUp Alt
-                    End If
+                    Call AroundS_T() //稳定后再释放
+                    TracePrint 上跳一次
+                    KeyDown Alt
+                    DelayRandom 328,430
+                    KeyUp Alt
                 End If
             else
-                Call Stable_2()
+                Call Stable()
                 if intY == cY then
+                    Call AroundS_T() //稳定后再释放
                     yTolerance = 0
                     if tolerance == 0 then //传送门型
                         TracePrint 传送一发

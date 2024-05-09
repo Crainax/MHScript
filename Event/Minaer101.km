@@ -642,7 +642,7 @@ Sub Event101 //活动地图领东西
                 End If
                 if intX < 0 Then //结束了(以几次判断来看)
                     wJam = wJam + 1  //循环内部
-                    if wJam > 3 then //三次失败,
+                    if wJam > 10 then //三次失败,
                         break
                     End If
                 else
@@ -699,7 +699,7 @@ Sub Event101 //活动地图领东西
                         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY //停止对话
                         if intX < 0 Then //结束了(以几次判断来看)
                             wJam = wJam + 1  //循环内部
-                            if wJam > 3 then //三次失败,
+                            if wJam > 20 then //三次失败,
                                 break
                             End If
                         else
@@ -768,7 +768,7 @@ Sub Event101 //活动地图领东西
                         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY //停止对话
                         if intX < 0 Then //结束了(以几次判断来看)
                             wJam = wJam + 1  //循环内部
-                            if wJam > 3 then //三次失败,
+                            if wJam > 20 then //三次失败,
                                 break
                             End If
                         else
