@@ -129,7 +129,7 @@ Sub Stable //稳定(前面自行getXY)
         End If
     Next
 End Sub
-Sub Move  //1.53 重构大范围代码
+Sub Move  //1.54 重构大范围代码
     while  1 > 0
         Call GetXY()
         Call AntiJam() //防卡
@@ -164,7 +164,7 @@ Sub Move  //1.53 重构大范围代码
             KeyDown F
             Delay 690
             KeyUp F
-            Delay 233  //这个原版是263,提前加快了
+            Delay 203  //这个原版是263,提前加快了
             Call Spell() //内置8sCD
         else if patrol == 1 and intY >= tarY -6 and intY <= tarY + 6 and intX >= (tarX-tolerance-40) and intX <=(tarX+tolerance-40) then //右巡逻1的条件
             DelayRandom 15,25
@@ -191,7 +191,7 @@ Sub Move  //1.53 重构大范围代码
             KeyDown F
             Delay 690
             KeyUp F
-            Delay 233
+            Delay 203
             Call Spell() //内置8sCD
         else if patrol == 0 and intY >= tarY -6 and intY <= tarY + 6 and intX >= (tarX-tolerance+29) and intX <=(tarX+tolerance+29) then //左巡逻2的条件
             DelayRandom 15,25
@@ -214,7 +214,7 @@ Sub Move  //1.53 重构大范围代码
             KeyDown F
             Delay 102
             KeyUp F
-            Delay 296
+            Delay 236
             Call Spell() //内置8sCD
         else if patrol == 0 and intY >= tarY -6 and intY <= tarY + 6 and intX >= (tarX-tolerance-29) and intX <=(tarX+tolerance-29) then //右巡逻2的条件
             DelayRandom 15,25
@@ -237,7 +237,7 @@ Sub Move  //1.53 重构大范围代码
             KeyDown F
             Delay 102
             KeyUp F
-            Delay 296
+            Delay 236
             Call Spell() //内置8sCD
         //斜跳极限(-25,65) -> (-6,84) 19
         elseif intY > tarY +6 and intY <= tarY + 18 and intX >= (tarX-tolerance+19) and intX >= (tarX+tolerance) and intX <=(tarX+tolerance+19) then //左斜上飞
@@ -803,6 +803,24 @@ Sub ReleaseRune //定期解轮 ver2.1
     End If
 End Sub
 
+Sub Attack //攻击函数抽离
+    if cycle1     == 0 then
+        tarX        = 20
+        tarY        = 91
+        tolerance   = 8
+    else if cycle1  == 1 then
+        tarX        = -14
+        tarY        = 91
+        tolerance   = 8
+        yTolerance  = 6
+    End If
+    Call Move()
+    cycle1 = cycle1 + 1
+    if cycle1 > 1 then
+        cycle1 = 0
+    End If
+End Sub
+
 GetScreenResolution intX, intY
 x1           = intX - 1440
 y1           = intY - 950
@@ -836,8 +854,7 @@ while 1 > 0
     End If
 
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
-    a = GetTimeStamp() - fountainTime
-    if a > 55 or intX >= 0 then //可以喷泉了
+    if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
         tarX = -85
         tarY = 117
         tolerance = 6
@@ -874,20 +891,17 @@ while 1 > 0
         fireTime = GetTimeStamp()
         DelayRandom 312,321
     else //左右跳A
-        if cycle1     == 0 then
-            tarX        = 20
-            tarY        = 91
-            tolerance   = 8
-        else if cycle1  == 1 then
-            tarX        = -14
-            tarY        = 91
-            tolerance   = 8
-            yTolerance  = 6
-        End If
-        Call Move()
-        cycle1 = cycle1 + 1
-        if cycle1 > 1 then
-            cycle1 = 0
+        a = fireTime + 28 //对比哪个最小值来定循环次数
+        if a > fountainTime + 55 then //
+            a = fountainTime + 55
+        end if
+        a = (GetTimeStamp() - a)*-1
+        if a > 0 then //多次
+            for a
+                Call Attack()
+            Next
+        else //1次
+                Call Attack()
         End If
     End If
     Call ReleaseRune() //定期解轮

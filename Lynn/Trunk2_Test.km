@@ -155,7 +155,7 @@ Sub Stable //稳定(前面自行getXY)
         End If
     Next
 End Sub
-Sub Move  //1.53 重构大范围代码
+Sub Move  //1.54 重构大范围代码
     while  1 > 0
         Call GetXY()
         Call AntiJam() //防卡
@@ -190,7 +190,7 @@ Sub Move  //1.53 重构大范围代码
             KeyDown F
             Delay 690
             KeyUp F
-            Delay 233  //这个原版是263,提前加快了
+            Delay 203  //这个原版是263,提前加快了
             Call Spell() //内置8sCD
         else if patrol == 1 and intY >= tarY -6 and intY <= tarY + 6 and intX >= (tarX-tolerance-40) and intX <=(tarX+tolerance-40) then //右巡逻1的条件
             DelayRandom 15,25
@@ -217,7 +217,7 @@ Sub Move  //1.53 重构大范围代码
             KeyDown F
             Delay 690
             KeyUp F
-            Delay 233
+            Delay 203
             Call Spell() //内置8sCD
         else if patrol == 0 and intY >= tarY -6 and intY <= tarY + 6 and intX >= (tarX-tolerance+29) and intX <=(tarX+tolerance+29) then //左巡逻2的条件
             DelayRandom 15,25
@@ -240,7 +240,7 @@ Sub Move  //1.53 重构大范围代码
             KeyDown F
             Delay 102
             KeyUp F
-            Delay 296
+            Delay 236
             Call Spell() //内置8sCD
         else if patrol == 0 and intY >= tarY -6 and intY <= tarY + 6 and intX >= (tarX-tolerance-29) and intX <=(tarX+tolerance-29) then //右巡逻2的条件
             DelayRandom 15,25
@@ -263,7 +263,7 @@ Sub Move  //1.53 重构大范围代码
             KeyDown F
             Delay 102
             KeyUp F
-            Delay 296
+            Delay 236
             Call Spell() //内置8sCD
         //斜跳极限(-25,65) -> (-6,84) 19
         elseif intY > tarY +6 and intY <= tarY + 18 and intX >= (tarX-tolerance+19) and intX >= (tarX+tolerance) and intX <=(tarX+tolerance+19) then //左斜上飞
@@ -985,6 +985,23 @@ Sub on_timer4 //查红点 ver1.1 使用了tempX和Y防干扰
     Timer          4, 1, 1000              //检测地图红点
 EndSub
 
+Sub Attack //攻击函数抽离
+    if cycle1     == 0 then
+        tarX      = -48
+        tarY      = 125
+        tolerance = 8
+    else if cycle1  == 1 then
+        tarX      = -6
+        tarY      = 125
+        tolerance = 7
+    End If
+    Call Move()
+    cycle1 = cycle1 + 1
+    if cycle1 > 1 then
+        cycle1 = 0
+    End If
+End Sub
+
 GetScreenResolution intX, intY
 x1             = intX - 1440
 y1             = intY - 950
@@ -1033,38 +1050,51 @@ while 1 > 0
         KeyUp 1
         DelayRandom 712,721
         fountainTime = GetTimeStamp()
+        cycle1 = 1 //回右边
     else
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\D.bmp",000000,1.00,0,intX,intY
         if intX >= 0 and GetTimeStamp() - fireTime > 28 Then //地火
-            tarX = -9
-            tarY = 99
-            tolerance = 4
+            tarX      = -6
+            tarY      = 125
+            tolerance = 2
             Call Move()
-            DelayRandom 56,58
+            DelayRandom 207,213
+            KeyDown Up
+            DelayRandom 47,48
+            KeyDown Space
+            DelayRandom 61,62
+            KeyUp Space
+            DelayRandom 71,72
+            KeyDown Space
+            DelayRandom 85,86
+            KeyUp Space
+            DelayRandom 136,138
+            KeyUp Up
+            DelayRandom 22,23
             KeyDown Right
-            DelayRandom 62,68
-            KeyUp Right
-            DelayRandom 42,50
+            DelayRandom 170,172
             KeyDown D
-            DelayRandom 194,196
+            DelayRandom 3,4
+            KeyUp Right
+            DelayRandom 76,77
             KeyUp D
             fireTime = GetTimeStamp()
-            DelayRandom 312,321
+            DelayRandom 336,341
+            cycle1 = 1 //回右边
         else //左右跳A
-            if cycle1     == 0 then
-                tarX      = -48
-                tarY      = 125
-                tolerance = 8
-            else if cycle1  == 1 then
-                tarX      = -6
-                tarY      = 125
-                tolerance = 7
+            a = fireTime + 28 //对比哪个最小值来定循环次数
+            if a > fountainTime + 55 then //
+                a = fountainTime + 55
+            end if
+            a = (GetTimeStamp() - a)*-1
+            if a > 0 then //多次
+                for a
+                    Call Attack()
+                Next
+            else //1次
+                    Call Attack()
             End If
-            Call Move()
-            cycle1 = cycle1 + 1
-            if cycle1 > 1 then
-                cycle1 = 0
-            End If
+
         End If
     End If
     Call ReleaseRune() //定期解轮
