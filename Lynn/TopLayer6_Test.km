@@ -858,10 +858,7 @@ while 1 > 0
         tarX = -85
         tarY = 117
         tolerance = 6
-        call GetXY()
-        if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-            Call Move()
-        End If
+        Call Move()
         DelayRandom 56,58
         KeyDown Right
         DelayRandom 62,68
