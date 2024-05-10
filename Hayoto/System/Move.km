@@ -109,7 +109,7 @@ Sub Stable //稳定(前面自行getXY)
         End If
     Next
 End Sub
-Sub Move  //精确的移动:Ver3.12 修正上跳的抛物线问题
+Sub Move  //精确的移动
     while  1 > 0
         Call GetXY()
         Call AntiJam() //防卡
@@ -118,119 +118,42 @@ Sub Move  //精确的移动:Ver3.12 修正上跳的抛物线问题
         else  //速走的默认为4
             tolLoc = 2
         End If
-        if intY > tarY +2 and intY <= tarY + 11 and intX >= (tarX-26) and intX <=(tarX+26) then //[特殊情况1]高度小于等于11
-            Call Stable()
-            if intY == cY then
-                if intX < (tarX-4) then //右直跳
-                    TracePrint 右直跳
-                    Delay 77
-                    KeyDown Right
-                    Delay 101
-                    KeyDown Space
-                    Delay 101
-                    KeyUp Space
-                    Delay 183
-                    KeyDown Space
-                    Delay 113
-                    KeyUp Space
-                    Delay 42
-                    KeyUp Right
-                    Delay 500
-                else if intX > (tarX+4) //左直跳
-                    TracePrint 左直跳
-                    Delay 77
-                    KeyDown Left
-                    Delay 101
-                    KeyDown Space
-                    Delay 101
-                    KeyUp Space
-                    Delay 183
-                    KeyDown Space
-                    Delay 113
-                    KeyUp Space
-                    Delay 42
-                    KeyUp Left
-                    Delay 500
-                else if intX <= tarX then //左反墙跳
-                    TracePrint 左反墙跳
-                    Delay 45
-                    KeyDown Left
-                    Delay 119
-                    KeyDown Space
-                    Delay 122
-                    KeyUp Space
-                    Delay 91
-                    KeyUp Left
-                    Delay 64
-                    KeyDown Right
-                    Delay 76
-                    KeyDown Space
-                    Delay 131
-                    KeyUp Space
-                    Delay 112
-                    KeyUp Right
-                    Delay 500
-                else //右反墙跳
-                    TracePrint 右反墙跳
-                    Delay 45
-                    KeyDown Right
-                    Delay 119
-                    KeyDown Space
-                    Delay 122
-                    KeyUp Space
-                    Delay 91
-                    KeyUp Right
-                    Delay 64
-                    KeyDown Left
-                    Delay 76
-                    KeyDown Space
-                    Delay 131
-                    KeyUp Space
-                    Delay 112
-                    KeyUp Left
-                    Delay 500
-                end if
-            End If
-        else if intX < (tarX-24) Then //向右二段跳
-            // Call Stable()
-            // if intY == cY then
-                TracePrint 右跳
-                DelayRandom 15,25
-                KeyDown Right
-                DelayRandom 50,51
-                KeyDown Space
-                DelayRandom 80,81
-                KeyUp Space
-                DelayRandom 30,31
-                KeyDown Space
-                DelayRandom 75,76
-                KeyUp Space
-                DelayRandom 85,86
-                KeyUp Right
-                DelayRandom 41,42
-                Call JumpAttack()
-                DelayRandom 256,261
-            // End If
+        if intX < (tarX-24) Then //向右二段跳
+            DelayRandom 15,25
+            KeyDown Right
+            DelayRandom 74,75
+            KeyDown Space
+            DelayRandom 67,68
+            KeyUp Space
+            DelayRandom 36,37
+            KeyUp Right
+            DelayRandom 13,14
+            KeyDown Space
+            DelayRandom 78,79
+            KeyUp Space
+            DelayRandom 125,127
+            KeyDown F
+            DelayRandom 105,107
+            KeyUp F
+            DelayRandom 326,330
         Else If intX > (tarX+24) Then //向左二段跳
-            // Call Stable()
-            // if intY == cY then
-                TracePrint 左跳
-                DelayRandom 15,25
-                KeyDown Left
-                DelayRandom 50,51
-                KeyDown Space
-                DelayRandom 80,81
-                KeyUp Space
-                DelayRandom 30,31
-                KeyDown Space
-                DelayRandom 75,76
-                KeyUp Space
-                DelayRandom 85,86
-                KeyUp Left
-                DelayRandom 41,42
-                Call JumpAttack()
-                DelayRandom 256,261
-            // End If
+            DelayRandom 15,25
+            KeyDown Left
+            DelayRandom 74,75
+            KeyDown Space
+            DelayRandom 67,68
+            KeyUp Space
+            DelayRandom 36,37
+            KeyUp Left
+            DelayRandom 13,14
+            KeyDown Space
+            DelayRandom 78,79
+            KeyUp Space
+            DelayRandom 125,127
+            KeyDown F
+            DelayRandom 105,107
+            KeyUp F
+            DelayRandom 326,330
         Else If intX < (tarX-tolLoc) Then //向右走
             KeyDown Right
             a = (tarX - tolLoc - intX) * 52
@@ -284,9 +207,9 @@ Sub Move  //精确的移动:Ver3.12 修正上跳的抛物线问题
                     else
                         TracePrint 上跳一次
                         KeyDown LAlt
-                        DelayRandom 143,145
+                        DelayRandom 128,130
                         KeyUp LAlt
-                        DelayRandom 769,777
+                        DelayRandom 705,713
                     End If
                 End If
             else
