@@ -124,7 +124,7 @@ Sub Stable //稳定(前面自行getXY)
         End If
     Next
 End Sub
-Sub Move  //精确的移动:Ver3.11 重置了一下直接移除csTimes和csMax
+Sub Move  //精确的移动:Ver3.12 修正上跳的抛物线问题
     while  1 > 0
         Call GetXY()
         Call AntiJam() //防卡
@@ -203,8 +203,8 @@ Sub Move  //精确的移动:Ver3.11 重置了一下直接移除csTimes和csMax
                 end if
             End If
         else if intX < (tarX-24) Then //向右二段跳
-            //Call Stable()
-            //if intY == cY then
+            // Call Stable()
+            // if intY == cY then
                 DelayRandom 15,25
                 KeyDown Right
                 DelayRandom 50,51
@@ -220,10 +220,10 @@ Sub Move  //精确的移动:Ver3.11 重置了一下直接移除csTimes和csMax
                 DelayRandom 41,42
                 Call JumpAttack()
                 DelayRandom 256,261
-            //End If
+            // End If
         Else If intX > (tarX+24) Then //向左二段跳
-            //Call Stable()
-            //if intY == cY then
+            // Call Stable()
+            // if intY == cY then
                 DelayRandom 15,25
                 KeyDown Left
                 DelayRandom 50,51
@@ -239,7 +239,7 @@ Sub Move  //精确的移动:Ver3.11 重置了一下直接移除csTimes和csMax
                 DelayRandom 41,42
                 Call JumpAttack()
                 DelayRandom 256,261
-            //End If
+            // End If
         Else If intX < (tarX-tolLoc) Then //向右走
             KeyDown Right
             a = (tarX - tolLoc - intX) * 52
@@ -283,12 +283,14 @@ Sub Move  //精确的移动:Ver3.11 重置了一下直接移除csTimes和csMax
                     cY = intY
                     if intY > (tarY+25) Then	//>=26上跳就够不到了
                         KeyDown Ctrl
-                        DelayRandom 328,430
+                        DelayRandom 69,70
                         KeyUp Ctrl
+                        DelayRandom 921,931
                     else
-                        KeyDown Alt
-                        DelayRandom 328,430
-                        KeyUp Alt
+                        KeyDown LAlt
+                        DelayRandom 143,145
+                        KeyUp LAlt
+                        DelayRandom 769,777
                     End If
                 End If
             else

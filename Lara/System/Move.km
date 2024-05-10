@@ -109,7 +109,7 @@ Sub Stable //稳定(前面自行getXY)
         End If
     Next
 End Sub
-Sub Move  //精确的移动:Ver3.11 重置了一下直接移除csTimes和csMax
+Sub Move  //精确的移动:Ver3.12 修正上跳的抛物线问题
     while  1 > 0
         Call GetXY()
         Call AntiJam() //防卡
@@ -278,13 +278,15 @@ Sub Move  //精确的移动:Ver3.11 重置了一下直接移除csTimes和csMax
                     if intY > (tarY+25) Then	//>=26上跳就够不到了
                         TracePrint 钩子一次
                         KeyDown Ctrl
-                        DelayRandom 328,430
+                        DelayRandom 69,70
                         KeyUp Ctrl
+                        DelayRandom 921,931
                     else
                         TracePrint 上跳一次
-                        KeyDown Alt
-                        DelayRandom 328,430
-                        KeyUp Alt
+                        KeyDown LAlt
+                        DelayRandom 143,145
+                        KeyUp LAlt
+                        DelayRandom 769,777
                     End If
                 End If
             else
