@@ -3383,19 +3383,29 @@ Sub Teleport //换地图(Caps键亮)
                     else
                         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Bird2.bmp",000000,1.00,0,intX,intY
                         If intX >= 0 Then //去四转
-                            Call 4Job() //四转
-                            Call AddSP() //加点
-                            Call Event101() //解活动前置
-                            SavedTor = 20
-                            SavedTorY  = 313
-                            SavedX    = 148
-                            SavedY    = 388
-                            Call AfterMap() //到达
-                            Call Loading2()
-                            Call CloseCaps() //关闭Caps键
-                        else //勇士出发去狗
-                            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Warrior.bmp",000000,1.00,0,intX,intY
-                            If intX >= 0 Then //去四转
+                            Beep 261,200
+                            Beep 294,200
+                            Beep 329,200
+                            Beep 294,200
+                            Beep 261,200
+                            Beep 329,200
+                            Beep 392,200
+                            Beep 349,200
+                            Beep 329,200
+                            Beep 294,200
+                            a=WaitKey()
+                            if a== 49 then //按1键就是四转
+                                Call 4Job() //四转
+                                Call AddSP() //加点
+                                Call Event101() //解活动前置
+                                SavedTor = 20
+                                SavedTorY  = 313
+                                SavedX    = 148
+                                SavedY    = 388
+                                Call AfterMap() //到达
+                                Call Loading2()
+                                Call CloseCaps() //关闭Caps键
+                            else //按其他就是下个地图
                                 Call DogPre() //加点
                                 Call AddSP() //加点
                                 SavedTor = 20
@@ -3405,17 +3415,17 @@ Sub Teleport //换地图(Caps键亮)
                                 Call AfterMap() //到达
                                 Call Loading() //加载中
                                 Call CloseCaps() //关闭Caps键
-                            else
-                                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Dog1.bmp",000000,1.00,0,intX,intY
-                                If intX >= 0 Then //去狗
-                                    Call 140Back() //归还
-                                    Beep 200,500
-                                    Beep 300,500
-                                    Beep 400,500
-                                    Pause
-                                else //小狗后面的地图了
-                                    MsgBox 传送之不认识现在的图
-                                End If
+                            End If
+                        else //勇士出发去狗
+                            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Dog1.bmp",000000,1.00,0,intX,intY
+                            If intX >= 0 Then //去狗
+                                Call 140Back() //归还
+                                Beep 200,500
+                                Beep 300,500
+                                Beep 400,500
+                                Pause
+                            else //小狗后面的地图了
+                                MsgBox 传送之不认识现在的图
                             End If
                         End If
                     End If

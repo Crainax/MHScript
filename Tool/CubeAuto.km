@@ -19,7 +19,7 @@ y3   = intY - 260
 xEnd = intX
 yEnd = intY
 
-//自动洗方块
+//自动洗方块(附加)
 while 1>0
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then

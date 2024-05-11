@@ -4,10 +4,10 @@ ScreenY=2560
 Times=1
 
 [Script]
-Dim x1,          x2,      y1,    y2     // ¾ØÐÎÇøÓò:Ð¡µØÍ¼²ÉÑùµã
-Dim x3,          y3,      xEnd,  yEnd   // 2¸ö¶¥µã:¼¼ÄÜÇø/ÆÁÄ»ÓÒÏÂ½Ç¶¥µã
-Dim logoX,       logoY,   intX,  intY   //ËãÄ¿µÄµØ²îÖµ
-Dim red,         tempX,   tempY         //ºìµãÕì²â
+Dim x1,          x2,      y1,    y2     // çŸ©å½¢åŒºåŸŸ:å°åœ°å›¾é‡‡æ ·ç‚¹
+Dim x3,          y3,      xEnd,  yEnd   // 2ä¸ªé¡¶ç‚¹:æŠ€èƒ½åŒº/å±å¹•å³ä¸‹è§’é¡¶ç‚¹
+Dim logoX,       logoY,   intX,  intY   //ç®—ç›®çš„åœ°å·®å€¼
+Dim red,         tempX,   tempY         //çº¢ç‚¹ä¾¦æµ‹
 
 
 GetScreenResolution intX, intY
@@ -19,15 +19,15 @@ x3   = intX - 640
 y3   = intY - 260
 xEnd = intX
 yEnd = intY
-red  = 0            //ºìµãÕì²â³õÊ¼»¯
+red  = 0            //çº¢ç‚¹ä¾¦æµ‹åˆå§‹åŒ–
 
-Sub on_timer4 //²éºìµã ver1.1 Ê¹ÓÃÁËtempXºÍY·À¸ÉÈÅ
+Sub on_timer4 //æŸ¥çº¢ç‚¹ ver1.1 ä½¿ç”¨äº†tempXå’ŒYé˜²å¹²æ‰°
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Player.bmp",000000,1.00,0,tempX,tempY
-    if tempX >= 0 Then //µØÍ¼ÀïÓÐÆäËûÍæ¼Ò
+    if tempX >= 0 Then //åœ°å›¾é‡Œæœ‰å…¶ä»–çŽ©å®¶
         red = red + 1
     End If
-    if red > 0 then //ºìµã´æÔÚ¹ý²Å»áÒ»Ö±ÀÛ¼Æ
-        if red % 10 == 0 then //ÆäËûÍæ¼ÒÔÚµØÍ¼¶ºÁô³¬¹ý10Ãë¾ÍÌáÐÑ
+    if red > 0 then //çº¢ç‚¹å­˜åœ¨è¿‡æ‰ä¼šä¸€ç›´ç´¯è®¡
+        if red % 10 == 0 then //å…¶ä»–çŽ©å®¶åœ¨åœ°å›¾é€—ç•™è¶…è¿‡10ç§’å°±æé†’
             Beep 261,100
             Beep 261,100
             Beep 392,100
@@ -38,15 +38,15 @@ Sub on_timer4 //²éºìµã ver1.1 Ê¹ÓÃÁËtempXºÍY·À¸ÉÈÅ
         End If
         red = red + 100
     End If
-    if red >= 6000 then //Ã¿1·ÖÖÓÖØÖÃÒ»´Î¼ÆÊý
+    if red >= 6000 then //æ¯1åˆ†é’Ÿé‡ç½®ä¸€æ¬¡è®¡æ•°
         red = 0
     End If
-    TracePrint µ±Ç°[ & GetTimeStamp() & ]Öµ[ & red & ]
-    Timer          4, 1, 1000              //¼ì²âµØÍ¼ºìµã
+    TracePrint å½“å‰[ & GetTimeStamp() & ]å€¼[ & red & ]
+    Timer          4, 1, 1000              //æ£€æµ‹åœ°å›¾çº¢ç‚¹
 EndSub
 
 
-Timer          4, 1, 1000              //¼ì²âµØÍ¼ºìµã
+Timer          4, 1, 1000              //æ£€æµ‹åœ°å›¾çº¢ç‚¹
 while 1>0
     Delay 100
 Wend
