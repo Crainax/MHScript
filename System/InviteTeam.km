@@ -1,0 +1,80 @@
+[General]
+ScreenX=1440
+ScreenY=2560
+Times=1
+
+[Script]
+Dim x1,        x2,               y1,   y2        // 矩形区域:小地图采样点
+Dim x3,        y3,               xEnd, yEnd      // 2个顶点:技能区/屏幕右下角顶点
+Dim logoX,logoY,intX,intY
+Dim x,y
+
+GetScreenResolution intX, intY
+x1   = intX - 1440
+y1   = intY - 950
+x2   = intX - 1140
+y2   = intY - 600
+x3   = intX - 640
+y3   = intY - 260
+xEnd = intX
+yEnd = intY
+
+Sub InviteTeam //邀请玩家进组
+    while 1>0 //组个队(重新退队重组)
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Team\Mark1.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            DelayRandom 39,42
+            KeyDown Enter
+            DelayRandom 69,72
+            KeyUp Enter
+            DelayRandom 39,42
+
+            while 1>0 //关闭窗口
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then
+                    break
+                else
+                    DelayRandom 39,42
+                    KeyDown F1
+                    DelayRandom 69,72
+                    KeyUp F1
+                    DelayRandom 39,42
+                End If
+            Wend
+
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //先点一下"邀请队伍"
+
+            Else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //先点一下"邀请队伍"
+                    MoveTo intX+134,intY+311
+                    LeftClick
+                    DelayRandom 139,142
+                else
+                    while 1>0 //切到组队标签页
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp|E:\MHImg\UI\Boss\Tag_2_Off.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then
+                            DelayRandom 39,42
+                            KeyDown Tab
+                            DelayRandom 69,72
+                            KeyUp Tab
+                            DelayRandom 39,42
+                            break
+                        else
+                            DelayRandom 39,42
+                            KeyDown F1
+                            DelayRandom 69,72
+                            KeyUp F1
+                            DelayRandom 39,42
+                        End If
+                    Wend
+                End If
+            End If
+        End If
+    Wend
+End Sub
+
+Delay 300

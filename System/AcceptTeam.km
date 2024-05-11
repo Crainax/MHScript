@@ -19,7 +19,7 @@ y3   = intY - 260
 xEnd = intX
 yEnd = intY
 
-FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Team\plus.bmp",000000,1.00,0,intX,intY	//找图
+FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\plus.bmp",000000,1.00,0,intX,intY	//找图
 If intX >= 0 Then
     MoveTo intX+138,intY-17
     LeftClick

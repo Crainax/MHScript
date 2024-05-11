@@ -1328,6 +1328,14 @@ Sub ReleaseRune //定期解轮 ver2.1
     End If
 End Sub
 
+Sub Accept //同意加入组队
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\plus.bmp",000000,1.00,0,intX,intY	//找图
+    If intX >= 0 Then
+        MoveTo intX+138,intY-17
+        LeftClick
+        DelayRandom 39,42
+    End If
+End Sub
 Sub Drop //扔掉道具抽离
     If intX >= 0 Then
         MoveTo intX,intY
@@ -3444,7 +3452,7 @@ while 1 > 0
 
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\HuoDYS.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //火毒眼兽
-
+        Call Accept() //这边同意组队
         if state      == 0 then
             tarX        = 35
             tarY        = 111
