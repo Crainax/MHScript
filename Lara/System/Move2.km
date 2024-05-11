@@ -35,6 +35,12 @@ Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     intX = intX - logoX
     intY = intY - logoY
 End Sub
+Sub GetXYNega //获取角色的XY轴(支持负数找到)
+    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+    intX = intX - logoX
+    intY = intY - logoY
+End Sub
 
 Sub AntiJam //一般跟随GetXY后用
     if staticX ==  intX and staticY == intY then //如果相等就累加计数器
@@ -1014,7 +1020,8 @@ End Sub
 
 //B改的部分
 //JumpAttack改DelayRandom 313,315就行了
-Sub Move_B  //纯移动不放技能(Ver3.12)
+//支持负数修改GetXYNega
+Sub Move_B  //纯移动不放技能(Ver3.12+1)
     while  1 > 0
         Call GetXY()
         Call AntiJam() //防卡
@@ -1208,28 +1215,28 @@ Sub Move_B  //纯移动不放技能(Ver3.12)
                             DelayRandom 70,71
                             KeyUp Up
                             DelayRandom 37,38
-                            Call GetXY()
+                            Call GetXYNega()
                             if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
                                 KeyDown Up
                                 DelayRandom 70,71
                                 KeyUp Up
                                 DelayRandom 37,38
                             End if
-                            Call GetXY()
+                            Call GetXYNega()
                             if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
                                 KeyDown Up
                                 DelayRandom 70,71
                                 KeyUp Up
                                 DelayRandom 37,38
                             End if
-                            Call GetXY()
+                            Call GetXYNega()
                             if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
                                 KeyDown Up
                                 DelayRandom 77,78
                                 KeyUp Up
                                 DelayRandom 37,38
                             End if
-                            Call GetXY()
+                            Call GetXYNega()
                             if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
                                 KeyDown Up
                                 DelayRandom 82,83
@@ -1246,28 +1253,28 @@ Sub Move_B  //纯移动不放技能(Ver3.12)
                             DelayRandom 70,71
                             KeyUp Up
                             DelayRandom 37,38
-                            Call GetXY()
+                            Call GetXYNega()
                             if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
                                 KeyDown Up
                                 DelayRandom 70,71
                                 KeyUp Up
                                 DelayRandom 37,38
                             End if
-                            Call GetXY()
+                            Call GetXYNega()
                             if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
                                 KeyDown Up
                                 DelayRandom 70,71
                                 KeyUp Up
                                 DelayRandom 37,38
                             End if
-                            Call GetXY()
+                            Call GetXYNega()
                             if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
                                 KeyDown Up
                                 DelayRandom 77,78
                                 KeyUp Up
                                 DelayRandom 37,38
                             End if
-                            Call GetXY()
+                            Call GetXYNega()
                             if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
                                 KeyDown Up
                                 DelayRandom 82,83
@@ -1287,7 +1294,7 @@ Sub Move_B  //纯移动不放技能(Ver3.12)
                             Exit Sub
                         End If
                         Delay 125
-                        Call GetXY()
+                        Call GetXYNega()
                         if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
                             TracePrint 到达目的地
                             alterX    = 0
@@ -1360,7 +1367,7 @@ Sub Move_B  //纯移动不放技能(Ver3.12)
                         DelayRandom 120,122
                         KeyUp Up
                         DelayRandom 231,234
-                        Call GetXY()
+                        Call GetXYNega()
                         if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
                             TracePrint 到达目的地
                             alterX    = 0
