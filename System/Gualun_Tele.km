@@ -4,26 +4,25 @@ ScreenY=2560
 Times=1
 
 [Script]
-Dim x1,    x2,    y1,    y2     // 矩形区域:小地图采样点
-Dim x3,    y3,    xEnd,  yEnd   // 2个顶点:技能区/屏幕右下角顶点
-Dim logoX, logoY, intX,  intY   //算目的地差值
-Dim wJam,  wJam2, loopA, loopB  //找图防卡,loopAB是循环数
-Dim cool                        //挂轮冷却
+Dim x1,     x2,     y1,       y2         // 矩形区域:小地图采样点
+Dim x3,     y3,     xEnd,     yEnd       // 2个顶点:技能区/屏幕右下角顶点
+Dim logoX,  logoY,  intX,     intY       //算目的地差值
+Dim wJam,   wJam2,  loopA,    loopB      //找图防卡,loopAB是循环数
+Dim SavedX, SavedY, SavedTor, SavedTorY  //保存一下临时处理的XY
+Dim cool,   inviteOK                     //挂轮冷却,邀请进组
 
 //分辨率初始化
 GetScreenResolution intX, intY
-x1     = intX - 1440
-y1     = intY - 950
-x2     = intX - 1000
-y2     = intY - 600
-x3     = intX - 640
-y3     = intY - 260
-xEnd   = intX
-yEnd   = intY
-alterX = 0            //备用地点
-alterY = 0            //备用地点
-facing = 0            //面向初始归0
-cool   = 0
+x1       = intX - 1440
+y1       = intY - 950
+x2       = intX - 1000
+y2       = intY - 600
+x3       = intX - 640
+y3       = intY - 260
+xEnd     = intX
+yEnd     = intY
+cool     = 0
+inviteOK = 0
 
 
 Sub Loading //加载地图
@@ -174,10 +173,11 @@ Sub Channel //有人就换频 ver2.2 加入了公会成员和好友的判断
     Wend
 End Sub
 
-Sub InviteTeam //邀请玩家进组
+Sub InviteTeam //邀请玩家进组 ver1.0加了冷却
     for 5
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,logoX,logoY
-        if logoX >= 0 Then //邀请成功
+        if logoX >  = 0 Then  //邀请成功
+           inviteOK = 1
             break
         else
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Team\Invite.bmp",000000,1.00,0,intX,intY
@@ -287,7 +287,8 @@ while 1>0 //无限循环
                 End If
             End If
         End If
-        cool = 0 //重置CD
+        cool     = 0  //重置CD
+        inviteOK = 0
     else //挂轮
         if GetTimeStamp() - cool > 570 then
             KeyPress O
@@ -298,9 +299,11 @@ while 1>0 //无限循环
             KeyPress P
             break
         End If
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\HuoDYS.bmp",000000,1.00,0,intX,intY
-        If intX >= 0 Then //当前在火毒眼兽,邀请小号
-            Call InviteTeam()
+        if inviteOK == 0 then
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\HuoDYS.bmp",000000,1.00,0,intX,intY
+            If intX >= 0 Then //当前在火毒眼兽,邀请小号
+                Call InviteTeam()
+            End If
         End If
     End If
     Delay 500
