@@ -174,6 +174,49 @@ Sub Channel //有人就换频 ver2.2 加入了公会成员和好友的判断
     Wend
 End Sub
 
+Sub InviteTeam //邀请玩家进组
+    for 5
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //邀请成功
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Team\Invite.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //猛点
+                MoveTo intX,intY
+                LeftClick
+                DelayRandom 139,142
+                MoveTo 50,50
+                DelayRandom 139,142
+            Else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //先点一下"邀请队伍"
+                    MoveTo intX+134,intY+311
+                    LeftClick
+                    DelayRandom 139,142
+                else
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp|E:\MHImg\UI\Boss\Tag_2_Off.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        KeyPress Tab
+                    else
+                        KeyPress F1
+                    End If
+                End If
+            End If
+        End If
+    Next
+
+    while 1>0 //关闭窗口
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp|E:\MHImg\UI\Boss\Tag_2_Off.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            KeyPress Esc
+        else //退成功
+            Delay 300
+            break
+        End If
+    Wend
+
+End Sub
+
 while 1>0 //无限循环
     if GetLED(1) == 1 then //换地图
 
@@ -254,6 +297,10 @@ while 1>0 //无限循环
         if intX >= 0 Then
             KeyPress P
             break
+        End If
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\HuoDYS.bmp",000000,1.00,0,intX,intY
+        If intX >= 0 Then //当前在火毒眼兽,邀请小号
+            Call InviteTeam()
         End If
     End If
     Delay 500
