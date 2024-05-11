@@ -20,33 +20,18 @@ xEnd = intX
 yEnd = intY
 
 Sub InviteTeam //邀请玩家进组
-    while 1>0 //组个队(重新退队重组)
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Team\Mark1.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then
-            DelayRandom 39,42
-            KeyDown Enter
-            DelayRandom 69,72
-            KeyUp Enter
-            DelayRandom 39,42
-
-            while 1>0 //关闭窗口
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp",000000,1.00,0,intX,intY
-                if intX < 0 Then
-                    break
-                else
-                    DelayRandom 39,42
-                    KeyDown F1
-                    DelayRandom 69,72
-                    KeyUp F1
-                    DelayRandom 39,42
-                End If
-            Wend
-
+    for 5
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //邀请成功
             break
         else
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then //先点一下"邀请队伍"
-
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Team\Invite.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //猛点
+                MoveTo intX,intY
+                LeftClick
+                DelayRandom 139,142
+                MoveTo 50,50
+                DelayRandom 139,142
             Else
                 FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then //先点一下"邀请队伍"
@@ -54,27 +39,37 @@ Sub InviteTeam //邀请玩家进组
                     LeftClick
                     DelayRandom 139,142
                 else
-                    while 1>0 //切到组队标签页
-                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp|E:\MHImg\UI\Boss\Tag_2_Off.bmp",000000,1.00,0,intX,intY
-                        if intX >= 0 Then
-                            DelayRandom 39,42
-                            KeyDown Tab
-                            DelayRandom 69,72
-                            KeyUp Tab
-                            DelayRandom 39,42
-                            break
-                        else
-                            DelayRandom 39,42
-                            KeyDown F1
-                            DelayRandom 69,72
-                            KeyUp F1
-                            DelayRandom 39,42
-                        End If
-                    Wend
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp|E:\MHImg\UI\Boss\Tag_2_Off.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        KeyPress Tab
+                    else
+                        KeyPress F1
+                    End If
                 End If
             End If
         End If
+    Next
+
+    while 1>0 //关闭窗口
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp|E:\MHImg\UI\Boss\Tag_2_Off.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            KeyPress Esc
+        else //退成功
+            Delay 300
+            break
+        End If
     Wend
+
 End Sub
 
-Delay 300
+
+
+Call InviteTeam()
+
+for 3
+    Beep 100,200
+    Beep 200,200
+    Beep 300,200
+    Beep 400,200
+    Beep 500,200
+Next

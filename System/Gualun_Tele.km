@@ -4,18 +4,13 @@ ScreenY=2560
 Times=1
 
 [Script]
-Dim x1,          x2,      y1,       y2         // ¾ØĞÎÇøÓò:Ğ¡µØÍ¼²ÉÑùµã
-Dim x3,          y3,      xEnd,     yEnd       // 2¸ö¶¥µã:¼¼ÄÜÇø/ÆÁÄ»ÓÒÏÂ½Ç¶¥µã
-Dim tarX,        tarY,    cY,       a          //Ä¿±ê
-Dim logoX,       logoY,   intX,     intY       //ËãÄ¿µÄµØ²îÖµ
-Dim alterX,      alterY,  facing               //±¸ÓÃµØµã,´«ËÍÃÅ½Å²½¿ª¹Ø,´«ËÍÃÅµÄÃæÏò
-Dim tolerance,   tolLoc,  yTolerance           //¿ìËÙÒÆ¶¯µÄÈİ²î,0´ú±í¾«È·ÒÆ¶¯,ÁíÍâ¸öÊÇ¾Ö²¿±äÁ¿
-Dim staticCount, staticX, staticY              //·À¿¨¼ÆÊıÆ÷
-Dim SavedX,      SavedY,  SavedTor, SavedTorY  //±£´æÒ»ÏÂÁÙÊ±´¦ÀíµÄXY
-Dim wJam,        wJam2,   loopA,    loopB      //ÕÒÍ¼·À¿¨,loopABÊÇÑ­»·Êı
+Dim x1,    x2,    y1,    y2     // çŸ©å½¢åŒºåŸŸ:å°åœ°å›¾é‡‡æ ·ç‚¹
+Dim x3,    y3,    xEnd,  yEnd   // 2ä¸ªé¡¶ç‚¹:æŠ€èƒ½åŒº/å±å¹•å³ä¸‹è§’é¡¶ç‚¹
+Dim logoX, logoY, intX,  intY   //ç®—ç›®çš„åœ°å·®å€¼
+Dim wJam,  wJam2, loopA, loopB  //æ‰¾å›¾é˜²å¡,loopABæ˜¯å¾ªç¯æ•°
+Dim cool                        //æŒ‚è½®å†·å´
 
-
-//·Ö±æÂÊ³õÊ¼»¯
+//åˆ†è¾¨ç‡åˆå§‹åŒ–
 GetScreenResolution intX, intY
 x1     = intX - 1440
 y1     = intY - 950
@@ -25,41 +20,42 @@ x3     = intX - 640
 y3     = intY - 260
 xEnd   = intX
 yEnd   = intY
-alterX = 0            //±¸ÓÃµØµã
-alterY = 0            //±¸ÓÃµØµã
-facing = 0            //ÃæÏò³õÊ¼¹é0
+alterX = 0            //å¤‡ç”¨åœ°ç‚¹
+alterY = 0            //å¤‡ç”¨åœ°ç‚¹
+facing = 0            //é¢å‘åˆå§‹å½’0
+cool   = 0
 
 
-Sub Loading //¼ÓÔØµØÍ¼
-    while 1>0 //µÈ½øÈë¼ÓÔØ
+Sub Loading //åŠ è½½åœ°å›¾
+    while 1>0 //ç­‰è¿›å…¥åŠ è½½
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX <= 0 Then //¼ÓÔØÍê³ÉÁË
+        if intX <= 0 Then //åŠ è½½å®Œæˆäº†
             break
         else
             DelayRandom 100,150
         End If
     Wend
-    while 1>0 //µÈ¼ÓÔØ
+    while 1>0 //ç­‰åŠ è½½
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX > 0 Then //¼ÓÔØÍê³ÉÁË
+        if intX > 0 Then //åŠ è½½å®Œæˆäº†
             break
         else
             DelayRandom 100,150
         End If
     Wend
 End Sub
-Sub Loading2 //(Äñ2À¬»øµØÍ¼)
-    while 1>0 //µÈ½øÈë¼ÓÔØ
+Sub Loading2 //(é¸Ÿ2åƒåœ¾åœ°å›¾)
+    while 1>0 //ç­‰è¿›å…¥åŠ è½½
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX <= 0 Then //¼ÓÔØÍê³ÉÁË
+        if intX <= 0 Then //åŠ è½½å®Œæˆäº†
             break
         else
             DelayRandom 100,150
         End If
     Wend
-    while 1>0 //µÈ¼ÓÔØ
+    while 1>0 //ç­‰åŠ è½½
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX > 0 Then //¼ÓÔØÍê³ÉÁË
+        if intX > 0 Then //åŠ è½½å®Œæˆäº†
             break
         else
             DelayRandom 39,42
@@ -74,7 +70,7 @@ Sub Loading2 //(Äñ2À¬»øµØÍ¼)
         End If
     Wend
 End Sub
-Sub AfterMap //¼ĞÔÚÖĞ¼äµÄ³éÀëºó v1.3 ÊÀ½çÒ²ÄÜÑ¡,³éÀë2¸öLoading
+Sub AfterMap //å¤¹åœ¨ä¸­é—´çš„æŠ½ç¦»å v1.3 ä¸–ç•Œä¹Ÿèƒ½é€‰,æŠ½ç¦»2ä¸ªLoading
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
@@ -86,17 +82,17 @@ Sub AfterMap //¼ĞÔÚÖĞ¼äµÄ³éÀëºó v1.3 ÊÀ½çÒ²ÄÜÑ¡,³éÀë2¸öLoading
             break
         else
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\Mark.bmp",000000,1.00,0,logoX,logoY
-            if logoX >= 0 Then //Ë²ÒÆµ½
+            if logoX >= 0 Then //ç¬ç§»åˆ°
                 MoveTo logoX-284,logoY+1
                 LeftClick
                 DelayRandom 139,142
-                MoveTo logoX-354,logoY+SavedTor //Ñ¡ÔñÊÀ½ç 38¸ñÀ¼  20ÊÀ½ç  46°ÂÊõÖ®ºÓ
+                MoveTo logoX-354,logoY+SavedTor //é€‰æ‹©ä¸–ç•Œ 38æ ¼å…°  20ä¸–ç•Œ  46å¥¥æœ¯ä¹‹æ²³
                 LeftClick
                 DelayRandom 139,142
                 MoveTo logoX-142,logoY+1
                 LeftClick
                 DelayRandom 139,142
-                MoveTo logoX-225,logoY+SavedTorY //Ñ¡Ôñ¿¨¶ûÎ÷ÎÂ
+                MoveTo logoX-225,logoY+SavedTorY //é€‰æ‹©å¡å°”è¥¿æ¸©
                 LeftClick
                 DelayRandom 139,142
                 MoveTo logoX+SavedX,logoY+SavedY
@@ -116,34 +112,34 @@ Sub AfterMap //¼ĞÔÚÖĞ¼äµÄ³éÀëºó v1.3 ÊÀ½çÒ²ÄÜÑ¡,³éÀë2¸öLoading
     Wend
 
 End Sub
-Sub CloseCaps //¹Ø±ÕCaps¼ü
-    if GetLED(1) == 1 then //»»µØÍ¼
+Sub CloseCaps //å…³é—­Capsé”®
+    if GetLED(1) == 1 then //æ¢åœ°å›¾
         DelayRandom 39,42
         KeyDown CapsLock
         DelayRandom 69,72
         KeyUp CapsLock
-        DelayRandom 39,42 //¹Ø±ÕÕÒÍ¼
+        DelayRandom 39,42 //å…³é—­æ‰¾å›¾
     End If
 End Sub
-Sub Channel //ÓĞÈË¾Í»»Æµ ver2.2 ¼ÓÈëÁË¹«»á³ÉÔ±ºÍºÃÓÑµÄÅĞ¶Ï
-    wJam = 0 //·ÅÔÚÑ­»·ÍâÃæÎ»ÖÃ
+Sub Channel //æœ‰äººå°±æ¢é¢‘ ver2.2 åŠ å…¥äº†å…¬ä¼šæˆå‘˜å’Œå¥½å‹çš„åˆ¤æ–­
+    wJam = 0 //æ”¾åœ¨å¾ªç¯å¤–é¢ä½ç½®
     while 1>0
         FindPic x1,y1,x2,y2,"E:\MHImg\Player.bmp",000000,1.00,0,intX,intY
-        if intX < 0 then //AÍ¼Ã»ÕÒµ½¾ÍÕÒBÍ¼
+        if intX < 0 then //Aå›¾æ²¡æ‰¾åˆ°å°±æ‰¾Bå›¾
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Ally.bmp",000000,1.00,0,intX,intY
         End If
-        if intX < 0 then //AÍ¼Ã»ÕÒµ½¾ÍÕÒBÍ¼
+        if intX < 0 then //Aå›¾æ²¡æ‰¾åˆ°å°±æ‰¾Bå›¾
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Ally2.bmp",000000,1.00,0,intX,intY
         End If
-        if intX < 0 Then //µØÍ¼Ã»ÈË(5´ÎÅĞ¶Ï·ÀÈËÎïÖØºÏ)
-            wJam = wJam + 1  //Ñ­»·ÄÚ²¿
-            if wJam > 5 then //¶à´ÎÃ»ÕÒµ½ÈË¾ÍÈ·ÊµÃ»ÈË
+        if intX < 0 Then //åœ°å›¾æ²¡äºº(5æ¬¡åˆ¤æ–­é˜²äººç‰©é‡åˆ)
+            wJam = wJam + 1  //å¾ªç¯å†…éƒ¨
+            if wJam > 5 then //å¤šæ¬¡æ²¡æ‰¾åˆ°äººå°±ç¡®å®æ²¡äºº
                 break
             else
                 Delay 200
             End If
-        else //ÓĞÕÒµ½ÈË,Ö±½Ó»»Æµ
-            wJam = 0 //·ÅÔÚ³É¹¦µÄÎ»ÖÃ
+        else //æœ‰æ‰¾åˆ°äºº,ç›´æ¥æ¢é¢‘
+            wJam = 0 //æ”¾åœ¨æˆåŠŸçš„ä½ç½®
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Switch.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then
 
@@ -157,8 +153,8 @@ Sub Channel //ÓĞÈË¾Í»»Æµ ver2.2 ¼ÓÈëÁË¹«»á³ÉÔ±ºÍºÃÓÑµÄÅĞ¶Ï
                 DelayRandom 339,342
 
                 FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-                if intX < 0 Then //Ã»ÓĞOK¾ÍÍË³öÈ¥
-                    Call Loading() //µÈ¼ÓÔØ
+                if intX < 0 Then //æ²¡æœ‰OKå°±é€€å‡ºå»
+                    Call Loading() //ç­‰åŠ è½½
                     DelayRandom 239,242
                 else
                     DelayRandom 39,42
@@ -178,86 +174,87 @@ Sub Channel //ÓĞÈË¾Í»»Æµ ver2.2 ¼ÓÈëÁË¹«»á³ÉÔ±ºÍºÃÓÑµÄÅĞ¶Ï
     Wend
 End Sub
 
-while 1>0 //ÎŞÏŞÑ­»·
-    if GetLED(1) == 1 then //»»µØÍ¼
+while 1>0 //æ— é™å¾ªç¯
+    if GetLED(1) == 1 then //æ¢åœ°å›¾
 
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\HuoDYS.bmp",000000,1.00,0,intX,intY
-        If intX >= 0 Then //µ±Ç°ÔÚ»ğ¶¾ÑÛÊŞ,ÏÈ¶ş×ª,¼ÓµãÔÙÈ¥Ğ¡ÇàÉß
+        If intX >= 0 Then //å½“å‰åœ¨ç«æ¯’çœ¼å…½,å…ˆäºŒè½¬,åŠ ç‚¹å†å»å°é’è›‡
             SavedTor = 20
             SavedTorY = 38
             SavedX = -240
             SavedY = 175
-            Call AfterMap() //µ½´ï
-            Call Loading() //¼ÓÔØÖĞ
-            Call Channel() //»»Æµ
-            Call CloseCaps() //¹Ø±ÕCaps¼ü
+            Call AfterMap() //åˆ°è¾¾
+            Call Loading() //åŠ è½½ä¸­
+            Call Channel() //æ¢é¢‘
+            Call CloseCaps() //å…³é—­Capsé”®
         else
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Snake2.bmp",000000,1.00,0,intX,intY
-            If intX >= 0 Then //µ±Ç°ÔÚÇàÉß,¼ÓÁËµãºóÖ±½ÓÈ¥ÍÁÁú
+            If intX >= 0 Then //å½“å‰åœ¨é’è›‡,åŠ äº†ç‚¹åç›´æ¥å»åœŸé¾™
                 SavedTor = 20
                 SavedTorY  = 105
                 SavedX    = -286
                 SavedY    = 160
-                Call AfterMap() //µ½´ï
-                Call Loading() //¼ÓÔØÖĞ
-                Call Channel() //»»Æµ
-                Call CloseCaps() //¹Ø±ÕCaps¼ü
+                Call AfterMap() //åˆ°è¾¾
+                Call Loading() //åŠ è½½ä¸­
+                Call Channel() //æ¢é¢‘
+                Call CloseCaps() //å…³é—­Capsé”®
             else
                 FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Tulong.bmp",000000,1.00,0,intX,intY
-                If intX >= 0 Then //µ±Ç°ÔÚÍÁÁú,Èı×ªºóÔÙÈ¥É³Ä®
+                If intX >= 0 Then //å½“å‰åœ¨åœŸé¾™,ä¸‰è½¬åå†å»æ²™æ¼ 
                     SavedTor = 20
                     SavedTorY  = 359
                     SavedX    = -147
                     SavedY    = 188
-                    Call AfterMap() //µ½´ï
-                    Call Loading() //¼ÓÔØÖĞ
-                    Call Channel() //»»Æµ
-                    Call CloseCaps() //¹Ø±ÕCaps¼ü
+                    Call AfterMap() //åˆ°è¾¾
+                    Call Loading() //åŠ è½½ä¸­
+                    Call Channel() //æ¢é¢‘
+                    Call CloseCaps() //å…³é—­Capsé”®
                 else
                     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\RedSand.bmp",000000,1.00,0,intX,intY
-                    If intX >= 0 Then //È¥´òÄñ
+                    If intX >= 0 Then //å»æ‰“é¸Ÿ
                         SavedTor = 20
                         SavedTorY  = 313
                         SavedX    = 148
                         SavedY    = 388
-                        Call AfterMap() //µ½´ï
-                        Call Loading2() //¼ÓÔØÖĞ(Äñ×¨Êô)
-                        Call CloseCaps() //¹Ø±ÕCaps¼ü
+                        Call AfterMap() //åˆ°è¾¾
+                        Call Loading2() //åŠ è½½ä¸­(é¸Ÿä¸“å±)
+                        Call CloseCaps() //å…³é—­Capsé”®
                     else
                         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Bird2.bmp",000000,1.00,0,intX,intY
-                        If intX >= 0 Then //È¥¹·
+                        If intX >= 0 Then //å»ç‹—
                             SavedTor = 20
                             SavedTorY  = 200
                             SavedX    = 85
                             SavedY    = 285
-                            Call AfterMap() //µ½´ï
-                            Call Loading() //¼ÓÔØÖĞ
-                            Call Channel() //»»Æµ
-                            Call CloseCaps() //¹Ø±ÕCaps¼ü
-                        else //Ñ­»·»Ø»ğ¶ÀÑÛÊŞ
+                            Call AfterMap() //åˆ°è¾¾
+                            Call Loading() //åŠ è½½ä¸­
+                            Call Channel() //æ¢é¢‘
+                            Call CloseCaps() //å…³é—­Capsé”®
+                        else //å¾ªç¯å›ç«ç‹¬çœ¼å…½
                             SavedTor = 20
                             SavedTorY  = 38
                             SavedX    = 23
                             SavedY    = 197
-                            Call AfterMap() //µ½´ï
-                            Call Loading() //¼ÓÔØÖĞ
-                            Call Channel() //»»Æµ
-                            Call CloseCaps() //¹Ø±ÕCaps¼ü
+                            Call AfterMap() //åˆ°è¾¾
+                            Call Loading() //åŠ è½½ä¸­
+                            Call Channel() //æ¢é¢‘
+                            Call CloseCaps() //å…³é—­Capsé”®
                         End If
                     End If
                 End If
             End If
         End If
-
-    else //¹ÒÂÖ
-        KeyDown O
-        DelayRandom 202,230
-        KeyUp O
-        DelayRandom 39000,42000
-        KeyDown P
-        DelayRandom 302,310
-        KeyUp P
-        DelayRandom 1502,2310
+        cool = 0 //é‡ç½®CD
+    else //æŒ‚è½®
+        if GetTimeStamp() - cool > 570 then
+            KeyPress O
+            cool = GetTimeStamp()
+        End If
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\P.bmp",000000,1.00,0,intX,intY //æ”¾çƒ§
+        if intX >= 0 Then
+            KeyPress P
+            break
+        End If
     End If
     Delay 500
 Wend
