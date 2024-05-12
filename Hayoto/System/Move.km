@@ -4,15 +4,15 @@ ScreenY=2560
 Times=0
 
 [Script]
-Dim x1,           x2,      y1,     y2    // 矩形区域:小地图采样点
-Dim x3,           y3,      xEnd,   yEnd  // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,         tarY,    a             //目标
-Dim logoX,        logoY,   intX,   intY  //算目的地差值
-Dim alterX,       alterY,  facing, cY    //备用地点,传送门脚步开关,传送门的面向
-Dim tolerance,    tolLoc,  yTolerance    //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim staticCount,  staticX, staticY       //防卡计数器
-Dim ReleaseTime1, ReleaseTime2           //140级以下的策略
-Dim LEDState                             //测试用:开大写键就是获取点位,不要切来切去的了
+Dim x1,          x2,      y1,     y2    // 矩形区域:小地图采样点
+Dim x3,          y3,      xEnd,   yEnd  // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,        tarY,    a             //目标
+Dim logoX,       logoY,   intX,   intY  //算目的地差值
+Dim alterX,      alterY,  facing, cY    //备用地点,传送门脚步开关,传送门的面向
+Dim tolerance,   tolLoc,  yTolerance    //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim staticCount, staticX, staticY       //防卡计数器
+Dim JAttackOK,   SpellOK                //技能冷卻
+Dim LEDState                            //测试用:开大写键就是获取点位,不要切来切去的了
 
 //目前已经算出一个二段跳能跳32的X轴(平地)
 //下跳时长:33 -> down3   22->down2  11->down1
@@ -63,35 +63,28 @@ Sub AntiJam //一般跟随GetXY后用
     End If
 End Sub
 
-Sub JumpAttack
-
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\G.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then
-        KeyDown G
-        DelayRandom 333,335
-        KeyUp G
-    else
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\C2.bmp",000000,1.00,0,intX,intY
+Sub SpellJump //移动过程中才放的
+    if GetTimeStamp() - JAttackOK > 3 then //4秒冷卻
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\G.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
-            KeyDown C
-            DelayRandom 583,585
-            KeyUp C
+            KeyDown G
+            DelayRandom 633,635
+            KeyUp G
+            JAttackOK = GetTimeStamp()
         else
-            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\H.bmp",000000,1.00,0,intX,intY
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Hayato\JQ_F.bmp|E:\MHImg\Hayato\JQ_2.bmp|E:\MHImg\Hayato\JQ_4.bmp|E:\MHImg\Hayato\JQ_8.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then
-                KeyDown H
-                DelayRandom 783,785
-                KeyUp H
+                KeyDown Q
+                DelayRandom 183,185
+                KeyUp Q
+                JAttackOK = GetTimeStamp()
             else
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Y.bmp",000000,1.00,0,intX,intY
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\V.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then
-                    KeyDown Y
-                    DelayRandom 583,585
-                    KeyUp Y
-                else //普攻
-                    KeyDown F
-                    DelayRandom 313,315
-                    KeyUp F
+                    KeyDown V
+                    DelayRandom 383,385
+                    KeyUp V
+                    JAttackOK = GetTimeStamp()
                 End If
             End If
         End If
@@ -118,42 +111,130 @@ Sub Move  //精确的移动
         else  //速走的默认为4
             tolLoc = 2
         End If
-        if intX < (tarX-24) Then //向右二段跳
-            DelayRandom 15,25
-            KeyDown Right
-            DelayRandom 74,75
-            KeyDown Space
-            DelayRandom 67,68
-            KeyUp Space
-            DelayRandom 36,37
-            KeyUp Right
-            DelayRandom 13,14
-            KeyDown Space
-            DelayRandom 78,79
-            KeyUp Space
-            DelayRandom 125,127
-            KeyDown F
-            DelayRandom 105,107
-            KeyUp F
-            DelayRandom 326,330
-        Else If intX > (tarX+24) Then //向左二段跳
-            DelayRandom 15,25
-            KeyDown Left
-            DelayRandom 74,75
-            KeyDown Space
-            DelayRandom 67,68
-            KeyUp Space
-            DelayRandom 36,37
-            KeyUp Left
-            DelayRandom 13,14
-            KeyDown Space
-            DelayRandom 78,79
-            KeyUp Space
-            DelayRandom 125,127
-            KeyDown F
-            DelayRandom 105,107
-            KeyUp F
-            DelayRandom 326,330
+        if intX < (tarX-16) Then //向右二段跳
+            a = 0
+            if intY > tarY +6 and intY <= tarY + 18 and intX <= (tarX+tolerance-18) and intX <= (tarX-tolerance) and intX >=(tarX-tolerance-18) then //右斜上飞
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\D2.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //右一闪(斜)
+                    DelayRandom 15,25
+                    KeyDown Right
+                    Delay 96
+                    KeyUp Right
+                    Delay 265
+                    KeyDown D
+                    Delay 103
+                    KeyUp D
+                    Delay 304
+                    a = 1
+                End If
+            else if intY <= tarY - 13 and intX <= (tarX+tolerance-18) and intX <= (tarX-tolerance) and intX >=(tarX-tolerance-18) then //右斜下飞
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\D2.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //右一闪(斜)
+                    DelayRandom 15,25
+                    KeyPress Right
+                    KeyPress Space
+                    KeyDown Down
+                    DelayRandom 69,72
+                    Delay 265
+                    KeyDown D
+                    Delay 103
+                    KeyUp D
+                    Delay 304
+                    KeyUp Down
+                    a = 1
+                End If
+            else if intX < (tarX-40) then
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\D.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //右一闪
+                    DelayRandom 15,25
+                    KeyPress Right
+                    KeyPress D
+                    DelayRandom 1888,1907
+                    a = 1
+                End If
+            End If
+            if a == 0 then
+                DelayRandom 15,25
+                KeyDown Right
+                DelayRandom 74,75
+                KeyDown Space
+                DelayRandom 67,68
+                KeyUp Space
+                DelayRandom 36,37
+                KeyUp Right
+                DelayRandom 13,14
+                KeyDown Space
+                DelayRandom 78,79
+                KeyUp Space
+                DelayRandom 125,127
+                KeyDown F
+                DelayRandom 105,107
+                KeyUp F
+                DelayRandom 326,330
+                Call SpellJump()
+            End If
+        Else If intX > (tarX+16) Then //向左二段跳
+            a = 0
+            if intY > tarY +6 and intY <= tarY + 18 and intX >= (tarX-tolerance+18) and intX >= (tarX+tolerance) and intX <=(tarX+tolerance+18) then //左斜上飞
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\D2.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //左一闪(斜)
+                    DelayRandom 15,25
+                    KeyDown Left
+                    Delay 96
+                    KeyUp Left
+                    Delay 265
+                    KeyDown D
+                    Delay 103
+                    KeyUp D
+                    Delay 304
+                    a = 1
+                End If
+            else if intY <= tarY - 13 and intX >= (tarX-tolerance+18) and intX >= (tarX+tolerance) and intX <=(tarX+tolerance+18) then //左斜下飞
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\D2.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //左一闪(斜)
+                    DelayRandom 15,25
+                    KeyPress Left
+                    KeyPress Space
+                    KeyDown Down
+                    DelayRandom 69,72
+                    Delay 265
+                    KeyDown D
+                    Delay 103
+                    KeyUp D
+                    Delay 304
+                    KeyUp Down
+                    a = 1
+                End If
+            else if intX > (tarX+40) then
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\D.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //左一闪
+                    DelayRandom 15,25
+                    KeyPress Left
+                    KeyPress D
+                    DelayRandom 1888,1907
+                    a = 1
+                End If
+            End If
+            if a == 0 then
+                DelayRandom 15,25
+                KeyDown Left
+                DelayRandom 74,75
+                KeyDown Space
+                DelayRandom 67,68
+                KeyUp Space
+                DelayRandom 36,37
+                KeyUp Left
+                DelayRandom 13,14
+                KeyDown Space
+                DelayRandom 78,79
+                KeyUp Space
+                DelayRandom 125,127
+                KeyDown F
+                DelayRandom 105,107
+                KeyUp F
+                DelayRandom 326,330
+                Call SpellJump()
+            End If
         Else If intX < (tarX-tolLoc) Then //向右走
             KeyDown Right
             a = (tarX - tolLoc - intX) * 52
@@ -198,7 +279,7 @@ Sub Move  //精确的移动
                 Call Stable()
                 if intY == cY then
                     cY = intY
-                    if intY > (tarY+25) Then	//>=26上跳就够不到了
+                    if intY > (tarY+20) Then	//>=26上跳就够不到了
                         TracePrint 钩子一次
                         KeyDown Ctrl
                         DelayRandom 69,70
@@ -452,6 +533,20 @@ facing = 0            //面向初始归0
 while 1 > 0
     LEDState = GetLED(1)
     if LEDState == 0 then //
+        while 1 > 0
+            tarX       = 46
+            tarY       = 95
+            tolerance  = 4
+            yTolerance = 0
+            Call Move()
+
+            tarX       = 72
+            tarY       = 95
+            tolerance  = 4
+            yTolerance = 0
+            Call Move()
+        Wend
+    else if LEDState == 2 then //
         tolLoc = 1
         GetFileLine tarX,Move.Conf,tolLoc		//文件查找
         tolLoc = 2
@@ -467,7 +562,7 @@ while 1 > 0
         TracePrint goto[ & tarX & , & tarY & ],tole & tolerance & ,[ & alterX & , & alterY & ]
         //tolerance = 4 //容忍度,4为推荐值
         Call Move()
-        MsgBox 测试结束
+        MsgBox Over
     else //大写键亮的话就获取点
         FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY	//找图
