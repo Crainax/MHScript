@@ -1717,6 +1717,114 @@ Sub LegionDaily //领联盟的奖励
         End If
     Wend
 End Sub
+Sub MileageDaily //领取里程
+    while 1>0 //进入里程界面
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY //停止对话
+        if intX >= 0 Then
+            wJam = 0 //放在循环外面位置
+            while 1>0 //对话框内部(找不到停止对话即结束)
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY //停止对话
+                if intX < 0 Then //结束了(以几次判断来看)
+                    wJam = wJam + 1  //循环内部
+                    if wJam > 3 then //三次失败,
+                        break
+                    End If
+                else
+                    wJam = 0 //放在成功的位置
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Event\Mileage\Mark2.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        MoveTo intX+100,intY+5
+                        LeftClick
+                        DelayRandom 139,142
+                    else
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //否
+                            MoveTo intX-50,intY
+                            LeftClick
+                            DelayRandom 139,142
+                        else
+                            KeyPress PageDown
+                        End If
+                    End If
+                End If
+            Wend
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Event\Mileage\Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //找里程入口
+                MoveTo intX,intY
+                LeftClick
+                DelayRandom 139,142
+                MoveTo 50,50 //找图标
+                DelayRandom 139,142
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Event\Bulb.bmp",000000,1.00,0,intX,intY //找灯泡
+                if intX >= 0 Then
+                    MoveTo intX,intY+95
+                    LeftClick
+                    DelayRandom 3539,3542
+                else
+                    MoveTo 50,50 //找图标
+                    DelayRandom 139,142
+                End If
+            End If
+        End If
+    Wend
+
+    //进出商城
+    while 1>0 //等进入商城
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //开始进入了(找不到XY轴了)
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                DelayRandom 39,42
+                KeyDown Enter
+                DelayRandom 69,72
+                KeyUp Enter
+                DelayRandom 239,242
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\Entry.bmp",000000,1.00,0,intX,intY
+                If intX >= 0 Then
+                    MoveTo intX-30,intY
+                    LeftClick
+                    DelayRandom 139,142
+                End If
+                DelayRandom 100,150
+            End If
+        End If
+    Wend
+
+    while 1>0 //等进入商城
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\Mark2.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //找不到图代表正在加载中
+            DelayRandom 139,142
+        else
+            break
+        End If
+    Wend
+
+    while 1>0 //等离开商城
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\Mark2.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //找不到图代表正在加载中
+            break
+        else
+            MoveTo intX-830,intY+434 //退出商城
+            LeftClick
+            DelayRandom 139,142
+        End If
+    Wend
+
+    while 1>0 //等完毕
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX > 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+End Sub
 
 Call Quest() //接任务
 Call ClearQuest() //清理任务
@@ -1733,5 +1841,6 @@ Call Start564()     //前置
 Call After564()     //前置
 Call HDDaily()      //清每日
 Call LegionDaily()  //清每日
+Call MileageDaily()  //清每日
 
 Beep 200,500
