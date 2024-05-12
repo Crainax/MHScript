@@ -1,8 +1,0 @@
-DelayRandom 482,487
-KeyDown C
-DelayRandom 170,172
-KeyUp C
-DelayRandom 805,814
-KeyDown Left
-DelayRandom 96,97
-KeyUp Left
