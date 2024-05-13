@@ -1056,33 +1056,83 @@ while 1 > 0
     else
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\D.bmp",000000,1.00,0,intX,intY
         if intX >= 0 and GetTimeStamp() - fireTime > 28 Then //地火
-            tarX      = -12
-            tarY      = 119
-            tolerance = 4
-            Call Move()
-            DelayRandom 207,213
-            KeyDown Up
-            DelayRandom 47,48
-            KeyDown Space
-            DelayRandom 61,62
-            KeyUp Space
-            DelayRandom 71,72
-            KeyDown Space
-            DelayRandom 85,86
-            KeyUp Space
-            DelayRandom 136,138
-            KeyUp Up
-            DelayRandom 22,23
-            KeyDown Left
-            DelayRandom 170,172
-            KeyDown D
-            DelayRandom 3,4
-            KeyUp Left
-            DelayRandom 76,77
-            KeyUp D
-            fireTime = GetTimeStamp()
-            DelayRandom 336,341
-            cycle1 = 1 //回左边
+            call GetXY()
+            if intY == 122 and intX >= (43-8) and intX <=(43+8) then //
+                KeyDown Left
+                Delay 96
+                KeyUp Left
+                Delay 101
+                KeyDown Up
+                Delay 48
+                KeyDown Space
+                Delay 70
+                KeyUp Space
+                Delay 61
+                KeyDown Space
+                Delay 103
+                KeyUp Space
+                Delay 70
+                KeyUp Up
+                Delay 4
+                KeyDown Left
+                Delay 161
+                KeyDown LShift
+                Delay 102
+                KeyUp LShift
+                Delay 188
+                KeyUp Left
+                Delay 38
+                KeyDown Left
+                Delay 93
+                KeyDown Up
+                Delay 212
+                KeyDown LShift
+                Delay 110
+                KeyUp LShift
+                Delay 154
+                KeyUp Up
+                Delay 5
+                KeyUp Left
+                Delay 424
+                KeyDown Left
+                Delay 30
+                KeyUp Left
+                Delay 91
+                KeyDown D
+                fireTime = GetTimeStamp()
+                Delay 71
+                KeyUp D
+                DelayRandom 336,341
+                cycle1 = 0 //回左边
+            else
+                tarX      = -12
+                tarY      = 119
+                tolerance = 4
+                Call Move()
+                DelayRandom 207,213
+                KeyDown Up
+                DelayRandom 47,48
+                KeyDown Space
+                DelayRandom 61,62
+                KeyUp Space
+                DelayRandom 71,72
+                KeyDown Space
+                DelayRandom 85,86
+                KeyUp Space
+                DelayRandom 136,138
+                KeyUp Up
+                DelayRandom 22,23
+                KeyDown Left
+                DelayRandom 170,172
+                KeyDown D
+                DelayRandom 3,4
+                KeyUp Left
+                DelayRandom 76,77
+                KeyUp D
+                fireTime = GetTimeStamp()
+                DelayRandom 336,341
+                cycle1 = 1 //回右边
+            End If
         else //左右跳A
             a = fireTime + 28 //对比哪个最小值来定循环次数
             if a > fountainTime + 55 then //
@@ -1097,15 +1147,33 @@ while 1 > 0
                     Call Attack()
             End If
             if GetTimeStamp() - pick1 > 108 then
-                tarX      = -59
-                tarY      = 133
-                tolerance = 4
-                Call Move()
+                call GetXY()
+                if intY == 119 and intX >= (-40-6) and intX <=(-40+6) then //
+                    tarX      = -59
+                    tarY      = 133
+                    tolerance = 4
+                    yTolerance = 2
+                    Call Move()
 
-                tarX      = -6
-                tarY      = 133
-                tolerance = 4
-                Call Move()
+                    tarX      = -6
+                    tarY      = 133
+                    tolerance = 4
+                    yTolerance = 2
+                    Call Move()
+                else
+                    tarX      = -14
+                    tarY      = 133
+                    tolerance = 6
+                    yTolerance = 2
+                    Call Move()
+
+                    tarX      = -69
+                    tarY      = 134
+                    tolerance = 6
+                    yTolerance = 2
+                    Call Move()
+                End If
+
                 pick1 = GetTimeStamp()
             End If
         End If

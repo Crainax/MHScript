@@ -8,7 +8,7 @@ Dim x1,          x2,      y1,        y2          // 矩形区域:小地图采样
 Dim x3,          y3,      xEnd,      yEnd        // 2个顶点:技能区/屏幕右下角顶点
 Dim tarX,        tarY,    a,         cY          //目标
 Dim logoX,       logoY,   intX,      intY        //算目的地差值
-Dim tolLoc,      facing,  SpellOK,   quickCD     //移动相关
+Dim tolLoc,      facing,  SpellOK                //移动相关
 Dim alterX,      alterY,  tolerance, yTolerance  //备用地点,传送门脚步开关
 Dim staticCount, staticX, staticY,   patrol      //防卡计数器,还有巡逻(1:跳打2下,2:惯性3下)
 Dim LEDState                                     //测试位置
@@ -125,7 +125,7 @@ Sub Stable //稳定(前面自行getXY)
         End If
     Next
 End Sub
-Sub Move  //1.54 重构大范围代码
+Sub Move  //1.6 改进了几个点
     while  1 > 0
         Call GetXY()
         Call AntiJam() //防卡
@@ -315,7 +315,7 @@ Sub Move  //1.54 重构大范围代码
                 Delay 305
             End If
         else if intX < (tarX-24) Then //向右二段跳
-            if intX < (tarX-44) and GetTimeStamp() - quickCD > 7 then //不要频繁用这个赶路
+            if intX < (tarX-44) then //不要频繁用这个赶路
                 DelayRandom 15,25
                 KeyDown Right
                 Delay 37
@@ -345,7 +345,6 @@ Sub Move  //1.54 重构大范围代码
                 Delay 12
                 KeyUp F
                 Delay 346
-                quickCD = GetTimeStamp()
             else
                 TracePrint jumpR
                 DelayRandom 15,25
@@ -368,7 +367,7 @@ Sub Move  //1.54 重构大范围代码
                 Call Spell() //内置8sCD
             End If
         Else If intX > (tarX+24) Then //向左二段跳
-            if intX > (tarX+44) and GetTimeStamp() - quickCD > 7 then //不要频繁用这个赶路
+            if intX > (tarX+44) then //不要频繁用这个赶路
                 DelayRandom 15,25
                 KeyDown Left
                 Delay 37
@@ -398,7 +397,6 @@ Sub Move  //1.54 重构大范围代码
                 Delay 12
                 KeyUp F
                 Delay 346
-                quickCD = GetTimeStamp()
             else
                 TracePrint jumpR
                 DelayRandom 15,25
