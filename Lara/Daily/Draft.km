@@ -99,4 +99,6 @@ Sub Fun1
     Wend
 End Sub
 
+Call Fun1()
+
 Beep 200,500
