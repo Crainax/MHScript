@@ -297,7 +297,6 @@ while 1>0 //无限循环
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\P.bmp",000000,1.00,0,intX,intY //放烧
         if intX >= 0 Then
             KeyPress P
-            break
         End If
         if inviteOK == 0 then
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\HuoDYS.bmp",000000,1.00,0,intX,intY
