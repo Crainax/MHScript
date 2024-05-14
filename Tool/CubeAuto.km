@@ -25,7 +25,7 @@ while 1>0
     if intX >= 0 Then
         KeyPress Enter
     else
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\Confirm2.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\Confirm2.bmp|E:\MHImg\UI\Dialog\Confirm2B.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
             MoveTo intX-100,intY+4
             LeftClick
