@@ -47,7 +47,63 @@ Sub Drop //扔掉道具抽离 ver1.1数量也加进去
     End If
 End Sub
 
-Sub Fun1
+Sub SortItem //整理一下身上的垃圾东西
+
+    //打开卖结晶的商店
+    while 1>0 //
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //点击卖结晶
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    KeyPress Enter
+                else
+                    break
+                End If
+            Wend
+
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\JJ\Mark1.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    KeyPress Esc
+                else
+                    break
+                End If
+            Wend
+
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\JJ\Mark1.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                MoveTo intX,intY
+                LeftClick
+                DelayRandom 139,142
+                MoveTo intX+200,intY
+                DelayRandom 139,142
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\JJ\Entry.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    MoveTo intX,intY
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo intX+100,intY
+                    DelayRandom 139,142
+                else
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Event\QuickEntry.bmp",000000,1.00,0,intX,intY //找灯泡
+                    if intX >= 0 Then
+                        MoveTo intX,intY
+                        LeftClick
+                        DelayRandom 139,142
+                        MoveTo intX+100,intY+100
+                        DelayRandom 139,142
+                    else
+                        DelayRandom 139,142
+                    End If
+                End If
+            End If
+        End If
+    Wend
+
     //扔身上的垃圾
     while 1>0 //切到消耗栏界面
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Tag_Coms.bmp",000000,1.00,0,logoX,logoY
@@ -215,62 +271,11 @@ Sub Fun1
             DelayRandom 100,150
         End If
     Wend
+
+
 End Sub
 
-//打开卖结晶的商店
-    while 1>0 //
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then //点击卖结晶
-            while 1>0
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then
-                    KeyPress Enter
-                else
-                    break
-                End If
-            Wend
-
-            while 1>0
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\JJ\Mark1.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then
-                    KeyPress Esc
-                else
-                    break
-                End If
-            Wend
-
-            break
-        else
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\JJ\Mark1.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then
-                MoveTo intX,intY
-                LeftClick
-                DelayRandom 139,142
-                MoveTo intX+200,intY
-                DelayRandom 139,142
-            else
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\JJ\Entry.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then
-                    MoveTo intX,intY
-                    LeftClick
-                    DelayRandom 139,142
-                    MoveTo intX+100,intY
-                    DelayRandom 139,142
-                else
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Event\QuickEntry.bmp",000000,1.00,0,intX,intY //找灯泡
-                    if intX >= 0 Then
-                        MoveTo intX,intY
-                        LeftClick
-                        DelayRandom 139,142
-                        MoveTo intX+100,intY+100
-                        DelayRandom 139,142
-                    else
-                        DelayRandom 139,142
-                    End If
-                End If
-            End If
-        End If
-    Wend
+Call SortItem()
 
 
 Beep 200,500

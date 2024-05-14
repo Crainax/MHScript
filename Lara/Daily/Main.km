@@ -2234,13 +2234,13 @@ Sub LegionDaily //领联盟的奖励
         End If
     Wend
 End Sub
-Sub MileageDaily //领取里程 ver1.1"下个"问题
+Sub MileageDaily //领取里程 ver1.2"下个"问题
     while 1>0 //进入里程界面
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp",000000,1.00,0,intX,intY //停止对话
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY //停止对话
         if intX >= 0 Then
             wJam = 0 //放在循环外面位置
             while 1>0 //对话框内部(找不到停止对话即结束)
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY //停止对话
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp",000000,1.00,0,intX,intY //停止对话
                 if intX < 0 Then //结束了(以几次判断来看)
                     wJam = wJam + 1  //循环内部
                     if wJam > 3 then //三次失败,
