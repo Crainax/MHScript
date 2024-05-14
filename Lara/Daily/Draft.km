@@ -101,4 +101,14 @@ End Sub
 
 Call Fun1()
 
+while 1>0 //进入匠人村
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then
+        //todo:找到后干嘛
+        break
+    else
+        //todo:重复的动作
+    End If
+Wend
+
 Beep 200,500

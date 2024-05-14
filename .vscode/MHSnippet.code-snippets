@@ -27,14 +27,24 @@
 		"description": "判断坐标"
 	},
 	"找技能": {
-		"prefix": "find",
+		"prefix": "findSpell",
 		"body": [
 			"FindPic x3,y3,xEnd,yEnd,\"E:\\MHImg\\Lynn\\Shift.bmp\",000000,1.00,0,intX,intY",
 			"if intX >= 0 Then",
 			"    //todo",
 			"End If",
 		],
-		"description": "找技能"
+		"description": "找图片(技能区)"
+	},
+	"找图片(全图)": {
+		"prefix": "find",
+		"body": [
+			"FindPic x1,y1,xEnd,yEnd,\"E:\\MHImg\\Lynn\\Shift.bmp\",000000,1.00,0,intX,intY",
+			"if intX >= 0 Then",
+			"    //todo",
+			"End If",
+		],
+		"description": "找图片(整个游戏区域)"
 	},
 	"冷却行动": {
 		"prefix": "time",
@@ -82,7 +92,7 @@
 	"找图并偏移按键": {
 		"prefix": "findClick",
 		"body": [
-			"FindPic x1,y1,xEnd,yEnd,\"E:\\MHImg\\Team\\plus.bmp\",000000,1.00,0,intX,intY",
+			"FindPic x1,y1,xEnd,yEnd,\"E:\\MHImg\\UI\\OK.bmp\",000000,1.00,0,intX,intY",
 			"If intX >= 0 Then",
 			"    MoveTo intX${1:+}138,intY${2:-}17",
 			"    LeftClick",
@@ -96,7 +106,7 @@
 		"body": [
 			"wJam = 0",
 			"while 1>0",
-			"    FindPic x1,y1,xEnd,yEnd,\"E:\\MHImg\\Lara\\Create\\StopChat.bmp\",000000,1.00,0,intX,intY",
+			"    FindPic x1,y1,xEnd,yEnd,\"E:\\MHImg\\UI\\OK.bmp\",000000,1.00,0,intX,intY",
 			"    if intX >= 0 Then",
 			"        //todo:找到后干嘛",
 			"        break",
@@ -125,7 +135,7 @@
 		"prefix": "whileFind",
 		"body": [
 			"while 1>0",
-			"    FindPic x1,y1,xEnd,yEnd,\"E:\\MHImg\\Lara\\Create\\Confirm.bmp\",000000,1.00,0,intX,intY",
+			"    FindPic x1,y1,xEnd,yEnd,\"E:\\MHImg\\UI\\OK.bmp\",000000,1.00,0,intX,intY",
 			"    if intX >= 0 Then",
 			"        //todo:找到后干嘛",
 			"        break",
@@ -135,24 +145,6 @@
 			"Wend",
 		],
 		"description": "无限循环找图"
-	},
-	"循环找图-找两张": {
-		"prefix": "whileFind2",
-		"body": [
-			"while 1>0",
-			"    FindPic x1,y1,xEnd,yEnd,\"E:\\MHImg\\Lara\\Create\\Confirm.bmp\",000000,1.00,0,intX,intY",
-			"    if intX < 0 then //A图没找到就找B图",
-			"        FindPic x1,y1,xEnd,yEnd,\"E:\\MHImg\\Lara\\Create\\Confirm.bmp\",000000,1.00,0,intX,intY",
-			"    End If",
-			"    if intX >= 0 Then",
-			"        //todo:找到后干嘛",
-			"        break",
-			"    else",
-			"        //todo:重复的动作",
-			"    End If",
-			"Wend",
-		],
-		"description": "无限循环找图-找两张"
 	},
 	"For循环": {
 		"prefix": "for",
