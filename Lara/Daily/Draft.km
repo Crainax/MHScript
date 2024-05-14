@@ -99,15 +99,36 @@ Sub Fun1
     Wend
 End Sub
 
-Call Fun1()
-
 while 1>0 //进入匠人村
-    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then
-        //todo:找到后干嘛
+    FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Tech.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then //右上角是
+        Delay 15
         break
     else
-        //todo:重复的动作
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            MoveTo intX-50,intY
+            LeftClick
+            DelayRandom 139,142
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Entry_Tech.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                MoveTo intX,intY
+                LeftClick
+                DelayRandom 139,142
+                MoveTo intX+100,intY
+                DelayRandom 139,142
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Event\Bulb.bmp",000000,1.00,0,intX,intY //找灯泡
+                if intX >= 0 Then
+                    MoveTo intX,intY-40
+                    LeftClick
+                    DelayRandom 239,242
+                else
+                    DelayRandom 139,142
+                End If
+            End If
+        End If
     End If
 Wend
 
