@@ -97,39 +97,180 @@ Sub Fun1
             End If
         End If
     Wend
+
+    while 1>0 //进入匠人村
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Tech.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //右上角是
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                MoveTo intX-50,intY
+                LeftClick
+                DelayRandom 139,142
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Tech\Entry.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    MoveTo intX,intY
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo intX+100,intY
+                    DelayRandom 139,142
+                else
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Event\QuickEntry.bmp",000000,1.00,0,intX,intY //找灯泡
+                    if intX >= 0 Then
+                        MoveTo intX,intY
+                        LeftClick
+                        DelayRandom 139,142
+                        MoveTo intX+100,intY+100
+                        DelayRandom 139,142
+                    else
+                        DelayRandom 139,142
+                    End If
+                End If
+            End If
+        End If
+    Wend
+
+    while 1>0 //点开分解页面
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Tech\Mark6.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //到达了分解页面
+            for 2
+                Beep 400,200
+                Beep 500,200
+                Beep 400,200
+                Beep 500,200
+                Beep 300,200
+            Next
+            Pause
+
+            //关闭UI
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Tech\Mark1.bmp|E:\MHImg\UI\Daily\Tech\Mark1A.bmp|E:\MHImg\UI\Daily\Tech\Mark2.bmp|E:\MHImg\UI\Daily\Tech\Mark5.bmp|E:\MHImg\UI\Daily\Tech\Mark4.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //
+                    KeyPress Esc
+                else
+                    break
+                End If
+            Wend
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Tech\Mark5.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //点击分解按钮
+                MoveTo intX,intY
+                LeftClick
+                DelayRandom 139,142
+                MoveTo intX,intY-100
+                DelayRandom 139,142
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Tech\Mark4.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //点击-分解下面的字
+                    MoveTo intX+76,intY+25
+                    LeftClick
+                    DelayRandom 139,142
+                else
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Tech\Mark3.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then //把+分解点成-分解后再下滑一点
+                        DelayRandom 150,160
+                        MoveTo intX+125,intY+10
+                        LeftClick
+                        DelayRandom 139,142
+                        MouseWheel -1
+                        DelayRandom 50,60
+                    else
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Tech\Mark2.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //下滑找+分解
+                            MoveTo intX-106,intY+201
+                            for 5
+                                MouseWheel -1
+                                Delay 10
+                            Next
+                        else
+                            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Tech\Mark1.bmp|E:\MHImg\UI\Daily\Tech\Mark1A.bmp",000000,1.00,0,intX,intY
+                            if intX >= 0 Then //
+                                KeyPress tab
+                            else
+                                KeyPress F7
+                            End If
+                        End If
+                    End If
+                End If
+            End If
+        End If
+    Wend
+
+    while 1>0 //等进入加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //加载完成了
+            break
+        else
+            KeyPress Up
+        End If
+    Wend
+    while 1>0 //等加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX > 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
 End Sub
 
-while 1>0 //进入匠人村
-    FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Tech.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then //右上角是
-        Delay 15
-        break
-    else
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then
-            MoveTo intX-50,intY
-            LeftClick
-            DelayRandom 139,142
+//打开卖结晶的商店
+    while 1>0 //
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //点击卖结晶
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    KeyPress Enter
+                else
+                    break
+                End If
+            Wend
+
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\JJ\Mark1.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    KeyPress Esc
+                else
+                    break
+                End If
+            Wend
+
+            break
         else
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Entry_Tech.bmp",000000,1.00,0,intX,intY
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\JJ\Mark1.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then
                 MoveTo intX,intY
                 LeftClick
                 DelayRandom 139,142
-                MoveTo intX+100,intY
+                MoveTo intX+200,intY
                 DelayRandom 139,142
             else
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Event\Bulb.bmp",000000,1.00,0,intX,intY //找灯泡
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\JJ\Entry.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then
-                    MoveTo intX,intY-40
+                    MoveTo intX,intY
                     LeftClick
-                    DelayRandom 239,242
-                else
                     DelayRandom 139,142
+                    MoveTo intX+100,intY
+                    DelayRandom 139,142
+                else
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Event\QuickEntry.bmp",000000,1.00,0,intX,intY //找灯泡
+                    if intX >= 0 Then
+                        MoveTo intX,intY
+                        LeftClick
+                        DelayRandom 139,142
+                        MoveTo intX+100,intY+100
+                        DelayRandom 139,142
+                    else
+                        DelayRandom 139,142
+                    End If
                 End If
             End If
         End If
-    End If
-Wend
+    Wend
+
 
 Beep 200,500

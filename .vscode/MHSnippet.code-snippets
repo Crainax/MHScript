@@ -89,6 +89,17 @@
 		],
 		"description": "点击一下鼠标"
 	},
+	"点击鼠标(原地)": {
+		"prefix": "clickStand",
+		"body": [
+			"MoveTo intX,intY",
+			"LeftClick",
+			"DelayRandom 139,142",
+			"MoveTo intX${1:+}100,intY${2:+}100",
+			"DelayRandom 139,142",
+		],
+		"description": "点击一下鼠标(原地)"
+	},
 	"找图并偏移按键": {
 		"prefix": "findClick",
 		"body": [
