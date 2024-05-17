@@ -46,9 +46,11 @@ Sub AntiJam //一般跟随GetXY后用
         staticY     = intY
         staticCount = 0
     End If
-    if staticCount >= 3 Then //
+    if staticCount >= 5 Then //
 
         Beep 500,500
+        KeyAllup //施放所有按键并重启
+        // RestartScript //重启 和上面二选一即可
         // 模拟从绳子跳走
         DelayRandom 13,15
         KeyDown Right
@@ -59,12 +61,12 @@ Sub AntiJam //一般跟随GetXY后用
         DelayRandom 44,45
         KeyUp Right
         DelayRandom 13,15
-        RestartScript //重启
+
     End If
 End Sub
 
-Sub SpellJump //移动过程中才放的
-    if GetTimeStamp() - JAttackOK > 3 then //4秒冷卻
+Sub SpellJump //移动过程中才放的 ver1.1
+    if GetTimeStamp() - JAttackOK > 1 then //2秒冷卻
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\G.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
             KeyDown G
@@ -516,19 +518,17 @@ Sub Move  //精确的移动
     Wend
 End Sub
 
-Sub StandSpell //原地放技能
+Sub StandSpell //原地放技能 v1.1更新了一点东西
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\G.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then
         KeyDown G
         DelayRandom 633,635
         KeyUp G
-        JAttackOK = GetTimeStamp()
     else
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\D.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
             KeyPress D
             DelayRandom 1888,1907
-            JAttackOK = GetTimeStamp()
         else
             FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\Z.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then //满足两个条件
@@ -543,78 +543,78 @@ Sub StandSpell //原地放技能
                 DelayRandom 119,121
                 KeyUp V
                 DelayRandom 335,339
-                JAttackOK = GetTimeStamp()
             else
                 FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Hayato\JQ_F.bmp|E:\MHImg\Hayato\JQ_4.bmp|E:\MHImg\Hayato\JQ_2.bmp|E:\MHImg\Hayato\JQ_8.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 and GetTimeStamp() - QCD > 3  Then //低于200不放
-                    if GetTimeStamp() % 2 == 0 then //面向左
-                        KeyPress Left
-                    else //面向右
-                        KeyPress Right
-                    End if
+                if intX >= 0 and GetTimeStamp() - QCDLeft > 3  Then //低于200不放
+                    KeyPress Left
                     KeyDown Q
                     DelayRandom 183,185
                     KeyUp Q
-                    JAttackOK = GetTimeStamp()
-                    QCD = GetTimeStamp()
+                    QCDLeft = GetTimeStamp()
                 else
-                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\B.bmp",000000,1.00,0,intX,intY
-                    if intX >= 0 Then
-                        KeyPress B
-                        DelayRandom 863,872
-                        JAttackOK = GetTimeStamp()
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Hayato\JQ_F.bmp|E:\MHImg\Hayato\JQ_4.bmp|E:\MHImg\Hayato\JQ_2.bmp|E:\MHImg\Hayato\JQ_8.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 and GetTimeStamp() - QCDRight > 3  Then //低于200不放
+                        KeyPress Right
+                        KeyDown Q
+                        DelayRandom 183,185
+                        KeyUp Q
+                        QCDRight = GetTimeStamp()
                     else
-                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\W.bmp",000000,1.00,0,intX,intY
-                        if intX >= 0 Then //满足两个条件
-                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\V.bmp",000000,1.00,0,intX,intY
-                        end if
+                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\B.bmp",000000,1.00,0,intX,intY
                         if intX >= 0 Then
-                            KeyDown W
-                            DelayRandom 117,119
-                            KeyUp W
-                            DelayRandom 354,358
-                            KeyDown V
-                            DelayRandom 127,129
-                            KeyUp V
-                            DelayRandom 328,332
-                            JAttackOK = GetTimeStamp()
+                            KeyPress B
+                            DelayRandom 863,872
                         else
-                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Worrior_R.bmp",000000,1.00,0,intX,intY
+                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\W.bmp",000000,1.00,0,intX,intY
+                            if intX >= 0 Then //满足两个条件
+                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\V.bmp",000000,1.00,0,intX,intY
+                            end if
                             if intX >= 0 Then
-                                KeyPress R
-                                DelayRandom 602,609
+                                KeyDown W
+                                DelayRandom 117,119
+                                KeyUp W
+                                DelayRandom 354,358
+                                KeyDown V
+                                DelayRandom 127,129
+                                KeyUp V
+                                DelayRandom 328,332
                             else
-                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\C.bmp",000000,1.00,0,intX,intY
+                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Worrior_R.bmp",000000,1.00,0,intX,intY
                                 if intX >= 0 Then
-                                    KeyPress C
+                                    KeyPress R
                                     DelayRandom 602,609
                                 else
-                                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\V.bmp",000000,1.00,0,intX,intY
-                                    if intX >= 0 Then //就算满足了这个还得满足另一个条件
-                                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\W.bmp|E:\MHImg\Hayato\Z.bmp",000000,1.00,0,logoX,logoY
-                                    End If
-                                    if intX >= 0 and logoX <= 0 Then
-                                        KeyDown V
-                                        DelayRandom 383,385
-                                        KeyUp V
-                                        JAttackOK = GetTimeStamp()
+                                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\C.bmp",000000,1.00,0,intX,intY
+                                    if intX >= 0 Then
+                                        KeyPress C
+                                        DelayRandom 602,609
                                     else
-                                        KeyDown Left
-                                        DelayRandom 58,59
-                                        KeyUp Left
-                                        DelayRandom 101,103
-                                        KeyDown F
-                                        DelayRandom 103,105
-                                        KeyUp F
-                                        DelayRandom 320,324
-                                        KeyDown Right
-                                        DelayRandom 58,59
-                                        KeyUp Right
-                                        DelayRandom 158,160
-                                        KeyDown F
-                                        DelayRandom 120,122
-                                        KeyUp F
-                                        DelayRandom 331,335
+                                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\V.bmp",000000,1.00,0,intX,intY
+                                        if intX >= 0 Then //就算满足了这个还得满足另一个条件
+                                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\W.bmp|E:\MHImg\Hayato\Z.bmp",000000,1.00,0,logoX,logoY
+                                        End If
+                                        if intX >= 0 and logoX <= 0 Then
+                                            KeyDown V
+                                            DelayRandom 383,385
+                                            KeyUp V
+                                        else
+                                            KeyDown Left
+                                            DelayRandom 58,59
+                                            KeyUp Left
+                                            DelayRandom 101,103
+                                            KeyDown F
+                                            DelayRandom 103,105
+                                            KeyUp F
+                                            DelayRandom 320,324
+                                            KeyDown Right
+                                            DelayRandom 58,59
+                                            KeyUp Right
+                                            DelayRandom 158,160
+                                            KeyDown F
+                                            DelayRandom 120,122
+                                            KeyUp F
+                                            DelayRandom 331,335
+                                        End If
                                     End If
                                 End If
                             End If
