@@ -912,13 +912,7 @@ while 1 > 0
 
 
             if GetTimeStamp() - pick1 > 110 then //右边捡钱
-                tarX		= 44
-                tarY		= 97
-                tolerance	= 2
-                Call Navigate()
-
-
-                tarX		= 44
+                tarX		= 43
                 tarY		= 84
                 tolerance	= 2
                 Call Navigate()
