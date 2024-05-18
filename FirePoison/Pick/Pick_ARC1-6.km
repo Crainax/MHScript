@@ -13,7 +13,7 @@ Dim wJam,        wJam2,    loopA,    loopB      //找图防卡,loopAB是循环�
 Dim tolerance,   tolLoc,   yTolerance           //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim staticCount, staticX,  staticY              //防卡计数器
 Dim SavedX,      SavedY,   SavedTor, SavedTorY  //保存一下临时处理的XY
-Dim cool,        pickTime, sortTime             //挂轮冷却,邀请进组
+Dim cool,        pickTime, sortTime, map        //挂轮冷却,邀请进组
 
 //隐藏列车的捡钱(火毒)
 
@@ -400,19 +400,6 @@ Sub Move_B //纯移动不放技能(继承3.11)
     Wend
 End Sub
 
-//分辨率初始化
-GetScreenResolution intX, intY
-x1       = intX - 1440
-y1       = intY - 950
-x2       = intX - 1000
-y2       = intY - 600
-x3       = intX - 640
-y3       = intY - 260
-xEnd     = intX
-yEnd     = intY
-cool     = 0
-pickTime =0
-sortTime =0
 
 Sub CloseBag //关闭装备栏
     while 1>0 //关闭背包
@@ -450,7 +437,6 @@ Sub Drop //扔掉道具抽离 ver1.1数量也加进去
         Wend
     End If
 End Sub
-
 
 Sub ClearItem //清理消耗品和装备栏
     //扔身上的垃圾
@@ -554,6 +540,38 @@ Sub ClearItem //清理消耗品和装备栏
 
 End Sub
 
+
+Sub ConfirmMap //确认当前地图
+    map = 0
+    FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC3.bmp",000000,1.00,0,intX,intY
+    if intX >= 0  //三岛(不法2)
+        map = 3
+    End If
+    FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC2B.bmp",000000,1.00,0,intX,intY
+    if intX >= 0  //二岛(香菇森林)
+        map = 2
+    End If
+    FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC1B.bmp",000000,1.00,0,intX,intY
+    if intX >= 0  //一岛(反转列车)
+        map = 1
+    End If
+End Sub
+
+//分辨率初始化
+GetScreenResolution intX, intY
+x1       = intX - 1440
+y1       = intY - 950
+x2       = intX - 1000
+y2       = intY - 600
+x3       = intX - 640
+y3       = intY - 260
+xEnd     = intX
+yEnd     = intY
+cool     = 0
+pickTime =0
+sortTime =0
+Call ConfirmMap() //定位地图
+
 while 1>0 //无限循环
     if GetTimeStamp() - cool > 570 then //现在是否能放轮
         Delay 500
@@ -564,34 +582,113 @@ while 1>0 //无限循环
     if intX >= 0 Then
         KeyPress P
     End If
-    if GetTimeStamp() - pickTime > 105 then
-        tarX = -4
-        tarY = 76
-        tolerance = 4
-        Call Move_B()
+    if GetTimeStamp() - pickTime > 105 then //依据路线捡钱
+        if map == 1 then
+            tarX = 49
+            tarY = 78
+            tolerance = 4
+            Call Move_B()
 
-        tarX = 30
-        tarY = 103
-        tolerance = 4
-        Call Move_B()
+            tarX = 49
+            tarY = 90
+            tolerance = 4
+            Call Move_B()
 
-        tarX = 54
-        tarY = 103
-        tolerance = 4
-        Call Move_B()
+            tarX = -45
+            tarY = 90
+            tolerance = 4
+            Call Move_B()
 
-        tarX = -7
-        tarY = 76
-        tolerance = 4
-        Call Move_B()
+            tarX = -45
+            tarY = 63
+            tolerance = 4
+            Call Move_B()
 
-        tarX = -46
-        tarY = 103
-        tolerance = 4
-        Call Move_B()
+            tarX = -45
+            tarY = 90
+            tolerance = 4
+            Call Move_B()
 
+            tarX = -14
+            tarY = 90
+            tolerance = 4
+            Call Move_B()
+
+            pickTime = GetTimeStamp()
+        else if map == 2 then
+            tarX = -4
+            tarY = 76
+            tolerance = 4
+            Call Move_B()
+
+            tarX = 30
+            tarY = 103
+            tolerance = 4
+            Call Move_B()
+
+            tarX = 54
+            tarY = 103
+            tolerance = 4
+            Call Move_B()
+
+            tarX = -7
+            tarY = 76
+            tolerance = 4
+            Call Move_B()
+
+            tarX = -46
+            tarY = 103
+            tolerance = 4
+            Call Move_B()
+        else if map == 3 then
+
+            tarX = -12
+            tarY = 89
+            tolerance = 4
+            Call Move_B()
+
+            tarX = -72
+            tarY = 71
+            tolerance = 4
+            Call Move_B()
+            Delay 1500
+
+            tarX = -56
+            tarY = 55
+            tolerance = 4
+            Call Move_B()
+            Delay 1500
+
+            tarX = -56
+            tarY = 89
+            tolerance = 4
+            Call Move_B()
+
+            tarX = 41
+            tarY = 61
+            tolerance = 4
+            Call Move_B()
+            Delay 1500
+
+            tarX = 41
+            tarY = 89
+            tolerance = 4
+            Call Move_B()
+
+            tarX = -12
+            tarY = 63
+            tolerance = 4
+            Call Move_B()
+            Delay 1500
+
+            tarX = -12
+            tarY = 76
+            tolerance = 4
+            Call Move_B()
+        End If
         pickTime = GetTimeStamp()
     End If
+
     if GetTimeStamp() - sortTime > 750 then
         Call ClearItem()
         sortTime = GetTimeStamp()
