@@ -32,7 +32,18 @@ Sub ergodic
             a = 1
             while 1 > 0
                 if a >= 45 then
-                    break
+                    if a == 45 then //翻页的判断
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Auction\PageEnd.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //到底了,直接结束
+                            break
+                        else //没到底,滚轮继续
+                            a = 34
+                            MouseWheel -1
+                            Delay 50
+                        End If
+                    else //大于45直接结束
+                        break
+                    End If
                 End If
                 MoveTo logoX-775+(a-1)%11*54,logoY+137+(a-1)/11*54
                 DelayRandom 39,42
