@@ -565,33 +565,28 @@ while 1>0 //无限循环
         KeyPress P
     End If
     if GetTimeStamp() - pickTime > 105 then
-        tarX = 49
-        tarY = 78
+        tarX = -4
+        tarY = 76
         tolerance = 4
         Call Move_B()
 
-        tarX = 49
-        tarY = 90
+        tarX = 30
+        tarY = 103
         tolerance = 4
         Call Move_B()
 
-        tarX = -45
-        tarY = 90
+        tarX = 54
+        tarY = 103
         tolerance = 4
         Call Move_B()
 
-        tarX = -45
-        tarY = 63
+        tarX = -7
+        tarY = 76
         tolerance = 4
         Call Move_B()
 
-        tarX = -45
-        tarY = 90
-        tolerance = 4
-        Call Move_B()
-
-        tarX = -14
-        tarY = 90
+        tarX = -46
+        tarY = 103
         tolerance = 4
         Call Move_B()
 
