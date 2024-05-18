@@ -65,7 +65,7 @@ Sub AntiJam //一般跟随GetXY后用
     End If
 End Sub
 
-Sub SpellJump //移动过程中才放的 ver1.1
+Sub SpellJump //移动过程中才放的 ver1.2 Q的问题
     if GetTimeStamp() - JAttackOK > 1 then //2秒冷卻
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\G.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
@@ -74,8 +74,8 @@ Sub SpellJump //移动过程中才放的 ver1.1
             KeyUp G
             JAttackOK = GetTimeStamp()
         else
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Hayato\JQ_F.bmp|E:\MHImg\Hayato\JQ_2.bmp|E:\MHImg\Hayato\JQ_4.bmp|E:\MHImg\Hayato\JQ_8.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Hayato\JQ_F.bmp|E:\MHImg\Hayato\JQ_4.bmp|E:\MHImg\Hayato\JQ_8.bmp",000000,1.00,0,intX,intY
+            if intX >= 0   Then
                 KeyDown Q
                 DelayRandom 183,185
                 KeyUp Q
@@ -104,7 +104,7 @@ Sub Stable //稳定(前面自行getXY) ver1.1 改成大判断只影响下跳
         End If
     Next
 End Sub
-Sub Move  //精确的移动
+Sub Move  //精确的移动 ver1.2 一闪的问题
     while  1 > 0
         Call GetXY()
         Call AntiJam() //防卡
@@ -145,7 +145,7 @@ Sub Move  //精确的移动
                     KeyUp Down
                     a = 1
                 End If
-            else if intX < (tarX-40) then
+            else if intX < (tarX-28) then
                 FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\D.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then //右一闪
                     Call Stable()
@@ -210,7 +210,7 @@ Sub Move  //精确的移动
                     KeyUp Down
                     a = 1
                 End If
-            else if intX > (tarX+40) then
+            else if intX > (tarX+28) then
                 FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\D.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then //左一闪
                     Call Stable()
@@ -267,16 +267,13 @@ Sub Move  //精确的移动
             If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
                 Call Stable()
                 if intY == cY then
-                    TracePrint 下跳一次
                     KeyDown Down
                     DelayRandom 134,136
                     KeyDown Space
                     if intY > (tarY - 13) //太接近就只用同一种办法
                         DelayRandom 162,164
-                        TracePrint 定式 & intY &: & tarY
                     else
                         Delay (tarY - intY) * 49 - 520
-                        TracePrint 变式 & intY &: & tarY
                     End If
                     KeyUp Space
                     DelayRandom 66,67
@@ -286,13 +283,12 @@ Sub Move  //精确的移动
             Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上跳(Y轴是用相反比较符)
                 cY = intY
                 if intY > (tarY+20) Then	//>=26上跳就够不到了
-                    TracePrint 钩子一次
                     KeyDown Ctrl
                     DelayRandom 69,70
                     KeyUp Ctrl
                     DelayRandom 921,931
                 else
-                    TracePrint 上跳一次
+                    Delay 228 //停一下再上跳
                     KeyDown LAlt
                     DelayRandom 128,130
                     KeyUp LAlt
@@ -301,7 +297,6 @@ Sub Move  //精确的移动
             else
                 yTolerance = 0
                 if tolerance == 0 then //传送门型
-                    TracePrint 传送一发
                     If intX < tarX Then //向右小碎步
                         DelayRandom 45,52
                         KeyDown Right
@@ -391,12 +386,10 @@ Sub Move  //精确的移动
                     Delay 125
                     Call GetXY()
                     if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
-                        TracePrint 到达目的地
                         alterX    = 0
                         alterY    = 0
                         Exit Sub
                     else
-                        TracePrint 未到达[ & intX & , & intY & ],传送[ & alterX & , & alterY & ]
                     End if
                 else if tolerance == -1 then //负1代表枚举走到目的地
                     a = 0
@@ -464,7 +457,6 @@ Sub Move  //精确的移动
                     DelayRandom 231,234
                     Call GetXY()
                     if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
-                        TracePrint 到达目的地
                         alterX    = 0
                         alterY    = 0
                         if a > 0 then //要换方向
@@ -561,7 +553,12 @@ Sub StandSpell //原地放技能 v1.1更新了一点东西
                         QCDRight = GetTimeStamp()
                     else
                         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\B.bmp",000000,1.00,0,intX,intY
-                        if intX >= 0 Then
+                        if intX >= 0 Then //到特定地点放吧
+                            tarX = 31
+                            tarY = 103
+                            tolerance = 4
+                            Call Move()
+                            Delay 300
                             KeyPress B
                             DelayRandom 863,872
                         else
