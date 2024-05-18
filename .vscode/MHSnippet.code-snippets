@@ -192,6 +192,21 @@
 		],
 		"description": "For循环-二重"
 	},
+	"For二重循环B": {
+		"prefix": "while2",
+		"body": [
+			"a = 1",
+			"while 1 > 0",
+			"    if a >= 45 then",
+			"        break",
+			"    End If",
+			"    MoveTo logoX-775+(a-1)%11*54,logoY+137+(a-1)/11*54",
+			"    DelayRandom 39,42",
+			"    a = a + 1",
+			"Wend",
+		],
+		"description": "While循环-二重"
+	},
 	"防卡": {
 		"prefix": "jamAnit",
 		"body": [
