@@ -1,0 +1,174 @@
+[General]
+ScreenX=1440
+ScreenY=2560
+Times=1
+
+[Script]
+Dim x1,          x2,      y1,       y2         // 矩形区域:小地图采样点
+Dim x3,          y3,      xEnd,     yEnd       // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,        tarY,    cX,       cY         //目标
+Dim alterX,      alterY,  a,        facing     //备用地点,传送门脚步开关
+Dim logoX,       logoY,   intX,     intY       //算目的地差值
+Dim wJam,        wJam2,   loopA,    loopB      //找图防卡,loopAB是循环数
+Dim tolerance,   tolLoc,  yTolerance           //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim staticCount, staticX, staticY              //防卡计数器
+Dim SavedX,      SavedY,  SavedTor, SavedTorY  //保存一下临时处理的XY
+Dim cool,        pickTime                      //挂轮冷却,邀请进组
+
+//扔垃圾
+
+Sub CloseBag //关闭装备栏
+    while 1>0 //关闭背包
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyPress i
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
+Sub Drop //扔掉道具抽离 ver1.1数量也加进去
+    If intX >= 0 Then
+        MoveTo intX,intY
+        DelayRandom 369,372
+        LeftClick
+        DelayRandom 339,342
+
+        MoveTo logoX-170,logoY
+        DelayRandom 369,372
+        LeftClick
+        DelayRandom 339,342
+
+        while 1>0
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+            if intX < 0 Then
+                break
+            else
+                DelayRandom 39,42
+                KeyPress Enter
+                DelayRandom 239,242
+            End If
+        Wend
+    End If
+End Sub
+
+//分辨率初始化
+GetScreenResolution intX, intY
+x1       = intX - 1440
+y1       = intY - 950
+x2       = intX - 1000
+y2       = intY - 600
+x3       = intX - 640
+y3       = intY - 260
+xEnd     = intX
+yEnd     = intY
+cool     = 0
+pickTime =0
+
+Sub ClearItem //清理消耗品和装备栏
+    //扔身上的垃圾
+    while 1>0 //切到装备栏
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Tag_Equit.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //找到了标签
+
+            //丢掉4个垃圾
+            wJam = 0 //放在循环外面位置
+            while 1>0
+                FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\TrushE\E1.bmp|E:\MHImg\Common\TrushE\E2.bmp|E:\MHImg\Common\TrushE\E3.bmp|E:\MHImg\Common\TrushE\E4.bmp|E:\MHImg\Common\TrushE\E5.bmp|E:\MHImg\Common\TrushE\E6.bmp|E:\MHImg\Common\TrushE\E7.bmp",000000,1.00,0,intX,intY
+                if intX <= 0 then //第二批图像
+                    FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\TrushE\W1.bmp|E:\MHImg\Common\TrushE\W2.bmp|E:\MHImg\Common\TrushE\W3.bmp|E:\MHImg\Common\TrushE\W4.bmp",000000,1.00,0,intX,intY
+                End If
+                if intX >= 0 Then
+                    wJam = 0 //放在成功的位置
+                    Call Drop() //丢到外面(有弹对话框就取消)
+                else
+                    wJam = wJam + 1  //循环内部
+                    if wJam > 3 then //三次失败,
+                        break
+                    End If
+                End If
+                DelayRandom 200,210
+            Wend
+
+            //整理背包
+            MoveTo logoX+152,logoY+368
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+175,logoY+391
+            LeftClick
+            DelayRandom 539,542
+
+            Call CloseBag()
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //切标签页
+                DelayRandom 39,42
+                KeyPress tab
+                DelayRandom 39,42
+            else //打开背包
+                DelayRandom 39,42
+                for 3
+                    KeyPress i
+                    DelayRandom 39,42
+                Next
+            End If
+        End If
+    Wend
+
+    while 1>0 //切到消耗栏界面
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Tag_Coms.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //找到了标签
+
+            //丢掉4个垃圾
+            wJam = 0 //放在循环外面位置
+            while 1>0
+                FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\Trush\Cons3.bmp|E:\MHImg\Common\Trush\Cons4.bmp|E:\MHImg\Common\Trush\Cons2.bmp|E:\MHImg\Common\Trush\Cons1.bmp|E:\MHImg\Common\Trush\Cons5.bmp|E:\MHImg\Common\Trush\Cons6.bmp|E:\MHImg\Common\Trush\Cons7.bmp|E:\MHImg\Common\Trush\Cons8.bmp|E:\MHImg\Common\Trush\Cons9.bmp",000000,1.00,0,intX,intY
+                if intX <= 0 then //第二批图像
+                    FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\Trush\Cons10.bmp|E:\MHImg\Common\Trush\Cons11.bmp|E:\MHImg\Common\Trush\Cons12.bmp|E:\MHImg\Common\Trush\Cons13.bmp|E:\MHImg\Common\Trush\Cons14.bmp|E:\MHImg\Common\Trush\Cons15.bmp|E:\MHImg\Common\Trush\Cons16.bmp|E:\MHImg\Common\Trush\Cons17.bmp",000000,1.00,0,intX,intY
+                End If
+                if intX >= 0 Then
+                    wJam = 0 //放在成功的位置
+                    Call Drop() //丢到外面
+                else
+                    wJam = wJam + 1  //循环内部
+                    if wJam > 3 then //三次失败,
+                        break
+                    End If
+                End If
+                DelayRandom 200,210
+            Wend
+
+            //整理背包
+            MoveTo logoX+117,logoY+368
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+147,logoY+391
+            LeftClick
+            DelayRandom 539,542
+
+            Call CloseBag()
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //切标签页
+                DelayRandom 39,42
+                KeyPress tab
+                DelayRandom 39,42
+            else //打开背包
+                DelayRandom 39,42
+                for 3
+                    KeyPress i
+                    DelayRandom 39,42
+                Next
+            End If
+        End If
+    Wend
+
+End Sub
+
+Call ClearItem()
+
+Beep 200,500
