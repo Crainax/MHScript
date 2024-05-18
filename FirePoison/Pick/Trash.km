@@ -67,7 +67,7 @@ yEnd     = intY
 cool     = 0
 pickTime =0
 
-Sub ClearItem //清理消耗品和装备栏
+Sub ClearItem //清理消耗品和装备栏 Ver1.1
     //扔身上的垃圾
     while 1>0 //切到装备栏
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Tag_Equit.bmp",000000,1.00,0,logoX,logoY
@@ -76,9 +76,15 @@ Sub ClearItem //清理消耗品和装备栏
             //丢掉4个垃圾
             wJam = 0 //放在循环外面位置
             while 1>0
-                FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\TrushE\E1.bmp|E:\MHImg\Common\TrushE\E2.bmp|E:\MHImg\Common\TrushE\E3.bmp|E:\MHImg\Common\TrushE\E4.bmp|E:\MHImg\Common\TrushE\E5.bmp|E:\MHImg\Common\TrushE\E6.bmp|E:\MHImg\Common\TrushE\E7.bmp",000000,1.00,0,intX,intY
+                FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\TrushE\E1.bmp|E:\MHImg\Common\TrushE\E2.bmp|E:\MHImg\Common\TrushE\E3.bmp|E:\MHImg\Common\TrushE\E4.bmp|E:\MHImg\Common\TrushE\E5.bmp|E:\MHImg\Common\TrushE\E6.bmp|E:\MHImg\Common\TrushE\E7.bmp|E:\MHImg\Common\TrushE\E8.bmp|E:\MHImg\Common\TrushE\E9.bmp",000000,1.00,0,intX,intY
                 if intX <= 0 then //第二批图像
-                    FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\TrushE\W1.bmp|E:\MHImg\Common\TrushE\W2.bmp|E:\MHImg\Common\TrushE\W3.bmp|E:\MHImg\Common\TrushE\W4.bmp",000000,1.00,0,intX,intY
+                    FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\TrushE\E10.bmp",000000,1.00,0,intX,intY
+                End If
+                if intX <= 0 then //第二批图像
+                    FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\TrushE\W1.bmp|E:\MHImg\Common\TrushE\W2.bmp|E:\MHImg\Common\TrushE\W3.bmp|E:\MHImg\Common\TrushE\W4.bmp|E:\MHImg\Common\TrushE\W5.bmp|E:\MHImg\Common\TrushE\W6.bmp|E:\MHImg\Common\TrushE\W7.bmp|E:\MHImg\Common\TrushE\W8.bmp|E:\MHImg\Common\TrushE\W9.bmp",000000,1.00,0,intX,intY
+                End If
+                if intX <= 0 then //第二批图像
+                    FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\TrushE\W10.bmp|E:\MHImg\Common\TrushE\W11.bmp|E:\MHImg\Common\TrushE\W12.bmp",000000,1.00,0,intX,intY
                 End If
                 if intX >= 0 Then
                     wJam = 0 //放在成功的位置
