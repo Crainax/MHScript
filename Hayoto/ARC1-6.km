@@ -13,7 +13,7 @@ Dim alterX,       alterY,  tolerance, yTolerance    //备用地点,传送门脚�
 Dim staticCount,  staticX, staticY                  //防卡计数器,还有巡逻(1:跳打2下,2:惯性3下)
 Dim JAttackOK,    QCDLeft, QCDRight,  fountainTime  //技能冷卻
 Dim SavedX,       SavedY,  SavedTor,  SavedTorY     //保存一下临时处理的XY
-Dim RuneCooldown, wJam                              //找轮间隔
+Dim RuneCooldown, wJam,    map                      //找轮间隔
 Dim red,          tempX,   tempY                    //红点侦测
 
 
@@ -574,11 +574,19 @@ Sub StandSpell //原地放技能 v1.1更新了一点东西
                     else
                         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\B.bmp",000000,1.00,0,intX,intY
                         if intX >= 0 Then //到特定地点放吧
-                            tarX = 31
-                            tarY = 103
-                            tolerance = 4
-                            Call Move()
-                            Delay 300
+                            if map == 2 then
+                                tarX = 31
+                                tarY = 103
+                                tolerance = 4
+                                Call Move()
+                                Delay 300
+                            Else if map == 3 then
+                                tarX = -44
+                                tarY = 89
+                                tolerance = 4
+                                Call Move()
+                                Delay 300
+                            End If
                             KeyPress B
                             DelayRandom 863,872
                         else
@@ -708,6 +716,22 @@ Sub on_timer4 //查红点 ver1.1 使用了tempX和Y防干扰
     Timer          4, 1, 1000              //检测地图红点
 EndSub
 
+Sub ConfirmMap //确认当前地图
+    map = 0
+    FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC3.bmp",000000,1.00,0,intX,intY
+    if intX >= 0  //三岛(不法2)
+        map = 3
+    End If
+    FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC2B.bmp",000000,1.00,0,intX,intY
+    if intX >= 0  //二岛(香菇森林)
+        map = 2
+    End If
+    FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC1B.bmp",000000,1.00,0,intX,intY
+    if intX >= 0  //一岛(反转列车)
+        map = 1
+    End If
+End Sub
+
 GetScreenResolution intX, intY
 x1           = intX - 1440
 y1           = intY - 950
@@ -717,39 +741,98 @@ x3           = intX - 640
 y3           = intY - 260
 xEnd         = intX
 yEnd         = intY
-RuneCooldown = 0            //解轮CD
-fountainTime = 0            //上次喷泉时间
-yTolerance   = 0            //初始化容忍
-red          = 0            //初始化red
-QCDLeft         = 0            //CD初始化
-QCDRight         = 0            //CD初始化
-JAttackOK    = 0            //CD初始化
-Timer          4, 1, 1000        //检测地图红点
+RuneCooldown = 0           //解轮CD
+fountainTime = 0           //上次喷泉时间
+yTolerance   = 0           //初始化容忍
+red          = 0           //初始化red
+QCDLeft      = 0           //CD初始化
+QCDRight     = 0           //CD初始化
+JAttackOK    = 0           //CD初始化
+Timer        4, 1, 1000    //检测地图红点
+Call         ConfirmMap()  //确认一下当前地图
 while 1 > 0
-
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
-    if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
-        tarX = -45
-        tarY = 103
-        tolerance = 4
-        Call Move()
-        DelayRandom 56,58
-        KeyPress Left
-        KeyPress 1
-        DelayRandom 712,721
-        fountainTime = GetTimeStamp()
-    else //左右跳A
-        call GetXY()
-        if intY != 90 or intX < (-7-4) or intX > (-7+4) then //
-            tarX       = -7
-            tarY       = 90
-            tolerance  = 6
-            yTolerance = 0
+    if map == 1 then
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
+            tarX = -44
+            tarY = 78
+            tolerance = 2
             Call Move()
-        End If
+            DelayRandom 56,58
+            KeyDown Right
+            DelayRandom 62,68
+            KeyUp Right
+            DelayRandom 106,109
+            KeyDown 1
+            DelayRandom 194,196
+            KeyUp 1
+            DelayRandom 712,721
+            fountainTime = GetTimeStamp()
+        else //左右跳A
+            call GetXY()
+            if intY != 78 or intX < (19-4) or intX > (19+4) then //
+                tarX       = 19
+                tarY       = 78
+                tolerance  = 4
+                yTolerance = 0
+                Call Move()
+            End If
 
-        Call StandSpell()
-        Delay 300
+            Call StandSpell()
+            Delay 300
+        End If
+    else if map == 2 then
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
+            tarX = -45
+            tarY = 103
+            tolerance = 4
+            Call Move()
+            DelayRandom 56,58
+            KeyPress Left
+            KeyPress 1
+            DelayRandom 712,721
+            fountainTime = GetTimeStamp()
+        else //左右跳A
+            call GetXY()
+            if intY != 90 or intX < (-7-4) or intX > (-7+4) then //
+                tarX       = -7
+                tarY       = 90
+                tolerance  = 6
+                yTolerance = 0
+                Call Move()
+            End If
+
+            Call StandSpell()
+            Delay 300
+        End If
+    else if map == 3 then
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
+            tarX = 46
+            tarY = 74
+            tolerance = 4
+            Call Move()
+            DelayRandom 56,58
+            KeyPress Right
+            KeyPress 1
+            DelayRandom 712,721
+            fountainTime = GetTimeStamp()
+        else //左右跳A
+            call GetXY()
+            if intY != 76 or intX < (-12-6) or intX > (-12+6) then //
+                tarX       = -12
+                tarY       = 76
+                tolerance  = 6
+                yTolerance = 0
+                Call Move()
+            End If
+
+            Call StandSpell()
+            Delay 300
+        End If
+    else
+        MsgBox "Dont Regonize the map"
     End If
     Call ReleaseRune() //定期解轮
 Wend
