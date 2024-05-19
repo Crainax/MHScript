@@ -1,0 +1,49 @@
+[General]
+ScreenX=1440
+ScreenY=2560
+Times=1
+
+[Script]
+Dim x1,          x2,      y1,    y2     // 矩形区域:小地图采样点
+Dim x3,          y3,      xEnd,  yEnd   // 2个顶点:技能区/屏幕右下角顶点
+Dim logoX,       logoY,   intX,  intY   //算目的地差值
+Dim red,         tempX,   tempY         //红点侦测
+Dim wJam,        wJam2,   loopA,   loopB  //找图防卡,loopAB是循环数
+Dim a
+
+//卖咒文
+
+GetScreenResolution intX, intY
+x1   = intX - 1440
+y1   = intY - 950
+x2   = intX - 1000
+y2   = intY - 600
+x3   = intX - 640
+y3   = intY - 260
+xEnd = intX
+yEnd = intY
+red  = 0            //红点侦测初始化
+
+人在Y+1就行
+门口[teleX45,teleY67]或[teleX56,teleY67],位置[charX67,charY68]
+对话框 400,227(滚动)
+1[teleX100,teleY104]
+2[teleX101,teleY112]
+3[teleX23,teleY67]
+4[teleX14,teleY67]
+5[teleX-36,teleY74]
+6[teleX8,teleY71]
+下个(对话)
+E:\OneDrive\桌面\新枫之谷\练级宏\MHImg\UI\Daily\Park\Mark1.bmp
+E:\OneDrive\桌面\新枫之谷\练级宏\MHImg\UI\F2\Tag_3_Off.bmp
+E:\OneDrive\桌面\新枫之谷\练级宏\MHImg\UI\F2\Tag_3_On.bmp
+(-254,128)
+E:\OneDrive\桌面\新枫之谷\练级宏\MHImg\UI\F2\Move.bmp
+(停止对话的是)  下个
+for 3
+    Beep 100,200
+    Beep 200,200
+    Beep 300,200
+    Beep 400,200
+    Beep 500,200
+Next
