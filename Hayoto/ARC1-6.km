@@ -814,7 +814,7 @@ while 1 > 0
             tolerance = 4
             Call Move()
             DelayRandom 56,58
-            KeyPress Right
+            KeyPress Left
             KeyPress 1
             DelayRandom 712,721
             fountainTime = GetTimeStamp()
