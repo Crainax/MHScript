@@ -438,7 +438,7 @@ Sub Drop //扔掉道具抽离 ver1.1数量也加进去
     End If
 End Sub
 
-Sub ClearItem //清理消耗品和装备栏 Ver1.1
+Sub ClearItem //清理消耗品和装备栏 Ver1.3
     //扔身上的垃圾
     while 1>0 //切到装备栏
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Tag_Equit.bmp",000000,1.00,0,logoX,logoY
@@ -449,13 +449,16 @@ Sub ClearItem //清理消耗品和装备栏 Ver1.1
             while 1>0
                 FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\TrushE\E1.bmp|E:\MHImg\Common\TrushE\E2.bmp|E:\MHImg\Common\TrushE\E3.bmp|E:\MHImg\Common\TrushE\E4.bmp|E:\MHImg\Common\TrushE\E5.bmp|E:\MHImg\Common\TrushE\E6.bmp|E:\MHImg\Common\TrushE\E7.bmp|E:\MHImg\Common\TrushE\E8.bmp|E:\MHImg\Common\TrushE\E9.bmp",000000,1.00,0,intX,intY
                 if intX <= 0 then //第二批图像
-                    FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\TrushE\E10.bmp",000000,1.00,0,intX,intY
+                    FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\TrushE\E10.bmp|E:\MHImg\Common\TrushE\E11.bmp|E:\MHImg\Common\TrushE\E12.bmp|E:\MHImg\Common\TrushE\E13.bmp",000000,1.00,0,intX,intY
                 End If
                 if intX <= 0 then //第二批图像
                     FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\TrushE\W1.bmp|E:\MHImg\Common\TrushE\W2.bmp|E:\MHImg\Common\TrushE\W3.bmp|E:\MHImg\Common\TrushE\W4.bmp|E:\MHImg\Common\TrushE\W5.bmp|E:\MHImg\Common\TrushE\W6.bmp|E:\MHImg\Common\TrushE\W7.bmp|E:\MHImg\Common\TrushE\W8.bmp|E:\MHImg\Common\TrushE\W9.bmp",000000,1.00,0,intX,intY
                 End If
                 if intX <= 0 then //第二批图像
-                    FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\TrushE\W10.bmp|E:\MHImg\Common\TrushE\W11.bmp|E:\MHImg\Common\TrushE\W12.bmp",000000,1.00,0,intX,intY
+                    FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\TrushE\W10.bmp|E:\MHImg\Common\TrushE\W11.bmp|E:\MHImg\Common\TrushE\W12.bmp|E:\MHImg\Common\TrushE\W13.bmp|E:\MHImg\Common\TrushE\W14.bmp|E:\MHImg\Common\TrushE\W15.bmp|E:\MHImg\Common\TrushE\W16.bmp|E:\MHImg\Common\TrushE\W17.bmp|E:\MHImg\Common\TrushE\W18.bmp",000000,1.00,0,intX,intY
+                End If
+                if intX <= 0 then //第三批图像
+                    FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\TrushE\W19.bmp|E:\MHImg\Common\TrushE\W20.bmp|E:\MHImg\Common\TrushE\W21.bmp|E:\MHImg\Common\TrushE\W22.bmp",000000,1.00,0,intX,intY
                 End If
                 if intX >= 0 Then
                     wJam = 0 //放在成功的位置
@@ -549,6 +552,10 @@ End Sub
 
 Sub ConfirmMap //确认当前地图
     map = 0
+    FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC4.bmp",000000,1.00,0,intX,intY
+    if intX >= 0  //四岛(深渊路)
+        map = 4
+    End If
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC3.bmp",000000,1.00,0,intX,intY
     if intX >= 0  //三岛(不法2)
         map = 3
@@ -689,6 +696,36 @@ while 1>0 //无限循环
 
             tarX = -12
             tarY = 76
+            tolerance = 4
+            Call Move_B()
+        else if map == 4 then
+            tarX = 16
+            tarY = 87
+            tolerance = 4
+            Call Move_B()
+            Delay 3000
+
+            tarX = 45
+            tarY = 87
+            tolerance = 4
+            Call Move_B()
+            Delay 3000
+
+            DelayRandom 39,42
+            KeyDown Down
+            DelayRandom 69,72
+            KeyPress Space
+            KeyUp Down
+            DelayRandom 2039,2042
+
+            tarX = -66
+            tarY = 87
+            tolerance = 4
+            Call Move_B()
+            Delay 1500
+
+            tarX = -33
+            tarY = 87
             tolerance = 4
             Call Move_B()
         End If
