@@ -543,10 +543,9 @@ Sub AroundS_T //左右释放(带2sCD)
     End If
 End Sub
 //2改的部分:
-//1:跳只有平A
-//2:要放的地方补足AroundS_T
-//3:删钩子
-Sub Move_2  //随机释放的移动 ( Ver3.13+2)
+//1:要放的地方补足AroundS_T
+//1:删钩子
+Sub Move_2  //随机释放的移动 ( Ver3.13+3)
     while  1 > 0
         Call GetXY()
         Call AntiJam() //防卡
@@ -644,9 +643,7 @@ Sub Move_2  //随机释放的移动 ( Ver3.13+2)
             DelayRandom 85,86
             KeyUp Right
             DelayRandom 41,42
-            KeyDown F
-            DelayRandom 313,315
-            KeyUp F
+            Call JumpAttack()
             DelayRandom 256,261
         Else If intX > (tarX+24) Then //向左二段跳
             TracePrint 左跳
@@ -663,9 +660,7 @@ Sub Move_2  //随机释放的移动 ( Ver3.13+2)
             DelayRandom 85,86
             KeyUp Left
             DelayRandom 41,42
-            KeyDown F
-            DelayRandom 313,315
-            KeyUp F
+            Call JumpAttack()
             DelayRandom 256,261
         Else If intX < (tarX-tolLoc) Then //向右走
             KeyDown Right
@@ -997,7 +992,8 @@ End Sub
 //B改的部分
 //JumpAttack改DelayRandom 313,315就行了
 //支持负数修改GetXYNega
-Sub Move_B  //纯移动不放技能(Ver3.13+1)
+//-1的引路区要重做
+Sub Move_B  //纯移动不放技能(Ver3.13+2)
     while  1 > 0
         Call GetXY()
         Call AntiJam() //防卡
@@ -1277,93 +1273,38 @@ Sub Move_B  //纯移动不放技能(Ver3.13+1)
                         KeyDown Left
                         Delay 197
                         KeyUp Left
-                        if facing > 0 then //要求面向右边
-                            a = 1
-                        end if
                     else if intX - tarX == -4 then
                         KeyDown Right
                         Delay 197
                         KeyUp Right
-                        if facing < 0 then //要求面向左边
-                            a = 1
-                        end if
                     else if intX - tarX == 3 then
                         KeyDown Left
                         Delay 145
                         KeyUp Left
-                        if facing > 0 then //要求面向右边
-                            a = 1
-                        end if
                     else if intX - tarX == -3 then
                         KeyDown Right
                         Delay 145
                         KeyUp Right
-                        if facing < 0 then //要求面向左边
-                            a = 1
-                        end if
                     else if intX - tarX == 2 then
                         KeyDown Left
                         Delay 71
                         KeyUp Left
-                        if facing > 0 then //要求面向右边
-                            a = 1
-                        end if
                     else if intX - tarX == -2 then
                         KeyDown Right
                         Delay 71
                         KeyUp Right
-                        if facing < 0 then //要求面向左边
-                            a = 1
-                        end if
                     else if intX > tarX then
                         KeyDown Left
                         Delay 40
                         KeyUp Left
-                        if facing > 0 then //要求面向右边
-                            a = 1
-                        end if
                     else if intX < tarX then
                         KeyDown Right
                         Delay 40
                         KeyUp Right
-                        if facing < 0 then //要求面向左边
-                            a = 1
-                        end if
                     End If
-                    DelayRandom 45,52
-                    KeyDown Up
-                    DelayRandom 120,122
-                    KeyUp Up
-                    DelayRandom 231,234
-                    Call GetXYNega()
-                    if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
-                        TracePrint 到达目的地
-                        alterX    = 0
-                        alterY    = 0
-                        if a > 0 then //要换方向
-                            if facing > 0 then  //改面向右边
-                                KeyDown Left
-                                Delay 40
-                                KeyUp Left
-                                DelayRandom 62,65
-                                KeyDown Right
-                                Delay 40
-                                KeyUp Right
-                                DelayRandom 62,65
-                            else if facing < 0 then //改面向左边
-                                KeyDown Right
-                                Delay 40
-                                KeyUp Right
-                                DelayRandom 62,65
-                                KeyDown Left
-                                Delay 40
-                                KeyUp Left
-                                DelayRandom 62,65
-                            end if
-                        End If
-                        facing = 0
-                        Exit Sub
-                    End if
+                    //这里直接算到达了,反正外面弄循环
+                    DelayRandom 245,252
+                    Exit Sub
                 else //非传送门
                     if tolerance < 4 Then //容忍度小于4还是要小碎步
                         for 10
@@ -1852,10 +1793,10 @@ while 1 > 0
         GetFileLine alterY,Move.Conf,tolLoc	//文件查找
         tolLoc = 6
         GetFileLine facing,Move.Conf,tolLoc	//文件查找
-        TracePrint 前往[ & tarX & , & tarY & ],容忍度 & tolerance & ,传送[ & alterX & , & alterY & ]
+        TracePrint goto[ & tarX & , & tarY & ],tole & tolerance & ,[ & alterX & , & alterY & ]
         //tolerance = 4 //容忍度,4为推荐值
-        Call Move_C()
-        MsgBox 测试结束
+        Call Move()
+        MsgBox "Done"
     else //大写键亮的话就获取点
         FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY	//找图
@@ -1865,10 +1806,10 @@ while 1 > 0
             intY = intY - logoY
             alterX = alterX - logoX
             alterY = alterY - logoY
-            TracePrint [人物X轴 & intX & ,人物Y轴 & intY & ][传送X轴 & intX & ,传送Y轴 & intY & ]
-            MsgBox [人物X轴 & intX & ,人物Y轴 & intY & ][传送X轴 & alterX & ,传送Y轴 & alterY & ]
+            TracePrint [charX & intX & ,charY & intY & ][teleX & intX & ,teleY & intY & ]
+            MsgBox [charX & intX & ,charY & intY & ][teleX & alterX & ,teleY & alterY & ]
         else
-            MsgBox [没找到 & intX & ,人物Y轴 & intY & ]	 //弹窗
+            MsgBox "DontFind"	 //弹窗
         End If
     End If
 Wend
