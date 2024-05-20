@@ -98,21 +98,32 @@ Sub JumpAttackX() //跳A技能库:X专用
             DelayRandom 583,585
             KeyUp C
         else
-            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\H.bmp",000000,1.00,0,intX,intY
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then
-                KeyDown H
-                DelayRandom 783,785
-                KeyUp H
+                KeyDown Down
+                DelayRandom 69,72
+                KeyDown 1
+                DelayRandom 423,430
+                KeyUp 1
+                DelayRandom 99,109
+                KeyUp Down
             else
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Y.bmp",000000,1.00,0,intX,intY
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\H.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then
-                    KeyDown Y
-                    DelayRandom 583,585
-                    KeyUp Y
-                else //普攻
-                    KeyDown F
-                    DelayRandom 313,315
-                    KeyUp F
+                    KeyDown H
+                    DelayRandom 783,785
+                    KeyUp H
+                else
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Y.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        KeyDown Y
+                        DelayRandom 583,585
+                        KeyUp Y
+                    else //普攻
+                        KeyDown F
+                        DelayRandom 313,315
+                        KeyUp F
+                    End If
                 End If
             End If
         End If
@@ -125,87 +136,89 @@ Sub GetXYEnemy //获取敌方角色的XY轴
     tarY = tarY - logoY
 End Sub
 Sub XSpell //寻敌式扔技能
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\D.bmp",000000,1.00,0,alterX,alterY
-    if alterX >= 0 Then //放唤醒(根据Y轴差决定上瞬还是下瞬)
-        if tarY < intY then //人在下面(平级也优先按上)
-            TracePrint "Huanxing-U,me[" & intX & , & intY & "],tar[" & tarX & , & tarY & "]"
-            KeyDown Down
-            Delay 80
-            KeyDown Up
-            Delay 120
-            alterX = intX
-            alterY = intY
-            KeyDown LShift
-            Delay 195
-            KeyUp LShift
-            Delay 107
-            KeyUp Up
-            Delay 5
-            KeyUp Down
-            call GetXY()
-            if alterX == intX and alterY == intY then //没有变化,就用自由龙脉吧
-                KeyPress A
-                DelayRandom 165,167
-                TracePrint "HXFail,Use A"
-            End If
-            Delay 181
-            KeyDown D
-            Delay 111
-            KeyUp D
-            Delay 627
-        else if tarY > intY //人在上面
-            TracePrint "Huanxing-D,me[" & intX & , & intY & "],tar[" & tarX & , & tarY & "]"
-            KeyDown Space
-            Delay 67
-            KeyUp Space
-            Delay 177
-            KeyDown Down
-            Delay 75
-            alterX = intX
-            alterY = intY
-            KeyDown LShift
-            Delay 132
-            KeyUp LShift
-            Delay 85
-            KeyUp Down
-            call GetXY()
-            if alterX == intX and alterY == intY then //没有变化,就用自由龙脉吧
-                KeyPress A
-                DelayRandom 165,167
-                TracePrint "HXFail,Use A"
-            End If
-            Delay 170
-            KeyDown D
-            Delay 107
-            KeyUp D
-            Delay 616
-        else //同一层 就只瞬移
-            TracePrint "Huanxing,me[" & intX & , & intY & "],tar[" & tarX & , & tarY & "]"
-            alterX = intX
-            alterY = intY
-            KeyDown LShift
-            Delay 132
-            KeyUp LShift
-            Delay 85
-            if alterX == intX and alterY == intY then //没有变化,就用自由龙脉吧
-                KeyPress A
-                DelayRandom 165,167
-                TracePrint "HXFail,Use A"
-            End If
-            Delay 170
-            KeyDown D
-            Delay 107
-            KeyUp D
-            Delay 616
-        End If
+    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\B.bmp",000000,1.00,0,alterX,alterY
+    if alterX >= 0 Then //找V4
+        KeyDown B
+        DelayRandom 105,107
+        KeyUp B
+        DelayRandom 712,780
+        TracePrint "B,me[" & intX & , & intY & "],tar[" & tarX & , & tarY & "]"
     else
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\B.bmp",000000,1.00,0,alterX,alterY
-        if alterX >= 0 Then //找V4
-            KeyDown B
-            DelayRandom 105,107
-            KeyUp B
-            DelayRandom 712,780
-            TracePrint "B,me[" & intX & , & intY & "],tar[" & tarX & , & tarY & "]"
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\D.bmp",000000,1.00,0,alterX,alterY
+        if alterX >= 0 Then //放唤醒(根据Y轴差决定上瞬还是下瞬)
+            if tarY < intY then //人在下面(平级也优先按上)
+                TracePrint "Huanxing-U,me[" & intX & , & intY & "],tar[" & tarX & , & tarY & "]"
+                KeyDown Down
+                Delay 80
+                KeyDown Up
+                Delay 120
+                alterX = intX
+                alterY = intY
+                KeyDown LShift
+                Delay 195
+                KeyUp LShift
+                Delay 107
+                KeyUp Up
+                Delay 5
+                KeyUp Down
+                call GetXY()
+                if alterX == intX and alterY == intY then //没有变化,就用自由龙脉吧
+                    KeyPress A
+                    DelayRandom 165,167
+                    TracePrint "HXFail,Use A"
+                End If
+                Delay 181
+                KeyDown D
+                Delay 111
+                KeyUp D
+                Delay 627
+            else if tarY > intY //人在上面
+                TracePrint "Huanxing-D,me[" & intX & , & intY & "],tar[" & tarX & , & tarY & "]"
+                KeyDown Space
+                Delay 67
+                KeyUp Space
+                Delay 177
+                KeyDown Down
+                Delay 75
+                alterX = intX
+                alterY = intY
+                KeyDown LShift
+                Delay 132
+                KeyUp LShift
+                Delay 85
+                KeyUp Down
+                call GetXY()
+                if alterX == intX and alterY == intY then //没有变化,就用自由龙脉吧
+                    KeyPress A
+                    DelayRandom 165,167
+                    TracePrint "HXFail,Use A"
+                End If
+                Delay 170
+                KeyDown D
+                Delay 107
+                KeyUp D
+                Delay 616
+            else //同一层 就只瞬移
+                TracePrint "Huanxing,me[" & intX & , & intY & "],tar[" & tarX & , & tarY & "]"
+                KeyDown LShift
+                Delay 132
+                KeyUp LShift
+                Delay 85
+                Delay 170
+                KeyDown D
+                Delay 107
+                KeyUp D
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\D.bmp",000000,1.00,0,alterX,alterY
+                if alterX >= 0 Then //唤醒没进CD就自由龙脉吧
+                    KeyPress A
+                    DelayRandom 165,167
+                    KeyDown D
+                    Delay 107
+                    KeyUp D
+                    TracePrint "Fail,Using Free"
+                End If
+                Delay 616
+            End If
         else
             FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\V.bmp",000000,1.00,0,alterX,alterY
             if alterX >= 0 Then //找V3
@@ -281,7 +294,7 @@ Sub XSpell //寻敌式扔技能
 End Sub
 XTime = 0 //放在这里初始化不错
 Sub RightJumpX //右跳抽离
-    if GetTimeStamp() - XTime > 3 then //寻敌技能不要太频繁
+    if GetTimeStamp() - XTime > 2 then //寻敌技能不要太频繁
         while 1>0
             Call Stable()
             if intY == cY then
@@ -313,7 +326,7 @@ Sub RightJumpX //右跳抽离
 End Sub
 Sub LeftJumpX //左跳抽离
 
-    if GetTimeStamp() - XTime > 3 then //寻敌技能不要太频繁
+    if GetTimeStamp() - XTime > 2 then //寻敌技能不要太频繁
         while 1>0
             Call Stable()
             if intY == cY then
@@ -496,7 +509,7 @@ Sub Move_X  //寻敌移动,没敌了自动结束 (Ver1.0)
                         KeyDown LCtrl
                         DelayRandom 108,110
                         KeyUp LCtrl
-                        DelayRandom 1714,1732
+                        DelayRandom 1414,1432
                         KeyPress F //平A新增
                         TracePrint "JumpHook,me[" & intX & , & intY & "],tar[" & tarX & , & tarY & "]"
                     else if intY > (tarY+25) Then	//>=26上跳就够不到了
