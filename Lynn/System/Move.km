@@ -125,7 +125,7 @@ Sub Stable //稳定(前面自行getXY)
         End If
     Next
 End Sub
-Sub Move  //1.6 改进了几个点
+Sub Move  //1.7 高跳的问题
     while  1 > 0
         Call GetXY()
         Call AntiJam() //防卡
@@ -507,7 +507,34 @@ Sub Move  //1.6 改进了几个点
             Else If intY > (tarY + yTolerance) Then //如果人在目标之下,上钩
                 Call Stable()
                 if intY == cY then
-                    if intY > (tarY+26) Then	//>=27以上才用钩子法
+                    if intY > (tarY+40) Then	//>=40以上要先跳再钩子
+                        TracePrint jumpHook
+                        DelayRandom 15,25
+                        KeyDown Up
+                        Delay 80
+                        KeyDown Space
+                        Delay 52
+                        KeyUp Space
+                        Delay 73
+                        KeyDown Space
+                        Delay 92
+                        KeyUp Space
+                        Delay 69
+                        KeyUp Up
+                        Delay 52
+                        KeyDown F
+                        Delay 104
+                        KeyUp F
+                        Delay 501
+                        KeyDown LAlt
+                        Delay 89
+                        KeyUp LAlt
+                        Delay 1163
+                        KeyDown F
+                        Delay 111
+                        KeyUp F
+                        Delay 362
+                    else if intY > (tarY+26) Then	//>=27以上才用钩子法
                         TracePrint hooking
                         KeyDown LAlt
                         DelayRandom 69,70

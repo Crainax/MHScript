@@ -356,7 +356,7 @@ Sub LeftJumpX //左跳抽离
         DelayRandom 256,261
     End If
 End Sub
-Sub Move_X  //寻敌移动,没敌了自动结束 (Ver1.0)
+Sub Move_X  //寻敌移动,没敌了自动结束 (Ver1.1)
     tolerance = 4
     yTolerance = 2
     while 1 > 0
