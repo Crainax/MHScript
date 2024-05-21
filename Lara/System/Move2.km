@@ -1273,7 +1273,6 @@ Sub Move_B  //纯移动不放技能(Ver3.13+2)
                         TracePrint 未到达[ & intX & , & intY & ],传送[ & alterX & , & alterY & ]
                     End if
                 else if tolerance == -1 then //负1代表枚举走到目的地
-                    a = 0
                     if intX - tarX == 4 then
                         KeyDown Left
                         Delay 197
