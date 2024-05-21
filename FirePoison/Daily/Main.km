@@ -907,6 +907,30 @@ Sub Home //回城
         End If
     Wend
 End Sub
+Sub Drop //扔掉道具抽离 ver1.1数量也加进去
+    If intX >= 0 Then
+        MoveTo intX,intY
+        DelayRandom 369,372
+        LeftClick
+        DelayRandom 339,342
+
+        MoveTo logoX-170,logoY
+        DelayRandom 369,372
+        LeftClick
+        DelayRandom 339,342
+
+        while 1>0
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+            if intX < 0 Then
+                break
+            else
+                DelayRandom 39,42
+                KeyPress Enter
+                DelayRandom 239,242
+            End If
+        Wend
+    End If
+End Sub
 Sub BeforeStart //开刷前的参数初始化
     startTime = GetTimeStamp() //记录时间
     Call Wheel() //放轮
@@ -1825,6 +1849,233 @@ Sub MileageDaily //领取里程 ver1.2"下个"问题
         End If
     Wend
 End Sub
+Sub SortItem //整理一下身上的垃圾东西
+
+    //打开卖结晶的商店
+    while 1>0 //
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //点击卖结晶
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    KeyPress Enter
+                else
+                    break
+                End If
+            Wend
+
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\JJ\Mark1.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    KeyPress Esc
+                else
+                    break
+                End If
+            Wend
+
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\JJ\Mark1.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                MoveTo intX,intY
+                LeftClick
+                DelayRandom 139,142
+                MoveTo intX+200,intY
+                DelayRandom 139,142
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\JJ\Entry.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    MoveTo intX,intY
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo intX+100,intY
+                    DelayRandom 139,142
+                else
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Event\QuickEntry.bmp",000000,1.00,0,intX,intY //找灯泡
+                    if intX >= 0 Then
+                        MoveTo intX,intY
+                        LeftClick
+                        DelayRandom 139,142
+                        MoveTo intX+100,intY+100
+                        DelayRandom 139,142
+                    else
+                        DelayRandom 139,142
+                    End If
+                End If
+            End If
+        End If
+    Wend
+
+    //扔身上的垃圾
+    while 1>0 //切到消耗栏界面
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Tag_Coms.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //找到了标签
+
+            //丢掉4个垃圾
+            wJam = 0 //放在循环外面位置
+            while 1>0
+                FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\Trush\Cons3.bmp|E:\MHImg\Common\Trush\Cons4.bmp|E:\MHImg\Common\Trush\Cons2.bmp|E:\MHImg\Common\Trush\Cons1.bmp|E:\MHImg\Common\Trush\Cons5.bmp|E:\MHImg\Common\Trush\Cons6.bmp|E:\MHImg\Common\Trush\Cons7.bmp|E:\MHImg\Common\Trush\Cons8.bmp|E:\MHImg\Common\Trush\Cons9.bmp",000000,1.00,0,intX,intY
+                if intX <= 0 then //第二批图像
+                    FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\Trush\Cons10.bmp|E:\MHImg\Common\Trush\Cons11.bmp|E:\MHImg\Common\Trush\Cons12.bmp|E:\MHImg\Common\Trush\Cons13.bmp|E:\MHImg\Common\Trush\Cons14.bmp|E:\MHImg\Common\Trush\Cons15.bmp|E:\MHImg\Common\Trush\Cons16.bmp|E:\MHImg\Common\Trush\Cons17.bmp",000000,1.00,0,intX,intY
+                End If
+                if intX >= 0 Then
+                    wJam = 0 //放在成功的位置
+                    Call Drop() //丢到外面
+                else
+                    wJam = wJam + 1  //循环内部
+                    if wJam > 3 then //三次失败,
+                        break
+                    End If
+                End If
+                DelayRandom 200,210
+            Wend
+
+            //整理背包
+            MoveTo logoX+117,logoY+368
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+147,logoY+391
+            LeftClick
+            DelayRandom 539,542
+
+            Call CloseBag()
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //切标签页
+                DelayRandom 39,42
+                KeyPress tab
+                DelayRandom 39,42
+            else //打开背包
+                DelayRandom 39,42
+                for 3
+                    KeyPress i
+                    DelayRandom 39,42
+                Next
+            End If
+        End If
+    Wend
+
+    while 1>0 //进入匠人村
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Tech.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //右上角是
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                MoveTo intX-50,intY
+                LeftClick
+                DelayRandom 139,142
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Tech\Entry.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    MoveTo intX,intY
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo intX+100,intY
+                    DelayRandom 139,142
+                else
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Event\QuickEntry.bmp",000000,1.00,0,intX,intY //找灯泡
+                    if intX >= 0 Then
+                        MoveTo intX,intY
+                        LeftClick
+                        DelayRandom 139,142
+                        MoveTo intX+100,intY+100
+                        DelayRandom 139,142
+                    else
+                        DelayRandom 139,142
+                    End If
+                End If
+            End If
+        End If
+    Wend
+
+    while 1>0 //点开分解页面
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Tech\Mark6.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //到达了分解页面
+            for 2
+                Beep 400,200
+                Beep 500,200
+                Beep 400,200
+                Beep 500,200
+                Beep 300,200
+            Next
+            Pause
+
+            //关闭UI
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Tech\Mark1.bmp|E:\MHImg\UI\Daily\Tech\Mark1A.bmp|E:\MHImg\UI\Daily\Tech\Mark2.bmp|E:\MHImg\UI\Daily\Tech\Mark5.bmp|E:\MHImg\UI\Daily\Tech\Mark4.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //
+                    KeyPress Esc
+                else
+                    break
+                End If
+            Wend
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Tech\Mark5.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //点击分解按钮
+                MoveTo intX,intY
+                LeftClick
+                DelayRandom 139,142
+                MoveTo intX,intY-100
+                DelayRandom 139,142
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Tech\Mark4.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //点击-分解下面的字
+                    MoveTo intX+76,intY+25
+                    LeftClick
+                    DelayRandom 139,142
+                else
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Tech\Mark3.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then //把+分解点成-分解后再下滑一点
+                        DelayRandom 150,160
+                        MoveTo intX+125,intY+10
+                        LeftClick
+                        DelayRandom 139,142
+                        MouseWheel -1
+                        DelayRandom 50,60
+                    else
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Tech\Mark2.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //下滑找+分解
+                            MoveTo intX-106,intY+201
+                            for 5
+                                MouseWheel -1
+                                Delay 10
+                            Next
+                        else
+                            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Tech\Mark1.bmp|E:\MHImg\UI\Daily\Tech\Mark1A.bmp",000000,1.00,0,intX,intY
+                            if intX >= 0 Then //
+                                KeyPress tab
+                            else
+                                KeyPress F7
+                            End If
+                        End If
+                    End If
+                End If
+            End If
+        End If
+    Wend
+
+    while 1>0 //等进入加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //加载完成了
+            break
+        else
+            KeyPress Up
+        End If
+    Wend
+    while 1>0 //等加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX > 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+
+
+End Sub
 
 Call Quest() //接任务
 Call ClearQuest() //清理任务
@@ -1842,5 +2093,12 @@ Call After564()     //前置
 Call HDDaily()      //清每日
 Call LegionDaily()  //清每日
 Call MileageDaily()  //清每日
+for 3 //暂停刷一下BOSS
+    Beep 600,200
+    Beep 400,200
+    Beep 500,200
+Next
+Pause
+Call SortItem() //卖装备
 
 Beep 200,500
