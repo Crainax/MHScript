@@ -714,7 +714,7 @@ Sub LeftJumpX //左跳抽离
         DelayRandom 256,261
     End If
 End Sub
-Sub Move_X  //寻敌移动,没敌了自动结束 (Ver1.0)
+Sub Move_X  //寻敌移动,没敌了自动结束 (Ver1.1)
     tolerance = 4
     yTolerance = 2
     while 1 > 0
@@ -828,7 +828,11 @@ Sub Move_X  //寻敌移动,没敌了自动结束 (Ver1.0)
             If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
                 Call StableBig()
                 if intY == cY then
-                    Call AntiJam() //防卡
+                    if tarX < intX then
+                        KeyPress Left //人在右边
+                    else
+                        KeyPress Right //人在左边
+                    End If
                     KeyDown Down
                     DelayRandom 134,136
                     KeyDown Space
@@ -855,7 +859,11 @@ Sub Move_X  //寻敌移动,没敌了自动结束 (Ver1.0)
             Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上跳(Y轴是用相反比较符)
                 Call Stable()
                 if intY == cY then
-                    Call AntiJam() //防卡
+                    if tarX < intX then
+                        KeyPress Left //人在右边
+                    else
+                        KeyPress Right //人在左边
+                    End If
                     if intY > (tarY+40) Then	//>=再高的话要助跳
                         KeyDown LAlt
                         DelayRandom 161,163
@@ -891,53 +899,6 @@ Sub Move_X  //寻敌移动,没敌了自动结束 (Ver1.0)
             End If
         End If
     Wend
-End Sub
-
-Sub AroundF //左右平A
-    DelayRandom 55,60
-    KeyDown Right
-    DelayRandom 60,61
-    KeyUp Right
-    DelayRandom 148,150
-    KeyDown F
-    DelayRandom 119,121
-    KeyUp F
-    DelayRandom 513,520
-    KeyDown Left
-    DelayRandom 58,59
-    KeyUp Left
-    DelayRandom 140,142
-    KeyDown F
-    DelayRandom 91,92
-    KeyUp F
-    DelayRandom 471,478
-End Sub
-Sub SpellList() //随便扔技能 V2.6 抽离释放3不放在这里了
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\V.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then //找V3
-        KeyDown V
-        DelayRandom 123,130
-        KeyUp V
-        DelayRandom 899,909
-    else
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\B.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then //找V4
-            KeyDown B
-            DelayRandom 105,107
-            KeyUp B
-            DelayRandom 712,780
-        else
-            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\5G.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then //找女神祝福
-                KeyDown 5
-                DelayRandom 134,142
-                KeyUp 5
-                DelayRandom 512,519
-            else
-                Call AroundF() //普通平A
-            End If
-        End If
-    End If
 End Sub
 
 GetScreenResolution intX, intY

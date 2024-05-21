@@ -470,7 +470,11 @@ Sub Move_X  //寻敌移动,没敌了自动结束 (Ver1.1)
             If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
                 Call StableBig()
                 if intY == cY then
-                    Call AntiJam() //防卡
+                    if tarX < intX then
+                        KeyPress Left //人在右边
+                    else
+                        KeyPress Right //人在左边
+                    End If
                     TracePrint "DownJump,me[" & intX & , & intY & "],tar[" & tarX & , & tarY & "]"
                     KeyDown Down
                     DelayRandom 134,136
@@ -500,7 +504,11 @@ Sub Move_X  //寻敌移动,没敌了自动结束 (Ver1.1)
             Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上跳(Y轴是用相反比较符)
                 Call Stable()
                 if intY == cY then
-                    Call AntiJam() //防卡
+                    if tarX < intX then
+                        KeyPress Left //人在右边
+                    else
+                        KeyPress Right //人在左边
+                    End If
                     if intY > (tarY+40) Then	//>=再高的话要助跳
                         KeyDown LAlt
                         DelayRandom 161,163

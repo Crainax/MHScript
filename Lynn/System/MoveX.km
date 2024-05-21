@@ -104,6 +104,7 @@ Sub XSpell //寻敌式扔技能 //6sCD
                     KeyUp 1
                     DelayRandom 99,109
                     KeyUp Down
+                    XTime = GetTimeStamp()
                 else
                     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\G.bmp",000000,1.00,0,intX,intY
                     if intX >= 0 Then //空中可放
@@ -251,7 +252,7 @@ Sub LeftJumpX //左跳抽离
         Call XSpell() //内置8sCD
     End If
 End Sub
-Sub Move_X  //1.0 寻敌式
+Sub Move_X  //1.1 寻敌式
     tolerance = 4
     yTolerance = 2
     while  1 > 0
@@ -421,6 +422,11 @@ Sub Move_X  //1.0 寻敌式
             If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
                 Call Stable()
                 if intY == cY then
+                    if tarX < intX then
+                        KeyPress Left //人在右边
+                    else
+                        KeyPress Right //人在左边
+                    End If
                     TracePrint JumlD
                     KeyDown Down
                     DelayRandom 134,136
@@ -442,6 +448,11 @@ Sub Move_X  //1.0 寻敌式
                 Call Stable()
                 if intY == cY then
                     //先转一下方向
+                    if tarX < intX then
+                        KeyPress Left //人在右边
+                    else
+                        KeyPress Right //人在左边
+                    End If
                     if intY > (tarY+40) Then	//>=40以上要先跳再钩子
                         TracePrint jumpHook
                         DelayRandom 15,25
