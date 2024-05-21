@@ -4,16 +4,17 @@ ScreenY=2560
 Times=0
 
 [Script]
-Dim x1,           x2,      y1,   y2    // 矩形区域:小地图采样点
-Dim x3,           y3,      xEnd, yEnd  // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,         tarY,    cY,   a     //目标
-Dim logoX,        logoY,   intX, intY  //算目的地差值
-Dim alterX,       alterY,  facing      //备用地点,传送门脚步开关,传送门的面向
-Dim tolerance,    tolLoc,  yTolerance  //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim staticCount,  staticX, staticY     //防卡计数器
-Dim ReleaseTime1, ReleaseTime2         //140级以下的策略
-Dim aroundFTime,  XTime                //左右平A的CD
-Dim LEDState                           //测试用:开大写键就是获取点位,不要切来切去的了
+Dim x1,           x2,      y1,    y2     // 矩形区域:小地图采样点
+Dim x3,           y3,      xEnd,  yEnd   // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,         tarY,    cY,    a      //目标
+Dim logoX,        logoY,   intX,  intY   //算目的地差值
+Dim alterX,       alterY,  facing        //备用地点,传送门脚步开关,传送门的面向
+Dim tolerance,    tolLoc,  yTolerance    //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim staticCount,  staticX, staticY       //防卡计数器
+Dim ReleaseTime1, ReleaseTime2           //140级以下的策略
+Dim aroundFTime,  XTime                  //左右平A的CD
+Dim wJam,         wJam2,   loopA, loopB  //找图防卡,loopAB是循环数
+Dim LEDState                             //测试用:开大写键就是获取点位,不要切来切去的了
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -129,8 +130,19 @@ Sub JumpAttackX() //跳A技能库:X专用
         End If
     End If
 End Sub
-Sub GetXYEnemy //获取敌方角色的XY轴
-    FindPic x1,y1,x2,y2,"E:\MHImg\Enemy.bmp",000000,1.00,0,tarX,tarY
+Sub GetXYEnemy //获取敌方角色的XY轴 Ver1.1 遍历逻辑更新(步长22是遍历5)
+    loopA = 1
+    loopB = 350
+    While loopA < loopB
+        a = ((loopA + loopB) / 2 / 22) * 22
+        FindPic x1,y2-a,x2,y2,"E:\MHImg\Enemy.bmp",000000,1.00,1,tarX,tarY //逐渐上层
+        If tarX >= 0 Then
+            loopB = a
+        Else
+            loopA = a + 22
+        End If
+    Wend
+    FindPic x1,y2-loopA,x2,y2,"E:\MHImg\Enemy.bmp",000000,1.00,1,tarX,tarY //逐渐上层
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
     tarX = tarX - logoX
     tarY = tarY - logoY
@@ -356,7 +368,7 @@ Sub LeftJumpX //左跳抽离
         DelayRandom 256,261
     End If
 End Sub
-Sub Move_X  //寻敌移动,没敌了自动结束 (Ver1.1)
+Sub Move_X  //寻敌  (Ver1.2 找图方式有变)
     tolerance = 4
     yTolerance = 2
     while 1 > 0
@@ -365,7 +377,7 @@ Sub Move_X  //寻敌移动,没敌了自动结束 (Ver1.1)
             Exit Sub
         End If
 
-        Call GetXY()
+        Call GetXY() //先找普通的,再找怪物
         tolLoc = 2 //防跳空
         if intY > tarY +2 and intY <= tarY + 11 and intX >= (tarX-26) and intX <=(tarX+26) then //[特殊情况1]高度小于等于11
             Call Stable()
