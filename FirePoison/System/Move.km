@@ -204,7 +204,7 @@ Sub Stable //稳定Y轴(外面不要使用变量a哦)
         End If
     Wend
 End Sub
-Sub Move //精确的移动:V3.11 重构卡住的情况
+Sub Move //精确的移动:V3.12 Y轴防止二次卡住还要加上一个跳钩
     cX = -100
     cY = 0
     KeyAllup //施放所有按键防止卡住
