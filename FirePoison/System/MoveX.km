@@ -330,7 +330,28 @@ Sub Move_X //精确的移动:V3.11 重构卡住的情况
                     DelayRandom 328,430
                     KeyUp Alt
                     DelayRandom 32,33
-                    Call Stable() //稳定Y轴
+                    call GetXY()
+                    if cY == intY Then //依然卡住就跳钩
+                        DelayRandom 12,13
+                        KeyDown Up
+                        Delay 63
+                        KeyDown Space
+                        Delay 81
+                        KeyUp Space
+                        Delay 41
+                        KeyDown Space
+                        Delay 96
+                        KeyUp Space
+                        Delay 261
+                        KeyUp Up
+                        Delay 41
+                        KeyDown LAlt
+                        Delay 154
+                        KeyUp LAlt
+                        Delay 1205
+                    else
+                        Call Stable() //稳定Y轴
+                    End If
                 End If
             End If
         End If

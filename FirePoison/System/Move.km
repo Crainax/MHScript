@@ -204,7 +204,7 @@ Sub Stable //稳定Y轴(外面不要使用变量a哦)
         End If
     Wend
 End Sub
-Sub Move //精确的移动:V3.12 Y轴防止二次卡住还要加上一个跳钩
+Sub Move //精确的移动:V3.2 Y轴防止二次卡住还要加上一个跳钩
     cX = -100
     cY = 0
     KeyAllup //施放所有按键防止卡住
@@ -332,7 +332,28 @@ Sub Move //精确的移动:V3.12 Y轴防止二次卡住还要加上一个跳钩
                     DelayRandom 328,430
                     KeyUp Alt
                     DelayRandom 32,33
-                    Call Stable() //稳定Y轴
+                    call GetXY()
+                    if cY == intY Then //依然卡住就跳钩
+                        DelayRandom 12,13
+                        KeyDown Up
+                        Delay 63
+                        KeyDown Space
+                        Delay 81
+                        KeyUp Space
+                        Delay 41
+                        KeyDown Space
+                        Delay 96
+                        KeyUp Space
+                        Delay 261
+                        KeyUp Up
+                        Delay 41
+                        KeyDown LAlt
+                        Delay 154
+                        KeyUp LAlt
+                        Delay 1205
+                    else
+                        Call Stable() //稳定Y轴
+                    End If
                 End If
             else //Y轴搞定了,到容忍度的X轴了,前提是不在空中
                 KeyAllup
