@@ -431,8 +431,19 @@ Sub Move_B//纯移动不放技能(Ver1.7)
     Wend
 End Sub
 
-Sub GetXYEnemy //获取敌方角色的XY轴
-    FindPic x1,y1,x2,y2,"E:\MHImg\Enemy.bmp",000000,1.00,0,tarX,tarY
+Sub GetXYEnemy //获取敌方角色的XY轴 Ver1.1 遍历逻辑更新(步长22是遍历5)
+    loopA = 1
+    loopB = 350
+    While loopA < loopB
+        a = ((loopA + loopB) / 2 / 22) * 22
+        FindPic x1,y2-a,x2,y2,"E:\MHImg\Enemy.bmp",000000,1.00,1,tarX,tarY //逐渐上层
+        If tarX >= 0 Then
+            loopB = a
+        Else
+            loopA = a + 22
+        End If
+    Wend
+    FindPic x1,y2-loopA,x2,y2,"E:\MHImg\Enemy.bmp",000000,1.00,1,tarX,tarY //逐渐上层
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
     tarX = tarX - logoX
     tarY = tarY - logoY
@@ -956,43 +967,7 @@ End Sub
 // (停止对话的是)  下个
 
 //这里仅2次
-Sub Park //开始怪公
-    while 1>0 //前往怪物公园
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Park.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then //到新地图了
-            break
-        else
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Tag_3_On.bmp",000000,1.00,0,logoX,logoY
-            if logoX >= 0 Then //
-                Call ClearDialog() //清除标准对话框
-
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Move.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //移动
-                    MoveTo intX,intY
-                    LeftClick
-                    DelayRandom 139,142
-                else
-                    MoveTo logoX-254,logoY+128
-                    LeftClick
-                    DelayRandom 139,142
-                End If
-            else
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Tag_3_Off.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //切标签
-                    KeyPress tab
-                else //有人物才F2
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-                    if intX >= 0 Then
-                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Park.bmp",000000,1.00,0,intX,intY
-                        if intX <= 0 Then //到新地图了
-                            KeyPress F2
-                        End If
-                    End If
-                End If
-            End If
-        End If
-    Wend
-
+Sub ParkStart //怪公的一次循环
     while 1>0 //进去
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then //离开
@@ -1003,6 +978,13 @@ Sub Park //开始怪公
                 DelayRandom 139,142
                 Call ClearDialog() //清除标准对话框
                 break
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //否-->是
+                    MoveTo intX-50,intY
+                    LeftClick
+                    DelayRandom 139,142
+                End If
             End If
         else
             tarX       = 67
@@ -1052,6 +1034,47 @@ Sub Park //开始怪公
     Wend
 
     Call Loading()
+End Sub
+Sub Park //开始怪公
+    while 1>0 //前往怪物公园
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Park.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //到新地图了
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Tag_3_On.bmp",000000,1.00,0,logoX,logoY
+            if logoX >= 0 Then //
+                Call ClearDialog() //清除标准对话框
+
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Move.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //移动
+                    MoveTo intX,intY
+                    LeftClick
+                    DelayRandom 139,142
+                else
+                    MoveTo logoX-254,logoY+128
+                    LeftClick
+                    DelayRandom 139,142
+                End If
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Tag_3_Off.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //切标签
+                    KeyPress tab
+                else //有人物才F2
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Park.bmp",000000,1.00,0,intX,intY
+                        if intX <= 0 Then //到新地图了
+                            KeyPress F2
+                        End If
+                    End If
+                End If
+            End If
+        End If
+    Wend
+
+    Call ParkStart()
+    Call ParkStart() //两次公园
+
 
     while 1>0 //离开地图
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Park.bmp",000000,1.00,0,intX,intY
@@ -1075,8 +1098,8 @@ Sub Park //开始怪公
     Wend
 
 End Sub
-
     Call Park()
+
 
 
 for 3

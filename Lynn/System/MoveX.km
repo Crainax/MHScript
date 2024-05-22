@@ -73,8 +73,19 @@ End Sub
 //1:开头加上离开判断
 //2:删内部yTolerance有变化的判断
 //3:删最后除上下跳的所有内容
-Sub GetXYEnemy //获取敌方角色的XY轴
-    FindPic x1,y1,x2,y2,"E:\MHImg\Enemy.bmp",000000,1.00,0,tarX,tarY
+Sub GetXYEnemy //获取敌方角色的XY轴 Ver1.1 遍历逻辑更新(步长22是遍历5)
+    loopA = 1
+    loopB = 350
+    While loopA < loopB
+        a = ((loopA + loopB) / 2 / 22) * 22
+        FindPic x1,y2-a,x2,y2,"E:\MHImg\Enemy.bmp",000000,1.00,1,tarX,tarY //逐渐上层
+        If tarX >= 0 Then
+            loopB = a
+        Else
+            loopA = a + 22
+        End If
+    Wend
+    FindPic x1,y2-loopA,x2,y2,"E:\MHImg\Enemy.bmp",000000,1.00,1,tarX,tarY //逐渐上层
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
     tarX = tarX - logoX
     tarY = tarY - logoY

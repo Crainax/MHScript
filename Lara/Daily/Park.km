@@ -980,6 +980,13 @@ Sub ParkStart //怪公的一次循环
                 DelayRandom 139,142
                 Call ClearDialog() //清除标准对话框
                 break
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //否-->是
+                    MoveTo intX-50,intY
+                    LeftClick
+                    DelayRandom 139,142
+                End If
             End If
         else
             tarX       = 67
@@ -993,7 +1000,6 @@ Sub ParkStart //怪公的一次循环
             KeyPress Up
         End If
     Wend
-    Call Loading()
 
 
     while 1>0

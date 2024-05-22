@@ -1135,8 +1135,19 @@ Sub Move_B//纯移动不放技能(Ver1.7)
     Wend
 End Sub
 
-Sub GetXYEnemy //获取敌方角色的XY轴
-    FindPic x1,y1,x2,y2,"E:\MHImg\Enemy.bmp",000000,1.00,0,tarX,tarY
+Sub GetXYEnemy //获取敌方角色的XY轴 Ver1.1 遍历逻辑更新(步长22是遍历5)
+    loopA = 1
+    loopB = 350
+    While loopA < loopB
+        a = ((loopA + loopB) / 2 / 22) * 22
+        FindPic x1,y2-a,x2,y2,"E:\MHImg\Enemy.bmp",000000,1.00,1,tarX,tarY //逐渐上层
+        If tarX >= 0 Then
+            loopB = a
+        Else
+            loopA = a + 22
+        End If
+    Wend
+    FindPic x1,y2-loopA,x2,y2,"E:\MHImg\Enemy.bmp",000000,1.00,1,tarX,tarY //逐渐上层
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
     tarX = tarX - logoX
     tarY = tarY - logoY
@@ -3158,6 +3169,74 @@ Sub SortItem //整理一下身上的垃圾东西
 
 
 End Sub
+Sub ParkStart //怪公的一次循环
+    while 1>0 //进去
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //离开
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Park\Mark1.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                MoveTo intX+50,intY+5
+                LeftClick
+                DelayRandom 139,142
+                Call ClearDialog() //清除标准对话框
+                break
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //否-->是
+                    MoveTo intX-50,intY
+                    LeftClick
+                    DelayRandom 139,142
+                End If
+            End If
+        else
+            tarX       = 67
+            tarY       = 68
+            yTolerance = 2
+            call GetXY()
+            if intY != 68 or intX != 67 then //
+                tolerance = -1
+                Call Move_B() //仅移动
+            End If
+            KeyPress Up
+        End If
+    Wend
+    Call Loading()
+
+
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            Call ClearDialog() //清除标准对话框
+            break
+        else //刷怪逻辑
+            FindPic x1,y1,x2,y2,"E:\MHImg\Enemy.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //刷怪去
+                Call Move_X()
+            else //找传送门去
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Teleport.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
+                    intX = intX - logoX
+                    intY = intY - logoY
+                    tarX      = intX
+                    tarY      = intY + 1
+                    call GetXY()
+                    if intY != tarX or intX != tarY then //
+                        tolerance = -1
+                        Call Move_B() //仅移动
+                    End If
+                    KeyPress Up
+                else //可能人挡住了(左走一点)
+                    KeyDown Left
+                    DelayRandom 269,272
+                    KeyUp Left
+                End If
+            End If
+        End If
+    Wend
+
+    Call Loading()
+End Sub
 Sub Park //开始怪公
     while 1>0 //前往怪物公园
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Park.bmp",000000,1.00,0,intX,intY
@@ -3195,66 +3274,9 @@ Sub Park //开始怪公
         End If
     Wend
 
-    for 2 //两次怪公
-        while 1>0 //进去
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then //离开
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Park\Mark1.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then
-                    MoveTo intX+50,intY+5
-                    LeftClick
-                    DelayRandom 139,142
-                    Call ClearDialog() //清除标准对话框
-                    break
-                End If
-            else
-                tarX      = 67
-                tarY      = 68
-                call GetXY()
-                if intY != 68 or intX != 67 then //
-                    tolerance = -1
-                    Call Move_B() //仅移动
-                End If
-                KeyPress Up
-            End If
-        Wend
-        Call Loading()
+    Call ParkStart()
+    Call ParkStart() //两次公园
 
-
-        while 1>0
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then
-                Call ClearDialog() //清除标准对话框
-                break
-            else //刷怪逻辑
-                FindPic x1,y1,x2,y2,"E:\MHImg\Enemy.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //刷怪去
-                    Call Move_X()
-                else //找传送门去
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Teleport.bmp",000000,1.00,0,intX,intY
-                    if intX >= 0 Then
-                        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
-                        intX = intX - logoX
-                        intY = intY - logoY
-                        tarX      = intX
-                        tarY      = intY + 1
-                        call GetXY()
-                        if intY != tarX or intX != tarY then //
-                            tolerance = -1
-                            Call Move_B() //仅移动
-                        End If
-                        KeyPress Up
-                    else //可能人挡住了(左走一点)
-                        KeyDown Left
-                        DelayRandom 269,272
-                        KeyUp Left
-                    End If
-                End If
-            End If
-        Wend
-
-        Call Loading()
-    Next
 
     while 1>0 //离开地图
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Park.bmp",000000,1.00,0,intX,intY
