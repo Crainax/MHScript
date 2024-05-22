@@ -19,125 +19,6 @@ Dim LEDState                             //测试用:开大写键就是获取点
 Sub on_timer1 //扔技能CD2秒
     SpellOK = 1
 EndSub
-
-Sub Attack //放技能,然后再瞬移(注意要先获取XY再放招)  Ver2.5 barlog独立于v3中防空中
-    a = GetTimeStamp() - InfiTime
-    if a > 110 then //该补充终极无限了
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\InfiR.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then //R位置的终极无限
-            KeyDown R
-            DelayRandom 351,355
-            KeyUp R
-            InfiTime = GetTimeStamp()
-            a = -1001
-        else
-            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\InfiG.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then //`位置的终极无限
-                KeyDown `
-                DelayRandom 1251,1255
-                KeyUp `
-                InfiTime = GetTimeStamp()
-                a = -1001
-            End If
-        End If
-    End If
-    if a != -1001 then
-        if SpellOK == 1 Then
-            SpellOK = 0
-            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\Q.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then //V1技能好了
-                KeyDown Q
-                DelayRandom 101,103
-                KeyUp Q
-            else
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\W.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //V2技能好了
-                    KeyDown W
-                    DelayRandom 301,305
-                    KeyUp W
-                else
-                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\V.bmp",000000,1.00,0,intX,intY
-                    if intX >= 0 Then //V4技能好了
-                        KeyDown E
-                        DelayRandom 185,187
-                        KeyUp E
-                        DelayRandom 670,677
-                        KeyDown V
-                        DelayRandom 301,305
-                        KeyUp V
-                    else
-                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\B.bmp",000000,1.00,0,intX,intY
-                        if intX >= 0 Then //流星技能好了
-                            KeyDown B
-                            DelayRandom 1251,1255
-                            KeyUp B
-                        else
-                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\S.bmp",000000,1.00,0,intX,intY
-                            if intX >= 0 Then //V3技能好了
-                                KeyDown S
-                                DelayRandom 201,205
-                                KeyUp S
-                            else
-                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\FirePoison\Z.bmp",000000,1.00,0,intX,intY
-                                if intX >= 0 Then //蓝焰斩技能好了
-                                    KeyDown Z
-                                    DelayRandom 301,305
-                                    KeyUp Z
-                                else
-                                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\H.bmp",000000,1.00,0,intX,intY
-                                    if intX >= 0 Then //找蜘蛛
-                                        KeyDown H
-                                        DelayRandom 901,905
-                                        KeyUp H
-                                    else
-                                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Y.bmp",000000,1.00,0,intX,intY
-                                        if intX >= 0 Then //找烈阳
-                                            KeyDown Y
-                                            DelayRandom 801,805
-                                            KeyUp Y
-                                        else
-                                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\4.bmp",000000,1.00,0,intX,intY
-                                            if intX >= 0 Then //找武公
-                                                KeyDown 4
-                                                DelayRandom 801,809
-                                                KeyUp 4
-                                            else //什么都没有就普攻一下
-                                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\5A.bmp",000000,1.00,0,intX,intY
-                                                if intX >= 0 Then //补充个大祝福
-                                                    KeyDown 5
-                                                    DelayRandom 301,309
-                                                    KeyUp 5
-                                                else //实在没有就普攻一下
-                                                    KeyDown F
-                                                    DelayRandom 101,103
-                                                    KeyUp F
-                                                End If
-                                            End If
-                                        End If
-                                    End If
-                                End If
-                            End If
-                        End If
-                    End If
-                End If
-            End If
-            Timer 1,1,2000
-        else
-            a = GetTimeStamp() - DTime
-            if a > 2 and intY > 84 and intY < 110 then //可以放末日了(仅限第二层)
-                KeyDown D
-                DelayRandom 101,103
-                KeyUp D
-                DTime = GetTimeStamp()
-            else //平时就放扫荡
-                KeyDown F
-                DelayRandom 101,103
-                KeyUp F
-            End If
-        End If
-    End If
-End Sub
-
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
@@ -155,6 +36,12 @@ Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
         End if
     End if
 
+    intX = intX - logoX
+    intY = intY - logoY
+End Sub
+Sub GetXYNega //获取角色的XY轴(支持负数找到)
+    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
     intX = intX - logoX
     intY = intY - logoY
 End Sub
@@ -204,7 +91,7 @@ Sub Stable //稳定Y轴(外面不要使用变量a哦)
         End If
     Wend
 End Sub
-Sub Move_B //纯移动不放技能(继承3.11)
+Sub Move_B //纯移动不放技能(继承3.2)
     cX = -100
     cY = 0
     KeyAllup //施放所有按键防止卡住
@@ -302,6 +189,26 @@ Sub Move_B //纯移动不放技能(继承3.11)
                     DelayRandom 328,430
                     KeyUp Alt
                     DelayRandom 32,33
+                    call GetXY()
+                    if cY == intY Then //依然卡住就跳钩
+                        DelayRandom 12,13
+                        KeyDown Up
+                        Delay 63
+                        KeyDown Space
+                        Delay 81
+                        KeyUp Space
+                        Delay 41
+                        KeyDown Space
+                        Delay 96
+                        KeyUp Space
+                        Delay 261
+                        KeyUp Up
+                        Delay 41
+                        KeyDown LAlt
+                        Delay 154
+                        KeyUp LAlt
+                        Delay 1205
+                    End If
                     Call Stable() //稳定Y轴
                 End If
             else //Y轴搞定了,到容忍度的X轴了,前提是不在空中
@@ -317,28 +224,28 @@ Sub Move_B //纯移动不放技能(继承3.11)
                         DelayRandom 70,71
                         KeyUp Up
                         DelayRandom 37,38
-                        Call GetXY()
+                        Call GetXYNega()
                         if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
                             KeyDown Up
                             DelayRandom 70,71
                             KeyUp Up
                             DelayRandom 37,38
                         End if
-                        Call GetXY()
+                        Call GetXYNega()
                         if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
                             KeyDown Up
                             DelayRandom 70,71
                             KeyUp Up
                             DelayRandom 37,38
                         End if
-                        Call GetXY()
+                        Call GetXYNega()
                         if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
                             KeyDown Up
                             DelayRandom 77,78
                             KeyUp Up
                             DelayRandom 37,38
                         End if
-                        Call GetXY()
+                        Call GetXYNega()
                         if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
                             KeyDown Up
                             DelayRandom 82,83
@@ -355,28 +262,28 @@ Sub Move_B //纯移动不放技能(继承3.11)
                         DelayRandom 70,71
                         KeyUp Up
                         DelayRandom 37,38
-                        Call GetXY()
+                        Call GetXYNega()
                         if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
                             KeyDown Up
                             DelayRandom 70,71
                             KeyUp Up
                             DelayRandom 37,38
                         End if
-                        Call GetXY()
+                        Call GetXYNega()
                         if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
                             KeyDown Up
                             DelayRandom 70,71
                             KeyUp Up
                             DelayRandom 37,38
                         End if
-                        Call GetXY()
+                        Call GetXYNega()
                         if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
                             KeyDown Up
                             DelayRandom 77,78
                             KeyUp Up
                             DelayRandom 37,38
                         End if
-                        Call GetXY()
+                        Call GetXYNega()
                         if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
                             KeyDown Up
                             DelayRandom 82,83
@@ -393,7 +300,7 @@ Sub Move_B //纯移动不放技能(继承3.11)
                         DelayRandom 231,234
                     End If
                     Delay 125
-                    Call GetXY()
+                    Call GetXYNega()
                     if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
                         TracePrint 到达目的地
                         alterX    = 0
@@ -403,102 +310,42 @@ Sub Move_B //纯移动不放技能(继承3.11)
                         TracePrint 未到达[ & intX & , & intY & ],传送[ & alterX & , & alterY & ]
                     End if
                 else if tolerance == -1 then //负1代表枚举走到目的地
-                    a = 0
                     if intX - tarX == 4 then
                         KeyDown Left
                         Delay 197
                         KeyUp Left
-                        if facing > 0 then //要求面向右边
-                            a = 1
-                        end if
                     else if intX - tarX == -4 then
                         KeyDown Right
                         Delay 197
                         KeyUp Right
-                        if facing < 0 then //要求面向左边
-                            a = 1
-                        end if
                     else if intX - tarX == 3 then
                         KeyDown Left
                         Delay 145
                         KeyUp Left
-                        if facing > 0 then //要求面向右边
-                            a = 1
-                        end if
                     else if intX - tarX == -3 then
                         KeyDown Right
                         Delay 145
                         KeyUp Right
-                        if facing < 0 then //要求面向左边
-                            a = 1
-                        end if
                     else if intX - tarX == 2 then
                         KeyDown Left
                         Delay 71
                         KeyUp Left
-                        if facing > 0 then //要求面向右边
-                            a = 1
-                        end if
                     else if intX - tarX == -2 then
                         KeyDown Right
                         Delay 71
                         KeyUp Right
-                        if facing < 0 then //要求面向左边
-                            a = 1
-                        end if
                     else if intX > tarX then
                         KeyDown Left
                         Delay 40
                         KeyUp Left
-                        if facing > 0 then //要求面向右边
-                            a = 1
-                        end if
                     else if intX < tarX then
                         KeyDown Right
                         Delay 40
                         KeyUp Right
-                        if facing < 0 then //要求面向左边
-                            a = 1
-                        end if
                     End If
-                    if alterY > 0 then //有这个才是会按上
-                        DelayRandom 45,52
-                        KeyDown Up
-                        DelayRandom 120,122
-                        KeyUp Up
-                        DelayRandom 231,234
-                        Call GetXY()
-                        if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
-                            TracePrint 到达目的地
-                            alterX    = 0
-                            alterY    = 0
-                            if a > 0 then //要换方向
-                                if facing > 0 then  //改面向右边
-                                    KeyDown Left
-                                    Delay 40
-                                    KeyUp Left
-                                    DelayRandom 62,65
-                                    KeyDown Right
-                                    Delay 40
-                                    KeyUp Right
-                                    DelayRandom 62,65
-                                else if facing < 0 then //改面向左边
-                                    KeyDown Right
-                                    Delay 40
-                                    KeyUp Right
-                                    DelayRandom 62,65
-                                    KeyDown Left
-                                    Delay 40
-                                    KeyUp Left
-                                    DelayRandom 62,65
-                                end if
-                            End If
-                            facing = 0
-                            Exit Sub
-                        End if
-                    else
-                        Exit Sub
-                    End If
+                    //这里直接算到达了,反正外面弄循环
+                    DelayRandom 245,252
+                    Exit Sub
                 else //非传送门
                     if tolerance < 4 Then //容忍度小于4还是要小碎步
                         for 10

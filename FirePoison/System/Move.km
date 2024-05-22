@@ -351,9 +351,8 @@ Sub Move //精确的移动:V3.2 Y轴防止二次卡住还要加上一个跳钩
                         Delay 154
                         KeyUp LAlt
                         Delay 1205
-                    else
-                        Call Stable() //稳定Y轴
                     End If
+                    Call Stable() //稳定Y轴
                 End If
             else //Y轴搞定了,到容忍度的X轴了,前提是不在空中
                 KeyAllup

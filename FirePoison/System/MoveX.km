@@ -9,9 +9,9 @@ Dim x3,          y3,       xEnd,  yEnd    // 2个顶点:技能区/屏幕右下�
 Dim tarX,        tarY,     cX,    cY      //目标
 Dim alterX,      alterY,   a,     facing  //备用地点,传送门脚步开关
 Dim logoX,       logoY,    intX,  intY    //算目的地差值
-Dim XTime,       InfiTime, SpellOK        //末日烈焰冷却
 Dim tolerance,   tolLoc,   yTolerance     //快速移动的容差,0代表精确移动,另外个是局部变量
 Dim staticCount, staticX,  staticY        //防卡计数器
+Dim XTime,       InfiTime, SpellOK        //末日烈焰冷却
 Dim wJam,        wJam2,    loopA, loopB   //找图防卡,loopAB是循环数
 Dim LEDState                              //测试用:开大写键就是获取点位,不要切来切去的了
 
@@ -349,9 +349,8 @@ Sub Move_X //精确的移动:V3.11 重构卡住的情况
                         Delay 154
                         KeyUp LAlt
                         Delay 1205
-                    else
-                        Call Stable() //稳定Y轴
                     End If
+                    Call Stable() //稳定Y轴
                 End If
             End If
         End If
@@ -360,17 +359,19 @@ End Sub
 
 //分辨率初始化
 GetScreenResolution intX, intY
-x1     = intX - 1440
-y1     = intY - 950
-x2     = intX - 1140
-y2     = intY - 600
-x3     = intX - 640
-y3     = intY - 260
-xEnd   = intX
-yEnd   = intY
-alterX = 0            //备用地点
-alterY = 0            //备用地点
-facing = 0            //面向初始归0
+x1       = intX - 1440
+y1       = intY - 950
+x2       = intX - 1140
+y2       = intY - 600
+x3       = intX - 640
+y3       = intY - 260
+xEnd     = intX
+yEnd     = intY
+alterX   = 0                     //备用地点
+alterY   = 0                     //备用地点
+InfiTime = GetTimeStamp() - 110  //上次终极无限的时间
+SpellOK  = 1                     //技能冷却
+facing   = 0                     //面向初始归0
 Timer 1,1,1000
 while 1 > 0
     LEDState = GetLED(1)
