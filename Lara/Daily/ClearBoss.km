@@ -1,0 +1,69 @@
+[General]
+ScreenX=1440
+ScreenY=2560
+Times=1
+
+[Script]
+Dim x1,    x2,    y1,    y2     // 矩形区域:小地图采样点
+Dim x3,    y3,    xEnd,  yEnd   // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,  tarY,  a,     cY     //目标
+Dim logoX, logoY, intX,  intY   //算目的地差值
+Dim wJam,  wJam2, loopA, loopB  //找图防卡,loopAB是循环数
+
+//
+
+Sub CloseBag //关闭装备栏
+    while 1>0 //关闭背包
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyPress i
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
+Sub Drop //扔掉道具抽离 ver1.1数量也加进去
+    If intX >= 0 Then
+        MoveTo intX,intY
+        DelayRandom 369,372
+        LeftClick
+        DelayRandom 339,342
+
+        MoveTo logoX-170,logoY
+        DelayRandom 369,372
+        LeftClick
+        DelayRandom 339,342
+
+        while 1>0
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+            if intX < 0 Then
+                break
+            else
+                DelayRandom 39,42
+                KeyPress Enter
+                DelayRandom 239,242
+            End If
+        Wend
+    End If
+End Sub
+
+    while 1>0 //进入扎昆
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag2_1_On.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            MoveTo intX+418,intY+488
+            LeftClick
+            DelayRandom 139,142
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag2_1_On.bmp|E:\MHImg\UI\Boss\Tag2_1_Off.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                KeyPress tab
+            else
+                KeyPress [
+            End If
+        End If
+    Wend
+
+Beep 200,500
