@@ -174,43 +174,44 @@ Sub Move_B //纯移动不放技能(继承3.2)
                 End If
             Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上瞬(Y轴是用相反比较符)
                 cY = intY
-                KeyDown Up
-                DelayRandom 159,161
-                KeyDown LShift
-                DelayRandom 93,94
-                KeyUp LShift
-                DelayRandom 432,437
-                KeyUp Up
-                DelayRandom 37,41
-                call GetXY()
-                if cY == intY Then //卡住了
+                if intY > (tarY+40) Then	//>=40以上要先跳再钩子
                     DelayRandom 12,13
-                    KeyDown Alt
-                    DelayRandom 328,430
-                    KeyUp Alt
-                    DelayRandom 32,33
+                    KeyDown Up
+                    Delay 63
+                    KeyDown Space
+                    Delay 81
+                    KeyUp Space
+                    Delay 41
+                    KeyDown Space
+                    Delay 96
+                    KeyUp Space
+                    Delay 261
+                    KeyUp Up
+                    Delay 41
+                    KeyDown LAlt
+                    Delay 154
+                    KeyUp LAlt
+                    Delay 1205
+                else
+                    DelayRandom 115,117
+                    KeyDown Up
+                    DelayRandom 53,54
+                    KeyDown LShift
+                    DelayRandom 86,87
+                    KeyUp LShift
+                    DelayRandom 22,23
+                    KeyUp Up
+                    DelayRandom 356,360
                     call GetXY()
-                    if cY == intY Then //依然卡住就跳钩
+                    if cY == intY Then //卡住了
                         DelayRandom 12,13
-                        KeyDown Up
-                        Delay 63
-                        KeyDown Space
-                        Delay 81
-                        KeyUp Space
-                        Delay 41
-                        KeyDown Space
-                        Delay 96
-                        KeyUp Space
-                        Delay 261
-                        KeyUp Up
-                        Delay 41
-                        KeyDown LAlt
-                        Delay 154
-                        KeyUp LAlt
-                        Delay 1205
+                        KeyDown Alt
+                        DelayRandom 328,430
+                        KeyUp Alt
+                        DelayRandom 32,33
                     End If
-                    Call Stable() //稳定Y轴
                 End If
+                Call Stable() //稳定Y轴
             else //Y轴搞定了,到容忍度的X轴了,前提是不在空中
                 KeyAllup
                 yTolerance = 0

@@ -171,16 +171,13 @@ Sub Move_B //纯移动不放技能(继承3.2)
                 DelayRandom 37,41
                 call GetXY()
                 if cY == intY Then //卡住了
-                    TracePrint 下跳一次
                     KeyDown Down
                     DelayRandom 134,136
                     KeyDown Space
                     if intY > (tarY - 13) //太接近就只用同一种办法
                         DelayRandom 162,164
-                        TracePrint 定式 & intY &: & tarY
                     else
                         Delay (tarY - intY) * 49 - 520
-                        TracePrint 变式 & intY &: & tarY
                     End If
                     KeyUp Space
                     DelayRandom 66,67
@@ -190,48 +187,48 @@ Sub Move_B //纯移动不放技能(继承3.2)
                 End If
             Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上瞬(Y轴是用相反比较符)
                 cY = intY
-                KeyDown Up
-                DelayRandom 159,161
-                KeyDown LShift
-                DelayRandom 93,94
-                KeyUp LShift
-                DelayRandom 432,437
-                KeyUp Up
-                DelayRandom 37,41
-                call GetXY()
-                if cY == intY Then //卡住了
+                if intY > (tarY+40) Then	//>=40以上要先跳再钩子
                     DelayRandom 12,13
-                    KeyDown Alt
-                    DelayRandom 328,430
-                    KeyUp Alt
-                    DelayRandom 32,33
+                    KeyDown Up
+                    Delay 63
+                    KeyDown Space
+                    Delay 81
+                    KeyUp Space
+                    Delay 41
+                    KeyDown Space
+                    Delay 96
+                    KeyUp Space
+                    Delay 261
+                    KeyUp Up
+                    Delay 41
+                    KeyDown LAlt
+                    Delay 154
+                    KeyUp LAlt
+                    Delay 1205
+                else
+                    DelayRandom 115,117
+                    KeyDown Up
+                    DelayRandom 53,54
+                    KeyDown LShift
+                    DelayRandom 86,87
+                    KeyUp LShift
+                    DelayRandom 22,23
+                    KeyUp Up
+                    DelayRandom 356,360
                     call GetXY()
-                    if cY == intY Then //依然卡住就跳钩
+                    if cY == intY Then //卡住了
                         DelayRandom 12,13
-                        KeyDown Up
-                        Delay 63
-                        KeyDown Space
-                        Delay 81
-                        KeyUp Space
-                        Delay 41
-                        KeyDown Space
-                        Delay 96
-                        KeyUp Space
-                        Delay 261
-                        KeyUp Up
-                        Delay 41
-                        KeyDown LAlt
-                        Delay 154
-                        KeyUp LAlt
-                        Delay 1205
+                        KeyDown Alt
+                        DelayRandom 328,430
+                        KeyUp Alt
+                        DelayRandom 32,33
                     End If
-                    Call Stable() //稳定Y轴
                 End If
+                Call Stable() //稳定Y轴
             else //Y轴搞定了,到容忍度的X轴了,前提是不在空中
                 KeyAllup
                 yTolerance = 0
                 if tolerance == 0 then //传送门型
-                    TracePrint 传送一发
                     If intX < tarX Then //向右小碎步
                         DelayRandom 45,52
                         KeyDown Right
@@ -318,12 +315,10 @@ Sub Move_B //纯移动不放技能(继承3.2)
                     Delay 125
                     Call GetXYNega()
                     if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
-                        TracePrint 到达目的地
                         alterX    = 0
                         alterY    = 0
                         Exit Sub
                     else
-                        TracePrint 未到达[ & intX & , & intY & ],传送[ & alterX & , & alterY & ]
                     End if
                 else if tolerance == -1 then //负1代表枚举走到目的地
                     if intX - tarX == 4 then
@@ -503,7 +498,7 @@ Sub XAttack //放技能Special版(Ver2.5+1)不确定的地图不放D武公枫祝
         End If
     End If
 End Sub
-Sub Move_X //精确的移动:V3.11 重构卡住的情况
+Sub Move_X //寻敌法 Ver1.1
     cX = -100
     cY = 0
     tolerance = 4
@@ -515,7 +510,7 @@ Sub Move_X //精确的移动:V3.11 重构卡住的情况
         End If
 
         Call GetXY() //先找普通的,再找怪物
-        tolLoc = 2
+        tolLoc = 4
         if intX < (tarX-12) Then //右瞬:这里的shit必须要抬起来 不然好像下面会出问题
             cX = intX
             Call AntiJam()
@@ -597,16 +592,13 @@ Sub Move_X //精确的移动:V3.11 重构卡住的情况
                 DelayRandom 356,360
                 call GetXY()
                 if cY == intY Then //卡住了
-                    TracePrint 下跳一次
                     KeyDown Down
                     DelayRandom 134,136
                     KeyDown Space
                     if intY > (tarY - 13) //太接近就只用同一种办法
                         DelayRandom 162,164
-                        TracePrint 定式 & intY &: & tarY
                     else
                         Delay (tarY - intY) * 49 - 520
-                        TracePrint 变式 & intY &: & tarY
                     End If
                     KeyUp Space
                     DelayRandom 66,67
@@ -616,45 +608,45 @@ Sub Move_X //精确的移动:V3.11 重构卡住的情况
                 End If
             Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上瞬(Y轴是用相反比较符)
                 cY = intY
-                Call XAttack()
-                DelayRandom 115,117
-                KeyDown Up
-                DelayRandom 53,54
-                KeyDown LShift
-                DelayRandom 86,87
-                KeyUp LShift
-                DelayRandom 22,23
-                KeyUp Up
-                DelayRandom 356,360
-                call GetXY()
-                if cY == intY Then //卡住了
+                if intY > (tarY+40) Then	//>=40以上要先跳再钩子
                     DelayRandom 12,13
-                    KeyDown Alt
-                    DelayRandom 328,430
-                    KeyUp Alt
-                    DelayRandom 32,33
+                    KeyDown Up
+                    Delay 63
+                    KeyDown Space
+                    Delay 81
+                    KeyUp Space
+                    Delay 41
+                    KeyDown Space
+                    Delay 96
+                    KeyUp Space
+                    Delay 261
+                    KeyUp Up
+                    Delay 41
+                    KeyDown LAlt
+                    Delay 154
+                    KeyUp LAlt
+                    Delay 1205
+                else
+                    Call XAttack()
+                    DelayRandom 115,117
+                    KeyDown Up
+                    DelayRandom 53,54
+                    KeyDown LShift
+                    DelayRandom 86,87
+                    KeyUp LShift
+                    DelayRandom 22,23
+                    KeyUp Up
+                    DelayRandom 356,360
                     call GetXY()
-                    if cY == intY Then //依然卡住就跳钩
+                    if cY == intY Then //卡住了
                         DelayRandom 12,13
-                        KeyDown Up
-                        Delay 63
-                        KeyDown Space
-                        Delay 81
-                        KeyUp Space
-                        Delay 41
-                        KeyDown Space
-                        Delay 96
-                        KeyUp Space
-                        Delay 261
-                        KeyUp Up
-                        Delay 41
-                        KeyDown LAlt
-                        Delay 154
-                        KeyUp LAlt
-                        Delay 1205
+                        KeyDown Alt
+                        DelayRandom 328,430
+                        KeyUp Alt
+                        DelayRandom 32,33
                     End If
-                    Call Stable() //稳定Y轴
                 End If
+                Call Stable() //稳定Y轴
             End If
         End If
     Wend
@@ -844,6 +836,7 @@ Sub Park //开始怪公
 
 End Sub
     Call Park()
+
 for 3
     Beep 100,200
     Beep 200,200
