@@ -49,12 +49,10 @@ Sub Drop //扔掉道具抽离 ver1.1数量也加进去
     End If
 End Sub
 
+Sub EnterPre //拆分进BOSS第一部分
     while 1>0 //进入扎昆
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag2_1_On.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then
-            MoveTo intX+418,intY+488
-            LeftClick
-            DelayRandom 139,142
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag2_1_On.bmp",000000,1.00,0,logoX,logoY //当前在第一个标签页中
+        if logoX >= 0 Then
             break
         else
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag2_1_On.bmp|E:\MHImg\UI\Boss\Tag2_1_Off.bmp",000000,1.00,0,intX,intY
@@ -65,5 +63,45 @@ End Sub
             End If
         End If
     Wend
+End Sub
+
+Call EnterPre() //第一部分成功后logoX就保存了
+while 1>0 //进入扎昆
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\BOSS\01_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
+    if intX >= 0 Then //当前选中了,直接进入
+        MoveTo logoX+418,logoY+488
+        LeftClick
+        DelayRandom 139,142
+        break
+    else
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\BOSS\01_On.bmp|E:\MHImg\UI\BOSS\01_Off.bmp",000000,1.00,0,intX,intY //标签是否找得到
+        if intX >= 0 Then
+            MoveTo intX+100,intY
+            LeftClick
+            DelayRandom 139,142
+            break
+        else //滚轮
+            MoveTo logoX+138,logoY-17
+            Delay 200
+            MouseWheel -1
+            Delay 50
+            MoveTo logoX,logoY
+            Delay 150
+        End If
+    End If
+Wend
+
+while 1>0
+    FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Bingfeng.bmp",000000,1.00,0,intX,intY
+    if intX  >= 0 then //找传送门
+        FindPic x1,y1,x2,y2,"E:\MHImg\Teleport.bmp",000000,1.00,0,alterX,alterY	//找图
+    End If
+    if intX >= 0 Then
+        //todo:找到后干嘛
+        break
+    else
+        //todo:重复的动作
+    End If
+Wend
 
 Beep 200,500
