@@ -120,7 +120,7 @@ Sub StableBig //稳定(前面自行getXY) 大判断 Ver1.1 要8下
         End If
     Next
 End Sub
-Sub Move  //精确的移动:Ver3.13 移植了新的stable办法
+Sub Move  //精确的移动:Ver3.2  小碎步使用了for简化
     while  1 > 0
         Call GetXY()
         Call AntiJam() //防卡
@@ -299,80 +299,30 @@ Sub Move  //精确的移动:Ver3.13 移植了新的stable办法
                 if tolerance == 0 then //传送门型
                     TracePrint 传送一发
                     If intX < tarX Then //向右小碎步
-                        DelayRandom 45,52
-                        KeyDown Right
-                        DelayRandom 37,38
-                        KeyDown Up
-                        DelayRandom 70,71
-                        KeyUp Up
-                        DelayRandom 37,38
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 70,71
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 70,71
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 77,78
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 82,83
-                            KeyUp Up
-                            DelayRandom 38,39
-                        End if
-                        KeyUp Right
+                        KeyPress Right
+                        KeyPress Up
+                        for 5
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyPress Right
+                                KeyPress Up
+                            else
+                                break
+                            End If
+                        Next
                         DelayRandom 11,12
                     Else If intX > tarX Then //向左小碎步
-                        DelayRandom 45,52
-                        KeyDown Left
-                        DelayRandom 37,38
-                        KeyDown Up
-                        DelayRandom 70,71
-                        KeyUp Up
-                        DelayRandom 37,38
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 70,71
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 70,71
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 77,78
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 82,83
-                            KeyUp Up
-                            DelayRandom 38,39
-                        End if
-                        KeyUp Left
+                        KeyPress Left
+                        KeyPress Up
+                        for 5
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyPress Left
+                                KeyPress Up
+                            else
+                                break
+                            End If
+                        Next
                         DelayRandom 11,12
                     else //直接按上
                         DelayRandom 45,52
