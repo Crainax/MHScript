@@ -325,11 +325,7 @@ Sub Move  //精确的移动:Ver3.2  小碎步使用了for简化
                         Next
                         DelayRandom 11,12
                     else //直接按上
-                        DelayRandom 45,52
-                        KeyDown Up
-                        DelayRandom 120,122
-                        KeyUp Up
-                        DelayRandom 231,234
+                        KeyPress Up
                         alterX    = 0
                         alterY    = 0
                         Exit Sub
