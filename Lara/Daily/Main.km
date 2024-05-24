@@ -2978,26 +2978,29 @@ Sub After564 //结束回城
         End If
     Wend
 End Sub
-Sub HDDaily //领HD的奖励  Ver1.1 周日的问题处理,
+Sub HDDaily //领HD的奖励  Ver1.2 最后一个奖励手动领
     while 1>0
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\HD_Mark1.bmp|E:\MHImg\UI\Cash\HD_Mark2.bmp",000000,1.00,0,logoX,logoY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\HD_Mark1.bmp|E:\MHImg\UI\Cash\HD_Mark2.bmp|E:\MHImg\UI\Cash\HD_Mark3.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then //HD页面打开了
             for 4 //4次
                 while 1>0
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-                    if intX >= 0 Then //找到了OK
-                        KeyPress Enter
-                        break
-                    else
-                        MoveTo logoX+100,logoY
-                        LeftClick
-                        DelayRandom 139,142
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\HD_Mark4.bmp",000000,1.00,0,intX,intY
+                    if intX < 0 Then //传说卷手动领
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //找到了OK
+                            KeyPress Enter
+                            break
+                        else
+                            MoveTo logoX+100,logoY
+                            LeftClick
+                            DelayRandom 139,142
+                        End If
                     End If
                 Wend
             Next
 
             while 1>0 //关闭HD
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\HD_Mark1.bmp|E:\MHImg\UI\Cash\HD_Mark2.bmp",000000,1.00,0,intX,intY
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\HD_Mark1.bmp|E:\MHImg\UI\Cash\HD_Mark2.bmp|E:\MHImg\UI\Cash\HD_Mark3.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then
                     KeyPress Esc
                 else

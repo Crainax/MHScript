@@ -923,7 +923,7 @@ alterY = 0            //备用地点
 facing = 0            //面向初始归0
 
 
-Sub ClearDialog //清除标准对话框(外面循环,这里多次调用)
+Sub ClearDialog //清除标准对话框 一旦有,就史诗级清除
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY //停止对话
     if intX >= 0 Then //有第一个StopChat才会按
         wJam = 0 //放在循环外面位置
