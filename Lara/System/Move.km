@@ -495,14 +495,15 @@ while 1 > 0
     else //大写键亮的话就获取点
         FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY	//找图
-        FindPic x1,y1,x2,y2,"E:\MHImg\Teleport.bmp",000000,1.00,0,alterX,alterY	//找图
+        FindPic x1,y1,x2,y2,"E:\MHImg\NPC.bmp",000000,1.00,0,alterX,alterY	//找图
+        //FindPic x1,y1,x2,y2,"E:\MHImg\Teleport.bmp",000000,1.00,0,alterX,alterY	//找图
         If intX >= 0 Then
             intX = intX - logoX
             intY = intY - logoY
             alterX = alterX - logoX
             alterY = alterY - logoY
-            TracePrint [charX & intX & ,charY & intY & ][teleX & intX & ,teleY & intY & ]
-            MsgBox [charX & intX & ,charY & intY & ][teleX & alterX & ,teleY & alterY & ]
+            TracePrint [charX & intX & ,charY & intY & ][NPC & intX & ,teleY & intY & ]
+            MsgBox [charX & intX & ,charY & intY & ][NPC & alterX & ,teleY & alterY & ]
         else
             MsgBox "DontFind"	 //弹窗
         End If

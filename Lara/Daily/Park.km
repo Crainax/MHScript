@@ -85,39 +85,6 @@ Sub AntiJam //一般跟随GetXY后用
     End If
 End Sub
 
-Sub JumpAttack()
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\G.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then
-        KeyDown G
-        DelayRandom 333,335
-        KeyUp G
-    else
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\C2.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then
-            KeyDown C
-            DelayRandom 583,585
-            KeyUp C
-        else
-            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\H.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then
-                KeyDown H
-                DelayRandom 783,785
-                KeyUp H
-            else
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\Y.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then
-                    KeyDown Y
-                    DelayRandom 583,585
-                    KeyUp Y
-                else //普攻
-                    KeyDown F
-                    DelayRandom 313,315
-                    KeyUp F
-                End If
-            End If
-        End If
-    End If
-End Sub
 Sub Stable //稳定(前面自行getXY)
     cY = intY
     for 3 //确定不动了再跳
