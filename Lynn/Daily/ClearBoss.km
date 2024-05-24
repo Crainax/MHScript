@@ -648,6 +648,9 @@ Sub Boss1 //打扎昆
             Delay 200
         End If
     Wend
+    for 3
+        Beep 500,200
+    Next
     Pause
     Call NewTeam() //强制退图
 
@@ -684,13 +687,110 @@ Sub Boss1 //打扎昆
                 yTolerance = 2
                 Call Move_B()
                 KeyPress Up
+                Delay 500
             End If
         else //等待进入地图中
             Delay 200
         End If
     Wend
 End Sub
+Sub Boss2 //打老麦
+    Call EnterPre() //第一部分成功后logoX就保存了
+    while 1>0 //进入老麦
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\2\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
+        if intX >= 0 Then //当前选中了,直接进入
+            MoveTo logoX+418,logoY+488
+            LeftClick
+            DelayRandom 139,142
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\2\Mark_Off.bmp|E:\MHImg\UI\Boss\2\Mark_On.bmp",000000,1.00,0,intX,intY //标签是否找得到
+            if intX >= 0 Then
+                MoveTo intX+100,intY
+                LeftClick
+                DelayRandom 139,142
+            else //滚轮
+                MoveTo logoX+80,logoY-17
+                Delay 200
+                MouseWheel -1
+                Delay 50
+                MoveTo logoX,logoY
+                Delay 150
+            End If
+        End If
+    Wend
 
+// [charX15,charY79][teleX-47,teleY81] //去
+// [charX-46,charY82][teleX-123,teleY-1756] //回
+
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Boss_2.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then //这才是走出了地图
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        break
+                    End If
+                else
+                    tarX      = 15
+                    tarY      = 79
+                    Call TeleportChat() //传送门->无限循环对话框
+                    //对话框出来后
+                    while 1>0
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\2\Mark1.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //选择一般难度
+                            MoveTo intX+50,intY+5
+                            LeftClick
+                            DelayRandom 139,142
+                            Call ClearDialog() //清除标准对话框
+                            break
+                        End If
+                    Wend
+                End If
+            Wend
+
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+    for 3
+        Beep 500,200
+    Next
+    Pause
+    Call NewTeam() //强制退图
+
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Boss_2.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then //这才是走出了地图
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        break
+                    End If
+                else
+                    tarX      = -46
+                    tarY      = 82
+                    tolerance = -1
+                    yTolerance = 2
+                    Call Move_B()
+                    KeyPress Up
+                    Delay 500
+                End If
+            Wend
+
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+End Sub
+
+    Call Boss2()
 
 for 3
     Beep 100,200

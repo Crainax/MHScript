@@ -42,7 +42,7 @@ y3     = intY - 260
 xEnd   = intX
 yEnd   = intY
 
-Sub HDDaily //领HD的奖励  Ver1.2 最后一个奖励手动领
+Sub HDDaily //领HD的奖励  Ver1.3 最后一个奖励手动领
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\HD_Mark1.bmp|E:\MHImg\UI\Cash\HD_Mark2.bmp|E:\MHImg\UI\Cash\HD_Mark3.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then //HD页面打开了
@@ -59,6 +59,8 @@ Sub HDDaily //领HD的奖励  Ver1.2 最后一个奖励手动领
                             LeftClick
                             DelayRandom 139,142
                         End If
+                    else
+                        break
                     End If
                 Wend
             Next
@@ -240,6 +242,8 @@ Sub MileageDaily //领取里程 ver1.2"下个"问题
     Wend
 End Sub
 
+Call HDDaily()
+Call LegionDaily()
 Call MileageDaily()
 
 for 3
