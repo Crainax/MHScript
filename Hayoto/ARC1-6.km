@@ -592,6 +592,12 @@ Sub StandSpell //原地放技能 v1.1更新了一点东西
                                 tolerance = 4
                                 Call Move()
                                 Delay 300
+                            Else if map == 6 then
+                                tarX = 30
+                                tarY = 115
+                                tolerance = 4
+                                Call Move()
+                                Delay 300
                             End If
                             KeyPress B
                             DelayRandom 863,872
@@ -724,6 +730,10 @@ EndSub
 
 Sub ConfirmMap //确认当前地图
     map = 0
+    FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC6.bmp",000000,1.00,0,intX,intY
+    if intX >= 0  //六岛(镜光3)
+        map = 6
+    End If
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC4.bmp",000000,1.00,0,intX,intY
     if intX >= 0  //四岛(深渊)
         map = 4
@@ -865,9 +875,33 @@ while 1 > 0
             Call StandSpell()
             Delay 300
         End If
+    else if map == 6 then
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
+            tarX = -34
+            tarY = 98
+            tolerance = 3
+            Call Move()
+            DelayRandom 56,58
+            KeyPress Left
+            KeyPress 1
+            DelayRandom 712,721
+            fountainTime = GetTimeStamp()
+        else //左右跳A
+            call GetXY()
+            if intY != 104 or intX < (4-6) or intX > (4+6) then //
+                tarX       = 4
+                tarY       = 104
+                tolerance  = 4
+                yTolerance = 0
+                Call Move()
+            End If
+            Call StandSpell()
+            Delay 300
+        End If
     else
-        //MsgBox "Dont Regonize the map" //不能用这个,V3干扰
-        Delay 200
+        MsgBox "Dont Regonize the map" //不能用这个,V3干扰
+        //Delay 200
     End If
     Call ReleaseRune() //定期解轮
 Wend
