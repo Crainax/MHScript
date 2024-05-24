@@ -720,9 +720,6 @@ Sub Boss2 //打老麦
         End If
     Wend
 
-// [charX15,charY79][teleX-47,teleY81] //去
-// [charX-46,charY82][teleX-123,teleY-1756] //回
-
     while 1>0 //到了地图
         FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_2.bmp",000000,1.00,0,intX,intY
         if intX >= 0 then //到地图里了
@@ -789,6 +786,7 @@ Sub Boss2 //打老麦
         End If
     Wend
 End Sub
+
 
     Call Boss2()
 
