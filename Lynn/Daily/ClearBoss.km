@@ -1431,35 +1431,43 @@ Sub Boss2 //打老麦
     while 1>0 //到了地图
         FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_2.bmp",000000,1.00,0,intX,intY
         if intX >= 0 then //到地图里了
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then
-                break
-            else
-                tarX      = 15
-                tarY      = 79
-                Call TeleportChat() //传送门->无限循环对话框
-                //对话框出来后
-                while 1>0
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\2\Mark1.bmp",000000,1.00,0,intX,intY
-                    if intX >= 0 Then //选择一般难度
-                        MoveTo intX+50,intY+5
-                        LeftClick
-                        DelayRandom 139,142
-                        Call ClearDialog() //清除标准对话框
-                        break
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //出现倒计时代表进来了
+                    break
+                else
+                    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then //防止黑屏时继续move
+                        FindPic x1,y1,x2,y2,"E:\MHImg\Lynn\Shift.bmp",000000,1.00,0,intX,intY
+                        tarX      = 15
+                        tarY      = 79
+                        Call TeleportChat() //传送门->无限循环对话框
+                        //对话框出来后
+                        while 1>0
+                            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\2\Mark1.bmp",000000,1.00,0,intX,intY
+                            if intX >= 0 Then //选择一般难度
+                                MoveTo intX+50,intY+5
+                                LeftClick
+                                DelayRandom 139,142
+                                Call ClearDialog() //清除标准对话框
+                                Delay 500
+                                break
+                            End If
+                        Wend
                     End If
-                Wend
-            End If
+                End If
+            Wend
+            break
         else //等待进入地图中
             Delay 200
         End If
     Wend
 
-    for 10 //平A6次就够了
+    for 6 //平A6次就够了
         Call RightJumpF()
     Next
     KeyPress Left
-    for 10 //平A6次就够了
+    for 6 //平A6次就够了
         Call LeftJumpF()
     Next
     Call NewTeam() //强制退图
@@ -1604,6 +1612,120 @@ Sub Boss3 //希拉
         End If
     Wend
 End Sub
+Sub Boss4 //4傻
+    Call EnterPre() //第一部分成功后logoX就保存了
+    while 1>0 //进入希拉
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\4\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
+        if intX >= 0 Then //当前选中了,直接进入
+            MoveTo logoX+418,logoY+488
+            LeftClick
+            DelayRandom 139,142
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\4\Mark_Off.bmp|E:\MHImg\UI\Boss\4\Mark_On.bmp",000000,1.00,0,intX,intY //标签是否找得到
+            if intX >= 0 Then
+                MoveTo intX+100,intY
+                LeftClick
+                DelayRandom 139,142
+            else //滚轮
+                MoveTo logoX+80,logoY-17
+                Delay 200
+                MouseWheel -1
+                Delay 50
+                MoveTo logoX,logoY
+                Delay 150
+            End If
+        End If
+    Wend
+
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Lutabis.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+            if intX < 0 Then //反向Loading
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    break //进入第一个地图完毕
+                End If
+            else
+                tarX      = 67
+                tarY      = 85
+                Call TeleportChat() //传送门->无限循环对话框
+                //对话框出来后
+                Call ClearDialog() //清除标准对话框 (默认难度就是普通了)
+                break
+            End If
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+
+    while 1>0 //过五关斩六将
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //地图加载完毕
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Teleport.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //地图有传送门
+                //原地右A
+                KeyPress Right
+                KeyPress F
+                Delay 300
+                //先到传送门旁边(A过去)
+                tarX      = 26
+                tarY      = 84
+                tolerance = 4
+                yTolerance = 2
+                Call Move()
+                //再纯走过去传送门
+                tarX      = 55
+                tarY      = 84
+                tolerance = -1
+                yTolerance = 2
+                Call Move_B()
+                KeyPress Up
+                Delay 500
+            else //地图没传送门,却有Me,结束
+                break
+            End If
+        else //地图加载中
+            Delay 200
+        End If
+    Wend
+
+    for 3 //平A3次就够了
+        Call RightJumpF()
+    Next
+    KeyPress Left
+    for 3 //平A3次就够了
+        Call LeftJumpF()
+    Next
+    Call NewTeam() //强制退图
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_3.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Boss_3.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then //这才是走出了地图
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        break
+                    End If
+                else
+                    tarX      = -24
+                    tarY      = 79
+                    tolerance = -1
+                    yTolerance = 2
+                    Call Move_B()
+                    KeyPress Up
+                    Delay 500
+                End If
+            Wend
+
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+End Sub
 
 GetScreenResolution intX, intY
 x1      = intX - 1440
@@ -1616,6 +1738,7 @@ xEnd    = intX
 yEnd    = intY
 SpellOK = 0
 patrol  = 0
+Call Boss1()
 Call Boss3()
 
 for 3

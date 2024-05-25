@@ -1042,6 +1042,9 @@ Sub Park //开始怪公
 
     Call ParkStart()
     Call ParkStart() //两次公园
+    Call ParkStart() //两次公园
+    Call ParkStart() //两次公园
+    Call ParkStart() //两次公园
 
 
     while 1>0 //离开地图
