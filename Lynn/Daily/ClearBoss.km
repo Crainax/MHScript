@@ -787,6 +787,15 @@ Sub Boss2 //打老麦
     Wend
 End Sub
 
+GetScreenResolution intX, intY
+x1 = intX - 1440
+y1 = intY - 950
+x2 = intX - 1140
+y2 = intY - 600
+x3 = intX - 640
+y3 = intY - 260
+xEnd = intX
+yEnd = intY
 
     Call Boss2()
 
