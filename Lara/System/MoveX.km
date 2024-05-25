@@ -368,7 +368,7 @@ Sub LeftJumpX //左跳抽离
         DelayRandom 256,261
     End If
 End Sub
-Sub Move_X  //寻敌  (Ver1.2 找图方式有变)
+Sub Move_X  //寻敌  (Ver1.3 近距离会发呆的BUG,左右移后直接goto)
     tolerance = 4
     yTolerance = 2
     while 1 > 0
@@ -456,30 +456,51 @@ Sub Move_X  //寻敌  (Ver1.2 找图方式有变)
             Call LeftJumpX()
         Else If intX > (tarX+24) and intY > (tarY+25) Then //向左二段跳(Y相差不大就12X,Y太大就24)
             Call LeftJumpX()
-        Else If intX < (tarX-tolLoc) and intY > (tarY+25) Then //向右走(必须钩子情况才左右走)
-            Call AntiJam()
-            KeyDown Right
-            a = (tarX - tolLoc - intX) * 52
-            if a < 52 then
-                a = 52
-            else if a > 1800 then
-                a = 1800
+        Else If intX < (tarX-tolLoc) Then
+            if intY > (tarY+14) then //向右走(必须钩子情况才左右走)
+                Call AntiJam()
+                KeyDown Right
+                a = (tarX - tolLoc - intX) * 52
+                if a < 52 then
+                    a = 52
+                else if a > 1800 then
+                    a = 1800
+                End If
+                Delay a
+                KeyUp Right
+                Goto HighJump
+            else //小跳平A
+                KeyPress Right
+                KeyPress Space
+                KeyDown F
+                DelayRandom 91,92
+                KeyUp F
+                Delay 500
             End If
-            Delay a
-            KeyUp Right
-        Else If intX > (tarX+tolLoc) and intY > (tarY+25) Then //向左走(必须钩子情况才左右走)
-            Call AntiJam()
-            KeyDown Left
-            a = (intX - tarX - tolLoc) * 52
-            if a < 52 then
-                a = 52
-            else if a > 1800 then
-                a = 1800
+        Else If intX > (tarX+tolLoc) Then //向左走(必须钩子情况才左右走)
+            if intY > (tarY+14) then //向右走(必须钩子情况才左右走)
+                Call AntiJam()
+                KeyDown Left
+                a = (tarX - tolLoc - intX) * 52
+                if a < 52 then
+                    a = 52
+                else if a > 1800 then
+                    a = 1800
+                End If
+                Delay a
+                KeyUp Left
+                Goto HighJump
+            else //小跳平A
+                KeyPress Left
+                KeyPress Space
+                KeyDown F
+                DelayRandom 91,92
+                KeyUp F
+                Delay 500
             End If
-            Delay a
-            KeyUp Left
         else
             If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
+                Rem HighJump
                 Call StableBig()
                 if intY == cY then
                     if tarX < intX then

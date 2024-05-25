@@ -1,0 +1,6 @@
+KeyPress Right
+KeyPress Space
+KeyDown F
+DelayRandom 91,92
+KeyUp F
+Delay 500

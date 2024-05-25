@@ -967,7 +967,7 @@ End Sub
 // (停止对话的是)  下个
 
 //这里仅2次
-Sub ParkStart //怪公的一次循环
+Sub ParkStart //怪公的一次循环 Ver1.1修复了一点BUG
     while 1>0 //进去
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then //离开
@@ -998,8 +998,6 @@ Sub ParkStart //怪公的一次循环
             KeyPress Up
         End If
     Wend
-    Call Loading()
-
 
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY
@@ -1023,6 +1021,8 @@ Sub ParkStart //怪公的一次循环
                         tolerance = -1
                         Call Move_B() //仅移动
                     End If
+                    KeyPress Up
+                    KeyPress Left//直接使用大招按2次
                     KeyPress Up
                 else //可能人挡住了(左走一点)
                     KeyDown Left
