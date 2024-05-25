@@ -681,7 +681,7 @@ Sub RightJumpF //右平A(跳)
     KeyDown F
     Delay 103
     KeyUp F
-    Delay 325
+    Delay 345
 End Sub
 Sub LeftJumpF //左平A(跳)
     DelayRandom 15,25
@@ -700,7 +700,7 @@ Sub LeftJumpF //左平A(跳)
     KeyDown F
     Delay 103
     KeyUp F
-    Delay 325
+    Delay 345
 End Sub
 
 Sub CloseBag //关闭装备栏
@@ -810,7 +810,7 @@ Sub ClearDialog //清除标准对话框 一旦有,就史诗级清除
                 End If
             else
                 wJam = 0 //放在成功的位置
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp",000000,1.00,0,intX,intY
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp|E:\MHImg\UI\Dialog\No2B.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then //否-->是
                     MoveTo intX-50,intY
                     LeftClick
@@ -1242,9 +1242,14 @@ Sub Boss3 //希拉 Ver1.1
         End If
     Wend
 End Sub
-Sub Boss4 //4傻
+Sub Boss4 //四傻
+    // [charX56,charY102][teleX-38,teleY101] //贝伦
+    // [charX26,charY102][teleX-38,teleY101] //公鸡
+    // [charX-7,charY102][teleX-38,teleY101] //小丑
+    // [charX-38,charY102][teleX-8,teleY101] //女皇
+    // [charX-52,charY102][teleX-38,teleY101] //离开
     Call EnterPre() //第一部分成功后logoX就保存了
-    while 1>0 //进入希拉
+    while 1>0 //进入四傻
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\4\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
         if intX >= 0 Then //当前选中了,直接进入
             MoveTo logoX+418,logoY+488
@@ -1268,66 +1273,63 @@ Sub Boss4 //4傻
         End If
     Wend
 
-    while 1>0 //到了地图
+    while 1>0 //到了地图->贝伦开始
         FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Lutabis.bmp",000000,1.00,0,intX,intY
         if intX >= 0 then //到地图里了
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-            if intX < 0 Then //反向Loading
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then
-                    break //进入第一个地图完毕
+            tarX      = 56
+            tarY      = 102
+            Call TeleportChat() //传送门->无限循环对话框
+            //对话框出来后
+            Call ClearDialog() //清除标准对话框 (默认难度就是普通了)
+
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //确认进到地图成功了再退出循环
+                    break
                 End If
-            else
-                tarX      = 67
-                tarY      = 85
-                Call TeleportChat() //传送门->无限循环对话框
-                //对话框出来后
-                Call ClearDialog() //清除标准对话框 (默认难度就是普通了)
-                break
-            End If
+            Wend
+            break
         else //等待进入地图中
             Delay 200
         End If
     Wend
 
-    while 1>0 //过五关斩六将
-        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then //地图加载完毕
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Teleport.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then //地图有传送门
-                //原地右A
-                KeyPress Right
-                KeyPress F
-                Delay 300
-                //先到传送门旁边(A过去)
-                tarX      = 26
-                tarY      = 84
-                tolerance = 4
-                yTolerance = 2
-                Call Move()
-                //再纯走过去传送门
-                tarX      = 55
-                tarY      = 84
-                tolerance = -1
-                yTolerance = 2
-                Call Move_B()
+
+    KeyPress Left
+    KeyPress F
+    Delay 600
+    KeyPress Right
+    Delay 50
+    for 7
+        Call RightJumpF()
+    Next
+
+    a = 0
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            Call ClearDialog()
+            break
+        else
+            a = a + 1
+            if a >= 20 then
+                Call RightJumpF()
+                a = 0
+            else
+                KeyPress Left
                 KeyPress Up
-                Delay 500
-            else //地图没传送门,却有Me,结束
-                break
             End If
-        else //地图加载中
-            Delay 200
         End If
     Wend
 
-    for 3 //平A3次就够了
-        Call RightJumpF()
+    for 3
+        Beep 100,200
+        Beep 200,200
+        Beep 300,200
+        Beep 400,200
+        Beep 500,200
     Next
-    KeyPress Left
-    for 3 //平A3次就够了
-        Call LeftJumpF()
-    Next
+    Pause
     Call NewTeam() //强制退图
     while 1>0 //到了地图
         FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_3.bmp",000000,1.00,0,intX,intY
@@ -1340,13 +1342,9 @@ Sub Boss4 //4傻
                         break
                     End If
                 else
-                    tarX      = -24
-                    tarY      = 79
-                    tolerance = -1
-                    yTolerance = 2
-                    Call Move_B()
-                    KeyPress Up
-                    Delay 500
+                    tarX      = -52
+                    tarY      = 102
+                    Call MoveBTele()
                 End If
             Wend
 
@@ -1356,6 +1354,7 @@ Sub Boss4 //4傻
         End If
     Wend
 End Sub
+
 
 GetScreenResolution intX, intY
 x1 = intX - 1440
@@ -1367,6 +1366,7 @@ y3 = intY - 260
 xEnd = intX
 yEnd = intY
 
+Call Boss4()
 
 for 3
     Beep 100,200

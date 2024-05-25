@@ -681,7 +681,7 @@ Sub ClearDialog //清除标准对话框(外面循环,这里多次调用)
                 End If
             else
                 wJam = 0 //放在成功的位置
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp",000000,1.00,0,intX,intY
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp|E:\MHImg\UI\Dialog\No2B.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then //否-->是
                     MoveTo intX-50,intY
                     LeftClick
@@ -723,7 +723,7 @@ Sub ParkStart //怪公的一次循环
                 Call ClearDialog() //清除标准对话框
                 break
             else
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp",000000,1.00,0,intX,intY
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp|E:\MHImg\UI\Dialog\No2B.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then //否-->是
                     MoveTo intX-50,intY
                     LeftClick
