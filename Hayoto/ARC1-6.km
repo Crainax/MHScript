@@ -900,8 +900,8 @@ while 1 > 0
             Delay 300
         End If
     else
-        MsgBox "Dont Regonize the map" //不能用这个,V3干扰
-        //Delay 200
+        //MsgBox "Dont Regonize the map" //不能用这个,V3干扰
+        Delay 200
     End If
     Call ReleaseRune() //定期解轮
 Wend
