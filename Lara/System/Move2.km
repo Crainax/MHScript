@@ -563,7 +563,7 @@ End Sub
 //JumpAttack改DelayRandom 313,315就行了
 //支持负数修改GetXYNega
 //-1的引路区要重做
-Sub Move_B  //纯移动不放技能(Ver3.2+2)
+Sub Move_B  //纯移动不放技能(Ver3.2+3)
     while  1 > 0
         Call GetXY()
         Call AntiJam() //防卡
@@ -572,80 +572,7 @@ Sub Move_B  //纯移动不放技能(Ver3.2+2)
         else  //速走的默认为4
             tolLoc = 2
         End If
-        if intY > tarY +2 and intY <= tarY + 11 and intX >= (tarX-26) and intX <=(tarX+26) then //[特殊情况1]高度小于等于11
-            Call Stable()
-            if intY == cY then
-                if intX < (tarX-4) then //右直跳
-                    TracePrint 右直跳
-                    Delay 77
-                    KeyDown Right
-                    Delay 101
-                    KeyDown Space
-                    Delay 101
-                    KeyUp Space
-                    Delay 183
-                    KeyDown Space
-                    Delay 113
-                    KeyUp Space
-                    Delay 42
-                    KeyUp Right
-                    Delay 500
-                else if intX > (tarX+4) //左直跳
-                    TracePrint 左直跳
-                    Delay 77
-                    KeyDown Left
-                    Delay 101
-                    KeyDown Space
-                    Delay 101
-                    KeyUp Space
-                    Delay 183
-                    KeyDown Space
-                    Delay 113
-                    KeyUp Space
-                    Delay 42
-                    KeyUp Left
-                    Delay 500
-                else if intX <= tarX then //左反墙跳
-                    TracePrint 左反墙跳
-                    Delay 45
-                    KeyDown Left
-                    Delay 119
-                    KeyDown Space
-                    Delay 122
-                    KeyUp Space
-                    Delay 91
-                    KeyUp Left
-                    Delay 64
-                    KeyDown Right
-                    Delay 76
-                    KeyDown Space
-                    Delay 131
-                    KeyUp Space
-                    Delay 112
-                    KeyUp Right
-                    Delay 500
-                else //右反墙跳
-                    TracePrint 右反墙跳
-                    Delay 45
-                    KeyDown Right
-                    Delay 119
-                    KeyDown Space
-                    Delay 122
-                    KeyUp Space
-                    Delay 91
-                    KeyUp Right
-                    Delay 64
-                    KeyDown Left
-                    Delay 76
-                    KeyDown Space
-                    Delay 131
-                    KeyUp Space
-                    Delay 112
-                    KeyUp Left
-                    Delay 500
-                end if
-            End If
-        else if intX < (tarX-24) Then //向右二段跳
+        if intX < (tarX-24) Then //向右二段跳
             TracePrint 右跳
             DelayRandom 15,25
             KeyDown Right
