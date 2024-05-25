@@ -1233,13 +1233,6 @@ Sub Boss2 //打老麦
     Wend
 End Sub
 Sub Boss3 //希拉
-// [charX-22,charY85][teleX68,teleY84] 第一图左(左传)
-// [charX67,charY85][teleX-22,teleY84] 第一图右(右传)
-// [charX56,charY84][teleX-72,teleY83] 走廊1/2(传送点)
-// [charX26,charY84][teleX-72,teleY83] 走廊1/2(失败左移的点)
-// [charX-62,charY84][teleX-107,teleY-1759]开打,有NPC
-// [charX-24,charY79][teleX-81,teleY-1759] 离开地图的地方
-//走廊1
     Call EnterPre() //第一部分成功后logoX就保存了
     while 1>0 //进入希拉
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\3\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
