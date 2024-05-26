@@ -637,7 +637,7 @@ Sub LeftJumpX //左跳抽离
         DelayRandom 256,261
     End If
 End Sub
-Sub Move_X  //寻敌  (Ver1.3 近距离会发呆的BUG,左右移后直接goto)
+Sub Move_X  //寻敌  (Ver1.31 近距离会发呆的BUG,左右移后直接goto)
     tolerance = 4
     yTolerance = 2
     while 1 > 0
@@ -769,7 +769,6 @@ Sub Move_X  //寻敌  (Ver1.3 近距离会发呆的BUG,左右移后直接goto)
             End If
         else
             If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
-                Rem HighJump
                 Call StableBig()
                 if intY == cY then
                     if tarX < intX then
@@ -801,6 +800,7 @@ Sub Move_X  //寻敌  (Ver1.3 近距离会发呆的BUG,左右移后直接goto)
                     Wend
                 End If
             Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上跳(Y轴是用相反比较符)
+                Rem HighJump
                 Call Stable()
                 if intY == cY then
                     if tarX < intX then
