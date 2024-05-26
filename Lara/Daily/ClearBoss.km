@@ -681,7 +681,7 @@ Sub RightJumpF //右平A(跳)
     KeyDown F
     Delay 103
     KeyUp F
-    Delay 365
+    Delay 395
 End Sub
 Sub LeftJumpF //左平A(跳)
     DelayRandom 15,25
@@ -700,7 +700,7 @@ Sub LeftJumpF //左平A(跳)
     KeyDown F
     Delay 103
     KeyUp F
-    Delay 365
+    Delay 395
 End Sub
 
 Sub CloseBag //关闭装备栏
@@ -983,14 +983,6 @@ Sub Boss1 //打扎昆 Ver1.1 修复出门的问题
                 DelayRandom 200,210
             Wend
 
-            //整理背包
-            MoveTo logoX+117,logoY+368
-            LeftClick
-            DelayRandom 139,142
-            MoveTo logoX+147,logoY+391
-            LeftClick
-            DelayRandom 539,542
-
             Call CloseBag()
             break
         else
@@ -1010,7 +1002,7 @@ Sub Boss1 //打扎昆 Ver1.1 修复出门的问题
     Wend
 
     //原地平A
-    for 15
+    for 10
         KeyPress F //放一个技能就够了
         Delay 300
     Next
@@ -1242,6 +1234,183 @@ Sub Boss3 //希拉 Ver1.1
         End If
     Wend
 End Sub
+Sub Boss4Temp_1 //做好后的暂时存放点
+
+    while 1>0 //到了地图->贝伦开始
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Lutabis.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            tarX      = 56
+            tarY      = 102
+            Call TeleportChat() //传送门->无限循环对话框
+            //对话框出来后
+            Call ClearDialog() //清除标准对话框 (默认难度就是普通了)
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+
+
+    //----------------------------------------------------------------
+
+     //搜索20次是否可以点击
+    a = 1
+    for 20
+        MoveTo logoX+786-a*69,logoY+400
+        DelayRandom 39,42
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\4\Mouse_F1.bmp|E:\MHImg\UI\Boss\4\Mouse_F2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //找到点击
+            for 2
+                LeftDoubleClick
+            Next
+            break
+        End If
+        a = a + 1
+    Next
+
+    Delay 3000
+    KeyPress C
+    Delay 500
+    KeyDown R
+    Delay 8000
+    KeyUp R
+
+End Sub
+Sub Boss4Temp_2 //做好后的暂时存放点
+
+    while 1>0 //到了地图->斑斑
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Lutabis.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            tarX      = 26
+            tarY      = 102
+            Call TeleportChat() //传送门->无限循环对话框
+            //对话框出来后
+            Call ClearDialog() //清除标准对话框 (默认难度就是普通了)
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+
+    //----------------------------------------------------------------
+
+    //搜索20次是否可以点击
+    a = 1
+    for 20
+        MoveTo logoX+786-a*69,logoY+510
+        DelayRandom 39,42
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\4\Mouse_F1.bmp|E:\MHImg\UI\Boss\4\Mouse_F2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //找到点击
+            for 2
+                LeftDoubleClick
+            Next
+            break
+        End If
+        a = a + 1
+    Next
+
+    Delay 2200
+    KeyPress B
+    Delay 5000
+End Sub
+Sub Boss4Temp_3 //做好后的暂时存放点
+
+    while 1>0 //到了地图->小丑
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Lutabis.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            tarX      = -7
+            tarY      = 102
+            Call TeleportChat() //传送门->无限循环对话框
+            //对话框出来后
+            Call ClearDialog() //清除标准对话框 (默认难度就是普通了)
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+
+    //----------------------------------------------------------------
+
+    //先无敌,再右跳,再接一个日江
+    DelayRandom 39,42
+    KeyDown '
+    Delay 1000
+    KeyUp '
+    DelayRandom 39,42
+    Call RightJumpF()
+    Delay 200
+    KeyPress V
+
+    for 3
+        Call RightJumpF() //跳到右边墙角
+    Next
+    Delay 200
+    Call LeftJumpF() //跳到右边墙角
+    Delay 200
+    Call LeftJumpF() //跳到右边墙角
+    Delay 200
+    KeyPress ;
+    Delay 500
+    KeyPress Right
+    Delay 200
+    KeyPress ;
+    Delay 1500
+
+End Sub
+Sub RepeatBoss4 //四傻的重复部分
+    while 1>0 //确保人到了
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //确认进到地图成功了再退出循环
+            break
+        End If
+    Wend
+    //清地图小怪
+    KeyPress Left
+    KeyPress F
+    Delay 700
+    KeyPress Right
+    Delay 50
+    for 7
+        Call RightJumpF()
+        Delay 150
+    Next
+
+    a = 0
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            Call ClearDialog()
+            break
+        else
+            a = a + 1
+            if a >= 30 then
+                Call RightJumpF()
+                a = 0
+            else
+                KeyPress Left
+                KeyPress Up
+                Delay 150
+                KeyPress Space
+                Delay 200
+                KeyPress Up
+                Delay 500
+            End If
+        End If
+    Wend
+
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then //加载中
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,logoX,logoY
+                if logoX >= 0 Then //加载完毕
+                    break
+                End If
+            Wend
+            break
+        End If
+    Wend
+End Sub
 Sub Boss4 //四傻
     // [charX56,charY102][teleX-38,teleY101] //贝伦
     // [charX26,charY102][teleX-38,teleY101] //公鸡
@@ -1273,98 +1442,67 @@ Sub Boss4 //四傻
         End If
     Wend
 
-    while 1>0 //到了地图->贝伦开始
+    while 1>0 //到了地图->皇后
         FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Lutabis.bmp",000000,1.00,0,intX,intY
         if intX >= 0 then //到地图里了
-            tarX      = 56
+            tarX      = -38
             tarY      = 102
             Call TeleportChat() //传送门->无限循环对话框
             //对话框出来后
             Call ClearDialog() //清除标准对话框 (默认难度就是普通了)
-
-            while 1>0
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //确认进到地图成功了再退出循环
-                    break
-                End If
-            Wend
             break
         else //等待进入地图中
             Delay 200
         End If
     Wend
 
-    //清地图小怪
-    KeyPress Left
-    KeyPress F
-    Delay 700
-    KeyPress Right
-    Delay 50
-    for 7
-        Call RightJumpF()
-    Next
-
-    a = 0
-    while 1>0
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then
-            Call ClearDialog()
-            break
-        else
-            a = a + 1
-            if a >= 20 then
-                Call RightJumpF()
-                a = 0
-            else
-                KeyPress Left
-                KeyPress Up
-            End If
-        End If
-    Wend
-
-    while 1>0
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
-        if intX < 0 Then //加载中
-            while 1>0
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,logoX,logoY
-                if logoX >= 0 Then //加载完毕
-                    break
-                End If
-            Wend
-            break
-        End If
-    Wend
+    Call RepeatBoss4() //四傻的重复部分
 
     //搜索20次是否可以点击
     a = 1
     for 20
-        MoveTo logoX+786-a*69,logoY+400
+        MoveTo logoX+786-a*69,logoY+460
         DelayRandom 39,42
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\4\Mouse_F1.bmp|E:\MHImg\UI\Boss\4\Mouse_F2.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then //找到点击
-            for 2
+            for 6
                 LeftDoubleClick
+                Delay 300
             Next
             break
         End If
         a = a + 1
     Next
 
-    Delay 3000
+    Delay 100
     KeyPress C
-    Delay 500
-    KeyDown R
-    Delay 8000
-    KeyUp R
+    Delay 5000
 
+
+    for 3
+        Call RightJumpF() //跳到右边墙角
+    Next
+    Delay 200
+    Call LeftJumpF() //跳到右边墙角
+    Delay 200
+    Call LeftJumpF() //跳到右边墙角
+    Delay 200
+    KeyPress ;
+    Delay 500
+    KeyPress Right
+    Delay 200
+    KeyPress ;
+    Delay 1500
+
+    //这里也是重复的部分
+    Call RightJumpF()
     for 3
         Call RightJumpF()
         Call LeftJumpF()
-        Call LeftJumpF()
-        Call RightJumpF()
     Next
-
     Call NewTeam() //强制退图
+
+
     while 1>0 //到了地图
         FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Lutabis.bmp",000000,1.00,0,intX,intY
         if intX >= 0 then //到地图里了
@@ -1400,7 +1538,9 @@ y3 = intY - 260
 xEnd = intX
 yEnd = intY
 
-Call Boss4()
+Call Boss1()
+Call Boss2()
+Call Boss3()
 
 for 3
     Beep 100,200
