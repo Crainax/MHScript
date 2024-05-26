@@ -498,7 +498,7 @@ Sub XAttack //放技能Special版(Ver2.5+1)不确定的地图不放D武公枫祝
         End If
     End If
 End Sub
-Sub Move_X //寻敌法 Ver1.1
+Sub Move_X //寻敌法 Ver1.2 修复近距离,还有不上跳的问题
     cX = -100
     cY = 0
     tolerance = 4
@@ -556,27 +556,45 @@ Sub Move_X //寻敌法 Ver1.1
                 Call Stable() //稳定Y轴再继续
             End If
         Else If intX < (tarX-tolLoc) Then //向右走
-            Call AntiJam()
-            KeyDown Right
-            a = (tarX - tolLoc - intX) * 52
-            if a < 52 then
-                a = 52
-            else if a > 1800 then
-                a = 1800
+            if intY > (tarY+14) then //向右走(必须钩子情况才左右走)
+                Call AntiJam()
+                KeyDown Right
+                a = (tarX - tolLoc - intX) * 52
+                if a < 52 then
+                    a = 52
+                else if a > 1800 then
+                    a = 1800
+                End If
+                Delay a
+                KeyUp Right
+                Goto HighJump
+            else //平A右边
+                KeyPress Right
+                KeyDown F
+                DelayRandom 101,103
+                KeyUp F
+                DelayRandom 775,787
             End If
-            Delay a
-            KeyUp Right
         Else If intX > (tarX+tolLoc) Then //向左走
-            Call AntiJam()
-            KeyDown Left
-            a = (intX - tarX - tolLoc) * 52
-            if a < 52 then
-                a = 52
-            else if a > 1800 then
-                a = 1800
+            if intY > (tarY+14) then //向右走(必须钩子情况才左右走)
+                Call AntiJam()
+                KeyDown Left
+                a = (tarX - tolLoc - intX) * 52
+                if a < 52 then
+                    a = 52
+                else if a > 1800 then
+                    a = 1800
+                End If
+                Delay a
+                KeyUp Left
+                Goto HighJump
+            else //平A右边
+                KeyPress Left
+                KeyDown F
+                DelayRandom 101,103
+                KeyUp F
+                DelayRandom 775,787
             End If
-            Delay a
-            KeyUp Left
         else //到Y方向的了
             If intY < (tarY - yTolerance) Then //如果人在目标之上,就下瞬(Y轴是用相反比较符)
                 cY = intY
@@ -607,6 +625,7 @@ Sub Move_X //寻敌法 Ver1.1
                     Call Stable() //稳定Y轴
                 End If
             Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上瞬(Y轴是用相反比较符)
+                Rem HighJump
                 cY = intY
                 if intY > (tarY+40) Then	//>=40以上要先跳再钩子
                     DelayRandom 12,13
@@ -651,7 +670,6 @@ Sub Move_X //寻敌法 Ver1.1
         End If
     Wend
 End Sub
-
 GetScreenResolution intX, intY
 x1       = intX - 1440
 y1       = intY - 950
@@ -711,7 +729,7 @@ End Sub
 // E:\OneDrive\桌面\新枫之谷\练级宏\MHImg\UI\F2\Move.bmp
 // (停止对话的是)  下个
 
-Sub ParkStart //怪公的一次循环
+Sub ParkStart //怪公的一次循环 Ver1.1修复了一点BUG
     while 1>0 //进去
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then //离开
@@ -743,7 +761,6 @@ Sub ParkStart //怪公的一次循环
         End If
     Wend
 
-
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
@@ -766,6 +783,8 @@ Sub ParkStart //怪公的一次循环
                         tolerance = -1
                         Call Move_B() //仅移动
                     End If
+                    KeyPress Up
+                    KeyPress Left//直接使用大招按2次
                     KeyPress Up
                 else //可能人挡住了(左走一点)
                     KeyDown Left
