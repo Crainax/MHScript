@@ -681,7 +681,7 @@ Sub RightJumpF //右平A(跳)
     KeyDown F
     Delay 103
     KeyUp F
-    Delay 345
+    Delay 365
 End Sub
 Sub LeftJumpF //左平A(跳)
     DelayRandom 15,25
@@ -700,7 +700,7 @@ Sub LeftJumpF //左平A(跳)
     KeyDown F
     Delay 103
     KeyUp F
-    Delay 345
+    Delay 365
 End Sub
 
 Sub CloseBag //关闭装备栏
@@ -1294,10 +1294,10 @@ Sub Boss4 //四傻
         End If
     Wend
 
-
+    //清地图小怪
     KeyPress Left
     KeyPress F
-    Delay 600
+    Delay 700
     KeyPress Right
     Delay 50
     for 7
@@ -1322,20 +1322,54 @@ Sub Boss4 //四傻
         End If
     Wend
 
-    for 3
-        Beep 100,200
-        Beep 200,200
-        Beep 300,200
-        Beep 400,200
-        Beep 500,200
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then //加载中
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,logoX,logoY
+                if logoX >= 0 Then //加载完毕
+                    break
+                End If
+            Wend
+            break
+        End If
+    Wend
+
+    //搜索20次是否可以点击
+    a = 1
+    for 20
+        MoveTo logoX+786-a*69,logoY+400
+        DelayRandom 39,42
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\4\Mouse_F1.bmp|E:\MHImg\UI\Boss\4\Mouse_F2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //找到点击
+            for 2
+                LeftDoubleClick
+            Next
+            break
+        End If
+        a = a + 1
     Next
-    Pause
+
+    Delay 3000
+    KeyPress C
+    Delay 500
+    KeyDown R
+    Delay 8000
+    KeyUp R
+
+    for 3
+        Call RightJumpF()
+        Call LeftJumpF()
+        Call LeftJumpF()
+        Call RightJumpF()
+    Next
+
     Call NewTeam() //强制退图
     while 1>0 //到了地图
-        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_3.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Lutabis.bmp",000000,1.00,0,intX,intY
         if intX >= 0 then //到地图里了
             while 1>0
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Boss_3.bmp",000000,1.00,0,intX,intY
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Lutabis.bmp",000000,1.00,0,intX,intY
                 if intX < 0 Then //这才是走出了地图
                     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
                     if intX >= 0 Then
