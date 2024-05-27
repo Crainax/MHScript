@@ -1,0 +1,5 @@
+Delay 12
+KeyDown ;
+Delay 112
+KeyUp ;
+Delay 662
