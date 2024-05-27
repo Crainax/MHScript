@@ -1007,13 +1007,7 @@ Sub Boss1 //打扎昆 Ver1.1 修复出门的问题
                 MoveTo intX+100,intY
                 LeftClick
                 DelayRandom 139,142
-            else //滚轮
-                MoveTo logoX+80,logoY-17
-                Delay 200
-                MouseWheel -1
-                Delay 50
-                MoveTo logoX,logoY
-                Delay 150
+
             End If
         End If
     Wend
@@ -1174,13 +1168,7 @@ Sub Boss2 //打老麦 Ver1.1
                 MoveTo intX+100,intY
                 LeftClick
                 DelayRandom 139,142
-            else //滚轮
-                MoveTo logoX+80,logoY-17
-                Delay 200
-                MouseWheel -1
-                Delay 50
-                MoveTo logoX,logoY
-                Delay 150
+
             End If
         End If
     Wend
@@ -1261,13 +1249,7 @@ Sub Boss3 //希拉 Ver1.1
                 MoveTo intX+100,intY
                 LeftClick
                 DelayRandom 139,142
-            else //滚轮
-                MoveTo logoX+80,logoY-17
-                Delay 200
-                MouseWheel -1
-                Delay 50
-                MoveTo logoX,logoY
-                Delay 150
+
             End If
         End If
     Wend
@@ -1392,13 +1374,7 @@ Sub Boss4 //四傻
                 MoveTo intX+100,intY
                 LeftClick
                 DelayRandom 139,142
-            else //滚轮
-                MoveTo logoX+80,logoY-17
-                Delay 200
-                MouseWheel -1
-                Delay 50
-                MoveTo logoX,logoY
-                Delay 150
+
             End If
         End If
     Wend

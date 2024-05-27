@@ -948,13 +948,7 @@ Sub Boss1 //打扎昆 Ver1.1 修复出门的问题
                 MoveTo intX+100,intY
                 LeftClick
                 DelayRandom 139,142
-            else //滚轮
-                MoveTo logoX+80,logoY-17
-                Delay 200
-                MouseWheel -1
-                Delay 50
-                MoveTo logoX,logoY
-                Delay 150
+
             End If
         End If
     Wend
@@ -1103,13 +1097,7 @@ Sub Boss2 //打老麦 Ver1.1
                 MoveTo intX+100,intY
                 LeftClick
                 DelayRandom 139,142
-            else //滚轮
-                MoveTo logoX+80,logoY-17
-                Delay 200
-                MouseWheel -1
-                Delay 50
-                MoveTo logoX,logoY
-                Delay 150
+
             End If
         End If
     Wend
@@ -1190,13 +1178,7 @@ Sub Boss3 //希拉 Ver1.1
                 MoveTo intX+100,intY
                 LeftClick
                 DelayRandom 139,142
-            else //滚轮
-                MoveTo logoX+80,logoY-17
-                Delay 200
-                MouseWheel -1
-                Delay 50
-                MoveTo logoX,logoY
-                Delay 150
+
             End If
         End If
     Wend
@@ -1320,13 +1302,7 @@ Sub Boss4 //四傻
                 MoveTo intX+100,intY
                 LeftClick
                 DelayRandom 139,142
-            else //滚轮
-                MoveTo logoX+80,logoY-17
-                Delay 200
-                MouseWheel -1
-                Delay 50
-                MoveTo logoX,logoY
-                Delay 150
+
             End If
         End If
     Wend
@@ -1609,13 +1585,7 @@ Sub Boss5 //打狮子王
                 MoveTo intX+100,intY
                 LeftClick
                 DelayRandom 139,142
-            else //滚轮
-                MoveTo logoX+80,logoY-17
-                Delay 200
-                MouseWheel -1
-                Delay 50
-                MoveTo logoX,logoY
-                Delay 150
+
             End If
         End If
     Wend
@@ -1708,13 +1678,7 @@ Sub Boss6 //打黑龙
                 MoveTo intX+100,intY
                 LeftClick
                 DelayRandom 139,142
-            else //滚轮
-                MoveTo logoX+80,logoY-17
-                Delay 200
-                MouseWheel -1
-                Delay 50
-                MoveTo logoX,logoY
-                Delay 150
+
             End If
         End If
     Wend
@@ -1862,6 +1826,146 @@ Sub Boss6 //打黑龙
         End If
     Wend
 End Sub
+Sub Boss7 //打阿卡
+    Call EnterPre() //第一部分成功后logoX就保存了
+    while 1>0 //进入老麦
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\7\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
+        if intX >= 0 Then //当前选中了,直接进入
+            MoveTo logoX+418,logoY+488
+            LeftClick
+            DelayRandom 139,142
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\7\Mark_Off.bmp|E:\MHImg\UI\Boss\7\Mark_On.bmp",000000,1.00,0,intX,intY //标签是否找得到
+            if intX >= 0 Then
+                MoveTo intX+100,intY
+                LeftClick
+                DelayRandom 139,142
+            else //滚轮
+                MoveTo logoX,logoY+170
+                Delay 200
+                MouseWheel -1
+                Delay 50
+                MoveTo logoX,logoY
+                Delay 150
+            End If
+        End If
+    Wend
+
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\UI\Boss\7\Feat1.bmp|E:\MHImg\UI\Boss\7\Feat2.bmp|E:\MHImg\UI\Boss\7\Feat3.bmp|E:\MHImg\UI\Boss\7\Feat4.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            Delay 500
+            for 3
+                Call RightJumpF() //右跳4下
+            Next
+            a = 0
+            while 1>0 //左移法
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    break
+                else
+                    a = a + 1
+                    if a >= 20 then
+                        Call RightJumpF()
+                        a = 0
+                    else
+                        KeyPress Left
+                        KeyPress Up
+                    End If
+                End If
+            Wend
+            //对话框出来后
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\7\Mark1.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //选择困难难度
+                    MoveTo intX+50,intY+5
+                    LeftClick
+                    DelayRandom 139,142
+                    Delay 500
+                    break
+                else
+                    Call ClearDialogOnce() //清除标准对话框(一次)
+                    Delay 50
+                End If
+            Wend
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //出现倒计时代表进来了
+                    break
+                End If
+            Wend
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+
+    Delay 500
+    for 2
+        Call RightJumpF() //右跳2下
+    Next
+
+    //搜索20次是否可以点击
+    a = 1
+    for 20
+        MoveTo logoX+786-a*69,logoY+480
+        DelayRandom 39,42
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\4\Mouse_F1.bmp|E:\MHImg\UI\Boss\4\Mouse_F2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //找到点击
+            for 2
+                LeftDoubleClick
+                Delay 50
+            Next
+            break
+        End If
+        a = a + 1
+    Next
+
+    Call ClearDialog() //清除一下对话框
+
+    //进到地图里了,接任务开打
+    Delay 3000
+    KeyPress B
+    Delay 1200
+    for 2 //平A4次就够了
+        Call RightJumpF()
+        Call LeftJumpF()
+        Call LeftJumpF()
+        Call RightJumpF()
+    Next
+
+    Call NewTeam() //强制退图
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\UI\Boss\7\Feat1.bmp|E:\MHImg\UI\Boss\7\Feat2.bmp|E:\MHImg\UI\Boss\7\Feat3.bmp|E:\MHImg\UI\Boss\7\Feat4.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            Delay 500
+            Call LeftJumpF() //左跳2下
+            a = 0
+            while 1>0
+                FindPic x1,y1,x2,y2,"E:\MHImg\UI\Boss\7\Feat1.bmp|E:\MHImg\UI\Boss\7\Feat2.bmp|E:\MHImg\UI\Boss\7\Feat3.bmp|E:\MHImg\UI\Boss\7\Feat4.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then //这才是走出了地图
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        break
+                    End If
+                else
+                    a = a + 1
+                    if a >= 20 then
+                        Call LeftJumpF()
+                        a = 0
+                    else
+                        KeyPress Right
+                        KeyPress Up
+                    End If
+                End If
+            Wend
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+End Sub
 
 GetScreenResolution intX, intY
 x1 = intX - 1440
@@ -1872,6 +1976,8 @@ x3 = intX - 640
 y3 = intY - 260
 xEnd = intX
 yEnd = intY
+
+Call Boss7()
 
 for 3
     Beep 100,200
