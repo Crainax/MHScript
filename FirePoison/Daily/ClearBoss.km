@@ -1456,7 +1456,6 @@ Sub Boss4 //四傻
     Delay 1000
     KeyUp '
     Delay 7000
-    KeyUp R
     Call RepeatBoss4_2()//这里也是重复的部分
 
     while 1>0 //到了地图->斑斑
