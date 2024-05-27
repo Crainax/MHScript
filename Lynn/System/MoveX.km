@@ -4,15 +4,16 @@ ScreenY=2560
 Times=0
 
 [Script]
-Dim x1,           x2,      y1,   y2    // 矩形区域:小地图采样点
-Dim x3,           y3,      xEnd, yEnd  // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,         tarY,    cY,   a     //目标
-Dim logoX,        logoY,   intX, intY  //算目的地差值
-Dim alterX,       alterY,  facing      //备用地点,传送门脚步开关,传送门的面向
-Dim tolerance,    tolLoc,  yTolerance  //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim staticCount,  staticX, staticY     //防卡计数器
-Dim   XTime                //左右平A的CD
-Dim LEDState                           //测试用:开大写键就是获取点位,不要切来切去的了
+Dim x1,          x2,      y1,    y2     // 矩形区域:小地图采样点
+Dim x3,          y3,      xEnd,  yEnd   // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,        tarY,    cY,    a      //目标
+Dim logoX,       logoY,   intX,  intY   //算目的地差值
+Dim alterX,      alterY,  facing        //备用地点,传送门脚步开关,传送门的面向
+Dim tolerance,   tolLoc,  yTolerance    //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim staticCount, staticX, staticY       //防卡计数器
+Dim XTime                               //左右平A的CD
+Dim wJam,        wJam2,   loopA, loopB  //找图防卡,loopAB是循环数
+Dim LEDState                            //测试用:开大写键就是获取点位,不要切来切去的了
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -263,7 +264,7 @@ Sub LeftJumpX //左跳抽离
         Call XSpell() //内置8sCD
     End If
 End Sub
-Sub Move_X  //1.1 寻敌式
+Sub Move_X  //1.2 寻敌式 上跳的goto问题解决
     tolerance = 4
     yTolerance = 2
     while  1 > 0
@@ -407,28 +408,48 @@ Sub Move_X  //1.1 寻敌式
             Call LeftJumpX()
         Else If intX > (tarX+24) and intY > (tarY+26) Then //向左二段跳(Y相差不大就12X,Y太大就24)
             Call LeftJumpX()
-        Else If intX < (tarX-tolLoc) and intY > (tarY+26) Then //向右走
-            Call AntiJam()
-            KeyDown Right
-            a = (tarX - tolLoc - intX) * 52
-            if a < 52 then
-                a = 52
-            else if a > 1800 then
-                a = 1800
+        Else If intX < (tarX-tolLoc) Then //向右走
+            if intY > (tarY+26) then //向右走(必须钩子情况才左右走)
+                Call AntiJam()
+                KeyDown Right
+                a = (tarX - tolLoc - intX) * 52
+                if a < 52 then
+                    a = 52
+                else if a > 1800 then
+                    a = 1800
+                End If
+                Delay a
+                KeyUp Right
+                Goto HighJump
+            else //小跳平A
+                KeyPress Right
+                KeyPress Space
+                KeyDown F
+                DelayRandom 91,92
+                KeyUp F
+                Delay 500
             End If
-            Delay a
-            KeyUp Right
-        Else If intX > (tarX+tolLoc) and intY > (tarY+26) Then //向左走
-            Call AntiJam()
-            KeyDown Left
-            a = (intX - tarX - tolLoc) * 52
-            if a < 52 then
-                a = 52
-            else if a > 1800 then
-                a = 1800
+        Else If intX > (tarX+tolLoc) Then //向左走
+            if intY > (tarY+26) then //向右走(必须钩子情况才左右走)
+                Call AntiJam()
+                KeyDown Left
+                a = (tarX - tolLoc - intX) * 52
+                if a < 52 then
+                    a = 52
+                else if a > 1800 then
+                    a = 1800
+                End If
+                Delay a
+                KeyUp Left
+                Goto HighJump
+            else //小跳平A
+                KeyPress Left
+                KeyPress Space
+                KeyDown F
+                DelayRandom 91,92
+                KeyUp F
+                Delay 500
             End If
-            Delay a
-            KeyUp Left
         else
             If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
                 Call Stable()
@@ -456,6 +477,7 @@ Sub Move_X  //1.1 寻敌式
                     Call XSpell()
                 End If
             Else If intY > (tarY + yTolerance) Then //如果人在目标之下,上钩
+                Rem HighJump
                 Call Stable()
                 if intY == cY then
                     //先转一下方向
