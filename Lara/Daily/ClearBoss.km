@@ -1618,11 +1618,7 @@ Sub Boss4 //四傻
         End If
     Wend
 End Sub
-Sub Boss5 //打狮子王
-    //[charX76,charY97][teleX-33,teleY96] 进门
-    //[charX-45,charY83][teleX-221,teleY-1751] NPC出来
-    // E:\OneDrive\桌面\新枫之谷\练级宏\MHImg\UI\Dialog\Reject.bmp
-    //[charX-44,charY84][teleX-77,teleY-1751] 离开
+Sub Boss5 //打狮子王 Ver1.1加长了一点时间
     Call EnterPre() //第一部分成功后logoX就保存了
     while 1>0 //进入老麦
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\5\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
@@ -1712,7 +1708,7 @@ Sub Boss5 //打狮子王
         End If
     Wend
 End Sub
-Sub Boss6 //打黑龙
+Sub Boss6 //打黑龙 Ver1.1 切圖時的加个while
     // [charX40,charY84][teleX-71,teleY-1751] npc位置
     // [charX-25,charY84][teleX-71,teleY-1751] 离开NPC位置
     // [charX55,charY80][teleX-71,teleY-1751] //平A点
@@ -1768,26 +1764,29 @@ Sub Boss6 //打黑龙
     Wend
 
     Delay 6500
-    a = 39
+    a = 9
     while 1>0 //左移法
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
         if intX < 0 Then
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then
-                break
-            End If
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    break
+                End If
+            Wend
+            break
         else
             a = a + 1
-            if a >= 40 then
+            if a >= 10 then
                 for 4
                     Call RightJumpF()
                 Next
-                Delay 500
-                KeyPress Alt
-                Delay 1500
                 KeyDown Right
                 Delay 500
                 KeyUp Right
+                Delay 500
+                KeyPress Alt
+                Delay 1500
                 a = 0
             else
                 KeyPress Left
@@ -1798,28 +1797,31 @@ Sub Boss6 //打黑龙
     Wend
 
     Delay 6500
-    a = 39
+    a = 9
     while 1>0 //右移法
         FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_6.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
             break
         else
-            a = a + 1
-            if a >= 40 then
-                for 4
-                    Call LeftJumpF()
-                Next
-                Delay 500
-                KeyPress Alt
-                Delay 1500
-                KeyDown Left
-                Delay 500
-                KeyUp Left
-                a = 0
-            else
-                KeyPress Right
-                KeyPress Up
-                Delay 30
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                a = a + 1
+                if a >= 10 then
+                    for 4
+                        Call LeftJumpF()
+                    Next
+                    KeyDown Left
+                    Delay 500
+                    KeyUp Left
+                    Delay 500
+                    KeyPress Alt
+                    Delay 1500
+                    a = 0
+                else
+                    KeyPress Right
+                    KeyPress Up
+                    Delay 30
+                End If
             End If
         End If
     Wend
@@ -1958,6 +1960,7 @@ Sub Boss7 //打阿卡
         Call RightJumpF() //右跳2下
     Next
 
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,logoX,logoY
     //搜索20次是否可以点击
     a = 1
     for 20
@@ -2243,6 +2246,11 @@ Call Boss1()
 Call Boss2()
 Call Boss3()
 Call Boss4()
+Call Boss5()
+Call Boss6()
+Call Boss7()
+Call Boss8()
+Call Boss9()
 
 for 3
     Beep 100,200
