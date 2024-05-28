@@ -67,7 +67,7 @@ yEnd     = intY
 cool     = 0
 pickTime =0
 
-Sub ClearItem //清理消耗品和装备栏 Ver1.3
+Sub ClearItem //清理消耗品和装备栏 Ver1.5
     //扔身上的垃圾
     while 1>0 //切到装备栏
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Tag_Equit.bmp",000000,1.00,0,logoX,logoY
@@ -87,7 +87,7 @@ Sub ClearItem //清理消耗品和装备栏 Ver1.3
                     FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\TrushE\W10.bmp|E:\MHImg\Common\TrushE\W11.bmp|E:\MHImg\Common\TrushE\W12.bmp|E:\MHImg\Common\TrushE\W13.bmp|E:\MHImg\Common\TrushE\W14.bmp|E:\MHImg\Common\TrushE\W15.bmp|E:\MHImg\Common\TrushE\W16.bmp|E:\MHImg\Common\TrushE\W17.bmp|E:\MHImg\Common\TrushE\W18.bmp",000000,1.00,0,intX,intY
                 End If
                 if intX <= 0 then //第三批图像
-                    FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\TrushE\W19.bmp|E:\MHImg\Common\TrushE\W20.bmp|E:\MHImg\Common\TrushE\W21.bmp|E:\MHImg\Common\TrushE\W22.bmp",000000,1.00,0,intX,intY
+                    FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\TrushE\W19.bmp|E:\MHImg\Common\TrushE\W20.bmp|E:\MHImg\Common\TrushE\W21.bmp|E:\MHImg\Common\TrushE\W22.bmp|E:\MHImg\Common\TrushE\W23.bmp|E:\MHImg\Common\TrushE\W24.bmp|E:\MHImg\Common\TrushE\W25.bmp|E:\MHImg\Common\TrushE\W26.bmp|E:\MHImg\Common\TrushE\W27.bmp",000000,1.00,0,intX,intY
                 End If
                 if intX >= 0 Then
                     wJam = 0 //放在成功的位置
@@ -116,7 +116,7 @@ Sub ClearItem //清理消耗品和装备栏 Ver1.3
             if intX >= 0 Then //切标签页
                 DelayRandom 39,42
                 KeyPress tab
-                DelayRandom 39,42
+                DelayRandom 339,342
             else //打开背包
                 DelayRandom 39,42
                 for 3
@@ -165,7 +165,7 @@ Sub ClearItem //清理消耗品和装备栏 Ver1.3
             if intX >= 0 Then //切标签页
                 DelayRandom 39,42
                 KeyPress tab
-                DelayRandom 39,42
+                DelayRandom 339,342
             else //打开背包
                 DelayRandom 39,42
                 for 3
