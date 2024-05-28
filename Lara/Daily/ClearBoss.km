@@ -1680,8 +1680,8 @@ Sub Boss5 //打狮子王
     Call NPCChat() //人->无限循环对话框
     Call ClearDialog() //清除一下对话框
 
-    Delay 1200
-    for 3 //平A4次就够了
+    Delay 5000
+    for 2 //平A4次就够了
         Call RightJumpF()
         Call LeftJumpF()
         Call LeftJumpF()
@@ -2101,9 +2101,11 @@ Sub Boss8 //打顶培
     Wend
 
     Delay 500
-    for 3 //平A4次就够了
+    for 2 //平A4次就够了
         Call RightJumpF()
         Call RightJumpF()
+        Call RightJumpF()
+        Call LeftJumpF()
         Call LeftJumpF()
         Call LeftJumpF()
     Next
