@@ -264,7 +264,7 @@ Sub LeftJumpX //左跳抽离
         Call XSpell() //内置8sCD
     End If
 End Sub
-Sub Move_X  //1.2 寻敌式 上跳的goto问题解决
+Sub Move_X  //1.21 寻敌式 上跳的goto问题解决
     tolerance = 4
     yTolerance = 2
     while  1 > 0
@@ -409,7 +409,7 @@ Sub Move_X  //1.2 寻敌式 上跳的goto问题解决
         Else If intX > (tarX+24) and intY > (tarY+26) Then //向左二段跳(Y相差不大就12X,Y太大就24)
             Call LeftJumpX()
         Else If intX < (tarX-tolLoc) Then //向右走
-            if intY > (tarY+26) then //向右走(必须钩子情况才左右走)
+            if intY > (tarY+16) then //向右走(必须钩子情况才左右走)
                 Call AntiJam()
                 KeyDown Right
                 a = (tarX - tolLoc - intX) * 52
@@ -430,7 +430,7 @@ Sub Move_X  //1.2 寻敌式 上跳的goto问题解决
                 Delay 500
             End If
         Else If intX > (tarX+tolLoc) Then //向左走
-            if intY > (tarY+26) then //向右走(必须钩子情况才左右走)
+            if intY > (tarY+16) then //向右走(必须钩子情况才左右走)
                 Call AntiJam()
                 KeyDown Left
                 a = (tarX - tolLoc - intX) * 52
