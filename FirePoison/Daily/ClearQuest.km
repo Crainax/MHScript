@@ -1057,8 +1057,240 @@ Sub ClearQuest //清理下任务
     Call Home() //回城
 
 End Sub
+    SavedTor  = 38
+    SavedTorY = 312
+    SavedX    = 1
+    SavedY    = 110
+    Call AfterMap()
+    Call Loading() //加载
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    while 1>0 //开刷实验室2
 
+        if getTimeStamp() > startTime+70 then //只刷70秒
+            break
+        End if
 
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if fountains > 0 and intX >= 0 then //可以喷泉了
+            tarX = -83
+            tarY = 90
+            tolerance = 4
+            Call Move()
+            DelayRandom 56,58
+            KeyDown Right
+            DelayRandom 62,68
+            KeyUp Right
+            DelayRandom 106,109
+            KeyDown 1
+            DelayRandom 194,196
+            KeyUp 1
+            DelayRandom 712,721
+            fountains = fountains - 1
+        else
+
+            a = GetTimeStamp() - AuraTime
+            if a > 55 Then //前往领域点
+                //前往领域点
+                tarX      = -41
+                tarY      = 118
+                tolerance = 6
+                Call Move()
+                DelayRandom 123,130
+                KeyDown A
+                DelayRandom 130,132
+                KeyUp A
+                DelayRandom 405,413
+                AuraTime = GetTimeStamp()
+            else
+                if currentState == 1 then //前往楼上
+                    tarX		= -8
+                    tarY		= 107
+                    tolerance	= 6
+                    Call Move()
+                else if currentState == 2 then //前往楼上
+                    tarX		= 11
+                    tarY		= 103
+                    tolerance	= 6
+                    Call Move()
+                else if currentState == 3  then //前往楼上
+                    tarX		= 11
+                    tarY		= 88
+                    tolerance	= 6
+                    Call Move()
+                else
+                    tarX		= -8
+                    tarY		= 93
+                    tolerance	= 6
+                    Call Move()
+                End If
+                currentState = currentState + 1
+                if currentState > 3 then
+                    currentState = 0
+                End If
+            End If
+        End If
+        DelayRandom 100,103
+        Call ReleaseRune() //定期解轮
+    Wend
+    Call Home() //回城
+
+    SavedTor  = 38
+    SavedTorY = 294
+    SavedX    = -258
+    SavedY    = 169
+    Call AfterMap()
+    Call Loading() //加载
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    while 1>0 //开刷列车2
+
+        if getTimeStamp() > startTime+70 then //只刷70秒
+            break
+        End if
+
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if fountains > 0 and intX >= 0 then //可以喷泉了
+
+            tarX = 8
+            tarY = 82
+            tolerance = 4
+            Call Move()
+            DelayRandom 56,58
+            KeyDown Right
+            DelayRandom 62,68
+            KeyUp Right
+            DelayRandom 106,109
+            KeyDown 1
+            DelayRandom 194,196
+            KeyUp 1
+            DelayRandom 712,721
+            fountains = fountains - 1
+        else
+
+            a = GetTimeStamp() - AuraTime
+            if a > 55 Then //前往领域点
+                //前往领域点
+                tarX      = 8
+                tarY      = 113
+                tolerance = 6
+                Call Move()
+                DelayRandom 123,130
+                KeyDown A
+                DelayRandom 130,132
+                KeyUp A
+                DelayRandom 405,413
+                AuraTime = GetTimeStamp()
+            else
+                if currentState == 1 then //前往楼上
+                    tarX		= -47
+                    tarY		= 102
+                    tolerance	= 6
+                    Call Move()
+                else if currentState == 2 then //前往楼上
+                    tarX		= -47
+                    tarY		= 84
+                    tolerance	= 6
+                    Call Move()
+                else if currentState == 3  then //前往楼上
+                    tarX		= -28
+                    tarY		= 84
+                    tolerance	= 6
+                    Call Move()
+                else
+                    tarX		= -28
+                    tarY		= 102
+                    tolerance	= 6
+                    Call Move()
+                End If
+                currentState = currentState + 1
+                if currentState > 3 then
+                    currentState = 0
+                End If
+            End If
+        End If
+        DelayRandom 100,103
+        Call ReleaseRune() //定期解轮
+    Wend
+    Call Home() //回城
+
+    SavedTor  = 38
+    SavedTorY = 263
+    SavedX    = 160
+    SavedY    = 158
+    Call AfterMap()
+    Call Loading() //加载
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    while 1>0 //开刷东墙3
+
+        if getTimeStamp() > startTime+70 then //只刷70秒
+            break
+        End if
+
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if fountains > 0 and intX >= 0 then //可以喷泉了
+            tarX = -59
+            tarY = 108
+            tolerance = 4
+            Call Move()
+            DelayRandom 56,58
+            KeyDown Right
+            DelayRandom 62,68
+            KeyUp Right
+            DelayRandom 106,109
+            KeyDown 1
+            DelayRandom 194,196
+            KeyUp 1
+            DelayRandom 712,721
+            fountains = fountains - 1
+        else
+
+            a = GetTimeStamp() - AuraTime
+            if a > 55 Then //前往领域点
+                //前往领域点
+                tarX      = -33
+                tarY      = 124
+                tolerance = 6
+                Call Move()
+                DelayRandom 123,130
+                KeyDown A
+                DelayRandom 130,132
+                KeyUp A
+                DelayRandom 405,413
+                AuraTime = GetTimeStamp()
+            else
+                if currentState == 1 then //前往楼上
+                    tarX		= 3
+                    tarY		= 108
+                    tolerance	= 6
+                    Call Move()
+                else if currentState == 2 then //前往楼上
+                    tarX		= 20
+                    tarY		= 108
+                    tolerance	= 6
+                    Call Move()
+                else if currentState == 3  then //前往楼上
+                    tarX		= 20
+                    tarY		= 89
+                    tolerance	= 6
+                    Call Move()
+                else
+                    tarX		= 3
+                    tarY		= 91
+                    tolerance	= 6
+                    Call Move()
+                End If
+                currentState = currentState + 1
+                if currentState > 3 then
+                    currentState = 0
+                End If
+            End If
+        End If
+        DelayRandom 100,103
+        Call ReleaseRune() //定期解轮
+    Wend
+    Call Home() //回城
 
 
 
