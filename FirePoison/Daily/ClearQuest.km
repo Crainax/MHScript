@@ -806,7 +806,7 @@ Sub BeforeStart //开刷前的参数初始化
     yTolerance		= 0 //初始化
 End Sub
 
-Sub ClearQuest //清理下任务
+Sub ClearQuest //清理下任务 Ver 1.1 AUT6个岛与ARC6个岛
     SavedTorY = 360
     SavedTor  = 38
     SavedX    = 91
@@ -815,10 +815,9 @@ Sub ClearQuest //清理下任务
     Call Loading() //加载
     Call Channel()
     Call BeforeStart() //开始前的准备
-    fountains = 3
     while 1>0 //开刷洞3
 
-        if getTimeStamp() > startTime+180 then //只刷180秒
+        if getTimeStamp() > startTime+70 then //只刷70秒
             break
         End if
 
@@ -1056,7 +1055,6 @@ Sub ClearQuest //清理下任务
     Wend
     Call Home() //回城
 
-End Sub
     SavedTor  = 38
     SavedTorY = 312
     SavedX    = 1
@@ -1292,6 +1290,260 @@ End Sub
     Wend
     Call Home() //回城
 
+    SavedTor  = 56
+    SavedTorY = 152
+    SavedX    = 36
+    SavedY    = 292
+    Call AfterMap()
+    Call Loading() //加载
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    while 1>0 //ARC6
+
+        if getTimeStamp() > startTime+35 then //只刷35秒
+            break
+        End if
+        if currentState == 1 then //前往楼上
+            tarX		= 3
+            tarY		= 95
+            tolerance	= 2
+            Call Move()
+        else if currentState == 2 then //前往楼上
+            tarX		= -13
+            tarY		= 95
+            tolerance	= 2
+            Call Move()
+        else if currentState == 3  then //前往楼上
+            tarX		= -13
+            tarY		= 115
+            tolerance	= 2
+            Call Move()
+        else
+            tarX		= 3
+            tarY		= 115
+            tolerance	= 2
+            Call Move()
+        End If
+        currentState = currentState + 1
+        if currentState > 3 then
+            currentState = 0
+        End If
+        DelayRandom 100,103
+        Call ReleaseRune() //定期解轮
+    Wend
+    Call Home() //回城
+
+    SavedTor  = 56
+    SavedTorY = 137
+    SavedX    = -14
+    SavedY    = 373
+    Call AfterMap()
+    Call Loading() //加载
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    while 1>0 //ARC5
+        if getTimeStamp() > startTime+35 then //只刷35秒
+            break
+        End if
+        if currentState == 1 then //前往楼上
+            tarX		= -8
+            tarY		= 91
+            tolerance	= 6
+            Call Move()
+        else if currentState == 2 then //前往楼上
+            tarX		= -8
+            tarY		= 71
+            tolerance	= 6
+            Call Move()
+        else if currentState == 3  then //前往楼上
+            tarX		= -24
+            tarY		= 71
+            tolerance	= 6
+            Call Move()
+        else
+            tarX		= -24
+            tarY		= 91
+            tolerance	= 6
+            Call Move()
+        End If
+        currentState = currentState + 1
+        if currentState > 3 then
+            currentState = 0
+        End If
+        DelayRandom 100,103
+        Call ReleaseRune() //定期解轮
+    Wend
+    Call Home() //回城
+
+    SavedTor  = 56
+    SavedTorY = 122
+    SavedX    = 79
+    SavedY    = 431
+    Call AfterMap()
+    Call Loading() //加载
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    while 1>0 //ARC4
+        if getTimeStamp() > startTime+35 then //只刷35秒
+            break
+        End if
+
+        if currentState == 1 then //前往楼上
+            tarX		= -29
+            tarY		= 91
+            tolerance	= 6
+            Call Move()
+        else if currentState == 2 then //前往楼上
+            tarX		= -13
+            tarY		= 91
+            tolerance	= 6
+            Call Move()
+        else if currentState == 3  then //前往楼上
+            tarX		= 6
+            tarY		= 91
+            tolerance	= 6
+            Call Move()
+        else
+            tarX		= -13
+            tarY		= 91
+            tolerance	= 6
+            Call Move()
+        End If
+        currentState = currentState + 1
+        if currentState > 3 then
+            currentState = 0
+        End If
+        DelayRandom 100,103
+        Call ReleaseRune() //定期解轮
+    Wend
+    Call Home() //回城
+
+    SavedTor  = 56
+    SavedTorY = 107
+    SavedX    = 98
+    SavedY    = 235
+    Call AfterMap()
+    Call Loading() //加载
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    while 1>0 //ARC3
+        if getTimeStamp() > startTime+35 then //只刷35秒
+            break
+        End if
+        if currentState == 1 then //前往楼上
+            tarX		= -21
+            tarY		= 81
+            tolerance	= 6
+            Call Move()
+        else if currentState == 2 then //前往楼上
+            tarX		= -21
+            tarY		= 97
+            tolerance	= 6
+            Call Move()
+        else if currentState == 3  then //前往楼上
+            tarX		= -37
+            tarY		= 97
+            tolerance	= 6
+            Call Move()
+        else
+            tarX		= -37
+            tarY		= 86
+            tolerance	= 6
+            Call Move()
+        End If
+        currentState = currentState + 1
+        if currentState > 3 then
+            currentState = 0
+        End If
+        DelayRandom 100,103
+        Call ReleaseRune() //定期解轮
+    Wend
+    Call Home() //回城
+
+    SavedTor  = 56
+    SavedTorY = 92
+    SavedX    = 216
+    SavedY    = 260
+    Call AfterMap()
+    Call Loading() //加载
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    while 1>0 //ARC2
+        if getTimeStamp() > startTime+35 then //只刷35秒
+            break
+        End if
+        if currentState == 1 then //前往楼上
+            tarX		= -13
+            tarY		= 93
+            tolerance	= 6
+            Call Move()
+        else if currentState == 2 then //前往楼上
+            tarX		= -13
+            tarY		= 107
+            tolerance	= 6
+            Call Move()
+        else if currentState == 3  then //前往楼上
+            tarX		= 3
+            tarY		= 107
+            tolerance	= 6
+            Call Move()
+        else
+            tarX		= 3
+            tarY		= 93
+            tolerance	= 6
+            Call Move()
+        End If
+        currentState = currentState + 1
+        if currentState > 3 then
+            currentState = 0
+        End If
+        DelayRandom 100,103
+        Call ReleaseRune() //定期解轮
+    Wend
+    Call Home() //回城
+
+    SavedTor  = 56
+    SavedTorY = 62
+    SavedX    = 111
+    SavedY    = 112
+    Call AfterMap()
+    Call Loading() //加载
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    while 1>0 //ARC2
+        if getTimeStamp() > startTime+35 then //只刷35秒
+            break
+        End if
+        if currentState == 1 then //前往楼上
+            tarX		= 9
+            tarY		= 78
+            tolerance	= 6
+            Call Move()
+        else if currentState == 2 then //前往楼上
+            tarX		= -7
+            tarY		= 78
+            tolerance	= 6
+            Call Move()
+        else if currentState == 3  then //前往楼上
+            tarX		= -7
+            tarY		= 90
+            tolerance	= 6
+            Call Move()
+        else
+            tarX		= 9
+            tarY		= 90
+            tolerance	= 6
+            Call Move()
+        End If
+        currentState = currentState + 1
+        if currentState > 3 then
+            currentState = 0
+        End If
+        DelayRandom 100,103
+        Call ReleaseRune() //定期解轮
+    Wend
+    Call Home() //回城
+End Sub
 
 
 Beep 200,500
