@@ -1781,16 +1781,16 @@ Sub Boss6 //打黑龙 Ver1.1 切圖時的加个while
                 for 4
                     Call RightJumpF()
                 Next
-                KeyDown Right
+                KeyDown Left
                 Delay 500
-                KeyUp Right
+                KeyUp Left
                 Delay 500
                 KeyPress Alt
                 Delay 1500
                 a = 0
             else
-                KeyPress Left
                 KeyPress Up
+                KeyPress Left
                 Delay 30
             End If
         End If
@@ -1810,16 +1810,16 @@ Sub Boss6 //打黑龙 Ver1.1 切圖時的加个while
                     for 4
                         Call LeftJumpF()
                     Next
-                    KeyDown Left
+                    KeyDown Right
                     Delay 500
-                    KeyUp Left
+                    KeyUp Right
                     Delay 500
                     KeyPress Alt
                     Delay 1500
                     a = 0
                 else
-                    KeyPress Right
                     KeyPress Up
+                    KeyPress Right
                     Delay 30
                 End If
             End If
