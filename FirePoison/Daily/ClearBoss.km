@@ -1915,8 +1915,8 @@ Sub Boss6 //打黑龙 Ver1.1 切圖時的加个while
 
                 a = 0
             else
-                KeyPress Left
                 KeyPress Up
+                KeyPress Left
             End If
         End If
     Wend
@@ -1949,8 +1949,8 @@ Sub Boss6 //打黑龙 Ver1.1 切圖時的加个while
                     Delay 1500
                     a = 0
                 else
-                    KeyPress Right
                     KeyPress Up
+                    KeyPress Right
                 End If
             End If
         End If
@@ -2389,5 +2389,10 @@ Call Boss1()
 Call Boss2()
 Call Boss3()
 Call Boss4()
+Call Boss5()
+Call Boss6()
+Call Boss7()
+Call Boss8()
+Call Boss9()
 
 Beep 200,500

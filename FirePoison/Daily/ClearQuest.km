@@ -806,7 +806,7 @@ Sub BeforeStart //开刷前的参数初始化
     yTolerance		= 0 //初始化
 End Sub
 
-Sub ClearQuest //清理下任务 Ver 1.1 AUT6个岛与ARC6个岛
+Sub ClearQuest //清理下任务 Ver 1.11 AUT6个岛与ARC6个岛
     SavedTorY = 360
     SavedTor  = 38
     SavedX    = 91
@@ -1104,22 +1104,22 @@ Sub ClearQuest //清理下任务 Ver 1.1 AUT6个岛与ARC6个岛
                 if currentState == 1 then //前往楼上
                     tarX		= -8
                     tarY		= 107
-                    tolerance	= 6
+                    tolerance	= 2
                     Call Move()
                 else if currentState == 2 then //前往楼上
                     tarX		= 11
                     tarY		= 103
-                    tolerance	= 6
+                    tolerance	= 2
                     Call Move()
                 else if currentState == 3  then //前往楼上
                     tarX		= 11
                     tarY		= 88
-                    tolerance	= 6
+                    tolerance	= 2
                     Call Move()
                 else
                     tarX		= -8
                     tarY		= 93
-                    tolerance	= 6
+                    tolerance	= 2
                     Call Move()
                 End If
                 currentState = currentState + 1
@@ -1181,24 +1181,24 @@ Sub ClearQuest //清理下任务 Ver 1.1 AUT6个岛与ARC6个岛
                 AuraTime = GetTimeStamp()
             else
                 if currentState == 1 then //前往楼上
-                    tarX		= -47
+                    tarX		= -49
                     tarY		= 102
-                    tolerance	= 6
+                    tolerance	= 2
                     Call Move()
                 else if currentState == 2 then //前往楼上
-                    tarX		= -47
+                    tarX		= -49
                     tarY		= 84
-                    tolerance	= 6
+                    tolerance	= 2
                     Call Move()
                 else if currentState == 3  then //前往楼上
-                    tarX		= -28
+                    tarX		= -30
                     tarY		= 84
-                    tolerance	= 6
+                    tolerance	= 2
                     Call Move()
                 else
-                    tarX		= -28
+                    tarX		= -30
                     tarY		= 102
-                    tolerance	= 6
+                    tolerance	= 2
                     Call Move()
                 End If
                 currentState = currentState + 1
@@ -1261,22 +1261,22 @@ Sub ClearQuest //清理下任务 Ver 1.1 AUT6个岛与ARC6个岛
                 if currentState == 1 then //前往楼上
                     tarX		= 3
                     tarY		= 108
-                    tolerance	= 6
+                    tolerance	= 2
                     Call Move()
                 else if currentState == 2 then //前往楼上
                     tarX		= 20
                     tarY		= 108
-                    tolerance	= 6
+                    tolerance	= 2
                     Call Move()
                 else if currentState == 3  then //前往楼上
                     tarX		= 20
                     tarY		= 89
-                    tolerance	= 6
+                    tolerance	= 2
                     Call Move()
                 else
                     tarX		= 3
                     tarY		= 91
-                    tolerance	= 6
+                    tolerance	= 2
                     Call Move()
                 End If
                 currentState = currentState + 1
@@ -1342,28 +1342,28 @@ Sub ClearQuest //清理下任务 Ver 1.1 AUT6个岛与ARC6个岛
     Call Channel()
     Call BeforeStart() //开始前的准备
     while 1>0 //ARC5
-        if getTimeStamp() > startTime+35 then //只刷35秒
+        if getTimeStamp() > startTime+45 then //只刷35秒
             break
         End if
         if currentState == 1 then //前往楼上
             tarX		= -8
             tarY		= 91
-            tolerance	= 6
+            tolerance	= 2
             Call Move()
         else if currentState == 2 then //前往楼上
             tarX		= -8
             tarY		= 71
-            tolerance	= 6
+            tolerance	= 2
             Call Move()
         else if currentState == 3  then //前往楼上
             tarX		= -24
             tarY		= 71
-            tolerance	= 6
+            tolerance	= 2
             Call Move()
         else
             tarX		= -24
             tarY		= 91
-            tolerance	= 6
+            tolerance	= 2
             Call Move()
         End If
         currentState = currentState + 1
@@ -1391,22 +1391,22 @@ Sub ClearQuest //清理下任务 Ver 1.1 AUT6个岛与ARC6个岛
         if currentState == 1 then //前往楼上
             tarX		= -29
             tarY		= 91
-            tolerance	= 6
+            tolerance	= 2
             Call Move()
         else if currentState == 2 then //前往楼上
             tarX		= -13
             tarY		= 91
-            tolerance	= 6
+            tolerance	= 2
             Call Move()
         else if currentState == 3  then //前往楼上
             tarX		= 6
             tarY		= 91
-            tolerance	= 6
+            tolerance	= 2
             Call Move()
         else
             tarX		= -13
             tarY		= 91
-            tolerance	= 6
+            tolerance	= 2
             Call Move()
         End If
         currentState = currentState + 1
@@ -1433,22 +1433,22 @@ Sub ClearQuest //清理下任务 Ver 1.1 AUT6个岛与ARC6个岛
         if currentState == 1 then //前往楼上
             tarX		= -21
             tarY		= 81
-            tolerance	= 6
+            tolerance	= 2
             Call Move()
         else if currentState == 2 then //前往楼上
             tarX		= -21
             tarY		= 97
-            tolerance	= 6
+            tolerance	= 2
             Call Move()
         else if currentState == 3  then //前往楼上
             tarX		= -37
             tarY		= 97
-            tolerance	= 6
+            tolerance	= 2
             Call Move()
         else
             tarX		= -37
             tarY		= 86
-            tolerance	= 6
+            tolerance	= 2
             Call Move()
         End If
         currentState = currentState + 1
@@ -1475,22 +1475,22 @@ Sub ClearQuest //清理下任务 Ver 1.1 AUT6个岛与ARC6个岛
         if currentState == 1 then //前往楼上
             tarX		= -13
             tarY		= 93
-            tolerance	= 6
+            tolerance	= 2
             Call Move()
         else if currentState == 2 then //前往楼上
             tarX		= -13
             tarY		= 107
-            tolerance	= 6
+            tolerance	= 2
             Call Move()
         else if currentState == 3  then //前往楼上
             tarX		= 3
             tarY		= 107
-            tolerance	= 6
+            tolerance	= 2
             Call Move()
         else
             tarX		= 3
             tarY		= 93
-            tolerance	= 6
+            tolerance	= 2
             Call Move()
         End If
         currentState = currentState + 1
