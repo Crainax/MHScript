@@ -1010,86 +1010,11 @@ Sub BeforeStart	//开刷前的参数初始化
     cycle1		= 0				//循环
 End Sub
 
-Sub Attack01 //树3的攻击
-    if cycle1     == 0 then
-        tarX      = -48
-        tarY      = 125
-        tolerance = 8
-    else if cycle1  == 1 then
-        tarX      = -6
-        tarY      = 125
-        tolerance = 7
-    End If
-    Call Move()
-    cycle1 = cycle1 + 1
-    if cycle1 > 1 then
-        cycle1 = 0
-    End If
-End Sub
-Sub Attack02 //上6的攻击
-    if cycle1     == 0 then
-        tarX        = 20
-        tarY        = 91
-        tolerance   = 8
-    else if cycle1  == 1 then
-        tarX        = -14
-        tarY        = 91
-        tolerance   = 8
-        yTolerance  = 6
-    End If
-    Call Move()
-    cycle1 = cycle1 + 1
-    if cycle1 > 1 then
-        cycle1 = 0
-    End If
-End Sub
-Sub Attack03 //秋4的攻击
-    if cycle1     == 0 then
-        tarX        = -76
-        tarY        = 102
-        tolerance   = 8
-    else if cycle1  == 1 then
-        tarX        = -34
-        tarY        = 102
-        tolerance   = 8
-    End If
-    Call Move()
-    cycle1 = cycle1 + 1
-    if cycle1 > 1 then
-        cycle1 = 0
-    End If
-End Sub
 Sub Attack04 //实验室1的攻击
-    if cycle1     == 0 then
-        tarX        = -59
-        tarY        = 95
-        tolerance   = 8
-    else if cycle1  == 1 then
-        tarX        = -28
-        tarY        = 95
-        tolerance   = 8
-    End If
-    Call Move()
-    cycle1 = cycle1 + 1
-    if cycle1 > 1 then
-        cycle1 = 0
-    End If
+
 End Sub
 Sub Attack05 //列车2的攻击
-    if cycle1     == 0 then
-        tarX        = -9
-        tarY        = 98
-        tolerance   = 8
-    else if cycle1  == 1 then
-        tarX        = 20
-        tarY        = 98
-        tolerance   = 8
-    End If
-    Call Move()
-    cycle1 = cycle1 + 1
-    if cycle1 > 1 then
-        cycle1 = 0
-    End If
+
 End Sub
 Sub Attack06 //东墙3的攻击
     if cycle1     == 0 then
@@ -1244,17 +1169,20 @@ Sub ClearQuest //清理任务
                 DelayRandom 312,321
                 cycle1 = 1 //回左边
             else //左右跳A
-                a = fireTime + 28 //对比哪个最小值来定循环次数
-                if a > startTime + 80 then //
-                    a = startTime + 80
-                end if
-                a = (GetTimeStamp() - a)*-1
-                if a > 0 then //多次
-                    for a
-                        Call Attack02()
-                    Next
-                else //1次
-                        Call Attack02()
+                if cycle1     == 0 then
+                    tarX        = 20
+                    tarY        = 91
+                    tolerance   = 8
+                else if cycle1  == 1 then
+                    tarX        = -14
+                    tarY        = 91
+                    tolerance   = 8
+                    yTolerance  = 6
+                End If
+                Call Move()
+                cycle1 = cycle1 + 1
+                if cycle1 > 1 then
+                    cycle1 = 0
                 End If
             End If
         End If
@@ -1314,17 +1242,19 @@ Sub ClearQuest //清理任务
                 DelayRandom 312,321
                 cycle1 = 1 //回右边
             else //左右跳A
-                a = fireTime + 28 //对比哪个最小值来定循环次数
-                if a > startTime + 80 then //
-                    a = startTime + 80
-                end if
-                a = (GetTimeStamp() - a)*-1
-                if a > 0 then //多次
-                    for a
-                        Call Attack03()
-                    Next
-                else //1次
-                        Call Attack03()
+                if cycle1     == 0 then
+                    tarX        = -76
+                    tarY        = 102
+                    tolerance   = 8
+                else if cycle1  == 1 then
+                    tarX        = -34
+                    tarY        = 102
+                    tolerance   = 8
+                End If
+                Call Move()
+                cycle1 = cycle1 + 1
+                if cycle1 > 1 then
+                    cycle1 = 0
                 End If
             End If
         End If
@@ -1384,17 +1314,19 @@ Sub ClearQuest //清理任务
                 DelayRandom 312,321
                 cycle1 = 1 //回右边
             else //左右跳A
-                a = fireTime + 28 //对比哪个最小值来定循环次数
-                if a > startTime + 80 then //
-                    a = startTime + 80
-                end if
-                a = (GetTimeStamp() - a)*-1
-                if a > 0 then //多次
-                    for a
-                        Call Attack04()
-                    Next
-                else //1次
-                        Call Attack04()
+                if cycle1     == 0 then
+                    tarX        = -59
+                    tarY        = 95
+                    tolerance   = 8
+                else if cycle1  == 1 then
+                    tarX        = -28
+                    tarY        = 95
+                    tolerance   = 8
+                End If
+                Call Move()
+                cycle1 = cycle1 + 1
+                if cycle1 > 1 then
+                    cycle1 = 0
                 End If
             End If
         End If
@@ -1454,23 +1386,436 @@ Sub ClearQuest //清理任务
                 DelayRandom 312,321
                 cycle1 = 1 //回右边
             else //左右跳A
-                a = fireTime + 28 //对比哪个最小值来定循环次数
-                if a > startTime + 80 then //
-                    a = startTime + 80
-                end if
-                a = (GetTimeStamp() - a)*-1
-                if a > 0 then //多次
-                    for a
-                        Call Attack05()
-                    Next
-                else //1次
-                        Call Attack05()
+                if cycle1     == 0 then
+                    tarX        = -9
+                    tarY        = 98
+                    tolerance   = 8
+                else if cycle1  == 1 then
+                    tarX        = 20
+                    tarY        = 98
+                    tolerance   = 8
+                End If
+                Call Move()
+                cycle1 = cycle1 + 1
+                if cycle1 > 1 then
+                    cycle1 = 0
                 End If
             End If
         End If
         Call ReleaseRune() //定期解轮
     Wend
     Call Home() //回城
+
+    SavedTor  = 38
+    SavedTorY = 263
+    SavedX    = 160
+    SavedY    = 158
+    patrol    = 0    //双打巡逻
+    Call AfterMap() //
+    Call Loading()
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    fountains = 1
+    while 1>0 //去东墙3
+        if getTimeStamp() > startTime+80 then //只刷80秒
+            break
+        End if
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if fountains > 0 and intX >= 0 then //可以喷泉了
+            tarX = -50
+            tarY = 108
+            tolerance = 4
+            Call Move()
+            DelayRandom 56,58
+            KeyDown Left
+            DelayRandom 62,68
+            KeyUp Left
+            DelayRandom 106,109
+            KeyDown 1
+            DelayRandom 194,196
+            KeyUp 1
+            DelayRandom 712,721
+            cycle1 = 1 //回右边
+            fountains = fountains - 1
+        else
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\D.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 and GetTimeStamp() - fireTime > 28 Then //地火
+                tarX      = 23
+                tarY      = 74
+                tolerance = 4
+                Call Move()
+                DelayRandom 56,58
+                KeyDown Left
+                DelayRandom 62,68
+                KeyUp Left
+                DelayRandom 42,50
+                KeyDown D
+                DelayRandom 194,196
+                KeyUp D
+                fireTime = GetTimeStamp()
+                DelayRandom 312,321
+                cycle1 = 1 //回右边
+            else //左右跳A
+                if cycle1     == 0 then
+                    tarX        = 0
+                    tarY        = 108
+                    tolerance   = 8
+                else if cycle1  == 1 then
+                    tarX        = 33
+                    tarY        = 108
+                    tolerance   = 8
+                End If
+                Call Move()
+                cycle1 = cycle1 + 1
+                if cycle1 > 1 then
+                    cycle1 = 0
+                End If
+            End If
+        End If
+        Call ReleaseRune() //定期解轮
+    Wend
+    Call Home() //回城
+
+    SavedTor  = 56
+    SavedTorY = 152
+    SavedX    = 94
+    SavedY    = 423
+    patrol    = 0    //双打巡逻
+    Call AfterMap() //
+    Call Loading()
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    fountains = 1
+    while 1>0 //去ARC6 镜海3
+        if getTimeStamp() > startTime+45 then //只刷45秒
+            break
+        End if
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if fountains > 0 and intX >= 0 then //可以喷泉了(原地)
+            DelayRandom 56,58
+            KeyDown 1
+            DelayRandom 194,196
+            KeyUp 1
+            DelayRandom 712,721
+            fountains = fountains - 1
+        else
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\D.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 and GetTimeStamp() - fireTime > 28 Then //地火(原地)
+                DelayRandom 42,50
+                KeyDown D
+                DelayRandom 194,196
+                KeyUp D
+                fireTime = GetTimeStamp()
+                DelayRandom 312,321
+            else //左右跳A
+                if cycle1     == 0 then
+                    tarX        = -23
+                    tarY        = 104
+                    tolerance   = 4
+                else if cycle1  == 1 then
+                    tarX        = 4
+                    tarY        = 104
+                    tolerance   = 4
+                else if cycle1  == 2 then
+                    tarX        = 34
+                    tarY        = 98
+                    tolerance   = 4
+                else if cycle1  == 3 then
+                    tarX        = 4
+                    tarY        = 104
+                    tolerance   = 4
+                End If
+                Call Move()
+                cycle1 = cycle1 + 1
+                if cycle1 > 3 then
+                    cycle1 = 0
+                End If
+            End If
+        End If
+        Call ReleaseRune() //定期解轮
+    Wend
+    Call Home() //回城
+
+    SavedTor  = 56
+    SavedTorY = 137
+    SavedX    = -14
+    SavedY    = 373
+    patrol    = 0    //弹跳巡逻
+    Call AfterMap() //
+    Call Loading()
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    fountains = 1
+    while 1>0 //去ARC5 影子3
+        if getTimeStamp() > startTime+45 then //只刷45秒
+            break
+        End if
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if fountains > 0 and intX >= 0 then //可以喷泉了(原地)
+            DelayRandom 56,58
+            KeyDown 1
+            DelayRandom 194,196
+            KeyUp 1
+            DelayRandom 712,721
+            fountains = fountains - 1
+        else
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\D.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 and GetTimeStamp() - fireTime > 28 Then //地火(原地)
+                DelayRandom 42,50
+                KeyDown D
+                DelayRandom 194,196
+                KeyUp D
+                fireTime = GetTimeStamp()
+                DelayRandom 312,321
+            else //左右跳A
+                if cycle1     == 0 then
+                    tarX        = -31
+                    tarY        = 91
+                    tolerance   = 4
+                else if cycle1  == 1 then
+                    tarX        = 0
+                    tarY        = 91
+                    tolerance   = 4
+                else if cycle1  == 2 then
+                    tarX        = 31
+                    tarY        = 92
+                    tolerance   = 4
+                else if cycle1  == 3 then
+                    tarX        = 0
+                    tarY        = 91
+                    tolerance   = 4
+                End If
+                Call Move()
+                cycle1 = cycle1 + 1
+                if cycle1 > 3 then
+                    cycle1 = 0
+                End If
+            End If
+        End If
+        Call ReleaseRune() //定期解轮
+    Wend
+    Call Home() //回城
+
+    SavedTor  = 56
+    SavedTorY = 122
+    SavedX    = 79
+    SavedY    = 431
+    patrol    = 0    //弹跳巡逻
+    Call AfterMap() //
+    Call Loading()
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    fountains = 1
+    while 1>0 //去ARC4 下路深处2
+        if getTimeStamp() > startTime+45 then //只刷45秒
+            break
+        End if
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if fountains > 0 and intX >= 0 then //可以喷泉了(原地)
+            DelayRandom 56,58
+            KeyDown 1
+            DelayRandom 194,196
+            KeyUp 1
+            DelayRandom 712,721
+            fountains = fountains - 1
+        else
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\D.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 and GetTimeStamp() - fireTime > 28 Then //地火(原地)
+                DelayRandom 42,50
+                KeyDown D
+                DelayRandom 194,196
+                KeyUp D
+                fireTime = GetTimeStamp()
+                DelayRandom 312,321
+            else //左右跳A
+                if cycle1     == 0 then
+                    tarX        = -35
+                    tarY        = 91
+                    tolerance   = 4
+                else if cycle1  == 1 then
+                    tarX        = 0
+                    tarY        = 91
+                    tolerance   = 4
+                else if cycle1  == 2 then
+                    tarX        = 30
+                    tarY        = 91
+                    tolerance   = 4
+                else if cycle1  == 3 then
+                    tarX        = 0
+                    tarY        = 91
+                    tolerance   = 4
+                End If
+                Call Move()
+                cycle1 = cycle1 + 1
+                if cycle1 > 3 then
+                    cycle1 = 0
+                End If
+            End If
+        End If
+        Call ReleaseRune() //定期解轮
+    Wend
+    Call Home() //回城
+
+    SavedTor  = 56
+    SavedTorY = 107
+    SavedX    = 98
+    SavedY    = 235
+    patrol    = 0    //弹跳巡逻
+    Call AfterMap() //
+    Call Loading()
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    fountains = 1
+    while 1>0 //去ARC3 跳舞鞋
+        if getTimeStamp() > startTime+45 then //只刷45秒
+            break
+        End if
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if fountains > 0 and intX >= 0 then //可以喷泉了(原地)
+            DelayRandom 56,58
+            KeyDown 1
+            DelayRandom 194,196
+            KeyUp 1
+            DelayRandom 712,721
+            fountains = fountains - 1
+        else
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\D.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 and GetTimeStamp() - fireTime > 28 Then //地火(原地)
+                DelayRandom 42,50
+                KeyDown D
+                DelayRandom 194,196
+                KeyUp D
+                fireTime = GetTimeStamp()
+                DelayRandom 312,321
+            else //左右跳A
+                if cycle1     == 0 then
+                    tarX        = -8
+                    tarY        = 81
+                    tolerance   = 8
+                else if cycle1  == 1 then
+                    tarX        = -44
+                    tarY        = 86
+                    tolerance   = 8
+                else if cycle1  == 2 then
+                    tarX        = -78
+                    tarY        = 86
+                    tolerance   = 8
+                else if cycle1  == 3 then
+                    tarX        = -44
+                    tarY        = 86
+                    tolerance   = 8
+                End If
+                Call Move()
+                cycle1 = cycle1 + 1
+                if cycle1 > 3 then
+                    cycle1 = 0
+                End If
+            End If
+        End If
+        Call ReleaseRune() //定期解轮
+    Wend
+    Call Home() //回城
+
+    SavedTor  = 56
+    SavedTorY = 92
+    SavedX    = 216
+    SavedY    = 260
+    patrol    = 0    //弹跳巡逻
+    Call AfterMap() //
+    Call Loading()
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    fountains = 1
+    while 1>0 //去ARC2 平原
+        if getTimeStamp() > startTime+45 then //只刷45秒
+            break
+        End if
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\D.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 and GetTimeStamp() - fireTime > 28 Then //地火(原地)
+            DelayRandom 42,50
+            KeyDown D
+            DelayRandom 194,196
+            KeyUp D
+            fireTime = GetTimeStamp()
+            DelayRandom 312,321
+        else //左右跳A
+            if cycle1     == 0 then
+                tarX        = -29
+                tarY        = 107
+                tolerance   = 8
+            else if cycle1  == 1 then
+                tarX        = 1
+                tarY        = 107
+                tolerance   = 8
+            else if cycle1  == 2 then
+                tarX        = 30
+                tarY        = 107
+                tolerance   = 8
+            else if cycle1  == 3 then
+                tarX        = 1
+                tarY        = 107
+                tolerance   = 8
+            End If
+            Call Move()
+            cycle1 = cycle1 + 1
+            if cycle1 > 3 then
+                cycle1 = 0
+            End If
+        End If
+        Call ReleaseRune() //定期解轮
+    Wend
+    Call Home() //回城
+
+    SavedTor  = 56
+    SavedTorY = 62
+    SavedX    = 111
+    SavedY    = 112
+    patrol    = 0    //弹跳巡逻
+    Call AfterMap() //
+    Call Loading()
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    fountains = 1
+    while 1>0 //去ARC2 平原
+        if getTimeStamp() > startTime+45 then //只刷45秒
+            break
+        End if
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lynn\D.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 and GetTimeStamp() - fireTime > 28 Then //地火(原地)
+            DelayRandom 42,50
+            KeyDown D
+            DelayRandom 194,196
+            KeyUp D
+            fireTime = GetTimeStamp()
+            DelayRandom 312,321
+        else //左右跳A
+            if cycle1     == 0 then
+                tarX        = -40
+                tarY        = 90
+                tolerance   = 8
+            else if cycle1  == 1 then
+                tarX        = -11
+                tarY        = 90
+                tolerance   = 8
+            else if cycle1  == 2 then
+                tarX        = 18
+                tarY        = 90
+                tolerance   = 8
+            else if cycle1  == 3 then
+                tarX        = -11
+                tarY        = 90
+                tolerance   = 8
+            End If
+            Call Move()
+            cycle1 = cycle1 + 1
+            if cycle1 > 3 then
+                cycle1 = 0
+            End If
+        End If
+        Call ReleaseRune() //定期解轮
+    Wend
+    Call Home() //回城
 End Sub
+
 
 Beep 200,500

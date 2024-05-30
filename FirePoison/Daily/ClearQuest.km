@@ -1510,7 +1510,7 @@ Sub ClearQuest //清理下任务 Ver 1.11 AUT6个岛与ARC6个岛
     Call Loading() //加载
     Call Channel()
     Call BeforeStart() //开始前的准备
-    while 1>0 //ARC2
+    while 1>0 //ARC1
         if getTimeStamp() > startTime+35 then //只刷35秒
             break
         End if
