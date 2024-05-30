@@ -5154,6 +5154,13 @@ Sub Park //开始怪公
 
 End Sub
 
+Call Quest() //接任务
+Call ClearQuest() //清理任务
+Call Quest() //交任务
+//菇菇神社
+Call Gugu()
+//怪物公园
+Call Park()
 //打BOSS
 Call Boss1()
 Call Boss2()
@@ -5176,5 +5183,6 @@ Call HDDaily()      //清每日
 Call LegionDaily()  //清每日
 Call MileageDaily()  //清每日
 Call SortItem() //卖装备
+
 
 Beep 200,500

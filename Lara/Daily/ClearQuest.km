@@ -802,10 +802,15 @@ Sub BeforeStart //开刷前的参数初始化
     fountains		= 1               //喷泉的次数
     yTolerance		= 0               //初始化
 End Sub
+Sub MoveAnti //防止卡的移动
+    call GetXY()
+    if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
+        Call Move()
+    End If
+End Sub
 
 
-
-Sub Fun1 //后面一步步来
+Sub ClearQuest //清理任务 Ver1.11 全AUT和ARC
     SavedTorY = 360
     SavedTor  = 38
     SavedX    = 147
@@ -814,10 +819,9 @@ Sub Fun1 //后面一步步来
     Call Loading()
     Call Channel()
     Call BeforeStart() //开始前的准备
-    fountains = 2
     while 1>0 //开刷洞4
 
-        if getTimeStamp() > startTime+140 then //只刷140秒
+        if getTimeStamp() > startTime+70 then //只刷70秒
             break
         End If
 
@@ -826,19 +830,12 @@ Sub Fun1 //后面一步步来
             tarX = -98
             tarY = 93
             tolerance = 4
-            call GetXY()
-            if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-                Call Move()
-            End If
+            Call MoveAnti()
             DelayRandom 56,58
-            KeyDown Left
-            DelayRandom 62,68
-            KeyUp Left
+            KeyPress Left
             DelayRandom 106,109
-            KeyDown 1
-            DelayRandom 194,196
-            KeyUp 1
-            DelayRandom 712,721
+            KeyPress 1
+            DelayRandom 812,821
             fountains = fountains - 1
             Call ReleaseRune() //定期解轮
         End If
@@ -848,10 +845,7 @@ Sub Fun1 //后面一步步来
             tarX = -33
             tarY = 97
             tolerance = 4
-            call GetXY()
-            if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-                Call Move()
-            End If
+            Call MoveAnti()
             DelayRandom 56,58
             KeyDown Left
             DelayRandom 55,60
@@ -870,35 +864,6 @@ Sub Fun1 //后面一步步来
             KeyUp Right
             DelayRandom 342,347
             ReleaseTime1 = GetTimeStamp()
-
-            //释放3放在释放1之后
-            SavedX = intX
-            SavedY = intY
-            KeyDown Up
-            DelayRandom 202,205
-            KeyDown LShift
-            DelayRandom 128,130
-            KeyUp LShift
-            DelayRandom 437,442
-            KeyAllup
-            Call GetXY()
-            if SavedX == intX and SavedY == intY then //人物没变就不要施放了,平A就行
-                Call AroundF() //普通平A
-            else
-                DelayRandom 42,45
-                KeyDown E
-                DelayRandom 136,138
-                KeyUp E
-                DelayRandom 82,83
-                KeyDown Up
-                DelayRandom 120,122
-                KeyUp Up
-                DelayRandom 187,189
-                KeyDown S
-                DelayRandom 83,84
-                KeyUp S
-                DelayRandom 456,461
-            End If
         End If
 
         Call ReleaseRune() //定期解轮
@@ -908,10 +873,7 @@ Sub Fun1 //后面一步步来
             tarX       = 42
             tarY       = 93
             tolerance  = 4
-            call GetXY()
-            if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-                Call Move()
-            End If
+            Call MoveAnti()
             DelayRandom 56,58
             KeyDown Left
             DelayRandom 91,93
@@ -936,10 +898,7 @@ Sub Fun1 //后面一步步来
                 tarX       = 7
                 tarY       = 98
                 tolerance  = 6
-                call GetXY()
-                if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-                    Call Move()
-                End If
+                Call MoveAnti()
                 DelayRandom 56,58
                 KeyDown Down
                 DelayRandom 95,98
@@ -954,10 +913,7 @@ Sub Fun1 //后面一步步来
                 tarX = -33
                 tarY = 97
                 tolerance = 4
-                call GetXY()
-                if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-                    Call Move()
-                End If
+                Call MoveAnti()
                 DelayRandom 56,58
                 Call SpellList()
                 DelayRandom 155,169
@@ -985,19 +941,12 @@ Sub Fun1 //后面一步步来
             tarX = -85
             tarY = 117
             tolerance = 6
-            call GetXY()
-            if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-                Call Move()
-            End If
+            Call MoveAnti()
             DelayRandom 56,58
-            KeyDown Right
-            DelayRandom 62,68
-            KeyUp Right
+            KeyPress Right
             DelayRandom 106,109
-            KeyDown 1
-            DelayRandom 194,196
-            KeyUp 1
-            DelayRandom 712,721
+            KeyPress 1
+            DelayRandom 812,821
             fountains = fountains - 1
 
             Call ReleaseRune() //定期解轮
@@ -1008,10 +957,7 @@ Sub Fun1 //后面一步步来
             tarX = -9
             tarY = 115
             tolerance = 4
-            call GetXY()
-            if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-                Call Move()
-            End If
+            Call MoveAnti()
             DelayRandom 56,58
             KeyDown Left
             DelayRandom 91,93
@@ -1031,38 +977,6 @@ Sub Fun1 //后面一步步来
             DelayRandom 342,347
             ReleaseTime1 = GetTimeStamp()
 
-            //释放3放在释放1之后
-            if GetTimeStamp() - ReleaseTime3 > 14 then
-                ReleaseTime3 = GetTimeStamp()
-                SavedX = intX
-                SavedY = intY
-                KeyDown Up
-                DelayRandom 202,205
-                KeyDown LShift
-                DelayRandom 128,130
-                KeyUp LShift
-                DelayRandom 437,442
-                KeyAllup
-                Call GetXY()
-                if SavedX == intX and SavedY == intY then //人物没变就不要施放了,平A就行
-                    Call AroundF() //普通平A
-                else
-                    DelayRandom 42,45
-                    KeyDown E
-                    DelayRandom 136,138
-                    KeyUp E
-                    DelayRandom 82,83
-                    KeyDown Up
-                    DelayRandom 120,122
-                    KeyUp Up
-                    DelayRandom 187,189
-                    KeyDown S
-                    DelayRandom 83,84
-                    KeyUp S
-                    DelayRandom 456,461
-                End If
-            End If
-
         End If
 
         Call ReleaseRune() //定期解轮
@@ -1072,10 +986,7 @@ Sub Fun1 //后面一步步来
             tarX       = 26
             tarY       = 111
             tolerance  = 4
-            call GetXY()
-            if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-                Call Move()
-            End If
+            Call MoveAnti()
             DelayRandom 56,58
             KeyDown Right
             DelayRandom 91,93
@@ -1100,10 +1011,7 @@ Sub Fun1 //后面一步步来
                 tarX       = 1
                 tarY       = 67
                 tolerance  = 6
-                call GetXY()
-                if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-                    Call Move()
-                End If
+                Call MoveAnti()
                 DelayRandom 56,58
                 KeyDown Down
                 DelayRandom 95,98
@@ -1115,44 +1023,11 @@ Sub Fun1 //后面一步步来
                 DelayRandom 455,469
                 seedTime1 = GetTimeStamp()
 
-                if GetTimeStamp() - ReleaseTime3 > 14 then
-                    ReleaseTime3 = GetTimeStamp()
-                    SavedX = intX
-                    SavedY = intY
-                    KeyDown Down
-                    DelayRandom 202,205
-                    KeyDown LShift
-                    DelayRandom 128,130
-                    KeyUp LShift
-                    DelayRandom 437,442
-                    KeyAllup
-                    Call GetXY()
-                    if SavedX == intX and SavedY == intY then //人物没变就不要施放了,平A就行
-                        Call AroundF() //普通平A
-                    else
-                        DelayRandom 42,45
-                        KeyDown E
-                        DelayRandom 136,138
-                        KeyUp E
-                        DelayRandom 82,83
-                        KeyDown Up
-                        DelayRandom 120,122
-                        KeyUp Up
-                        DelayRandom 187,189
-                        KeyDown S
-                        DelayRandom 83,84
-                        KeyUp S
-                        DelayRandom 456,461
-                    End If
-                End If
             else //前往牛马地方放技能
                 tarX = -9
                 tarY = 115
                 tolerance = 4
-                call GetXY()
-                if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-                    Call Move()
-                End If
+                Call MoveAnti()
                 DelayRandom 56,58
                 Call SpellList()
                 DelayRandom 155,169
@@ -1181,19 +1056,12 @@ Sub Fun1 //后面一步步来
             tarX = 29
             tarY = 84
             tolerance = 4
-            call GetXY()
-            if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-                Call Move()
-            End If
+            Call MoveAnti()
             DelayRandom 56,58
-            KeyDown Left
-            DelayRandom 62,68
-            KeyUp Left
+            KeyPress Left
             DelayRandom 106,109
-            KeyDown 1
-            DelayRandom 194,196
-            KeyUp 1
-            DelayRandom 712,721
+            KeyPress 1
+            DelayRandom 812,821
             fountains = fountains - 1
 
             Call ReleaseRune() //定期解轮
@@ -1204,10 +1072,7 @@ Sub Fun1 //后面一步步来
             tarX      = -47
             tarY      = 84
             tolerance = 4
-            call GetXY()
-            if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-                Call Move()
-            End If
+            Call MoveAnti()
             DelayRandom 56,58
             KeyDown Right
             DelayRandom 91,93
@@ -1235,10 +1100,7 @@ Sub Fun1 //后面一步步来
             tarX       = -72
             tarY       = 114
             tolerance  = 4
-            call GetXY()
-            if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-                Call Move()
-            End If
+            Call MoveAnti()
             DelayRandom 56,58
             KeyDown Left
             DelayRandom 91,93
@@ -1257,54 +1119,13 @@ Sub Fun1 //后面一步步来
             KeyUp Right
             DelayRandom 342,347
             ReleaseTime2 = GetTimeStamp()
-
-
-            //释放3放在释放1之后
-            if GetTimeStamp() - ReleaseTime3 > 14 then
-                ReleaseTime3 = GetTimeStamp()
-                SavedX = intX
-                SavedY = intY
-                KeyDown Right
-                DelayRandom 202,205
-                KeyDown LShift
-                DelayRandom 128,130
-                KeyUp LShift
-                DelayRandom 437,442
-                KeyAllup
-                Call GetXY()
-                if SavedX == intX and SavedY == intY then //人物没变就不要施放了,平A就行
-                    Call AroundF() //普通平A
-                else
-                    DelayRandom 39,42
-                    KeyDown Left
-                    DelayRandom 69,72
-                    KeyUp Left
-                    DelayRandom 42,45
-                    KeyDown E
-                    DelayRandom 136,138
-                    KeyUp E
-                    DelayRandom 82,83
-                    KeyDown Up
-                    DelayRandom 120,122
-                    KeyUp Up
-                    DelayRandom 187,189
-                    KeyDown S
-                    DelayRandom 83,84
-                    KeyUp S
-                    DelayRandom 456,461
-                End If
-            End If
-
         else
             a = GetTimeStamp() - seedTime1
             if a > 18 then //可以放种子了 Ver2.0
                 tarX       = -16
                 tarY       = 114
                 tolerance  = 6
-                call GetXY()
-                if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-                    Call Move()
-                End If
+                Call MoveAnti()
                 DelayRandom 56,58
                 KeyDown Down
                 DelayRandom 95,98
@@ -1315,50 +1136,11 @@ Sub Fun1 //后面一步步来
                 KeyUp Down
                 DelayRandom 455,469
                 seedTime1 = GetTimeStamp()
-
-                //释放3放在释放1之后
-                if GetTimeStamp() - ReleaseTime3 > 14 then
-                    ReleaseTime3 = GetTimeStamp()
-                    SavedX = intX
-                    SavedY = intY
-                    KeyDown Right
-                    DelayRandom 202,205
-                    KeyDown LShift
-                    DelayRandom 128,130
-                    KeyUp LShift
-                    DelayRandom 437,442
-                    KeyAllup
-                    Call GetXY()
-                    if SavedX == intX and SavedY == intY then //人物没变就不要施放了,平A就行
-                        Call AroundF() //普通平A
-                    else
-                        DelayRandom 39,42
-                        KeyDown Left
-                        DelayRandom 69,72
-                        KeyUp Left
-                        DelayRandom 42,45
-                        KeyDown E
-                        DelayRandom 136,138
-                        KeyUp E
-                        DelayRandom 82,83
-                        KeyDown Up
-                        DelayRandom 120,122
-                        KeyUp Up
-                        DelayRandom 187,189
-                        KeyDown S
-                        DelayRandom 83,84
-                        KeyUp S
-                        DelayRandom 456,461
-                    End If
-                End If
             else //前往牛马地方放技能
                 tarX       = -72
                 tarY       = 114
                 tolerance  = 4
-                call GetXY()
-                if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-                    Call Move()
-                End If
+                Call MoveAnti()
                 DelayRandom 56,58
                 Call SpellList()
                 DelayRandom 155,169
@@ -1387,19 +1169,12 @@ Sub Fun1 //后面一步步来
             tarX		= 29
             tarY		= 88
             tolerance	= 4
-            call GetXY()
-            if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-                Call Move()
-            End If
+            Call MoveAnti()
             DelayRandom 56,58
-            KeyDown Right
-            DelayRandom 62,68
-            KeyUp Right
+            KeyPress Right
             DelayRandom 106,109
-            KeyDown 1
-            DelayRandom 194,196
-            KeyUp 1
-            DelayRandom 712,721
+            KeyPress 1
+            DelayRandom 812,821
             fountains = fountains - 1
 
             Call ReleaseRune() //定期解轮
@@ -1410,10 +1185,7 @@ Sub Fun1 //后面一步步来
             tarX = -79
             tarY = 104
             tolerance = 4
-            call GetXY()
-            if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-                Call Move()
-            End If
+            Call MoveAnti()
             DelayRandom 56,58
             KeyDown Left
             DelayRandom 91,93
@@ -1441,10 +1213,7 @@ Sub Fun1 //后面一步步来
             tarX = -11
             tarY = 93
             tolerance = 4
-            call GetXY()
-            if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-                Call Move()
-            End If
+            Call MoveAnti()
             DelayRandom 56,58
             KeyDown Right
             DelayRandom 91,93
@@ -1469,10 +1238,7 @@ Sub Fun1 //后面一步步来
                 tarX      = 19
                 tarY      = 118
                 tolerance = 8
-                call GetXY()
-                if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-                    Call Move()
-                End If
+                Call MoveAnti()
                 DelayRandom 56,58
                 KeyDown Down
                 DelayRandom 95,98
@@ -1484,49 +1250,11 @@ Sub Fun1 //后面一步步来
                 DelayRandom 455,469
                 seedTime1 = GetTimeStamp()
 
-                //释放3放在释放1之后
-                if GetTimeStamp() - ReleaseTime3 > 14 then
-                    ReleaseTime3 = GetTimeStamp()
-                    SavedX = intX
-                    SavedY = intY
-                    KeyDown Right
-                    DelayRandom 202,205
-                    KeyDown LShift
-                    DelayRandom 128,130
-                    KeyUp LShift
-                    DelayRandom 437,442
-                    KeyAllup
-                    Call GetXY()
-                    if SavedX == intX and SavedY == intY then //人物没变就不要施放了,平A就行
-                        Call AroundF() //普通平A
-                    else
-                        DelayRandom 39,42
-                        KeyDown Left
-                        DelayRandom 69,72
-                        KeyUp Left
-                        DelayRandom 42,45
-                        KeyDown E
-                        DelayRandom 136,138
-                        KeyUp E
-                        DelayRandom 82,83
-                        KeyDown Up
-                        DelayRandom 120,122
-                        KeyUp Up
-                        DelayRandom 187,189
-                        KeyDown S
-                        DelayRandom 83,84
-                        KeyUp S
-                        DelayRandom 456,461
-                    End If
-                End If
             else //前往牛马地方放技能
                 tarX      = -30
                 tarY      = 118
                 tolerance = 8
-                call GetXY()
-                if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-                    Call Move()
-                End If
+                Call MoveAnti()
                 DelayRandom 56,58
                 Call SpellList()
                 DelayRandom 155,169
@@ -1536,12 +1264,774 @@ Sub Fun1 //后面一步步来
     Wend
     Call Home() //回城
 
+    SavedTor  = 38
+    SavedTorY = 294
+    SavedX    = -258
+    SavedY    = 169
+    Call AfterMap() //到达
+    Call Loading()
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    while 1>0 //开刷列车2
+
+        if getTimeStamp() > startTime+70 then //只刷70秒
+            break
+        End If
+
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if fountains > 0 and intX >= 0 then //可以喷泉了
+            tarX		= 21
+            tarY		= 82
+            tolerance	= 4
+            Call MoveAnti()
+            DelayRandom 56,58
+            KeyPress Right
+            DelayRandom 106,109
+            KeyPress 1
+            DelayRandom 812,821
+            fountains = fountains - 1
+
+            Call ReleaseRune() //定期解轮
+        End If
+
+        a = GetTimeStamp() - ReleaseTime1
+        if a > 13 then //施放1 Ver2.0
+            tarX = -50
+            tarY = 84
+            tolerance = 4
+            Call MoveAnti()
+            DelayRandom 56,58
+            KeyPress Right
+            DelayRandom 32,33
+            KeyDown A
+            DelayRandom 136,138
+            KeyUp A
+            DelayRandom 165,167
+            KeyDown S
+            DelayRandom 119,121
+            KeyUp S
+            DelayRandom 248,251
+            KeyDown Left
+            DelayRandom 106,108
+            KeyUp Left
+            DelayRandom 342,347
+            ReleaseTime1 = GetTimeStamp()
+        End If
+
+        Call ReleaseRune() //定期解轮
+
+        a = GetTimeStamp() - ReleaseTime2
+        if a > 13 then //施放2 Ver2.0
+            tarX = -27
+            tarY = 113
+            tolerance = 4
+            Call MoveAnti()
+            DelayRandom 56,58
+            KeyPress Right
+            DelayRandom 32,33
+            KeyDown A
+            DelayRandom 136,138
+            KeyUp A
+            DelayRandom 165,167
+            KeyDown S
+            DelayRandom 119,121
+            KeyUp S
+            DelayRandom 248,251
+            KeyPress Right
+            DelayRandom 342,347
+            ReleaseTime2 = GetTimeStamp()
+        else
+            a = GetTimeStamp() - seedTime1
+            if a > 18 then //可以放种子了 Ver2.0
+                tarX      = 14
+                tarY      = 113
+                tolerance = 8
+                Call MoveAnti()
+                DelayRandom 56,58
+                KeyDown Down
+                DelayRandom 95,98
+                KeyDown `
+                DelayRandom 251,259
+                KeyUp `
+                DelayRandom 119,123
+                KeyUp Down
+                DelayRandom 455,469
+                seedTime1 = GetTimeStamp()
+            else //前往牛马地方放技能
+                tarX      = 14
+                tarY      = 113
+                tolerance = 8
+                Call MoveAnti()
+                KeyPress Left
+                DelayRandom 56,58
+                Call SpellList()
+                DelayRandom 155,169
+            End If
+
+        End If
+    Wend
+    Call Home() //回城
+
+    SavedTor  = 38
+    SavedTorY = 263
+    SavedX    = 183
+    SavedY    = 194
+    Call AfterMap() //到达
+    Call Loading()
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    while 1>0 //开刷东3
+
+        if getTimeStamp() > startTime+70 then //只刷70秒
+            break
+        End If
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if fountains > 0 and intX >= 0 then //可以喷泉了
+            tarX		= 28
+            tarY		= 103
+            tolerance	= 4
+            Call MoveAnti()
+            DelayRandom 56,58
+            KeyPress Right
+            DelayRandom 106,109
+            KeyPress 1
+            DelayRandom 812,821
+            fountains = fountains - 1
+
+            Call ReleaseRune() //定期解轮
+        End If
+
+        a = GetTimeStamp() - ReleaseTime1
+        if a > 13 then //施放1 Ver2.0
+            tarX = -33
+            tarY = 85
+            tolerance = 4
+            Call MoveAnti()
+            DelayRandom 56,58
+            KeyPress Right
+            DelayRandom 32,33
+            KeyDown A
+            DelayRandom 136,138
+            KeyUp A
+            DelayRandom 165,167
+            KeyDown S
+            DelayRandom 119,121
+            KeyUp S
+            DelayRandom 248,251
+            KeyDown Left
+            DelayRandom 106,108
+            KeyUp Left
+            DelayRandom 342,347
+            ReleaseTime1 = GetTimeStamp()
+        End If
+
+        Call ReleaseRune() //定期解轮
+
+        a = GetTimeStamp() - ReleaseTime2
+        if a > 13 then //施放2 Ver2.0
+            tarX = -30
+            tarY = 119
+            tolerance = 4
+            Call MoveAnti()
+            DelayRandom 56,58
+            KeyPress Right
+            DelayRandom 32,33
+            KeyDown A
+            DelayRandom 136,138
+            KeyUp A
+            DelayRandom 165,167
+            KeyDown S
+            DelayRandom 119,121
+            KeyUp S
+            DelayRandom 248,251
+            KeyPress Right
+            DelayRandom 342,347
+            ReleaseTime2 = GetTimeStamp()
+        else
+            a = GetTimeStamp() - seedTime1
+            if a > 18 then //可以放种子了 Ver2.0
+                tarX      = 6
+                tarY      = 119
+                tolerance = 8
+                Call MoveAnti()
+                DelayRandom 56,58
+                KeyDown Down
+                DelayRandom 95,98
+                KeyDown `
+                DelayRandom 251,259
+                KeyUp `
+                DelayRandom 119,123
+                KeyUp Down
+                DelayRandom 455,469
+                seedTime1 = GetTimeStamp()
+            else //前往牛马地方放技能
+                tarX      = 6
+                tarY      = 119
+                tolerance = 8
+                Call MoveAnti()
+                KeyPress Left
+                DelayRandom 56,58
+                Call SpellList()
+                DelayRandom 155,169
+            End If
+
+        End If
+    Wend
+    Call Home() //回城
+
+
+    SavedTor  = 56
+    SavedTorY = 152
+    SavedX    = 94
+    SavedY    = 423
+    Call AfterMap() //到达
+    Call Loading()
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    while 1>0 //去ARC6 镜海3
+        if getTimeStamp() > startTime+35 then //只刷35秒
+            break
+        End If
+
+        a = GetTimeStamp() - ReleaseTime1
+        if a > 13 then //施放1 Ver2.0
+            tarX = -22
+            tarY = 104
+            tolerance = 4
+            Call MoveAnti()
+            DelayRandom 56,58
+            KeyPress Right
+            DelayRandom 32,33
+            KeyDown A
+            DelayRandom 136,138
+            KeyUp A
+            DelayRandom 165,167
+            KeyDown S
+            DelayRandom 119,121
+            KeyUp S
+            DelayRandom 248,251
+            KeyDown Left
+            DelayRandom 106,108
+            KeyUp Left
+            DelayRandom 342,347
+            ReleaseTime1 = GetTimeStamp()
+        End If
+        Call ReleaseRune() //定期解轮
+        a = GetTimeStamp() - ReleaseTime2
+        if a > 13 then //施放2 Ver2.0
+            tarX = 24
+            tarY = 115
+            tolerance = 4
+            Call MoveAnti()
+            DelayRandom 56,58
+            KeyPress Right
+            DelayRandom 32,33
+            KeyDown A
+            DelayRandom 136,138
+            KeyUp A
+            DelayRandom 165,167
+            KeyDown S
+            DelayRandom 119,121
+            KeyUp S
+            DelayRandom 248,251
+            KeyPress Right
+            DelayRandom 342,347
+            ReleaseTime2 = GetTimeStamp()
+        else
+            a = GetTimeStamp() - seedTime1
+            if a > 18 then //可以放种子了 Ver2.0
+                tarX      = 33
+                tarY      = 73
+                tolerance = 8
+                Call MoveAnti()
+                DelayRandom 56,58
+                KeyDown Down
+                DelayRandom 95,98
+                KeyDown `
+                DelayRandom 251,259
+                KeyUp `
+                DelayRandom 119,123
+                KeyUp Down
+                DelayRandom 455,469
+                seedTime1 = GetTimeStamp()
+            else //前往牛马地方放技能
+                tarX      = -1
+                tarY      = 88
+                tolerance = 8
+                Call MoveAnti()
+                KeyPress Left
+                DelayRandom 56,58
+                Call SpellList()
+                DelayRandom 155,169
+            End If
+
+        End If
+    Wend
+    Call Home() //回城
+
+    SavedTor  = 56
+    SavedTorY = 137
+    SavedX    = -14
+    SavedY    = 373
+    Call AfterMap() //到达
+    Call Loading()
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    while 1>0 //去ARC5 影子3
+
+        if getTimeStamp() > startTime+50 then //只刷50秒
+            break
+        End If
+
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if fountains > 0 and intX >= 0 then //可以喷泉了
+            tarX = -84
+            tarY = 86
+            tolerance = 4
+            Call MoveAnti()
+            DelayRandom 56,58
+            KeyPress Left
+            DelayRandom 106,109
+            KeyPress 1
+            DelayRandom 812,821
+            fountains = fountains - 1
+            Call ReleaseRune() //定期解轮
+        End If
+
+        a = GetTimeStamp() - ReleaseTime1
+        if a > 13 then //施放1 Ver2.0
+            tarX = 47
+            tarY = 78
+            tolerance = 4
+            Call MoveAnti()
+            DelayRandom 56,58
+            KeyPress Right
+            DelayRandom 32,33
+            KeyDown A
+            DelayRandom 136,138
+            KeyUp A
+            DelayRandom 165,167
+            KeyDown S
+            DelayRandom 119,121
+            KeyUp S
+            DelayRandom 248,251
+            KeyDown Left
+            DelayRandom 106,108
+            KeyUp Left
+            DelayRandom 342,347
+            ReleaseTime1 = GetTimeStamp()
+        End If
+        Call ReleaseRune() //定期解轮
+        a = GetTimeStamp() - ReleaseTime2
+        if a > 13 then //施放2 Ver2.0
+            tarX = -21
+            tarY = 91
+            tolerance = 4
+            Call MoveAnti()
+            DelayRandom 56,58
+            KeyPress Right
+            DelayRandom 32,33
+            KeyDown A
+            DelayRandom 136,138
+            KeyUp A
+            DelayRandom 165,167
+            KeyDown S
+            DelayRandom 119,121
+            KeyUp S
+            DelayRandom 248,251
+            KeyPress Right
+            DelayRandom 342,347
+            ReleaseTime2 = GetTimeStamp()
+        else
+            a = GetTimeStamp() - seedTime1
+            if a > 18 then //可以放种子了 Ver2.0
+                tarX      = 17
+                tarY      = 107
+                tolerance = 8
+                Call MoveAnti()
+                DelayRandom 56,58
+                KeyDown Down
+                DelayRandom 95,98
+                KeyDown `
+                DelayRandom 251,259
+                KeyUp `
+                DelayRandom 119,123
+                KeyUp Down
+                DelayRandom 455,469
+                seedTime1 = GetTimeStamp()
+            else //前往牛马地方放技能
+                tarX      = -36
+                tarY      = 107
+                tolerance = 8
+                Call MoveAnti()
+                KeyPress Left
+                DelayRandom 56,58
+                Call SpellList()
+                DelayRandom 155,169
+            End If
+
+        End If
+    Wend
+    Call Home() //回城
+
+    SavedTor  = 56
+    SavedTorY = 122
+    SavedX    = 79
+    SavedY    = 431
+    Call AfterMap() //到达
+    Call Loading()
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    while 1>0 //去ARC4 下路深处2
+        if getTimeStamp() > startTime+35 then //只刷35秒
+            break
+        End If
+
+        a = GetTimeStamp() - ReleaseTime1
+        if a > 13 then //施放1 Ver2.0
+            tarX = -53
+            tarY = 77
+            tolerance = 4
+            Call MoveAnti()
+            DelayRandom 56,58
+            KeyPress Right
+            DelayRandom 32,33
+            KeyDown A
+            DelayRandom 136,138
+            KeyUp A
+            DelayRandom 165,167
+            KeyDown S
+            DelayRandom 119,121
+            KeyUp S
+            DelayRandom 248,251
+            KeyDown Left
+            DelayRandom 106,108
+            KeyUp Left
+            DelayRandom 342,347
+            ReleaseTime1 = GetTimeStamp()
+        End If
+        Call ReleaseRune() //定期解轮
+        a = GetTimeStamp() - ReleaseTime2
+        if a > 13 then //施放2 Ver2.0
+            tarX = 19
+            tarY = 91
+            tolerance = 4
+            Call MoveAnti()
+            DelayRandom 56,58
+            KeyPress Right
+            DelayRandom 32,33
+            KeyDown A
+            DelayRandom 136,138
+            KeyUp A
+            DelayRandom 165,167
+            KeyDown S
+            DelayRandom 119,121
+            KeyUp S
+            DelayRandom 248,251
+            KeyPress Right
+            DelayRandom 342,347
+            ReleaseTime2 = GetTimeStamp()
+        else
+            a = GetTimeStamp() - seedTime1
+            if a > 18 then //可以放种子了 Ver2.0
+                tarX      = -36
+                tarY      = 91
+                tolerance = 8
+                Call MoveAnti()
+                DelayRandom 56,58
+                KeyDown Down
+                DelayRandom 95,98
+                KeyDown `
+                DelayRandom 251,259
+                KeyUp `
+                DelayRandom 119,123
+                KeyUp Down
+                DelayRandom 455,469
+                seedTime1 = GetTimeStamp()
+            else //前往牛马地方放技能
+                tarX      = -36
+                tarY      = 91
+                tolerance = 8
+                Call MoveAnti()
+                KeyPress Left
+                DelayRandom 56,58
+                Call SpellList()
+                DelayRandom 155,169
+            End If
+
+        End If
+    Wend
+    Call Home() //回城
+
+    SavedTor  = 56
+    SavedTorY = 107
+    SavedX    = 98
+    SavedY    = 235
+    Call AfterMap() //到达
+    Call Loading()
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    while 1>0 //去ARC3 跳舞鞋
+
+        if getTimeStamp() > startTime+35 then //只刷35秒
+            break
+        End If
+
+        a = GetTimeStamp() - ReleaseTime1
+        if a > 13 then //施放1 Ver2.0
+            tarX = -74
+            tarY = 86
+            tolerance = 4
+            Call MoveAnti()
+            DelayRandom 56,58
+            KeyPress Right
+            DelayRandom 32,33
+            KeyDown A
+            DelayRandom 136,138
+            KeyUp A
+            DelayRandom 165,167
+            KeyDown S
+            DelayRandom 119,121
+            KeyUp S
+            DelayRandom 248,251
+            KeyDown Left
+            DelayRandom 106,108
+            KeyUp Left
+            DelayRandom 342,347
+            ReleaseTime1 = GetTimeStamp()
+        End If
+        Call ReleaseRune() //定期解轮
+        a = GetTimeStamp() - ReleaseTime2
+        if a > 13 then //施放2 Ver2.0
+            tarX = -19
+            tarY = 97
+            tolerance = 4
+            Call MoveAnti()
+            DelayRandom 56,58
+            KeyPress Right
+            DelayRandom 32,33
+            KeyDown A
+            DelayRandom 136,138
+            KeyUp A
+            DelayRandom 165,167
+            KeyDown S
+            DelayRandom 119,121
+            KeyUp S
+            DelayRandom 248,251
+            KeyPress Right
+            DelayRandom 342,347
+            ReleaseTime2 = GetTimeStamp()
+        else
+            a = GetTimeStamp() - seedTime1
+            if a > 18 then //可以放种子了 Ver2.0
+                tarX      = -19
+                tarY      = 67
+                tolerance = 8
+                Call MoveAnti()
+                DelayRandom 56,58
+                KeyDown Down
+                DelayRandom 95,98
+                KeyDown `
+                DelayRandom 251,259
+                KeyUp `
+                DelayRandom 119,123
+                KeyUp Down
+                DelayRandom 455,469
+                seedTime1 = GetTimeStamp()
+            else //前往牛马地方放技能
+                tarX      = -19
+                tarY      = 97
+                tolerance = 8
+                Call MoveAnti()
+                KeyPress Left
+                DelayRandom 56,58
+                Call SpellList()
+                DelayRandom 155,169
+            End If
+
+        End If
+    Wend
+    Call Home() //回城
+
+    SavedTor  = 56
+    SavedTorY = 92
+    SavedX    = 216
+    SavedY    = 260
+    Call AfterMap() //到达
+    Call Loading()
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    while 1>0 //去ARC2 平原
+
+        if getTimeStamp() > startTime+35 then //只刷35秒
+            break
+        End If
+
+        a = GetTimeStamp() - ReleaseTime1
+        if a > 13 then //施放1 Ver2.0
+            tarX = -28
+            tarY = 93
+            tolerance = 4
+            Call MoveAnti()
+            DelayRandom 56,58
+            KeyPress Right
+            DelayRandom 32,33
+            KeyDown A
+            DelayRandom 136,138
+            KeyUp A
+            DelayRandom 165,167
+            KeyDown S
+            DelayRandom 119,121
+            KeyUp S
+            DelayRandom 248,251
+            KeyDown Left
+            DelayRandom 106,108
+            KeyUp Left
+            DelayRandom 342,347
+            ReleaseTime1 = GetTimeStamp()
+        End If
+        Call ReleaseRune() //定期解轮
+        a = GetTimeStamp() - ReleaseTime2
+        if a > 13 then //施放2 Ver2.0
+            tarX = 22
+            tarY = 107
+            tolerance = 4
+            Call MoveAnti()
+            DelayRandom 56,58
+            KeyPress Right
+            DelayRandom 32,33
+            KeyDown A
+            DelayRandom 136,138
+            KeyUp A
+            DelayRandom 165,167
+            KeyDown S
+            DelayRandom 119,121
+            KeyUp S
+            DelayRandom 248,251
+            KeyPress Right
+            DelayRandom 342,347
+            ReleaseTime2 = GetTimeStamp()
+        else
+            a = GetTimeStamp() - seedTime1
+            if a > 18 then //可以放种子了 Ver2.0
+                tarX      = 47
+                tarY      = 79
+                tolerance = 8
+                Call MoveAnti()
+                DelayRandom 56,58
+                KeyDown Down
+                DelayRandom 95,98
+                KeyDown `
+                DelayRandom 251,259
+                KeyUp `
+                DelayRandom 119,123
+                KeyUp Down
+                DelayRandom 455,469
+                seedTime1 = GetTimeStamp()
+            else //前往牛马地方放技能
+                tarX      = 22
+                tarY      = 107
+                tolerance = 8
+                Call MoveAnti()
+                KeyPress Left
+                DelayRandom 56,58
+                Call SpellList()
+                DelayRandom 155,169
+            End If
+
+        End If
+    Wend
+    Call Home() //回城
+
+    SavedTor  = 56
+    SavedTorY = 62
+    SavedX    = 111
+    SavedY    = 112
+    Call AfterMap() //到达
+    Call Loading()
+    Call Channel()
+    Call BeforeStart() //开始前的准备
+    while 1>0 //去ARC1 反转城市
+
+        if getTimeStamp() > startTime+35 then //只刷35秒
+            break
+        End If
+
+        a = GetTimeStamp() - ReleaseTime1
+        if a > 13 then //施放1 Ver2.0
+            tarX = -41
+            tarY = 75
+            tolerance = 4
+            Call MoveAnti()
+            DelayRandom 56,58
+            KeyPress Right
+            DelayRandom 32,33
+            KeyDown A
+            DelayRandom 136,138
+            KeyUp A
+            DelayRandom 165,167
+            KeyDown S
+            DelayRandom 119,121
+            KeyUp S
+            DelayRandom 248,251
+            KeyDown Left
+            DelayRandom 106,108
+            KeyUp Left
+            DelayRandom 342,347
+            ReleaseTime1 = GetTimeStamp()
+        End If
+        Call ReleaseRune() //定期解轮
+        a = GetTimeStamp() - ReleaseTime2
+        if a > 13 then //施放2 Ver2.0
+            tarX = 28
+            tarY = 90
+            tolerance = 4
+            Call MoveAnti()
+            DelayRandom 56,58
+            KeyPress Right
+            DelayRandom 32,33
+            KeyDown A
+            DelayRandom 136,138
+            KeyUp A
+            DelayRandom 165,167
+            KeyDown S
+            DelayRandom 119,121
+            KeyUp S
+            DelayRandom 248,251
+            KeyPress Right
+            DelayRandom 342,347
+            ReleaseTime2 = GetTimeStamp()
+        else
+            a = GetTimeStamp() - seedTime1
+            if a > 18 then //可以放种子了 Ver2.0
+                tarX      = -16
+                tarY      = 90
+                tolerance = 8
+                Call MoveAnti()
+                DelayRandom 56,58
+                KeyDown Down
+                DelayRandom 95,98
+                KeyDown `
+                DelayRandom 251,259
+                KeyUp `
+                DelayRandom 119,123
+                KeyUp Down
+                DelayRandom 455,469
+                seedTime1 = GetTimeStamp()
+            else //前往牛马地方放技能
+                tarX      = -16
+                tarY      = 90
+                tolerance = 8
+                Call MoveAnti()
+                KeyPress Left
+                DelayRandom 56,58
+                Call SpellList()
+                DelayRandom 155,169
+            End If
+
+        End If
+    Wend
+    Call Home() //回城
 End Sub
-
-
-
-
-
-//
 
 Beep 200,500
