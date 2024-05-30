@@ -3156,8 +3156,7 @@ Sub MoveAnti //防止卡的移动
     End If
 End Sub
 
-
-Sub ClearQuest //清理任务 Ver1.11 全AUT和ARC
+Sub ClearQuest //清理任务 Ver1.12 全AUT和ARC
     SavedTorY = 360
     SavedTor  = 38
     SavedX    = 147
@@ -3836,7 +3835,7 @@ Sub ClearQuest //清理任务 Ver1.11 全AUT和ARC
     Call Channel()
     Call BeforeStart() //开始前的准备
     while 1>0 //去ARC6 镜海3
-        if getTimeStamp() > startTime+40 then //只刷40秒
+        if getTimeStamp() > startTime+35 then //只刷35秒
             break
         End If
 
@@ -4030,7 +4029,7 @@ Sub ClearQuest //清理任务 Ver1.11 全AUT和ARC
     Call Channel()
     Call BeforeStart() //开始前的准备
     while 1>0 //去ARC4 下路深处2
-        if getTimeStamp() > startTime+40 then //只刷40秒
+        if getTimeStamp() > startTime+35 then //只刷35秒
             break
         End If
 
@@ -4120,7 +4119,7 @@ Sub ClearQuest //清理任务 Ver1.11 全AUT和ARC
     Call BeforeStart() //开始前的准备
     while 1>0 //去ARC3 跳舞鞋
 
-        if getTimeStamp() > startTime+40 then //只刷40秒
+        if getTimeStamp() > startTime+35 then //只刷35秒
             break
         End If
 
@@ -4210,7 +4209,7 @@ Sub ClearQuest //清理任务 Ver1.11 全AUT和ARC
     Call BeforeStart() //开始前的准备
     while 1>0 //去ARC2 平原
 
-        if getTimeStamp() > startTime+40 then //只刷40秒
+        if getTimeStamp() > startTime+35 then //只刷35秒
             break
         End If
 
@@ -4300,18 +4299,18 @@ Sub ClearQuest //清理任务 Ver1.11 全AUT和ARC
     Call BeforeStart() //开始前的准备
     while 1>0 //去ARC1 反转城市
 
-        if getTimeStamp() > startTime+40 then //只刷40秒
+        if getTimeStamp() > startTime+35 then //只刷35秒
             break
         End If
 
         a = GetTimeStamp() - ReleaseTime1
         if a > 13 then //施放1 Ver2.0
-            tarX = -41
-            tarY = 75
+            tarX = -48
+            tarY = 78
             tolerance = 4
             Call MoveAnti()
             DelayRandom 56,58
-            KeyPress Right
+            KeyPress Left
             DelayRandom 32,33
             KeyDown A
             DelayRandom 136,138
@@ -4330,7 +4329,7 @@ Sub ClearQuest //清理任务 Ver1.11 全AUT和ARC
         Call ReleaseRune() //定期解轮
         a = GetTimeStamp() - ReleaseTime2
         if a > 13 then //施放2 Ver2.0
-            tarX = 28
+            tarX = 38
             tarY = 90
             tolerance = 4
             Call MoveAnti()
@@ -4351,7 +4350,7 @@ Sub ClearQuest //清理任务 Ver1.11 全AUT和ARC
         else
             a = GetTimeStamp() - seedTime1
             if a > 18 then //可以放种子了 Ver2.0
-                tarX      = -16
+                tarX      = 5
                 tarY      = 90
                 tolerance = 8
                 Call MoveAnti()
@@ -4366,7 +4365,7 @@ Sub ClearQuest //清理任务 Ver1.11 全AUT和ARC
                 DelayRandom 455,469
                 seedTime1 = GetTimeStamp()
             else //前往牛马地方放技能
-                tarX      = -16
+                tarX      = 5
                 tarY      = 90
                 tolerance = 8
                 Call MoveAnti()
@@ -4380,6 +4379,7 @@ Sub ClearQuest //清理任务 Ver1.11 全AUT和ARC
     Wend
     Call Home() //回城
 End Sub
+
 Sub Before564 //开始前的准备
     while 1>0 //点掉右上角的龙脉
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Setting.bmp",000000,1.00,0,logoX,logoY

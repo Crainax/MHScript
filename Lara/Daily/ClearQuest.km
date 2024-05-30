@@ -810,7 +810,7 @@ Sub MoveAnti //防止卡的移动
 End Sub
 
 
-Sub ClearQuest //清理任务 Ver1.11 全AUT和ARC
+Sub ClearQuest //清理任务 Ver1.12 全AUT和ARC
     SavedTorY = 360
     SavedTor  = 38
     SavedX    = 147
@@ -1959,12 +1959,12 @@ Sub ClearQuest //清理任务 Ver1.11 全AUT和ARC
 
         a = GetTimeStamp() - ReleaseTime1
         if a > 13 then //施放1 Ver2.0
-            tarX = -41
-            tarY = 75
+            tarX = -48
+            tarY = 78
             tolerance = 4
             Call MoveAnti()
             DelayRandom 56,58
-            KeyPress Right
+            KeyPress Left
             DelayRandom 32,33
             KeyDown A
             DelayRandom 136,138
@@ -1983,7 +1983,7 @@ Sub ClearQuest //清理任务 Ver1.11 全AUT和ARC
         Call ReleaseRune() //定期解轮
         a = GetTimeStamp() - ReleaseTime2
         if a > 13 then //施放2 Ver2.0
-            tarX = 28
+            tarX = 38
             tarY = 90
             tolerance = 4
             Call MoveAnti()
@@ -2004,7 +2004,7 @@ Sub ClearQuest //清理任务 Ver1.11 全AUT和ARC
         else
             a = GetTimeStamp() - seedTime1
             if a > 18 then //可以放种子了 Ver2.0
-                tarX      = -16
+                tarX      = 5
                 tarY      = 90
                 tolerance = 8
                 Call MoveAnti()
@@ -2019,7 +2019,7 @@ Sub ClearQuest //清理任务 Ver1.11 全AUT和ARC
                 DelayRandom 455,469
                 seedTime1 = GetTimeStamp()
             else //前往牛马地方放技能
-                tarX      = -16
+                tarX      = 5
                 tarY      = 90
                 tolerance = 8
                 Call MoveAnti()
