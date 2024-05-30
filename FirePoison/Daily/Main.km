@@ -230,7 +230,234 @@ Sub Stable //稳定Y轴(外面不要使用变量a哦)
         End If
     Wend
 End Sub
-Sub Move //精确的移动:V3.2 Y轴防止二次卡住还要加上一个跳钩
+Sub Move_B //纯移动不放技能(继承3.3)
+    cX = -100
+    cY = 0
+    KeyAllup //施放所有按键防止卡住
+    while  1 > 0
+        Call GetXY()
+        if tolerance > 2 Then
+            tolLoc = tolerance
+        else  //速走的默认为4
+            tolLoc = 2
+        End If
+        if intX < (tarX-12) Then //右瞬:这里的shit必须要抬起来 不然好像下面会出问题
+            KeyDown Right
+            DelayRandom 159,161
+            KeyDown LShift
+            DelayRandom 93,94
+            KeyUp LShift
+            DelayRandom 432,437
+            KeyUp Right
+            DelayRandom 37,41
+        Else If intX > (tarX+12) Then //向左瞬
+            KeyDown Left
+            DelayRandom 159,161
+            KeyDown LShift
+            DelayRandom 93,94
+            KeyUp LShift
+            DelayRandom 432,437
+            KeyUp Left
+            DelayRandom 37,41
+        Else If intX < (tarX-tolLoc) Then //向右走
+            Call AntiJam()
+            KeyDown Right
+            a = (tarX - tolLoc - intX) * 52
+            if a < 52 then
+                a = 52
+            else if a > 1800 then
+                a = 1800
+            End If
+            Delay a
+            KeyUp Right
+        Else If intX > (tarX+tolLoc) Then //向左走
+            Call AntiJam()
+            KeyDown Left
+            a = (intX - tarX - tolLoc) * 52
+            if a < 52 then
+                a = 52
+            else if a > 1800 then
+                a = 1800
+            End If
+            Delay a
+            KeyUp Left
+        else //到Y方向的了
+            If intY < (tarY - yTolerance) Then //如果人在目标之上,就下瞬(Y轴是用相反比较符)
+                cY = intY
+                KeyDown Down
+                DelayRandom 159,161
+                KeyDown LShift
+                DelayRandom 93,94
+                KeyUp LShift
+                DelayRandom 432,437
+                KeyUp Down
+                DelayRandom 37,41
+                call GetXY()
+                if cY == intY Then //卡住了
+                    KeyDown Down
+                    DelayRandom 134,136
+                    KeyDown Space
+                    if intY > (tarY - 13) //太接近就只用同一种办法
+                        DelayRandom 162,164
+                    else
+                        Delay (tarY - intY) * 49 - 520
+                    End If
+                    KeyUp Space
+                    DelayRandom 66,67
+                    KeyUp Down
+                    DelayRandom 548,554
+                    Call Stable() //稳定Y轴
+                End If
+            Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上瞬(Y轴是用相反比较符)
+                cY = intY
+                if intY > (tarY+40) Then	//>=40以上要先跳再钩子
+                    DelayRandom 12,13
+                    KeyDown Up
+                    Delay 63
+                    KeyDown Space
+                    Delay 81
+                    KeyUp Space
+                    Delay 41
+                    KeyDown Space
+                    Delay 96
+                    KeyUp Space
+                    Delay 261
+                    KeyUp Up
+                    Delay 41
+                    KeyDown LAlt
+                    Delay 154
+                    KeyUp LAlt
+                    Delay 1205
+                else
+                    DelayRandom 115,117
+                    KeyDown Up
+                    DelayRandom 53,54
+                    KeyDown LShift
+                    DelayRandom 86,87
+                    KeyUp LShift
+                    DelayRandom 22,23
+                    KeyUp Up
+                    DelayRandom 356,360
+                    call GetXY()
+                    if cY == intY Then //卡住了
+                        DelayRandom 12,13
+                        KeyDown Alt
+                        DelayRandom 328,430
+                        KeyUp Alt
+                        DelayRandom 32,33
+                    End If
+                End If
+                Call Stable() //稳定Y轴
+            else //Y轴搞定了,到容忍度的X轴了,前提是不在空中
+                KeyAllup
+                yTolerance = 0
+                if tolerance == 0 then //传送门型
+                    If intX < tarX Then //向右小碎步
+                        KeyPress Right
+                        KeyPress Up
+                        for 5
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyPress Right
+                                KeyPress Up
+                            else
+                                break
+                            End If
+                        Next
+                        DelayRandom 11,12
+                    Else If intX > tarX Then //向左小碎步
+                        KeyPress Left
+                        KeyPress Up
+                        for 5
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyPress Left
+                                KeyPress Up
+                            else
+                                break
+                            End If
+                        Next
+                        DelayRandom 11,12
+                    else //直接按上
+                        KeyPress Up
+                        alterX    = 0
+                        alterY    = 0
+                        Exit Sub
+                    End If
+                    Delay 125
+                    Call GetXY()
+                    if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
+                        alterX    = 0
+                        alterY    = 0
+                        Exit Sub
+                    else
+                    End if
+                else if tolerance == -1 then //负1代表枚举走到目的地
+                    if intX - tarX == 4 then
+                        KeyDown Left
+                        Delay 197
+                        KeyUp Left
+                    else if intX - tarX == -4 then
+                        KeyDown Right
+                        Delay 197
+                        KeyUp Right
+                    else if intX - tarX == 3 then
+                        KeyDown Left
+                        Delay 145
+                        KeyUp Left
+                    else if intX - tarX == -3 then
+                        KeyDown Right
+                        Delay 145
+                        KeyUp Right
+                    else if intX - tarX == 2 then
+                        KeyDown Left
+                        Delay 71
+                        KeyUp Left
+                    else if intX - tarX == -2 then
+                        KeyDown Right
+                        Delay 71
+                        KeyUp Right
+                    else if intX > tarX then
+                        KeyDown Left
+                        Delay 40
+                        KeyUp Left
+                    else if intX < tarX then
+                        KeyDown Right
+                        Delay 40
+                        KeyUp Right
+                    End If
+                    //这里直接算到达了,反正外面弄循环
+                    DelayRandom 245,252
+                    Exit Sub
+                else //非传送门
+                    if tolerance < 4 Then //容忍度小于4还是要小碎步
+                        for 10
+                            If intX < (tarX-tolerance) Then //向右小碎步
+                                KeyDown Right
+                                Delay (tarX - tolerance - intX) * 14
+                                KeyUp Right
+                            Else If intX > (tarX+tolerance) Then //向左小碎步
+                                KeyDown Left
+                                Delay (intX - tarX - tolerance) * 14
+                                KeyUp Left
+                            else
+                                Exit Sub
+                            End If
+
+                            Call GetXY() //更新人物坐标
+                        Next
+                        Exit Sub //次数到了直接结束
+                    else //容忍度大于等于4可以直接结束
+                        Exit Sub
+                    End If
+                End if
+            End If
+        End If
+
+        Delay 5
+    Wend
+End Sub
+Sub Move //精确的移动:V3.3 容忍0重写
     cX = -100
     cY = 0
     KeyAllup //施放所有按键防止卡住
@@ -382,87 +609,36 @@ Sub Move //精确的移动:V3.2 Y轴防止二次卡住还要加上一个跳钩
                 yTolerance = 0
                 if tolerance == 0 then //传送门型
                     If intX < tarX Then //向右小碎步
-                        DelayRandom 45,52
-                        KeyDown Right
-                        DelayRandom 37,38
-                        KeyDown Up
-                        DelayRandom 70,71
-                        KeyUp Up
-                        DelayRandom 37,38
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 70,71
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 70,71
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 77,78
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 82,83
-                            KeyUp Up
-                            DelayRandom 38,39
-                        End if
-                        KeyUp Right
+                        KeyPress Right
+                        KeyPress Up
+                        for 5
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyPress Right
+                                KeyPress Up
+                            else
+                                break
+                            End If
+                        Next
                         DelayRandom 11,12
                     Else If intX > tarX Then //向左小碎步
-                        DelayRandom 45,52
-                        KeyDown Left
-                        DelayRandom 37,38
-                        KeyDown Up
-                        DelayRandom 70,71
-                        KeyUp Up
-                        DelayRandom 37,38
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 70,71
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 70,71
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 77,78
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 82,83
-                            KeyUp Up
-                            DelayRandom 38,39
-                        End if
-                        KeyUp Left
+                        KeyPress Left
+                        KeyPress Up
+                        for 5
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyPress Left
+                                KeyPress Up
+                            else
+                                break
+                            End If
+                        Next
                         DelayRandom 11,12
                     else //直接按上
-                        DelayRandom 45,52
-                        KeyDown Up
-                        DelayRandom 120,122
-                        KeyUp Up
-                        DelayRandom 231,234
+                        KeyPress Up
+                        alterX    = 0
+                        alterY    = 0
+                        Exit Sub
                     End If
                     Delay 125
                     Call GetXY()
@@ -596,283 +772,33 @@ Sub Move //精确的移动:V3.2 Y轴防止二次卡住还要加上一个跳钩
         Delay 5
     Wend
 End Sub
-Sub Move_B //纯移动不放技能(继承3.2)
-    cX = -100
-    cY = 0
-    KeyAllup //施放所有按键防止卡住
-    while  1 > 0
-        Call GetXY()
-        if tolerance > 2 Then
-            tolLoc = tolerance
-        else  //速走的默认为4
-            tolLoc = 2
-        End If
-        if intX < (tarX-12) Then //右瞬:这里的shit必须要抬起来 不然好像下面会出问题
-            KeyDown Right
-            DelayRandom 159,161
-            KeyDown LShift
-            DelayRandom 93,94
-            KeyUp LShift
-            DelayRandom 432,437
-            KeyUp Right
-            DelayRandom 37,41
-        Else If intX > (tarX+12) Then //向左瞬
-            KeyDown Left
-            DelayRandom 159,161
-            KeyDown LShift
-            DelayRandom 93,94
-            KeyUp LShift
-            DelayRandom 432,437
-            KeyUp Left
-            DelayRandom 37,41
-        Else If intX < (tarX-tolLoc) Then //向右走
-            Call AntiJam()
-            KeyDown Right
-            a = (tarX - tolLoc - intX) * 52
-            if a < 52 then
-                a = 52
-            else if a > 1800 then
-                a = 1800
-            End If
-            Delay a
-            KeyUp Right
-        Else If intX > (tarX+tolLoc) Then //向左走
-            Call AntiJam()
-            KeyDown Left
-            a = (intX - tarX - tolLoc) * 52
-            if a < 52 then
-                a = 52
-            else if a > 1800 then
-                a = 1800
-            End If
-            Delay a
-            KeyUp Left
-        else //到Y方向的了
-            If intY < (tarY - yTolerance) Then //如果人在目标之上,就下瞬(Y轴是用相反比较符)
-                cY = intY
-                KeyDown Down
-                DelayRandom 159,161
-                KeyDown LShift
-                DelayRandom 93,94
-                KeyUp LShift
-                DelayRandom 432,437
-                KeyUp Down
-                DelayRandom 37,41
-                call GetXY()
-                if cY == intY Then //卡住了
-                    KeyDown Down
-                    DelayRandom 134,136
-                    KeyDown Space
-                    if intY > (tarY - 13) //太接近就只用同一种办法
-                        DelayRandom 162,164
-                    else
-                        Delay (tarY - intY) * 49 - 520
-                    End If
-                    KeyUp Space
-                    DelayRandom 66,67
-                    KeyUp Down
-                    DelayRandom 548,554
-                    Call Stable() //稳定Y轴
-                End If
-            Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上瞬(Y轴是用相反比较符)
-                cY = intY
-                if intY > (tarY+40) Then	//>=40以上要先跳再钩子
-                    DelayRandom 12,13
-                    KeyDown Up
-                    Delay 63
-                    KeyDown Space
-                    Delay 81
-                    KeyUp Space
-                    Delay 41
-                    KeyDown Space
-                    Delay 96
-                    KeyUp Space
-                    Delay 261
-                    KeyUp Up
-                    Delay 41
-                    KeyDown LAlt
-                    Delay 154
-                    KeyUp LAlt
-                    Delay 1205
-                else
-                    DelayRandom 115,117
-                    KeyDown Up
-                    DelayRandom 53,54
-                    KeyDown LShift
-                    DelayRandom 86,87
-                    KeyUp LShift
-                    DelayRandom 22,23
-                    KeyUp Up
-                    DelayRandom 356,360
-                    call GetXY()
-                    if cY == intY Then //卡住了
-                        DelayRandom 12,13
-                        KeyDown Alt
-                        DelayRandom 328,430
-                        KeyUp Alt
-                        DelayRandom 32,33
-                    End If
-                End If
-                Call Stable() //稳定Y轴
-            else //Y轴搞定了,到容忍度的X轴了,前提是不在空中
-                KeyAllup
-                yTolerance = 0
-                if tolerance == 0 then //传送门型
-                    If intX < tarX Then //向右小碎步
-                        DelayRandom 45,52
-                        KeyDown Right
-                        DelayRandom 37,38
-                        KeyDown Up
-                        DelayRandom 70,71
-                        KeyUp Up
-                        DelayRandom 37,38
-                        Call GetXYNega()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 70,71
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXYNega()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 70,71
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXYNega()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 77,78
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXYNega()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 82,83
-                            KeyUp Up
-                            DelayRandom 38,39
-                        End if
-                        KeyUp Right
-                        DelayRandom 11,12
-                    Else If intX > tarX Then //向左小碎步
-                        DelayRandom 45,52
-                        KeyDown Left
-                        DelayRandom 37,38
-                        KeyDown Up
-                        DelayRandom 70,71
-                        KeyUp Up
-                        DelayRandom 37,38
-                        Call GetXYNega()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 70,71
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXYNega()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 70,71
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXYNega()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 77,78
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXYNega()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 82,83
-                            KeyUp Up
-                            DelayRandom 38,39
-                        End if
-                        KeyUp Left
-                        DelayRandom 11,12
-                    else //直接按上
-                        DelayRandom 45,52
-                        KeyDown Up
-                        DelayRandom 120,122
-                        KeyUp Up
-                        DelayRandom 231,234
-                    End If
-                    Delay 125
-                    Call GetXYNega()
-                    if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
-                        alterX    = 0
-                        alterY    = 0
-                        Exit Sub
-                    else
-                    End if
-                else if tolerance == -1 then //负1代表枚举走到目的地
-                    if intX - tarX == 4 then
-                        KeyDown Left
-                        Delay 197
-                        KeyUp Left
-                    else if intX - tarX == -4 then
-                        KeyDown Right
-                        Delay 197
-                        KeyUp Right
-                    else if intX - tarX == 3 then
-                        KeyDown Left
-                        Delay 145
-                        KeyUp Left
-                    else if intX - tarX == -3 then
-                        KeyDown Right
-                        Delay 145
-                        KeyUp Right
-                    else if intX - tarX == 2 then
-                        KeyDown Left
-                        Delay 71
-                        KeyUp Left
-                    else if intX - tarX == -2 then
-                        KeyDown Right
-                        Delay 71
-                        KeyUp Right
-                    else if intX > tarX then
-                        KeyDown Left
-                        Delay 40
-                        KeyUp Left
-                    else if intX < tarX then
-                        KeyDown Right
-                        Delay 40
-                        KeyUp Right
-                    End If
-                    //这里直接算到达了,反正外面弄循环
-                    DelayRandom 245,252
-                    Exit Sub
-                else //非传送门
-                    if tolerance < 4 Then //容忍度小于4还是要小碎步
-                        for 10
-                            If intX < (tarX-tolerance) Then //向右小碎步
-                                KeyDown Right
-                                Delay (tarX - tolerance - intX) * 14
-                                KeyUp Right
-                            Else If intX > (tarX+tolerance) Then //向左小碎步
-                                KeyDown Left
-                                Delay (intX - tarX - tolerance) * 14
-                                KeyUp Left
-                            else
-                                Exit Sub
-                            End If
-
-                            Call GetXY() //更新人物坐标
-                        Next
-                        Exit Sub //次数到了直接结束
-                    else //容忍度大于等于4可以直接结束
-                        Exit Sub
-                    End If
-                End if
-            End If
-        End If
-
-        Delay 5
-    Wend
+Sub RightF //右平A
+    KeyDown F
+    DelayRandom 101,103
+    KeyUp F
+    DelayRandom 115,117
+    KeyDown Right
+    DelayRandom 53,54
+    KeyDown LShift
+    DelayRandom 86,87
+    KeyUp LShift
+    DelayRandom 22,23
+    KeyUp Right
+    DelayRandom 356,360
+End Sub
+Sub LeftF //左平A
+    KeyDown F
+    DelayRandom 101,103
+    KeyUp F
+    DelayRandom 115,117
+    KeyDown Left
+    DelayRandom 53,54
+    KeyDown LShift
+    DelayRandom 86,87
+    KeyUp LShift
+    DelayRandom 22,23
+    KeyUp Left
+    DelayRandom 356,360
 End Sub
 
 Sub GetXYEnemy //获取敌方角色的XY轴 Ver1.1 遍历逻辑更新(步长22是遍历5)
@@ -1220,12 +1146,12 @@ InfiTime     = GetTimeStamp() - 110  //上次终极无限的时间
 AuraTime     = 0                     //领域时间
 Timer          1, 1, 1000              //无限循环
 
-Sub ClearDialog //清除标准对话框(外面循环,这里多次调用)
-    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY //停止对话
+Sub ClearDialog //清除标准对话框 (无限循环清除所有) Ver1.1 拒绝
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp|E:\MHImg\UI\Dialog\Reject.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //有第一个StopChat才会按
         wJam = 0 //放在循环外面位置
         while 1>0
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY //停止对话
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp|E:\MHImg\UI\Dialog\Reject.bmp",000000,1.00,0,intX,intY
             if intX < 0 Then //结束了(以几次判断来看)
                 wJam = wJam + 1  //循环内部
                 if wJam > 3 then //三次失败,
@@ -1239,11 +1165,52 @@ Sub ClearDialog //清除标准对话框(外面循环,这里多次调用)
                     LeftClick
                     DelayRandom 139,142
                 else
-                    KeyPress PageDown
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\Reject.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then //接受
+                        MoveTo intX-50,intY
+                        LeftClick
+                        DelayRandom 139,142
+                    else
+                        KeyPress PageDown
+                    End If
                 End If
             End If
         Wend
     End If
+End Sub
+Sub ClearDialogOnce //清除标准对话框(一次) Ver1.1
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then //有第一个StopChat才会按
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp|E:\MHImg\UI\Dialog\No2B.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //否-->是
+            MoveTo intX-50,intY
+            LeftClick
+            DelayRandom 139,142
+        else
+            KeyPress PageDown
+        End If
+    else //Reject的处理
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\Reject.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //点击接受
+            MoveTo intX-50,intY
+            LeftClick
+            DelayRandom 139,142
+        End If
+    End If
+End Sub
+Sub LoadingBoss //加载地图(BOSS倒计时)
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then //加载中
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,logoX,logoY
+                if logoX >= 0 Then //加载完毕
+                    break
+                End If
+            Wend
+            break
+        End If
+    Wend
 End Sub
 Sub CloseCaps //关闭Caps键
     if GetLED(1) == 1 then //换地图
@@ -1555,6 +1522,1374 @@ Sub BeforeStart //开刷前的参数初始化
     yTolerance		= 0 //初始化
 End Sub
 
+Sub EnterPre //拆分进BOSS第一部分
+    while 1>0 //进入扎昆
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag2_1_On.bmp",000000,1.00,0,logoX,logoY //当前在第一个标签页中
+        if logoX >= 0 Then
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag2_1_On.bmp|E:\MHImg\UI\Boss\Tag2_1_Off.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                KeyPress tab
+            else
+                KeyPress [
+            End If
+        End If
+    Wend
+End Sub
+Sub TeleportChat //传送门->无限循环对话框 Ver1.1判断人物在再移动
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            break
+        else
+            FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //首先需要确认人物在哦
+                FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+                intX = intX - logoX
+                intY = intY - logoY
+                if intY != tarX or intX != tarY then //
+                    tolerance = -1
+                    yTolerance = 2
+                    Call Move_B() //仅移动
+                End If
+                KeyPress Up
+                Delay 50
+            End if
+        End If
+    Wend
+End Sub
+Sub NPCChat //传送门->无限循环对话框 Ver1.1 加入了接受拒绝那个
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp|E:\MHImg\UI\Dialog\Reject.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            break
+        else
+            call GetXY()
+            if intY != tarX or intX != tarY then //
+                tolerance = 2
+                Call Move_B() //仅移动
+            End If
+            KeyPress PageDown
+        End If
+    Wend
+End Sub
+Sub MoveBTele //确认地图有人物坐标再移动 Ver1.1 延迟还是得加,加个双重验证
+    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then
+        Delay 50
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            tolerance = -1
+            yTolerance = 2
+            Call Move_B()
+            KeyPress Up
+            Delay 50
+        End If
+    End If
+End Sub
+Sub MoveTele //确认地图有人物坐标再移动
+    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then
+        Call Move()
+    End If
+End Sub
+
+Sub Boss1 //打扎昆 Ver1.1 修复出门的问题
+    Call EnterPre() //第一部分成功后logoX就保存了
+    while 1>0 //进入扎昆
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\1\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
+        if intX >= 0 Then //当前选中了,直接进入
+            MoveTo logoX+418,logoY+488
+            LeftClick
+            DelayRandom 139,142
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\1\Mark_Off.bmp|E:\MHImg\UI\Boss\1\Mark_On.bmp",000000,1.00,0,intX,intY //标签是否找得到
+            if intX >= 0 Then
+                MoveTo intX+100,intY
+                LeftClick
+                DelayRandom 139,142
+
+            End If
+        End If
+    Wend
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_1.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
+            FindPic x1,y1,x2,y2,"E:\MHImg\NPC.bmp",000000,1.00,0,intX,intY	//找图
+            intX = intX - logoX
+            intY = intY - logoY
+            if intX == 76 and intY == 70 then //NPC位置:图1
+                tarX      = 89
+                tarY      = 72
+                Call TeleportChat() //传送门->无限循环对话框
+                //对话框出来后
+                while 1>0
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\1\Mark1.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then //选择一般难度
+                        MoveTo intX+50,intY+5
+                        LeftClick
+                        DelayRandom 139,142
+                        Call ClearDialog() //清除标准对话框
+                        break
+                    End If
+                Wend
+            else //NPC位置:图2
+                tarX      = 50
+                tarY      = 77
+                Call NPCChat() //人->无限循环对话框
+                while 1>0 //确认到了地图里
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then //确认进到了地图里
+                        break
+                    else
+                        Call ClearDialog() //清除标准对话框
+                        Delay 200
+                    End If
+                Wend
+                break
+            End If
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+
+    KeyDown Right //扎昆右走2秒钟
+    Delay 1500
+    KeyUp Right
+
+    while 1>0 //切到消耗栏界面
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Tag_Other.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //找到了标签
+
+            //丢掉4个垃圾
+            wJam = 0 //放在循环外面位置
+            while 1>0
+                FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\UI\Boss\1\Item.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    wJam = 0 //放在成功的位置
+                    Call Drop() //丢到外面
+                else
+                    wJam = wJam + 1  //循环内部
+                    if wJam > 3 then //三次失败,
+                        break
+                    End If
+                End If
+                DelayRandom 200,210
+            Wend
+
+            Call CloseBag()
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //切标签页
+                DelayRandom 39,42
+                KeyPress tab
+                DelayRandom 39,42
+            else //打开背包
+                DelayRandom 39,42
+                for 3
+                    KeyPress i
+                    DelayRandom 39,42
+                Next
+            End If
+        End If
+    Wend
+
+    //原地平A
+    KeyPress W //放一个技能就够了
+    Delay 5000 //等5秒
+    KeyDown Right
+    DelayRandom 159,161
+    KeyDown LShift
+    DelayRandom 93,94
+    KeyUp LShift
+    DelayRandom 432,437
+    KeyUp Right
+    DelayRandom 37,41
+    for 2
+        KeyDown Left
+        DelayRandom 159,161
+        KeyDown LShift
+        DelayRandom 93,94
+        KeyUp LShift
+        DelayRandom 432,437
+        KeyUp Left
+        DelayRandom 37,41
+    Next
+    Delay 500
+
+    Call NewTeam() //强制退图
+
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_1.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
+            FindPic x1,y1,x2,y2,"E:\MHImg\NPC.bmp",000000,1.00,0,intX,intY	//找图
+            intX = intX - logoX
+            intY = intY - logoY
+            if intX == 76 and intY == 70 then //NPC位置:图1
+                while 1>0
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Boss_1.bmp",000000,1.00,0,intX,intY
+                    if intX < 0 Then //这才是走出了地图
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then
+                            break
+                        End If
+                    else
+                        tarX      = -52
+                        tarY      = 72
+                        Call MoveBTele()
+                    End If
+                Wend
+
+                break
+            else //NPC位置:图2
+                tarX      = 0
+                tarY      = 70
+                Call MoveBTele()
+            End If
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+End Sub
+Sub Boss2 //打老麦 Ver1.1
+    Call EnterPre() //第一部分成功后logoX就保存了
+    while 1>0 //进入老麦
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\2\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
+        if intX >= 0 Then //当前选中了,直接进入
+            MoveTo logoX+418,logoY+488
+            LeftClick
+            DelayRandom 139,142
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\2\Mark_Off.bmp|E:\MHImg\UI\Boss\2\Mark_On.bmp",000000,1.00,0,intX,intY //标签是否找得到
+            if intX >= 0 Then
+                MoveTo intX+100,intY
+                LeftClick
+                DelayRandom 139,142
+
+            End If
+        End If
+    Wend
+
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            tarX      = 15
+            tarY      = 79
+            Call TeleportChat() //传送门->无限循环对话框
+            //对话框出来后
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\2\Mark1.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //选择一般难度
+                    MoveTo intX+50,intY+5
+                    LeftClick
+                    DelayRandom 139,142
+                    Call ClearDialog() //清除标准对话框
+                    Delay 500
+                    break
+                End If
+            Wend
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //出现倒计时代表进来了
+                    break
+                End If
+            Wend
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+
+    for 8 //平A6次就够了
+        Call RightF()
+    Next
+    KeyPress Left
+    for 8 //平A6次就够了
+        Call LeftF()
+    Next
+    Call NewTeam() //强制退图
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Boss_2.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then //这才是走出了地图
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        break
+                    End If
+                else
+                    tarX      = -46
+                    tarY      = 82
+                    Call MoveBTele()
+                End If
+            Wend
+
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+End Sub
+Sub Boss3 //希拉 Ver1.1
+    Call EnterPre() //第一部分成功后logoX就保存了
+    while 1>0 //进入希拉
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\3\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
+        if intX >= 0 Then //当前选中了,直接进入
+            MoveTo logoX+418,logoY+488
+            LeftClick
+            DelayRandom 139,142
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\3\Mark_Off.bmp|E:\MHImg\UI\Boss\3\Mark_On.bmp",000000,1.00,0,intX,intY //标签是否找得到
+            if intX >= 0 Then
+                MoveTo intX+100,intY
+                LeftClick
+                DelayRandom 139,142
+
+            End If
+        End If
+    Wend
+
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_3.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            tarX      = 67
+            tarY      = 85
+            Call TeleportChat() //传送门->无限循环对话框
+            //对话框出来后
+            Call ClearDialog() //清除标准对话框 (默认难度就是普通了)
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+
+    while 1>0 //过五关斩六将
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //地图加载完毕
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Teleport.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //地图有传送门
+                //原地右A
+                KeyPress Right
+                KeyPress F
+                Delay 300
+                //先到传送门旁边(A过去)
+                tarX      = 26
+                tarY      = 84
+                tolerance = 4
+                yTolerance = 2
+                Call MoveTele()
+                //再纯走过去传送门
+                tarX      = 55
+                tarY      = 84
+                Call MoveBTele()
+                KeyPress Right
+                KeyPress Up
+            else //地图没传送门,却有Me,结束
+                break
+            End If
+        else //地图加载中
+            Delay 200
+        End If
+    Wend
+
+    for 6 //平A6次就够了
+        Call RightF()
+    Next
+    KeyPress Left
+    for 6 //平A6次就够了
+        Call LeftF()
+    Next
+    Call NewTeam() //强制退图
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_3.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Boss_3.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then //这才是走出了地图
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        break
+                    End If
+                else
+                    tarX      = -24
+                    tarY      = 79
+                    Call MoveBTele()
+                End If
+            Wend
+
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+End Sub
+Sub RepeatBoss4 //四傻的重复部分
+    while 1>0 //确保人到了
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //确认进到地图成功了再退出循环
+            break
+        End If
+    Wend
+    //清地图小怪
+    KeyPress Left
+    KeyDown F
+    DelayRandom 101,103
+    KeyUp F
+    DelayRandom 775,787
+    KeyPress Right
+    Delay 50
+    for 13
+        Call RightF()
+    Next
+End Sub
+Sub RepeatBoss4_2 //四傻的重复部分
+    KeyDown Right
+    Delay 1200
+    KeyUp Right
+    for 2
+        Call RightF()
+        Call LeftF()
+        Call LeftF()
+        Call RightF()
+    Next
+    Call NewTeam() //强制退图
+End Sub
+Sub Boss4 //四傻
+    Call EnterPre() //第一部分成功后logoX就保存了
+    while 1>0 //进入四傻
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\4\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
+        if intX >= 0 Then //当前选中了,直接进入
+            MoveTo logoX+418,logoY+488
+            LeftClick
+            DelayRandom 139,142
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\4\Mark_Off.bmp|E:\MHImg\UI\Boss\4\Mark_On.bmp",000000,1.00,0,intX,intY //标签是否找得到
+            if intX >= 0 Then
+                MoveTo intX+100,intY
+                LeftClick
+                DelayRandom 139,142
+
+            End If
+        End If
+    Wend
+
+    while 1>0 //到了地图->贝伦开始
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Lutabis.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            tarX      = 56
+            tarY      = 102
+            Call TeleportChat() //传送门->无限循环对话框
+            //对话框出来后
+            Call ClearDialog() //清除标准对话框 (默认难度就是普通了)
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+    Call RepeatBoss4() //四傻的重复部分
+    a = 0
+    while 1>0 //左移法
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            Call ClearDialog()
+            break
+        else
+            a = a + 1
+            if a >= 20 then
+                Call RightF()
+                a = 0
+            else
+                KeyPress Left
+                KeyPress Up
+            End If
+        End If
+    Wend
+    Call LoadingBoss() //加载BOSS地图
+    //搜索20次是否可以点击
+    a = 1
+    for 20
+        MoveTo logoX+786-a*69,logoY+400
+        DelayRandom 39,42
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\4\Mouse_F1.bmp|E:\MHImg\UI\Boss\4\Mouse_F2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //找到点击
+            for 2
+                LeftDoubleClick
+            Next
+            break
+        End If
+        a = a + 1
+    Next
+    Delay 3000
+    KeyPress W
+    Delay 500
+    KeyDown '
+    Delay 1000
+    KeyUp '
+    Delay 7000
+    Call RepeatBoss4_2()//这里也是重复的部分
+
+    while 1>0 //到了地图->斑斑
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Lutabis.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            tarX      = 26
+            tarY      = 102
+            Call TeleportChat() //传送门->无限循环对话框
+            //对话框出来后
+            Call ClearDialog() //清除标准对话框 (默认难度就是普通了)
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+    Call RepeatBoss4() //四傻的重复部分
+    a = 0
+    while 1>0 //左小跳法
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            Call ClearDialog()
+            break
+        else
+            a = a + 1
+            if a >= 20 then
+                Call RightF()
+                a = 0
+            else
+                KeyPress Left
+                KeyPress Up
+                Delay 150
+                KeyPress Space
+                Delay 200
+                KeyPress Up
+                Delay 500
+            End If
+        End If
+    Wend
+    Call LoadingBoss() //加载BOSS地图
+    //搜索20次是否可以点击
+    a = 1
+    for 20
+        MoveTo logoX+786-a*69,logoY+510
+        DelayRandom 39,42
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\4\Mouse_F1.bmp|E:\MHImg\UI\Boss\4\Mouse_F2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //找到点击
+            for 2
+                LeftDoubleClick
+            Next
+            break
+        End If
+        a = a + 1
+    Next
+    Delay 2200
+    KeyPress W
+    Delay 5000
+    Call RepeatBoss4_2()//这里也是重复的部分
+
+
+    while 1>0 //到了地图->小丑
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Lutabis.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            tarX      = -7
+            tarY      = 102
+            Call TeleportChat() //传送门->无限循环对话框
+            //对话框出来后
+            Call ClearDialog() //清除标准对话框 (默认难度就是普通了)
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+    Call RepeatBoss4() //四傻的重复部分
+    a = 0
+    while 1>0 //左法
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            Call ClearDialog()
+            break
+        else
+            a = a + 1
+            if a >= 20 then
+                Call RightF()
+                a = 0
+            else
+                KeyPress Left
+                KeyPress Up
+            End If
+        End If
+    Wend
+    Call LoadingBoss() //加载BOSS地图
+    KeyPress W
+    Delay 2000
+    for 6
+        Call RightF() //跳到右边墙角
+    Next
+    KeyPress Left
+    Delay 50
+    for 3
+        Call LeftF() //跳到右边墙角
+    Next
+    DelayRandom 39,42
+    KeyDown Left
+    Delay 850
+    KeyUp Left
+    DelayRandom 39,42
+    for 4
+        KeyPress ;
+        Delay 500
+        KeyPress Left
+        Delay 50
+    Next
+    KeyDown Left
+    Delay 850
+    KeyUp Left
+    Call RepeatBoss4_2()//这里也是重复的部分
+
+    while 1>0 //到了地图->皇后
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Lutabis.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            tarX      = -38
+            tarY      = 102
+            Call TeleportChat() //传送门->无限循环对话框
+            //对话框出来后
+            Call ClearDialog() //清除标准对话框 (默认难度就是普通了)
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+    Call RepeatBoss4() //四傻的重复部分
+    a = 0
+    while 1>0 //先左跳再左法
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            Call ClearDialog()
+            break
+        else
+            a = a + 1
+            if a >= 20 then
+                Call RightF()
+                a = 0
+            else if a == 1 then
+                Call LeftF()
+            else
+                KeyPress Left
+                KeyPress Up
+            End If
+        End If
+    Wend
+    Call LoadingBoss() //加载BOSS地图
+    //搜索20次是否可以点击
+    a = 1
+    for 20
+        MoveTo logoX+786-a*69,logoY+460
+        DelayRandom 39,42
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\4\Mouse_F1.bmp|E:\MHImg\UI\Boss\4\Mouse_F2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //找到点击
+            for 6
+                LeftDoubleClick
+                Delay 300
+            Next
+            break
+        End If
+        a = a + 1
+    Next
+    Delay 100
+    KeyPress W
+    Delay 2000
+    for 6
+        Call RightF() //跳到右边墙角
+    Next
+    KeyPress Left
+    Delay 50
+    for 3
+        Call LeftF() //跳到右边墙角
+    Next
+    DelayRandom 39,42
+    KeyDown Left
+    Delay 850
+    KeyUp Left
+    DelayRandom 39,42
+    for 4
+        KeyPress ;
+        Delay 500
+        KeyPress Left
+        Delay 50
+    Next
+    KeyDown Left
+    Delay 850
+    KeyUp Left
+    Call RepeatBoss4_2()//这里也是重复的部分
+
+    while 1>0 //到了地图,回去了
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Lutabis.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Lutabis.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then //这才是走出了地图
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        break
+                    End If
+                else
+                    tarX      = -52
+                    tarY      = 102
+                    Call MoveBTele()
+                End If
+            Wend
+
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+End Sub
+Sub Boss5 //打狮子王 Ver1.1加长了一点时间
+    Call EnterPre() //第一部分成功后logoX就保存了
+    while 1>0 //进入老麦
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\5\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
+        if intX >= 0 Then //当前选中了,直接进入
+            MoveTo logoX+418,logoY+488
+            LeftClick
+            DelayRandom 139,142
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\5\Mark_Off.bmp|E:\MHImg\UI\Boss\5\Mark_On.bmp",000000,1.00,0,intX,intY //标签是否找得到
+            if intX >= 0 Then
+                MoveTo intX+100,intY
+                LeftClick
+                DelayRandom 139,142
+
+            End If
+        End If
+    Wend
+
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_5.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            tarX      = 76
+            tarY      = 97
+            Call TeleportChat() //传送门->无限循环对话框
+            //对话框出来后
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\5\Mark1.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //选择困难难度
+                    MoveTo intX+50,intY+5
+                    LeftClick
+                    DelayRandom 139,142
+                    Delay 500
+                    break
+                else
+                    Call ClearDialogOnce() //清除标准对话框(一次)
+                    Delay 50
+                End If
+            Wend
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //出现倒计时代表进来了
+                    break
+                End If
+            Wend
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+
+    //进到地图里了,接任务开打
+    tarX = -45
+    tarY = 83
+    Call NPCChat() //人->无限循环对话框
+    Call ClearDialog() //清除一下对话框
+
+    Delay 4000
+    KeyPress W
+    Delay 1000
+    for 2 //平A4次就够了
+        Call RightF()
+        KeyPress Left
+        Call LeftF()
+        Call LeftF()
+        KeyPress Right
+        Call RightF()
+    Next
+
+    Call NewTeam() //强制退图
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_5B.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Boss_5B.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then //这才是走出了地图
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        break
+                    End If
+                else
+                    tarX      = -44
+                    tarY      = 84
+                    Call MoveBTele()
+                End If
+            Wend
+
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+End Sub
+Sub Boss6 //打黑龙 Ver1.1 切圖時的加个while
+    // [charX40,charY84][teleX-71,teleY-1751] npc位置
+    // [charX-25,charY84][teleX-71,teleY-1751] 离开NPC位置
+    // [charX55,charY80][teleX-71,teleY-1751] //平A点
+    Call EnterPre() //第一部分成功后logoX就保存了
+    while 1>0 //进入老麦
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\6\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
+        if intX >= 0 Then //当前选中了,直接进入
+            MoveTo logoX+418,logoY+488
+            LeftClick
+            DelayRandom 139,142
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\6\Mark_Off.bmp|E:\MHImg\UI\Boss\6\Mark_On.bmp",000000,1.00,0,intX,intY //标签是否找得到
+            if intX >= 0 Then
+                MoveTo intX+100,intY
+                LeftClick
+                DelayRandom 139,142
+
+            End If
+        End If
+    Wend
+
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_6.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            tarX      = 40
+            tarY      = 84
+            Call NPCChat() //传送门->无限循环对话框
+            //对话框出来后
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\6\Mark1.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //选择困难难度
+                    MoveTo intX+50,intY+5
+                    LeftClick
+                    DelayRandom 139,142
+                    Delay 500
+                    break
+                else
+                    Call ClearDialogOnce() //清除标准对话框(一次)
+                    Delay 50
+                End If
+            Wend
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //出现倒计时代表进来了
+                    break
+                End If
+            Wend
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+
+    Delay 4300
+    KeyDown Down
+    KeyPress Space
+    Delay 200
+    KeyUp Down
+    Delay 2000
+    a = 9
+    while 1>0 //左移法
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    break
+                End If
+            Wend
+            break
+        else
+            a = a + 1
+            if a >= 10 then
+                KeyPress Right
+                for 4
+                    Call RightF()
+                Next
+                KeyDown Left
+                Delay 500
+                KeyUp Left
+                Delay 500
+                KeyPress Alt
+                Delay 1500
+
+                a = 0
+            else
+                KeyPress Up
+                KeyPress Left
+            End If
+        End If
+    Wend
+
+    Delay 4300
+    KeyDown Down
+    KeyPress Space
+    Delay 200
+    KeyUp Down
+    Delay 2000
+    a = 9
+    while 1>0 //右移法
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_6.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                a = a + 1
+                if a >= 10 then
+                    KeyPress Left
+                    for 4
+                        Call LeftF()
+                    Next
+                    KeyDown Right
+                    Delay 500
+                    KeyUp Right
+                    Delay 500
+                    KeyPress Alt
+                    Delay 1500
+                    a = 0
+                else
+                    KeyPress Up
+                    KeyPress Right
+                End If
+            End If
+        End If
+    Wend
+
+
+    //进到地图里了,接任务开打
+    tarX       = 55
+    tarY       = 80
+    tolerance  = 2
+    yTolerance = 2
+    Call Move_B()
+
+    KeyPress Right
+    for 11 //普攻
+        Delay 12
+        KeyDown ;
+        Delay 112
+        KeyUp ;
+        Delay 662
+    Next
+
+    Delay 2300
+    KeyDown Right
+    Delay 1200
+    KeyUp Right
+    Delay 2000
+    KeyPress W
+    Delay 1000
+    for 2 //平A4次就够了
+        KeyPress Left
+        Call LeftF()
+        Call LeftF()
+        Call LeftF()
+        KeyPress Right
+        Call RightF()
+        Call RightF()
+        Call RightF()
+    Next
+
+    Call NewTeam() //强制退图
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_6.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Boss_6.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then //这才是走出了地图
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        break
+                    End If
+                else
+                    tarX      = -25
+                    tarY      = 84
+                    Call NPCChat() //传送门->无限循环对话框
+                    Call ClearDialog() //清除标准对话框(一次)
+                End If
+            Wend
+
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+End Sub
+Sub Boss7 //打阿卡 Ver1.1 logoX和logoY修复
+    Call EnterPre() //第一部分成功后logoX就保存了
+    while 1>0 //进入老麦
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\7\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
+        if intX >= 0 Then //当前选中了,直接进入
+            MoveTo logoX+418,logoY+488
+            LeftClick
+            DelayRandom 139,142
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\7\Mark_Off.bmp|E:\MHImg\UI\Boss\7\Mark_On.bmp",000000,1.00,0,intX,intY //标签是否找得到
+            if intX >= 0 Then
+                MoveTo intX+100,intY
+                LeftClick
+                DelayRandom 139,142
+            else //滚轮
+                MoveTo logoX,logoY+170
+                Delay 200
+                MouseWheel -1
+                Delay 50
+                MoveTo logoX,logoY
+                Delay 150
+            End If
+        End If
+    Wend
+
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\UI\Boss\7\Feat1.bmp|E:\MHImg\UI\Boss\7\Feat2.bmp|E:\MHImg\UI\Boss\7\Feat3.bmp|E:\MHImg\UI\Boss\7\Feat4.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            Delay 500
+            for 5
+                Call RightF() //右跳4下
+            Next
+            a = 0
+            while 1>0 //左移法
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    break
+                else
+                    a = a + 1
+                    if a >= 20 then
+                        Call RightF()
+                        a = 0
+                    else
+                        KeyPress Left
+                        KeyPress Up
+                    End If
+                End If
+            Wend
+            //对话框出来后
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\7\Mark1.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //选择困难难度
+                    MoveTo intX+50,intY+5
+                    LeftClick
+                    DelayRandom 139,142
+                    Delay 500
+                    break
+                else
+                    Call ClearDialogOnce() //清除标准对话框(一次)
+                    Delay 50
+                End If
+            Wend
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //出现倒计时代表进来了
+                    break
+                End If
+            Wend
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+
+    Delay 500
+    for 3
+        Call RightF() //右跳2下
+    Next
+
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,logoX,logoY
+    //搜索20次是否可以点击
+    a = 1
+    for 20
+        MoveTo logoX+786-a*69,logoY+480
+        DelayRandom 39,42
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\4\Mouse_F1.bmp|E:\MHImg\UI\Boss\4\Mouse_F2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //找到点击
+            for 2
+                LeftDoubleClick
+                Delay 50
+            Next
+            break
+        End If
+        a = a + 1
+    Next
+
+    Call ClearDialog() //清除一下对话框
+
+    //进到地图里了,接任务开打
+    Delay 2000
+    KeyPress W
+    Delay 1000
+    for 2 //平A4次就够了
+        Call RightF()
+        Call RightF()
+        Call LeftF()
+        Call LeftF()
+        Call LeftF()
+        Call RightF()
+    Next
+
+    Call NewTeam() //强制退图
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\UI\Boss\7\Feat1.bmp|E:\MHImg\UI\Boss\7\Feat2.bmp|E:\MHImg\UI\Boss\7\Feat3.bmp|E:\MHImg\UI\Boss\7\Feat4.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            Delay 500
+            Call LeftF() //左跳2下
+            a = 0
+            while 1>0
+                FindPic x1,y1,x2,y2,"E:\MHImg\UI\Boss\7\Feat1.bmp|E:\MHImg\UI\Boss\7\Feat2.bmp|E:\MHImg\UI\Boss\7\Feat3.bmp|E:\MHImg\UI\Boss\7\Feat4.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then //这才是走出了地图
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        break
+                    End If
+                else
+                    a = a + 1
+                    if a >= 20 then
+                        Call LeftF()
+                        a = 0
+                    else
+                        KeyPress Right
+                        KeyPress Up
+                    End If
+                End If
+            Wend
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+End Sub
+Sub Boss8 //打顶培
+    //[charX28,charY85][teleX-5,teleY94] 进
+    //[charX-5,charY95][teleX-71,teleY-1751] 离
+    Call EnterPre() //第一部分成功后logoX就保存了
+    while 1>0 //进入老麦
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\8\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
+        if intX >= 0 Then //当前选中了,直接进入
+            MoveTo logoX+418,logoY+488
+            LeftClick
+            DelayRandom 139,142
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\8\Mark_Off.bmp|E:\MHImg\UI\Boss\8\Mark_On.bmp",000000,1.00,0,intX,intY //标签是否找得到
+            if intX >= 0 Then
+                MoveTo intX+100,intY
+                LeftClick
+                DelayRandom 139,142
+            else //滚轮
+                MoveTo logoX,logoY+170
+                Delay 200
+                MouseWheel -1
+                Delay 50
+                MoveTo logoX,logoY
+                Delay 150
+            End If
+        End If
+    Wend
+
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_8.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            tarX      = 28
+            tarY      = 85
+            Call TeleportChat() //传送门->无限循环对话框
+            //对话框出来后
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\8\Mark1.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //选择一般难度
+                    MoveTo intX-50,intY+5
+                    LeftClick
+                    DelayRandom 139,142
+                    Call ClearDialog() //清除标准对话框
+                    break
+                End If
+            Wend
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //出现倒计时代表进来了
+                    break
+                End If
+            Wend
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+
+    while 1>0 //一直放起源直到打死
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            KeyPress End
+            Delay 50
+        End If
+    Wend
+
+    while 1>0 //等到战利品出来
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            break
+        End If
+    Wend
+
+    while 1>0 //等到对话框出来
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            Call ClearDialog() //清除对话框
+            break
+        End If
+    Wend
+
+    Delay 500
+    for 2 //平A4次就够了
+        Call RightF()
+        Call RightF()
+        Call RightF()
+        Call LeftF()
+        Call LeftF()
+        Call LeftF()
+    Next
+
+    Call NewTeam() //强制退图
+        while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_8.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Boss_8.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then //这才是走出了地图
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Boss_8B.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        break
+                    End If
+                else
+                    tarX      = -5
+                    tarY      = 95
+                    Call MoveBTele()
+                End If
+            Wend
+
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+    Call Home()
+End Sub
+Sub Boss9 //打PKB
+    Call EnterPre() //第一部分成功后logoX就保存了
+    while 1>0 //进入老麦
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\9\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
+        if intX >= 0 Then //当前选中了,直接进入
+            MoveTo logoX+418,logoY+488
+            LeftClick
+            DelayRandom 139,142
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\9\Mark_Off.bmp|E:\MHImg\UI\Boss\9\Mark_On.bmp",000000,1.00,0,intX,intY //标签是否找得到
+            if intX >= 0 Then
+                MoveTo intX+100,intY
+                LeftClick
+                DelayRandom 139,142
+            else //滚轮
+                MoveTo logoX,logoY+170
+                Delay 200
+                MouseWheel -1
+                Delay 50
+                MoveTo logoX,logoY
+                Delay 150
+            End If
+        End If
+    Wend
+
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_9.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            tarX      = 35
+            tarY      = 84
+            Call NPCChat() //传送门->无限循环对话框
+            //对话框出来后
+            Call ClearDialog() //清除标准对话框
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //出现倒计时代表进来了
+                    break
+                End If
+            Wend
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+
+    tarX      = 19
+    tarY      = 81
+    Call NPCChat() //传送门->无限循环对话框
+    Call ClearDialog() //接受
+
+    Delay 4300
+    KeyPress W
+    Delay 1000
+    Call RightF()
+    Delay 300
+    KeyPress Y
+    Delay 1000
+    KeyPress H
+    Delay 800
+    KeyPress B
+    Delay 800
+    for 2 //平A4次就够了
+        Call RightF()
+        Call RightF()
+        Call LeftF()
+        Call LeftF()
+        Call LeftF()
+        Call RightF()
+    Next
+
+    Call NewTeam() //强制退图
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_9.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Boss_9.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then //这才是走出了地图
+                    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        break
+                    End If
+                else
+                    tarX      = 6
+                    tarY      = 84
+                    Call MoveBTele()
+                End If
+            Wend
+
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+End Sub
+
 Sub Gugu //菇菇神社
 
     while 1>0 //找菇菇标志
@@ -1706,7 +3041,7 @@ Sub Quest //接任务和交任务一体
         End If
     Wend
 End Sub
-Sub ClearQuest //清理下任务 Ver 1.11 AUT6个岛与ARC6个岛
+Sub ClearQuest //清理下任务 Ver 1.12 AUT6个岛与ARC6个岛
     SavedTorY = 360
     SavedTor  = 38
     SavedX    = 91
@@ -2245,27 +3580,24 @@ Sub ClearQuest //清理下任务 Ver 1.11 AUT6个岛与ARC6个岛
         if getTimeStamp() > startTime+45 then //只刷35秒
             break
         End if
-        if currentState == 1 then //前往楼上
-            tarX		= -8
-            tarY		= 91
-            tolerance	= 2
-            Call Move()
-        else if currentState == 2 then //前往楼上
-            tarX		= -8
-            tarY		= 71
-            tolerance	= 2
-            Call Move()
-        else if currentState == 3  then //前往楼上
-            tarX		= -24
-            tarY		= 71
-            tolerance	= 2
-            Call Move()
-        else
-            tarX		= -24
-            tarY		= 91
-            tolerance	= 2
-            Call Move()
+        if currentState     == 0 then
+            tarX        = -84
+            tarY        = 86
+            tolerance   = 4
+        else if currentState  == 1 then
+            tarX        = -22
+            tarY        = 91
+            tolerance   = 4
+        else if currentState  == 2 then
+            tarX        = 43
+            tarY        = 92
+            tolerance   = 4
+        else if currentState  == 3 then
+            tarX        = -22
+            tarY        = 91
+            tolerance   = 4
         End If
+        Call Move()
         currentState = currentState + 1
         if currentState > 3 then
             currentState = 0
@@ -2410,7 +3742,7 @@ Sub ClearQuest //清理下任务 Ver 1.11 AUT6个岛与ARC6个岛
     Call Loading() //加载
     Call Channel()
     Call BeforeStart() //开始前的准备
-    while 1>0 //ARC2
+    while 1>0 //ARC1
         if getTimeStamp() > startTime+35 then //只刷35秒
             break
         End if
@@ -3319,25 +4651,29 @@ Call ClearQuest() //清理任务
 Call Quest() //交任务
 //菇菇神社
 Call Gugu()
-//怪公
+//怪物公园
 Call Park()
+//打BOSS
+Call Boss1()
+Call Boss2()
+Call Boss3()
+Call Boss4()
+Call Boss5()
+Call Boss6()
+Call Boss7()
+Call Boss8()
+Call Boss9()
 //564
-Call Before564()    //前置
-Call Start564()     //前置
-Call DoubleJump()   //二段跳
-Call Start564()     //前置
-Call DoubleJump()   //二段跳
-Call Start564()     //前置
-Call After564()     //前置
+Call Before564() //前置
+Call Start564() //前置
+Call DoubleJump() //二段跳
+Call Start564() //前置
+Call DoubleJump() //二段跳
+Call Start564() //前置
+Call After564() //前置
 Call HDDaily()      //清每日
 Call LegionDaily()  //清每日
 Call MileageDaily()  //清每日
-for 3 //暂停刷一下BOSS
-    Beep 600,200
-    Beep 400,200
-    Beep 500,200
-Next
-Pause
 Call SortItem() //卖装备
 
 Beep 200,500
