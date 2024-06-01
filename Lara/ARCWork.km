@@ -40,7 +40,6 @@ Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     intX = intX - logoX
     intY = intY - logoY
 End Sub
-
 Sub AntiJam //一般跟随GetXY后用
     if staticX ==  intX and staticY == intY then //如果相等就累加计数器
         staticCount = staticCount + 1
@@ -50,7 +49,8 @@ Sub AntiJam //一般跟随GetXY后用
         staticCount = 0
     End If
     if staticCount >= 3 Then //
-        KeyAllup //施放所有按键
+
+        Beep 500,500
         // 模拟从绳子跳走
         DelayRandom 13,15
         KeyDown Right
@@ -61,11 +61,12 @@ Sub AntiJam //一般跟随GetXY后用
         DelayRandom 44,45
         KeyUp Right
         DelayRandom 13,15
-        // RestartScript //重启
+        RestartScript //重启
     End If
 End Sub
 
-Sub JumpAttack()
+Sub JumpAttack
+
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\G.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then
         KeyDown G
@@ -110,7 +111,18 @@ Sub Stable //稳定(前面自行getXY)
         End If
     Next
 End Sub
-Sub Move  //精确的移动:Ver3.12 修正上跳的抛物线问题
+Sub StableBig //稳定(前面自行getXY) 大判断 Ver1.1 要8下
+    cY = intY
+    for 8 //确定不动了再跳
+        call GetXY()
+        if intY == cY Then //Y轴没变化
+            Delay 2
+        else //还在运动,就停了吧
+            break
+        End If
+    Next
+End Sub
+Sub Move  //精确的移动:Ver3.2  小碎步使用了for简化
     while  1 > 0
         Call GetXY()
         Call AntiJam() //防卡
@@ -189,8 +201,6 @@ Sub Move  //精确的移动:Ver3.12 修正上跳的抛物线问题
                 end if
             End If
         else if intX < (tarX-24) Then //向右二段跳
-            // Call Stable()
-            // if intY == cY then
                 DelayRandom 15,25
                 KeyDown Right
                 DelayRandom 50,51
@@ -206,10 +216,7 @@ Sub Move  //精确的移动:Ver3.12 修正上跳的抛物线问题
                 DelayRandom 41,42
                 Call JumpAttack()
                 DelayRandom 256,261
-            // End If
         Else If intX > (tarX+24) Then //向左二段跳
-            // Call Stable()
-            // if intY == cY then
                 DelayRandom 15,25
                 KeyDown Left
                 DelayRandom 50,51
@@ -225,7 +232,6 @@ Sub Move  //精确的移动:Ver3.12 修正上跳的抛物线问题
                 DelayRandom 41,42
                 Call JumpAttack()
                 DelayRandom 256,261
-            // End If
         Else If intX < (tarX-tolLoc) Then //向右走
             KeyDown Right
             a = (tarX - tolLoc - intX) * 52
@@ -248,7 +254,7 @@ Sub Move  //精确的移动:Ver3.12 修正上跳的抛物线问题
             KeyUp Left
         else
             If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
-                Call Stable()
+                Call StableBig()
                 if intY == cY then
                     KeyDown Down
                     DelayRandom 134,136
@@ -280,226 +286,181 @@ Sub Move  //精确的移动:Ver3.12 修正上跳的抛物线问题
                     End If
                 End If
             else
-                Call Stable()
-                if intY == cY then
-                    yTolerance = 0
-                    if tolerance == 0 then //传送门型
-                        If intX < tarX Then //向右小碎步
-                            DelayRandom 45,52
-                            KeyDown Right
-                            DelayRandom 37,38
-                            KeyDown Up
-                            DelayRandom 70,71
-                            KeyUp Up
-                            DelayRandom 37,38
+                yTolerance = 0
+                if tolerance == 0 then //传送门型
+                    If intX < tarX Then //向右小碎步
+                        KeyPress Right
+                        KeyPress Up
+                        for 5
                             Call GetXY()
                             if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                                KeyDown Up
-                                DelayRandom 70,71
-                                KeyUp Up
-                                DelayRandom 37,38
-                            End if
-                            Call GetXY()
-                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                                KeyDown Up
-                                DelayRandom 70,71
-                                KeyUp Up
-                                DelayRandom 37,38
-                            End if
-                            Call GetXY()
-                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                                KeyDown Up
-                                DelayRandom 77,78
-                                KeyUp Up
-                                DelayRandom 37,38
-                            End if
-                            Call GetXY()
-                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                                KeyDown Up
-                                DelayRandom 82,83
-                                KeyUp Up
-                                DelayRandom 38,39
-                            End if
-                            KeyUp Right
-                            DelayRandom 11,12
-                        Else If intX > tarX Then //向左小碎步
-                            DelayRandom 45,52
-                            KeyDown Left
-                            DelayRandom 37,38
-                            KeyDown Up
-                            DelayRandom 70,71
-                            KeyUp Up
-                            DelayRandom 37,38
-                            Call GetXY()
-                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                                KeyDown Up
-                                DelayRandom 70,71
-                                KeyUp Up
-                                DelayRandom 37,38
-                            End if
-                            Call GetXY()
-                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                                KeyDown Up
-                                DelayRandom 70,71
-                                KeyUp Up
-                                DelayRandom 37,38
-                            End if
-                            Call GetXY()
-                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                                KeyDown Up
-                                DelayRandom 77,78
-                                KeyUp Up
-                                DelayRandom 37,38
-                            End if
-                            Call GetXY()
-                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                                KeyDown Up
-                                DelayRandom 82,83
-                                KeyUp Up
-                                DelayRandom 38,39
-                            End if
-                            KeyUp Left
-                            DelayRandom 11,12
-                        else //直接按上
-                            DelayRandom 45,52
-                            KeyDown Up
-                            DelayRandom 120,122
-                            KeyUp Up
-                            DelayRandom 231,234
-                            alterX    = 0
-                            alterY    = 0
-                            Exit Sub
-                        End If
-                        Delay 125
-                        Call GetXY()
-                        if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
-                            alterX    = 0
-                            alterY    = 0
-                            Exit Sub
-                        else
-                        End if
-                    else if tolerance == -1 then //负1代表枚举走到目的地
-                        a = 0
-                        if intX - tarX == 4 then
-                            KeyDown Left
-                            Delay 197
-                            KeyUp Left
-                            if facing > 0 then //要求面向右边
-                                a = 1
-                            end if
-                        else if intX - tarX == -4 then
-                            KeyDown Right
-                            Delay 197
-                            KeyUp Right
-                            if facing < 0 then //要求面向左边
-                                a = 1
-                            end if
-                        else if intX - tarX == 3 then
-                            KeyDown Left
-                            Delay 145
-                            KeyUp Left
-                            if facing > 0 then //要求面向右边
-                                a = 1
-                            end if
-                        else if intX - tarX == -3 then
-                            KeyDown Right
-                            Delay 145
-                            KeyUp Right
-                            if facing < 0 then //要求面向左边
-                                a = 1
-                            end if
-                        else if intX - tarX == 2 then
-                            KeyDown Left
-                            Delay 71
-                            KeyUp Left
-                            if facing > 0 then //要求面向右边
-                                a = 1
-                            end if
-                        else if intX - tarX == -2 then
-                            KeyDown Right
-                            Delay 71
-                            KeyUp Right
-                            if facing < 0 then //要求面向左边
-                                a = 1
-                            end if
-                        else if intX > tarX then
-                            KeyDown Left
-                            Delay 40
-                            KeyUp Left
-                            if facing > 0 then //要求面向右边
-                                a = 1
-                            end if
-                        else if intX < tarX then
-                            KeyDown Right
-                            Delay 40
-                            KeyUp Right
-                            if facing < 0 then //要求面向左边
-                                a = 1
-                            end if
-                        End If
-                        DelayRandom 45,52
-                        KeyDown Up
-                        DelayRandom 120,122
-                        KeyUp Up
-                        DelayRandom 231,234
-                        Call GetXY()
-                        if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
-                            alterX    = 0
-                            alterY    = 0
-                            if a > 0 then //要换方向
-                                if facing > 0 then  //改面向右边
-                                    KeyDown Left
-                                    Delay 40
-                                    KeyUp Left
-                                    DelayRandom 62,65
-                                    KeyDown Right
-                                    Delay 40
-                                    KeyUp Right
-                                    DelayRandom 62,65
-                                else if facing < 0 then //改面向左边
-                                    KeyDown Right
-                                    Delay 40
-                                    KeyUp Right
-                                    DelayRandom 62,65
-                                    KeyDown Left
-                                    Delay 40
-                                    KeyUp Left
-                                    DelayRandom 62,65
-                                end if
+                                KeyPress Right
+                                KeyPress Up
+                            else
+                                break
                             End If
-                            facing = 0
-                            Exit Sub
-                        End if
-                    else //非传送门
-                        if tolerance < 4 Then //容忍度小于4还是要小碎步
-                            for 10
-                                If intX < (tarX-tolerance) Then //向右小碎步
-                                    KeyDown Right
-                                    Delay (tarX - tolerance - intX) * 14
-                                    KeyUp Right
-                                Else If intX > (tarX+tolerance) Then //向左小碎步
-                                    KeyDown Left
-                                    Delay (intX - tarX - tolerance) * 14
-                                    KeyUp Left
-                                else
-                                    Exit Sub
-                                End If
-
-                                Call GetXY() //更新人物坐标
-                            Next
-                            Exit Sub //次数到了直接结束
-                        else //容忍度大于等于4可以直接结束
-                            Exit Sub
-                        End If
+                        Next
+                        DelayRandom 11,12
+                    Else If intX > tarX Then //向左小碎步
+                        KeyPress Left
+                        KeyPress Up
+                        for 5
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyPress Left
+                                KeyPress Up
+                            else
+                                break
+                            End If
+                        Next
+                        DelayRandom 11,12
+                    else //直接按上
+                        KeyPress Up
+                        alterX    = 0
+                        alterY    = 0
+                        Exit Sub
+                    End If
+                    Delay 125
+                    Call GetXY()
+                    if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
+                        alterX    = 0
+                        alterY    = 0
+                        Exit Sub
+                    else
                     End if
+                else if tolerance == -1 then //负1代表枚举走到目的地
+                    a = 0
+                    if intX - tarX == 4 then
+                        KeyDown Left
+                        Delay 197
+                        KeyUp Left
+                        if facing > 0 then //要求面向右边
+                            a = 1
+                        end if
+                    else if intX - tarX == -4 then
+                        KeyDown Right
+                        Delay 197
+                        KeyUp Right
+                        if facing < 0 then //要求面向左边
+                            a = 1
+                        end if
+                    else if intX - tarX == 3 then
+                        KeyDown Left
+                        Delay 145
+                        KeyUp Left
+                        if facing > 0 then //要求面向右边
+                            a = 1
+                        end if
+                    else if intX - tarX == -3 then
+                        KeyDown Right
+                        Delay 145
+                        KeyUp Right
+                        if facing < 0 then //要求面向左边
+                            a = 1
+                        end if
+                    else if intX - tarX == 2 then
+                        KeyDown Left
+                        Delay 71
+                        KeyUp Left
+                        if facing > 0 then //要求面向右边
+                            a = 1
+                        end if
+                    else if intX - tarX == -2 then
+                        KeyDown Right
+                        Delay 71
+                        KeyUp Right
+                        if facing < 0 then //要求面向左边
+                            a = 1
+                        end if
+                    else if intX > tarX then
+                        KeyDown Left
+                        Delay 40
+                        KeyUp Left
+                        if facing > 0 then //要求面向右边
+                            a = 1
+                        end if
+                    else if intX < tarX then
+                        KeyDown Right
+                        Delay 40
+                        KeyUp Right
+                        if facing < 0 then //要求面向左边
+                            a = 1
+                        end if
+                    End If
+                    DelayRandom 45,52
+                    KeyDown Up
+                    DelayRandom 120,122
+                    KeyUp Up
+                    DelayRandom 231,234
+                    Call GetXY()
+                    if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
+                        alterX    = 0
+                        alterY    = 0
+                        if a > 0 then //要换方向
+                            if facing > 0 then  //改面向右边
+                                KeyDown Left
+                                Delay 40
+                                KeyUp Left
+                                DelayRandom 62,65
+                                KeyDown Right
+                                Delay 40
+                                KeyUp Right
+                                DelayRandom 62,65
+                            else if facing < 0 then //改面向左边
+                                KeyDown Right
+                                Delay 40
+                                KeyUp Right
+                                DelayRandom 62,65
+                                KeyDown Left
+                                Delay 40
+                                KeyUp Left
+                                DelayRandom 62,65
+                            end if
+                        End If
+                        facing = 0
+                        Exit Sub
+                    End if
+                else //非传送门
+                    if tolerance < 4 Then //容忍度小于4还是要小碎步
+                        for 10
+                            If intX < (tarX-tolerance) Then //向右小碎步
+                                KeyDown Right
+                                Delay (tarX - tolerance - intX) * 14
+                                KeyUp Right
+                            Else If intX > (tarX+tolerance) Then //向左小碎步
+                                KeyDown Left
+                                Delay (intX - tarX - tolerance) * 14
+                                KeyUp Left
+                            else
+                                Exit Sub
+                            End If
 
-                End If
+                            Call GetXY() //更新人物坐标
+                        Next
+                        Exit Sub //次数到了直接结束
+                    else //容忍度大于等于4可以直接结束
+                        Exit Sub
+                    End If
+                End if
             End If
         End If
     Wend
 End Sub
 
-Sub ReleaseRune //定期解轮 ver2.1
+Sub ReleaseRune //定期解轮 ver2.2 加入蘑菇公主侦测
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Liar.bmp",000000,1.00,0,intX,intY
+    if intX < 0 then //A图没找到就找B图
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Liar2.bmp",000000,1.00,0,intX,intY
+    End If
+    if intX >= 0 Then //蘑菇公主來了
+        for 3
+            Beep 500,200
+            Beep 100,200
+            Beep 400,200
+            Beep 200,200
+            Beep 300,200
+        Next
+    End If
     if GetTimeStamp() - RuneCooldown > 900 then //可以放轮了
         FindPic x1,y1,x2,y2,"E:\MHImg\Rune.bmp",000000,1.00,0,intX,intY
         if intX >= 0 then
@@ -527,7 +488,7 @@ Sub ReleaseRune //定期解轮 ver2.1
     End If
 End Sub
 
-Sub SpellList() //随便扔技能 V2.5 根据地点放火(下按或上按)
+Sub SpellList() //随便扔技能 V2.6 抽离释放3不放在这里了
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\V.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //找V3
         KeyDown V
@@ -557,71 +518,7 @@ Sub SpellList() //随便扔技能 V2.5 根据地点放火(下按或上按)
                     DelayRandom 899,909
                     WGTime = GetTimeStamp()
                 else //什么都没有就随机瞬移释放
-                    a = GetTimeStamp() - ReleaseTime3
-                    Call GetXY()
-                    if intX > -50 and intX < -30 then
-                        if intY == -1 then //只有三个地方能放
-                            if a > 12 then
-                                ReleaseTime3 = GetTimeStamp()
-                                SavedX = intX
-                                SavedY = intY
-                                if intY == -1 then //压左键
-                                    KeyDown Down
-                                    DelayRandom 202,205
-                                else
-                                End If
-                                KeyDown LShift
-                                DelayRandom 128,130
-                                KeyUp LShift
-                                DelayRandom 437,442
-                                KeyAllup
-                                Call GetXY()
-                                if SavedX == intX and SavedY == intY then //人物没变就不要施放了,平A就行
-                                    KeyDown F
-                                    DelayRandom 960,970
-                                    KeyUp F
-                                    DelayRandom 223,226
-                                else
-                                    DelayRandom 42,45
-                                    KeyDown Left
-                                    DelayRandom 40,42
-                                    KeyUp Left
-                                    DelayRandom 62,65
-                                    KeyDown Right
-                                    DelayRandom 101,105
-                                    KeyUp Right
-                                    DelayRandom 62,65
-                                    KeyDown E
-                                    DelayRandom 136,138
-                                    KeyUp E
-                                    DelayRandom 82,83
-                                    KeyDown Up
-                                    DelayRandom 120,122
-                                    KeyUp Up
-                                    DelayRandom 187,189
-                                    KeyDown S
-                                    DelayRandom 83,84
-                                    KeyUp S
-                                    DelayRandom 456,461
-                                End If
-                            else
-                                KeyDown F
-                                DelayRandom 960,970
-                                KeyUp F
-                                DelayRandom 223,226
-                            End If
-                        Else
-                            KeyDown F
-                            DelayRandom 960,970
-                            KeyUp F
-                            DelayRandom 223,226
-                        End If
-                    else
-                        KeyDown F
-                        DelayRandom 960,970
-                        KeyUp F
-                        DelayRandom 223,226
-                    End If
+                    Call AroundF() //普通平A
                 End If
             End If
         End If
@@ -632,7 +529,6 @@ Sub Navigate //引導路線 V2.0针对各种地点
     call GetXY()
     Call Move()
 End Sub
-
 Sub PreMove3 //提前移动到特定地点 Ver2.0 提前移动先judge,不然怕重复移动
     min = ReleaseTime2 + 13
     minType = 2
@@ -665,7 +561,6 @@ Sub PreMove3 //提前移动到特定地点 Ver2.0 提前移动先judge,不然怕
         Call Navigate()
     End If
 End Sub
-
 Sub PreMove6 //提前移动到特定地点 Ver2.0 提前移动先judge,不然怕重复移动
     min = seedTime1 + 18 //先从种子开始排序
     minType = 3
@@ -704,7 +599,6 @@ Sub PreMove6 //提前移动到特定地点 Ver2.0 提前移动先judge,不然怕
         Call Navigate()
     End If
 End Sub
-
 Sub PreMoveBF //提前移动到特定地点 Ver2.0 提前移动先judge,不然怕重复移动
     min = seedTime1 + 18 //先从种子开始排序
     minType = 3
