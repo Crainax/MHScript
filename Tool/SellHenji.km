@@ -58,7 +58,7 @@ Sub ergodic
                     DelayRandom 139,142
                     SayString "9000"
                     KeyPress tab
-                    SayString "1976" //卖的价钱
+                    SayString "2198" //卖的价钱
                     KeyPress Enter
                     while 1>0
                         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Auction\Confirm.bmp",000000,1.00,0,intX,intY

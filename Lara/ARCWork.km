@@ -488,6 +488,25 @@ Sub ReleaseRune //定期解轮 ver2.2 加入蘑菇公主侦测
     End If
 End Sub
 
+Sub AroundF //左右平A
+    DelayRandom 55,60
+    KeyDown Right
+    DelayRandom 60,61
+    KeyUp Right
+    DelayRandom 148,150
+    KeyDown F
+    DelayRandom 119,121
+    KeyUp F
+    DelayRandom 513,520
+    KeyDown Left
+    DelayRandom 58,59
+    KeyUp Left
+    DelayRandom 140,142
+    KeyDown F
+    DelayRandom 91,92
+    KeyUp F
+    DelayRandom 471,478
+End Sub
 Sub SpellList() //随便扔技能 V2.6 抽离释放3不放在这里了
     FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Lara\V.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //找V3

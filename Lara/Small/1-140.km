@@ -15,7 +15,6 @@ Dim SavedX,       SavedY,       SavedTor, SavedTorY  //保存一下临时处理�
 Dim min,          minType,      state                //预移动
 Dim wJam,         wJam2,        loopA,    loopB      //找图防卡,loopAB是循环数
 Dim ReleaseTime1, ReleaseTime2, aroundFTime          //各种冷却
-Dim a,            fountainTime                       //各种冷却
 Dim RuneCooldown, seedTime1                          //各种冷却
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
@@ -3444,7 +3443,6 @@ ReleaseTime1 = 0            //施放冷却1
 ReleaseTime2 = 0            //施放冷却2
 seedTime1    = 0            //上次种子的时间
 state        = 0            //轮换
-fountainTime = 0            //上次喷泉的时间
 RuneCooldown = 0            //解轮冷却
 yTolerance   = 0            //初始化
 while 1 > 0
