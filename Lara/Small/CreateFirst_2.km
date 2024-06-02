@@ -683,6 +683,13 @@ End Sub
 
 Sub Step2 //回城后-商店买完东西这一步
 
+    FindPic x1,y1,x2,y2,"E:\MHImg\UI\Map\ZoomMap.bmp",000000,1.00,0,intX,intY
+    If intX >= 0 Then //放大一下地图
+        MoveTo intX,intY
+        LeftClick
+        DelayRandom 139,142
+    End If
+
     tarX = -62
     tarY = 122
     tolerance = 2
@@ -841,11 +848,6 @@ alterY = 0            //备用地点
 facing = 0            //面向初始归0
 
 Call Step2() //还是让69哥过去纳林吧
-
-//然后无限交易接收器
-while 1>0
-    Call TradeReceive() //只执行一次
-Wend
 
 Beep 500,500
 
