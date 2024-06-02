@@ -624,6 +624,7 @@ Sub Teleport //换地图(Caps键亮)
         SavedY    = 279
         Call AfterMap() //到达
         Call Loading()
+        Call Channel() //换频
         Call CloseCaps() //关闭Caps键
     else
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\StarTower.bmp",000000,1.00,0,intX,intY
@@ -676,6 +677,7 @@ Sub Teleport //换地图(Caps键亮)
                 End If
             Wend
             Call Loading()
+            Call Channel() //换频
             Call CloseCaps() //关闭Caps键
         else
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\H101.bmp",000000,1.00,0,intX,intY
@@ -687,6 +689,7 @@ Sub Teleport //换地图(Caps键亮)
                 SavedY    = 120
                 Call AfterMap() //到达
                 Call Loading()
+                Call Channel() //换频
                 Call CloseCaps() //关闭Caps键
             else
                 MsgBox "Tele - Dont Regonize"
