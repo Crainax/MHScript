@@ -19,7 +19,24 @@ Dim RuneCooldown, seedTime1                          //各种冷却
 Dim map                                              //当前地图
 
 //给小号挂刷怪用
-
+Sub Loading //加载抽离函数(人先消失再出现)
+    while 1>0 //等进入加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+    while 1>0 //等加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX > 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+End Sub
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
@@ -546,6 +563,57 @@ Sub ConfirmMap //确认当前地图
     End If
 End Sub
 
+Sub CloseCaps //关闭Caps键
+    if GetLED(1) == 1 then //换地图
+        DelayRandom 39,42
+        KeyDown CapsLock
+        DelayRandom 69,72
+        KeyUp CapsLock
+        DelayRandom 39,42 //关闭找图
+    End If
+End Sub
+Sub AfterMap //夹在中间的抽离后 v1.3 世界也能选,抽离2个Loading
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            DelayRandom 39,42
+            KeyDown Enter
+            DelayRandom 69,72
+            KeyUp Enter
+            DelayRandom 39,42
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\Mark.bmp",000000,1.00,0,logoX,logoY
+            if logoX >= 0 Then //瞬移到
+                MoveTo logoX-284,logoY+1
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX-354,logoY+SavedTor //选择世界 38格兰  20世界  46奥术之河
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX-142,logoY+1
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX-225,logoY+SavedTorY //选择卡尔西温
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX+SavedX,logoY+SavedY
+                LeftDoubleClick
+                DelayRandom 139,142
+                MoveTo logoX-50,logoY-50
+                DelayRandom 239,242
+            else
+                DelayRandom 39,42
+                KeyDown m
+                DelayRandom 69,72
+                KeyUp m
+                DelayRandom 239,242
+            End If
+
+        End If
+    Wend
+End Sub
+
 Sub Teleport //换地图(Caps键亮)
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Dog1.bmp",000000,1.00,0,intX,intY
     If intX >= 0 Then //狗->咖啡
@@ -607,8 +675,6 @@ Sub Teleport //换地图(Caps键亮)
 
                 End If
             Wend
-
-            Call AfterMap() //到达
             Call Loading()
             Call CloseCaps() //关闭Caps键
         else
@@ -651,6 +717,7 @@ wJam = 0 //放在循环外面位置
 while 1 > 0
     if GetLED(1) == 1 then //换地图
         Call Teleport() //传送到下个地图(大写亮时)
+        Call ConfirmMap()      //定位地图
     End If
     Call ReleaseRune() //定期解轮
 

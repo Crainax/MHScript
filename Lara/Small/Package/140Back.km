@@ -466,16 +466,13 @@ alterX = 0            //备用地点
 alterY = 0            //备用地点
 facing = 0            //面向初始归0
 
-Sub EnterOK //清除一下OK对话框
+Sub EnterOK //清除一下OK对话框 Ver1.1
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
         if intX < 0 Then
             break
         else
-            DelayRandom 39,42
-            KeyDown Enter
-            DelayRandom 69,72
-            KeyUp Enter
+            KeyPress Enter
             DelayRandom 239,242
         End If
     Wend
