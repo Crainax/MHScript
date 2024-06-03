@@ -4,11 +4,11 @@ ScreenY=2560
 Times=1
 
 [Script]
-Dim x1,          x2,      y1,    y2     // 矩形区域:小地图采样点
-Dim x3,          y3,      xEnd,  yEnd   // 2个顶点:技能区/屏幕右下角顶点
-Dim logoX,       logoY,   intX,  intY   //算目的地差值
-Dim red,         tempX,   tempY         //红点侦测
-Dim a
+Dim x1,           x2,      y1,    y2     // 矩形区域:小地图采样点
+Dim x3,           y3,      xEnd,  yEnd   // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,         tarY,    cY,    a      //目标
+Dim logoX,        logoY,   intX,  intY   //算目的地差值
+Dim wJam,         wJam2,   loopA, loopB  //找图防卡,loopAB是循环数
 
 
 GetScreenResolution intX, intY
