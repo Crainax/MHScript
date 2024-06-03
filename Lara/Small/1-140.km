@@ -2008,7 +2008,7 @@ Sub 2Job
             DelayRandom 539,542
 
             loopA = 0
-            for 3
+            for 4
                 loopB = 0
                 for 4
                     //9,36
@@ -2398,7 +2398,7 @@ Sub 4Job
             DelayRandom 539,542
 
             loopA = 0
-            for 1
+            for 2
                 loopB = 0
                 for 4
                     //9,36
@@ -2528,6 +2528,8 @@ Sub 4Job
                 a = a + 1
             Next
 
+
+            //拖动释放到键盘布局里
             MoveTo logoX-18,logoY+198
             LeftClick
             DelayRandom 339,342

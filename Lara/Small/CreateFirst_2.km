@@ -795,7 +795,7 @@ Sub Step2 //回城后-商店买完东西这一步
         if logoX >= 0 Then //找到了标签
             //43一个格子
             loopA = 0
-            for 5
+            for 6
                 loopB = 0
                 for 4
                     //9,36

@@ -490,7 +490,7 @@ Sub 4Job
             DelayRandom 539,542
 
             loopA = 0
-            for 1
+            for 2
                 loopB = 0
                 for 4
                     //9,36
@@ -678,7 +678,6 @@ Sub 4Job
     Wend
 
 End Sub
-
 
 
 

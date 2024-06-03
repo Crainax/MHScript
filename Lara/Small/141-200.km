@@ -613,6 +613,52 @@ Sub AfterMap //夹在中间的抽离后 v1.3 世界也能选,抽离2个Loading
         End If
     Wend
 End Sub
+Sub Channel //有人就换频 ver2.1防止动作没结束就转的OK確定
+    wJam = 0 //放在循环外面位置
+    while 1>0
+        FindPic x1,y1,x2,y2,"E:\MHImg\Player.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then //地图没人(5次判断防人物重合)
+            wJam = wJam + 1  //循环内部
+            if wJam > 5 then //多次没找到人就确实没人
+                break
+            else
+                Delay 200
+            End If
+        else //有找到人,直接换频
+            wJam = 0 //放在成功的位置
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Switch.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+
+                KeyDown Right
+                DelayRandom 69,72
+                KeyUp Right
+                DelayRandom 539,542
+                KeyDown Enter
+                DelayRandom 69,72
+                KeyUp Enter
+                DelayRandom 339,342
+
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then //没有OK就退出去
+                    Call Loading() //等加载
+                    DelayRandom 239,242
+                else
+                    DelayRandom 39,42
+                    KeyDown Esc
+                    DelayRandom 69,72
+                    KeyUp Esc
+                    DelayRandom 239,242
+                End If
+            else
+                DelayRandom 39,42
+                KeyDown Insert
+                DelayRandom 69,72
+                KeyUp Insert
+                DelayRandom 39,42
+            End If
+        End If
+    Wend
+End Sub
 
 Sub Teleport //换地图(Caps键亮)
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Dog1.bmp",000000,1.00,0,intX,intY
@@ -897,7 +943,7 @@ while 1 > 0
         wJam = 0 //放在成功的位置
         a = GetTimeStamp() - ReleaseTime1
         if a > 13 then //施放1 Ver2.0
-            tarX = 5
+            tarX = -25
             tarY = 158
             tolerance = 4
             yTolerance = 4
@@ -906,9 +952,9 @@ while 1 > 0
                 Call NavigateDig()
             End If
             DelayRandom 56,58
-            KeyDown Right
+            KeyDown Left
             DelayRandom 91,93
-            KeyUp Right
+            KeyUp Left
             DelayRandom 32,33
             KeyDown A
             DelayRandom 136,138
@@ -918,17 +964,17 @@ while 1 > 0
             DelayRandom 119,121
             KeyUp S
             DelayRandom 248,251
-            KeyDown Left
+            KeyDown Up
             DelayRandom 106,108
-            KeyUp Left
+            KeyUp Up
             DelayRandom 342,347
             ReleaseTime1 = GetTimeStamp()
         End If
 
         a = GetTimeStamp() - ReleaseTime2
         if a > 13 then //施放2 Ver2.0
-            tarX       = -2
-            tarY       = 117
+            tarX       = 26
+            tarY       = 158
             tolerance  = 4
             yTolerance = 4
             call GetXY()
@@ -936,9 +982,9 @@ while 1 > 0
                 Call NavigateDig()
             End If
             DelayRandom 56,58
-            KeyDown Left
+            KeyDown Right
             DelayRandom 91,93
-            KeyUp Left
+            KeyUp Right
             DelayRandom 32,33
             KeyDown A
             DelayRandom 136,138
@@ -955,10 +1001,10 @@ while 1 > 0
             ReleaseTime2 = GetTimeStamp()
         else
             a = GetTimeStamp() - seedTime1
-            if a > 18 then //可以放种子了 Ver2.0
-                tarX       = -2
-                tarY       = 128
-                tolerance  = 6
+            if a > 13 then //可以放种子了 Ver2.0
+                tarX       = 8
+                tarY       = 90
+                tolerance  = 2
                 yTolerance = 4
                 call GetXY()
                 if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
@@ -974,18 +1020,37 @@ while 1 > 0
                 KeyUp Down
                 DelayRandom 455,469
                 seedTime1 = GetTimeStamp()
-            else //前往牛马地方放技能
-                tarX       = -2
-                tarY       = 128
-                tolerance  = 4
-                yTolerance = 4
-                call GetXY()
-                if intY != tarY or intX < (tarX-tolerance) or intX > (tarX+tolerance) then
-                    Call NavigateDig()
+
+                //释放3
+                SavedX = intX
+                SavedY = intY
+                KeyDown Down
+                DelayRandom 202,205
+                KeyDown LShift
+                DelayRandom 128,130
+                KeyUp LShift
+                DelayRandom 437,442
+                KeyAllup
+                Call GetXY()
+                if SavedX == intX and SavedY == intY then //人物没变就不要施放了,平A就行
+                    Call AroundF() //普通平A
+                else
+                    DelayRandom 42,45
+                    KeyDown E
+                    DelayRandom 136,138
+                    KeyUp E
+                    DelayRandom 82,83
+                    KeyDown Left
+                    DelayRandom 120,122
+                    KeyUp Left
+                    DelayRandom 187,189
+                    KeyDown S
+                    DelayRandom 83,84
+                    KeyUp S
+                    DelayRandom 456,461
                 End If
-                DelayRandom 56,58
+            else //前往牛马地方放技能
                 Call AroundF()
-                DelayRandom 155,169
             End If
 
         End If
