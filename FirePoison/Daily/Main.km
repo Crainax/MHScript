@@ -2338,9 +2338,9 @@ Sub Boss5 //打狮子王 Ver1.1加长了一点时间
     Call NPCChat() //人->无限循环对话框
     Call ClearDialog() //清除一下对话框
 
-    Delay 4000
+    Delay 4800
     KeyPress W
-    Delay 1000
+    Delay 1500
     for 2 //平A4次就够了
         Call RightF()
         KeyPress Left
