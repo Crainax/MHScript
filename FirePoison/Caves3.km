@@ -658,7 +658,7 @@ Sub Navigate //引導路線
     Call Move()
 End Sub
 
-Sub ReleaseRune //定期解轮 ver2.2 加入蘑菇公主侦测
+Sub ReleaseRune //定期解轮 ver2.31 解地震轮(遍历BUFF)
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Liar.bmp",000000,1.00,0,intX,intY
     if intX < 0 then //A图没找到就找B图
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Liar2.bmp",000000,1.00,0,intX,intY
@@ -694,7 +694,38 @@ Sub ReleaseRune //定期解轮 ver2.2 加入蘑菇公主侦测
             Beep 1000,200
             Pause
             RuneCooldown = GetTimeStamp()
-        else
+            //解轮后先A一下
+            KeyPress F
+            wJam = 0 //放在循环外面位置
+            while 1 > 0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\HP.bmp",000000,1.00,0,logoX,logoY
+                if logoX >= 0 Then
+                    a = 1
+                    for 43
+                        MoveTo logoX-583+a*32,logoY-709
+                        Delay 30
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\Rune.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then //找到点击
+                            RightClick
+                            MoveTo logoX-615+a*32,logoY-709 //移到前一个防过头)
+                            Delay 10
+                            RightClick
+                            break
+                        End If
+                        a = a + 1
+                    Next
+                    break
+                else
+                    wJam = wJam + 1  //循环内部
+                    if wJam > 5 then //三次失败,
+                        break
+                    else
+                        Delay 200
+                        MoveTo x2,y2
+                        KeyPress F
+                    End If
+                End If
+            Wend
         End If
     End If
 End Sub

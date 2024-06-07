@@ -516,7 +516,7 @@ Sub Move  //精确的移动:Ver3.13 移植了新的stable办法
     Wend
 End Sub
 
-Sub ReleaseRune //定期解轮 ver2.3 解地震轮(遍历BUFF)
+Sub ReleaseRune //定期解轮 ver2.31 解地震轮(遍历BUFF)
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Liar.bmp",000000,1.00,0,intX,intY
     if intX < 0 then //A图没找到就找B图
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Liar2.bmp",000000,1.00,0,intX,intY
@@ -561,9 +561,12 @@ Sub ReleaseRune //定期解轮 ver2.3 解地震轮(遍历BUFF)
                     a = 1
                     for 43
                         MoveTo logoX-583+a*32,logoY-709
-                        Delay 10
+                        Delay 30
                         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\Rune.bmp",000000,1.00,0,intX,intY
                         if intX >= 0 Then //找到点击
+                            RightClick
+                            MoveTo logoX-615+a*32,logoY-709 //移到前一个防过头)
+                            Delay 10
                             RightClick
                             break
                         End If
