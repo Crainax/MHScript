@@ -4,20 +4,20 @@ ScreenY=1440
 Times=0
 
 [Script]
-Dim x1,          x2,       y1,   y2      // 矩形区域:小地图采样点
-Dim x3,          y3,       xEnd, yEnd    // 2个顶点:技能区/屏幕右下角顶点
-Dim tarX,        tarY,     cX,   cY      //目标
-Dim alterX,      alterY,   a,    facing  //备用地点,传送门脚步开关
-Dim logoX,       logoY,    intX, intY    //算目的地差值
-Dim DTime,       InfiTime, SpellOK       //末日烈焰冷却
-Dim tolerance,   tolLoc,   yTolerance    //快速移动的容差,0代表精确移动,另外个是局部变量
-Dim staticCount, staticX,  staticY       //防卡计数器
+Dim x1,          x2,      y1,    y2      // 矩形区域:小地图采样点
+Dim x3,          y3,      xEnd,  yEnd    // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,        tarY,    cX,    cY      //目标
+Dim alterX,      alterY,  a,     facing  //备用地点,传送门脚步开关
+Dim logoX,       logoY,   intX,  intY    //算目的地差值
+Dim tolerance,   tolLoc,  yTolerance     //快速移动的容差,0代表精确移动,另外个是局部变量
+Dim staticCount, staticX, staticY        //防卡计数器
+Dim QTime,       ATime,   DTime, WGTime  //冷却
 Dim LEDState                             //测试用:开大写键就是获取点位,不要切来切去的了
 
 //左上传送点(-96,90),喷泉点(-81,104),左下传送点(-73,118),右下传送点(5,118),右上传送点(29,88),右下捡钱点(48,118),普攻(-8,107),上巡(-8,79),测试上瞬(15,68),测试上瞬(-58,90),左下捡钱(-98,118)
 
-Sub on_timer1 //扔技能CD2秒
-    SpellOK = 1
+Sub on_timer1 //扔D技能冷却3秒
+    DTime = 0
 EndSub
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
@@ -421,23 +421,120 @@ Sub Move //精确的移动:V1.0 继承火毒的3.3
     Wend
 End Sub
 
+Sub StandSpell //原地放技能 v1.1更新了一点东西
+    if GetTimeStamp() - QTime > 400 then
+        KeyPress Q
+        QTime = GetTimeStamp()
+    else
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Kanna\G.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            KeyDown G
+            DelayRandom 633,635
+            KeyUp G
+            Delay 1000
+        else
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Kanna\W.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                KeyDown W
+                DelayRandom 153,155
+                KeyUp W
+                Delay 300
+            else
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\4LCD.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 and GetTimeStamp() - WGTime > 119 then
+                    KeyDown 4
+                    Delay 500
+                    KeyUp 4
+                    WGTime = GetTimeStamp()
+                else
+                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Kanna\X.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        KeyPress X
+                        DelayRandom 751,760
+                    else
+                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Kanna\B.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then
+                            KeyDown B
+                            DelayRandom 353,355
+                            KeyUp B
+                            Delay 100
+                        else
+                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Kanna\V.bmp",000000,1.00,0,intX,intY
+                            if intX >= 0 Then
+                                KeyDown V
+                                DelayRandom 153,155
+                                KeyUp V
+                            else
+                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\C.bmp",000000,1.00,0,intX,intY
+                                if intX >= 0 Then
+                                    KeyPress C
+                                    DelayRandom 602,609
+                                else
+                                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\5J.bmp",000000,1.00,0,intX,intY
+                                    if intX >= 0 then
+                                        KeyDown 5
+                                        Delay 300
+                                        KeyUp 5
+                                    else if DTime == 0 then
+                                        Delay 15
+                                        KeyDown D
+                                        DelayRandom 119,121
+                                        KeyUp D
+                                        DelayRandom 1084,1097
+                                        DTime = 1
+                                        Timer 1,1,3000
+                                    else
+                                        KeyPress S
+                                        Delay 100
+                                        KeyPress Right
+                                        KeyPress F
+                                        Delay 350
+                                        KeyPress Left
+                                        KeyPress F
+                                        KeyPress S
+                                    End If
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
+            End If
+        End If
+    End If
+End Sub
+
 //分辨率初始化
 GetScreenResolution intX, intY
-x1 = intX - 1440
-y1 = intY - 950
-x2 = intX - 1140
-y2 = intY - 600
-x3 = intX - 640
-y3 = intY - 260
-xEnd = intX
-yEnd = intY
-InfiTime   = GetTimeStamp() - 110  //上次终极无限的时间
-DTime      = 0                     //上次放末日烈焰的时间
-SpellOK    = 1                     //技能冷却
-Timer 1,1,1000
+x1     = intX - 1440
+y1     = intY - 950
+x2     = intX - 1140
+y2     = intY - 600
+x3     = intX - 640
+y3     = intY - 260
+xEnd   = intX
+yEnd   = intY
+DTime  = 0            //上次放末日烈焰的时间
+QTime  = 0            //上次放末日烈焰的时间
+ATime  = 0            //上次放末日烈焰的时间
+WGTime = 0            //上次放末日烈焰的时间
+Timer 1,1,3000
 while 1 > 0
     LEDState = GetLED(1)
-    if LEDState == 0 then //
+    if LEDState == 0 then //去隐藏列车测试一下原地扔技能
+        while 1 > 0
+            call GetXY()
+            if intY != 76 or intX < (-15-4) or intX > (-15+4) then //
+                tarX       = -15
+                tarY       = 76
+                tolerance  = 4
+                yTolerance = 0
+                Call Move()
+            End If
+
+            Call StandSpell()
+            Delay 600
+        Wend
+    else if LEDState == 3 then //
         tolLoc = 1
         GetFileLine tarX,Move.Conf,tolLoc		//文件查找
         tolLoc = 2
