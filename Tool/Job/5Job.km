@@ -354,6 +354,14 @@ Sub 5JobRequest //接五转任务
         End If
     Wend
     Call ClearDialog()
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\5Job.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //等人物出来
+            break
+        else
+            Delay 100
+        End If
+    Wend
 End Sub
 
 

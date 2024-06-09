@@ -1,0 +1,202 @@
+[General]
+ScreenX=1440
+ScreenY=2560
+Times=1
+
+[Script]
+Dim x1,           x2,      y1,    y2     // 矩形区域:小地图采样点
+Dim x3,           y3,      xEnd,  yEnd   // 2个顶点:技能区/屏幕右下角顶点
+Dim tarX,         tarY,    cY,    a      //目标
+Dim logoX,        logoY,   intX,  intY   //算目的地差值
+Dim wJam,         wJam2,   loopA, loopB  //找图防卡,loopAB是循环数
+
+
+GetScreenResolution intX, intY
+x1   = intX - 1440
+y1   = intY - 950
+x2   = intX - 1000
+y2   = intY - 600
+x3   = intX - 640
+y3   = intY - 260
+xEnd = intX
+yEnd = intY
+
+    while 1>0 //打开键盘 并清空所有设定 摆好位置
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Key\Reset.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then
+            MoveTo logoX+85,logoY+8
+            LeftClick
+            DelayRandom 139,142
+            KeyDown Enter
+            DelayRandom 69,72
+            KeyUp Enter
+            DelayRandom 39,42
+
+            //这里的intX和intY都基于这个清空键
+            MoveTo logoX+392,logoY-148
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+421,logoY-300
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+242,logoY-148
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+421,logoY-332
+            LeftClick
+            DelayRandom 139,142
+
+            MoveTo logoX+431,logoY-112
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+309,logoY-300
+            LeftClick
+            DelayRandom 139,142
+
+            MoveTo logoX+206,logoY-145
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+262,logoY-300
+            LeftClick
+            DelayRandom 139,142
+
+            MoveTo logoX+315,logoY-145
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+215,logoY-267
+            LeftClick
+            DelayRandom 139,142
+
+            MoveTo logoX+246,logoY-109
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX-89,logoY-367
+            LeftClick
+            DelayRandom 139,142
+
+            MoveTo logoX+208,logoY-77
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX-150,logoY-367
+            LeftClick
+            DelayRandom 139,142
+
+            MoveTo logoX+347,logoY-114
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+129,logoY-235
+            LeftClick
+            DelayRandom 139,142
+
+            MoveTo logoX+354,logoY-150
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+84,logoY-201
+            LeftClick
+            DelayRandom 139,142
+
+            MoveTo logoX+134,logoY-151
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+65,logoY-367
+            LeftClick
+            DelayRandom 139,142
+
+            MoveTo logoX-47,logoY-76
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX-51,logoY-367
+            LeftClick
+            DelayRandom 139,142
+
+            MoveTo logoX+98,logoY-114
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+147,logoY-265
+            LeftClick
+            DelayRandom 139,142
+
+            MoveTo logoX+100,logoY-151
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+129,logoY-303
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+67,logoY-151
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+97,logoY-303
+            LeftClick
+            DelayRandom 139,142
+
+            MoveTo logoX+177,logoY-111
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+355,logoY-333
+            LeftClick
+            DelayRandom 139,142
+
+            MoveTo logoX+317,logoY-40
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+358,logoY-299
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+137,logoY-40
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+251,logoY-331
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+67,logoY-74
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+180,logoY-263
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX-82,logoY-74
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+101,logoY-366
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+137,logoY-111
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+115,logoY-269
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+30,logoY-152
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+133,logoY-366
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+0,logoY-152
+            LeftClick
+            DelayRandom 139,142
+            MoveTo logoX+229,logoY-302
+            LeftClick
+            DelayRandom 139,142
+
+            //确认修改
+            MoveTo logoX+408,logoY+10
+            LeftClick
+            DelayRandom 139,142
+
+            break
+        else
+            KeyPress \
+            DelayRandom 39,42
+        End If
+    Wend
+
+    while 1>0 //关闭键位窗口
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Key\Reset.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            KeyPress \
+            DelayRandom 39,42
+        End If
+    Wend
