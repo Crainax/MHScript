@@ -340,6 +340,7 @@ Sub 5JobRequest //接五转任务
             MoveTo intX+100,intY+5
             LeftClick
             DelayRandom 139,142
+            break
         else //点灯泡
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bulb.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then
@@ -352,6 +353,9 @@ Sub 5JobRequest //接五转任务
             End If
         End If
     Wend
+    Call ClearDialog()
 End Sub
 
+
+Call 5JobRequest() //五转入口
 Beep 200,500
