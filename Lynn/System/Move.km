@@ -11,7 +11,6 @@ Dim logoX,       logoY,   intX,      intY        //算目的地差值
 Dim tolLoc,      facing,  SpellOK                //移动相关
 Dim alterX,      alterY,  tolerance, yTolerance  //备用地点,传送门脚步开关
 Dim staticCount, staticX, staticY,   patrol      //防卡计数器,还有巡逻(1:跳打2下,2:惯性3下)
-Dim LEDState                                     //测试位置
 
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -136,8 +135,12 @@ Sub StableBig //稳定(前面自行getXY) 大判断 Ver1.1 要8下
         End If
     Next
 End Sub
-Sub Move  //1.8 0容忍重置
-    while  1 > 0
+Sub Move  //1.9 加入大写弹出
+    while 1 > 0
+        a = GetLED(1)
+        if a == 1 then //大写状态就弹出
+            break
+        End If
         Call GetXY()
         Call AntiJam() //防卡
         if tolerance > 2 Then
@@ -760,6 +763,7 @@ Sub Move  //1.8 0容忍重置
             End If
         End If
     Wend
+    TracePrint "there"
 End Sub
 
 GetScreenResolution intX, intY
@@ -776,8 +780,8 @@ alterY  = 0            //备用地点
 facing  = 0            //面向初始归0
 SpellOK = 0
 while 1 > 0
-    LEDState = GetLED(1)
-    if LEDState == 0 then // (利曼世界的眼泪) 左右单点跳A测转身延迟(巡逻方式1)
+    a = GetLED(1)
+    if a == 3 then // (利曼世界的眼泪) 左右单点跳A测转身延迟(巡逻方式1)
         patrol  = 1
         while 1 > 0
             tarX       = -8
@@ -792,7 +796,7 @@ while 1 > 0
             yTolerance = 0
             Call Move()
         Wend
-    else if LEDState == 4 then // (利曼世界的眼泪) 左右单点跳A测转身延迟(巡逻方式2)
+    else if a == 4 then // (利曼世界的眼泪) 左右单点跳A测转身延迟(巡逻方式2)
         patrol  = 0
         while 1 > 0
             tarX       = 3
@@ -807,7 +811,7 @@ while 1 > 0
             yTolerance = 0
             Call Move()
         Wend
-    else if LEDState == 2 then // (利曼世界的眼泪) 左右跳3下A测Spell的延迟
+    else if a == 2 then // (利曼世界的眼泪) 左右跳3下A测Spell的延迟
         while 1 > 0
             tarX       = -37
             tarY       = 93
@@ -821,7 +825,7 @@ while 1 > 0
             yTolerance = 0
             Call Move()
         Wend
-    elseif LEDState == 3 then // 标准公式,测试完后改回0
+    else if a == 0 then // 标准公式,测试完后改回0
         tolLoc = 1
         GetFileLine tarX,Move.Conf,tolLoc		//文件查找
         tolLoc = 2

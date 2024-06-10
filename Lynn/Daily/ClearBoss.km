@@ -1920,13 +1920,18 @@ Sub Boss4 //四傻
     Delay 200
     KeyPress ;
     Delay 500
-    KeyPress Right
+    KeyPress Left
+    Delay 200
+    KeyPress ;
+    Delay 500
+    KeyPress Left
+    Delay 200
+    KeyPress ;
+    Delay 500
+    KeyPress Left
     Delay 200
     KeyPress ;
     Delay 1500
-    KeyDown Left
-    Delay 1200
-    KeyUp Left
     DelayRandom 39,42
     Call RepeatBoss4_2()//这里也是重复的部分
 
@@ -1997,13 +2002,18 @@ Sub Boss4 //四傻
     Delay 200
     KeyPress ;
     Delay 500
-    KeyPress Right
+    KeyPress Left
+    Delay 200
+    KeyPress ;
+    Delay 500
+    KeyPress Left
+    Delay 200
+    KeyPress ;
+    Delay 500
+    KeyPress Left
     Delay 200
     KeyPress ;
     Delay 1500
-    KeyDown Left
-    Delay 1200
-    KeyUp Left
     DelayRandom 39,42
     Call RepeatBoss4_2()//这里也是重复的部分
 
