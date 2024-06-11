@@ -60,50 +60,23 @@ Sub AntiJam //一般跟随GetXY后用
     End If
 End Sub
 
-Sub Move_D  //纯移动不放技能,全职业共通,找不到人时会退出
+Sub Move_A //全职业普通移动 Ver1.12 大写退出,上下跳
     while  1 > 0
+        a = GetLED(1)
+        if a == 1 then //大写状态就弹出
+            break
+        End If
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp|E:\MHImg\MapAnchor.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 then
+            break
+        End If
         Call GetXY()
-        Call AntiJam() //防卡
         if tolerance > 2 Then
             tolLoc = tolerance
         else  //速走的默认为4
             tolLoc = 2
         End If
-        if intX < (tarX-24) Then //向右二段跳
-            TracePrint 右跳
-            DelayRandom 15,25
-            KeyDown Right
-            DelayRandom 50,51
-            KeyDown Space
-            DelayRandom 80,81
-            KeyUp Space
-            DelayRandom 30,31
-            KeyDown Space
-            DelayRandom 75,76
-            KeyUp Space
-            DelayRandom 85,86
-            KeyUp Right
-            DelayRandom 41,42
-            DelayRandom 313,315
-            DelayRandom 256,261
-        Else If intX > (tarX+24) Then //向左二段跳
-            TracePrint 左跳
-            DelayRandom 15,25
-            KeyDown Left
-            DelayRandom 50,51
-            KeyDown Space
-            DelayRandom 80,81
-            KeyUp Space
-            DelayRandom 30,31
-            KeyDown Space
-            DelayRandom 75,76
-            KeyUp Space
-            DelayRandom 85,86
-            KeyUp Left
-            DelayRandom 41,42
-            DelayRandom 313,315
-            DelayRandom 256,261
-        Else If intX < (tarX-tolLoc) Then //向右走
+        If intX < (tarX-tolLoc) Then //向右走
             KeyDown Right
             a = (tarX - tolLoc - intX) * 52
             if a < 52 then
@@ -125,46 +98,24 @@ Sub Move_D  //纯移动不放技能,全职业共通,找不到人时会退出
             KeyUp Left
         else
             If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
-                Call StableBig()
-                if intY == cY then
-                    TracePrint 下跳一次
-                    KeyDown Down
-                    DelayRandom 134,136
-                    KeyDown Space
-                    if intY > (tarY - 13) //太接近就只用同一种办法
-                        DelayRandom 162,164
-                        TracePrint 定式 & intY &: & tarY
-                    else
-                        Delay (tarY - intY) * 49 - 520
-                        TracePrint 变式 & intY &: & tarY
-                    End If
-                    KeyUp Space
-                    DelayRandom 66,67
-                    KeyUp Down
-                    DelayRandom 548,554
+                KeyDown Down
+                DelayRandom 134,136
+                KeyDown Space
+                if intY > (tarY - 13) //太接近就只用同一种办法
+                    DelayRandom 162,164
+                else
+                    Delay (tarY - intY) * 49 - 520
                 End If
+                KeyUp Space
+                DelayRandom 66,67
+                KeyUp Down
+                DelayRandom 548,554
             Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上跳(Y轴是用相反比较符)
-                Call Stable()
-                if intY == cY then
-                    cY = intY
-                    if intY > (tarY+25) Then	//>=26上跳就够不到了
-                        TracePrint 钩子一次
-                        KeyDown Ctrl
-                        DelayRandom 69,70
-                        KeyUp Ctrl
-                        DelayRandom 921,931
-                    else
-                        TracePrint 上跳一次
-                        KeyDown LAlt
-                        DelayRandom 143,145
-                        KeyUp LAlt
-                        DelayRandom 769,777
-                    End If
-                End If
+                KeyPress Space
+                Delay 200
             else
                 yTolerance = 0
                 if tolerance == 0 then //传送门型
-                    TracePrint 传送一发
                     If intX < tarX Then //向右小碎步
                         KeyPress Right
                         KeyPress Up
@@ -200,12 +151,10 @@ Sub Move_D  //纯移动不放技能,全职业共通,找不到人时会退出
                     Delay 125
                     Call GetXY()
                     if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
-                        TracePrint 到达目的地
                         alterX    = 0
                         alterY    = 0
                         Exit Sub
                     else
-                        TracePrint 未到达[ & intX & , & intY & ],传送[ & alterX & , & alterY & ]
                     End if
                 else if tolerance == -1 then //负1代表枚举走到目的地
                     if intX - tarX == 4 then
@@ -268,6 +217,7 @@ Sub Move_D  //纯移动不放技能,全职业共通,找不到人时会退出
                 End if
             End If
         End If
+        Delay 5
     Wend
 End Sub
 
@@ -284,6 +234,7 @@ yEnd   = intY
 alterX = 0            //备用地点
 alterY = 0            //备用地点
 facing = 0            //面向初始归0
+Call CloseCaps() //关闭大写键防止无限循环
 
 Sub CloseEquit //关闭装备栏
     while 1>0
@@ -544,6 +495,15 @@ Sub QuestTalk //对话
         End If
     Wend
 End Sub
+Sub CloseCaps //关闭Caps键
+    if GetLED(1) == 1 then //换地图
+        DelayRandom 39,42
+        KeyDown CapsLock
+        DelayRandom 69,72
+        KeyUp CapsLock
+        DelayRandom 39,42 //关闭找图
+    End If
+End Sub
 
 
 Sub 5JobRequest //接五转任务
@@ -615,21 +575,15 @@ End Sub
     End If
 
     while 1>0
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Teleport.bmp",000000,1.00,0,intX,intY
-        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
-        intX = intX - logoX
-        intY = intY - logoY
-        if intX == 15 and intY == 70 then //到了里面
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\5Job\Feature1.bmp|E:\MHImg\Common\5Job\Feature2.bmp|E:\MHImg\Common\5Job\Feature3.bmp|E:\MHImg\Common\5Job\Feature4.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到了里面
             break
         else //还在外面
             tarX       = 78
             tarY       = 111
             yTolerance = 2
-            call GetXY()
-            if intY != 111 or intX != 78 then //
-                tolerance = -1
-                Call Move_A() //仅移动
-            End If
+            tolerance = -1
+            Call Move_A() //仅移动
             KeyPress Up
         End If
     Wend

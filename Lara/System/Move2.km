@@ -35,13 +35,6 @@ Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     intX = intX - logoX
     intY = intY - logoY
 End Sub
-Sub GetXYNega //获取角色的XY轴(支持负数找到)
-    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-    intX = intX - logoX
-    intY = intY - logoY
-End Sub
-
 
 Sub AntiJam //一般跟随GetXY后用
     if staticX ==  intX and staticY == intY then //如果相等就累加计数器
@@ -504,8 +497,21 @@ Sub Move_2  //随机释放的移动 ( Ver3.2+3)
 End Sub
 
 
-Sub Move_A() //移动种类:创角 Ver1.1
+//容忍度0和1的部分从B复制
+Sub Move_A //全职业普通移动 Ver1.11 大写退出,上下跳
+    for 10 //确定找到人或锚点再移动
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp|E:\MHImg\MapAnchor.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //找到人
+            Delay 5
+        else
+            Exit Sub //找不到人  别移动
+        End If
+    Next
     while  1 > 0
+        a = GetLED(1)
+        if a == 1 then //大写状态就弹出
+            break
+        End If
         Call GetXY()
         if tolerance > 2 Then
             tolLoc = tolerance
@@ -533,26 +539,124 @@ Sub Move_A() //移动种类:创角 Ver1.1
             Delay a
             KeyUp Left
         else
-            yTolerance = 0
-            if tolerance < 4 Then //容忍度小于4还是要小碎步
-                for 10
-                    If intX < (tarX-tolerance) Then //向右小碎步
-                        KeyDown Right
-                        Delay (tarX - tolerance - intX) * 14
-                        KeyUp Right
-                    Else If intX > (tarX+tolerance) Then //向左小碎步
-                        KeyDown Left
-                        Delay (intX - tarX - tolerance) * 14
-                        KeyUp Left
-                    else
+            If intY < (tarY - yTolerance) Then //如果人在目标之上,就下跳(Y轴是用相反比较符)
+                KeyDown Down
+                DelayRandom 134,136
+                KeyDown Space
+                if intY > (tarY - 13) //太接近就只用同一种办法
+                    DelayRandom 162,164
+                else
+                    Delay (tarY - intY) * 49 - 520
+                End If
+                KeyUp Space
+                DelayRandom 66,67
+                KeyUp Down
+                DelayRandom 548,554
+            Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上跳(Y轴是用相反比较符)
+                KeyPress Space
+                Delay 200
+            else
+                yTolerance = 0
+                if tolerance == 0 then //传送门型
+                    If intX < tarX Then //向右小碎步
+                        KeyPress Right
+                        KeyPress Up
+                        for 5
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyPress Right
+                                KeyPress Up
+                            else
+                                break
+                            End If
+                        Next
+                        DelayRandom 11,12
+                    Else If intX > tarX Then //向左小碎步
+                        KeyPress Left
+                        KeyPress Up
+                        for 5
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyPress Left
+                                KeyPress Up
+                            else
+                                break
+                            End If
+                        Next
+                        DelayRandom 11,12
+                    else //直接按上
+                        KeyPress Up
+                        alterX    = 0
+                        alterY    = 0
                         Exit Sub
                     End If
+                    Delay 125
+                    Call GetXY()
+                    if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
+                        alterX    = 0
+                        alterY    = 0
+                        Exit Sub
+                    else
+                    End if
+                else if tolerance == -1 then //负1代表枚举走到目的地
+                    if intX - tarX == 4 then
+                        KeyDown Left
+                        Delay 197
+                        KeyUp Left
+                    else if intX - tarX == -4 then
+                        KeyDown Right
+                        Delay 197
+                        KeyUp Right
+                    else if intX - tarX == 3 then
+                        KeyDown Left
+                        Delay 145
+                        KeyUp Left
+                    else if intX - tarX == -3 then
+                        KeyDown Right
+                        Delay 145
+                        KeyUp Right
+                    else if intX - tarX == 2 then
+                        KeyDown Left
+                        Delay 71
+                        KeyUp Left
+                    else if intX - tarX == -2 then
+                        KeyDown Right
+                        Delay 71
+                        KeyUp Right
+                    else if intX > tarX then
+                        KeyDown Left
+                        Delay 40
+                        KeyUp Left
+                    else if intX < tarX then
+                        KeyDown Right
+                        Delay 40
+                        KeyUp Right
+                    End If
+                    //这里直接算到达了,反正外面弄循环
+                    DelayRandom 245,252
+                    Exit Sub
+                else //非传送门
+                    if tolerance < 4 Then //容忍度小于4还是要小碎步
+                        for 10
+                            If intX < (tarX-tolerance) Then //向右小碎步
+                                KeyDown Right
+                                Delay (tarX - tolerance - intX) * 14
+                                KeyUp Right
+                            Else If intX > (tarX+tolerance) Then //向左小碎步
+                                KeyDown Left
+                                Delay (intX - tarX - tolerance) * 14
+                                KeyUp Left
+                            else
+                                Exit Sub
+                            End If
 
-                    Call GetXY() //更新人物坐标
-                Next
-                Exit Sub //次数到了直接结束
-            else //容忍度大于等于4可以直接结束
-                Exit Sub
+                            Call GetXY() //更新人物坐标
+                        Next
+                        Exit Sub //次数到了直接结束
+                    else //容忍度大于等于4可以直接结束
+                        Exit Sub
+                    End If
+                End if
             End If
         End If
         Delay 5
@@ -1181,9 +1285,8 @@ while 1 > 0
         GetFileLine alterY,Move.Conf,tolLoc	//文件查找
         tolLoc = 6
         GetFileLine facing,Move.Conf,tolLoc	//文件查找
-        TracePrint goto[ & tarX & , & tarY & ],tole & tolerance & ,[ & alterX & , & alterY & ]
-        //tolerance = 4 //容忍度,4为推荐值
-        Call Move_B()
+        TracePrint "goto[" & tarX & , & tarY & "],tole" & tolerance & ",[" & alterX & "," & alterY & "]"
+        Call Move_A()
         MsgBox "Done"
     else //大写键亮的话就获取点
         FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
