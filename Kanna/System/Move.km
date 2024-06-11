@@ -86,11 +86,15 @@ Sub Stable //稳定Y轴(外面不要使用变量a哦)
         End If
     Wend
 End Sub
-Sub Move //精确的移动:V1.0 继承火毒的3.3
+Sub Move //精确的移动:V1.1 大写弹出
     cX = -100
     cY = 0
     KeyAllup //施放所有按键防止卡住
     while  1 > 0
+        a = GetLED(1)
+        if a == 1 then //大写状态就弹出
+            break
+        End If
         Call GetXY()
         if tolerance > 2 Then
             tolLoc = tolerance

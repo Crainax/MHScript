@@ -51,7 +51,6 @@ Sub AntiJam //一般跟随GetXY后用
     End If
     if staticCount >= 3 Then //
 
-        Beep 500,500
         // 模拟从绳子跳走
         DelayRandom 13,15
         KeyDown Right

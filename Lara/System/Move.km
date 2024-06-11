@@ -120,8 +120,12 @@ Sub StableBig //稳定(前面自行getXY) 大判断 Ver1.1 要8下
         End If
     Next
 End Sub
-Sub Move  //精确的移动:Ver3.2  小碎步使用了for简化
+Sub Move  //精确的移动:Ver3.3 大写弹出
     while  1 > 0
+        a = GetLED(1)
+        if a == 1 then //大写状态就弹出
+            break
+        End If
         Call GetXY()
         Call AntiJam() //防卡
         if tolerance > 2 Then
