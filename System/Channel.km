@@ -4,27 +4,27 @@ ScreenY=2560
 Times=1
 
 [Script]
-Dim x1,          x2,      y1,    y2     // ¾ØÐÎÇøÓò:Ð¡µØÍ¼²ÉÑùµã
-Dim x3,          y3,      xEnd,  yEnd   // 2¸ö¶¥µã:¼¼ÄÜÇø/ÆÁÄ»ÓÒÏÂ½Ç¶¥µã
-Dim tarX,        tarY,    a,     cY     //Ä¿±ê
-Dim logoX,       logoY,   intX,  intY   //ËãÄ¿µÄµØ²îÖµ
-Dim alterX,      alterY,  facing        //±¸ÓÃµØµã,´«ËÍÃÅ½Å²½¿ª¹Ø,´«ËÍÃÅµÄÃæÏò
-Dim tolerance,   tolLoc,  yTolerance    //¿ìËÙÒÆ¶¯µÄÈÝ²î,0´ú±í¾«È·ÒÆ¶¯,ÁíÍâ¸öÊÇ¾Ö²¿±äÁ¿
-Dim staticCount, staticX, staticY       //·À¿¨¼ÆÊýÆ÷
-Dim wJam,        wJam2,   loopA, loopB  //ÕÒÍ¼·À¿¨,loopABÊÇÑ­»·Êý
+Dim x1,          x2,      y1,    y2     // çŸ©å½¢åŒºåŸŸ:å°åœ°å›¾é‡‡æ ·ç‚¹
+Dim x3,          y3,      xEnd,  yEnd   // 2ä¸ªé¡¶ç‚¹:æŠ€èƒ½åŒº/å±å¹•å³ä¸‹è§’é¡¶ç‚¹
+Dim tarX,        tarY,    a,     cY     //ç›®æ ‡
+Dim logoX,       logoY,   intX,  intY   //ç®—ç›®çš„åœ°å·®å€¼
+Dim alterX,      alterY,  facing        //å¤‡ç”¨åœ°ç‚¹,ä¼ é€é—¨è„šæ­¥å¼€å…³,ä¼ é€é—¨çš„é¢å‘
+Dim tolerance,   tolLoc,  yTolerance    //å¿«é€Ÿç§»åŠ¨çš„å®¹å·®,0ä»£è¡¨ç²¾ç¡®ç§»åŠ¨,å¦å¤–ä¸ªæ˜¯å±€éƒ¨å˜é‡
+Dim staticCount, staticX, staticY       //é˜²å¡è®¡æ•°å™¨
+Dim wJam,        wJam2,   loopA, loopB  //æ‰¾å›¾é˜²å¡,loopABæ˜¯å¾ªçŽ¯æ•°
 
-Sub Loading //¼ÓÔØµØÍ¼
-    while 1>0 //µÈ½øÈë¼ÓÔØ
+Sub Loading //åŠ è½½åœ°å›¾
+    while 1>0 //ç­‰è¿›å…¥åŠ è½½
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX <= 0 Then //¼ÓÔØÍê³ÉÁË
+        if intX <= 0 Then //åŠ è½½å®Œæˆäº†
             break
         else
             DelayRandom 100,150
         End If
     Wend
-    while 1>0 //µÈ¼ÓÔØ
+    while 1>0 //ç­‰åŠ è½½
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX > 0 Then //¼ÓÔØÍê³ÉÁË
+        if intX > 0 Then //åŠ è½½å®Œæˆäº†
             break
         else
             DelayRandom 100,150
@@ -42,55 +42,44 @@ y3     = intY - 260
 xEnd   = intX
 yEnd   = intY
 
-Sub Channel //ÓÐÈË¾Í»»Æµ ver2.2 ¼ÓÈëÁË¹«»á³ÉÔ±ºÍºÃÓÑµÄÅÐ¶Ï
-    wJam = 0 //·ÅÔÚÑ­»·ÍâÃæÎ»ÖÃ
+Sub ChannalS //æ— è§†æ˜¯å¦æœ‰äººæ¢é¢‘
     while 1>0
-        FindPic x1,y1,x2,y2,"E:\MHImg\Player.bmp",000000,1.00,0,intX,intY
-        if intX < 0 then //AÍ¼Ã»ÕÒµ½¾ÍÕÒBÍ¼
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Ally.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Switch.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            KeyPress Right
+            DelayRandom 539,542
+            KeyPress Enter
+            DelayRandom 339,342
+
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+            if intX < 0 Then //æ²¡æœ‰OKå°±é€€å‡ºåŽ»
+                Call Loading() //ç­‰åŠ è½½
+                DelayRandom 239,242
+                break
+            else
+                KeyPress Esc
+                DelayRandom 239,242
+            End If
+        else
+            KeyPress Insert
+            DelayRandom 39,42
         End If
-        if intX < 0 then //AÍ¼Ã»ÕÒµ½¾ÍÕÒBÍ¼
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Ally2.bmp",000000,1.00,0,intX,intY
-        End If
-        if intX < 0 Then //µØÍ¼Ã»ÈË(5´ÎÅÐ¶Ï·ÀÈËÎïÖØºÏ)
-            wJam = wJam + 1  //Ñ­»·ÄÚ²¿
-            if wJam > 5 then //¶à´ÎÃ»ÕÒµ½ÈË¾ÍÈ·ÊµÃ»ÈË
+    Wend
+End Sub
+Sub Channel //æœ‰äººå°±æ¢é¢‘ ver2.3 æŠ½ç¦»äº†
+    wJam = 0 //æ”¾åœ¨å¾ªçŽ¯å¤–é¢ä½ç½®
+    while 1>0
+        FindPic x1,y1,x2,y2,"E:\MHImg\Player.bmp|E:\MHImg\Ally.bmp|E:\MHImg\Ally2.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then //åœ°å›¾æ²¡äºº(5æ¬¡åˆ¤æ–­é˜²äººç‰©é‡åˆ)
+            wJam = wJam + 1  //å¾ªçŽ¯å†…éƒ¨
+            if wJam > 5 then //å¤šæ¬¡æ²¡æ‰¾åˆ°äººå°±ç¡®å®žæ²¡äºº
                 break
             else
                 Delay 200
             End If
-        else //ÓÐÕÒµ½ÈË,Ö±½Ó»»Æµ
-            wJam = 0 //·ÅÔÚ³É¹¦µÄÎ»ÖÃ
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Switch.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then
-
-                KeyDown Right
-                DelayRandom 69,72
-                KeyUp Right
-                DelayRandom 539,542
-                KeyDown Enter
-                DelayRandom 69,72
-                KeyUp Enter
-                DelayRandom 339,342
-
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-                if intX < 0 Then //Ã»ÓÐOK¾ÍÍË³öÈ¥
-                    Call Loading() //µÈ¼ÓÔØ
-                    DelayRandom 239,242
-                else
-                    DelayRandom 39,42
-                    KeyDown Esc
-                    DelayRandom 69,72
-                    KeyUp Esc
-                    DelayRandom 239,242
-                End If
-            else
-                DelayRandom 39,42
-                KeyDown Insert
-                DelayRandom 69,72
-                KeyUp Insert
-                DelayRandom 39,42
-            End If
+        else //æœ‰æ‰¾åˆ°äºº,ç›´æŽ¥æ¢é¢‘
+            wJam = 0 //æ”¾åœ¨æˆåŠŸçš„ä½ç½®
+            Call ChannalS()
         End If
     Wend
 End Sub

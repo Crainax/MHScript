@@ -226,11 +226,15 @@ Sub Stable //稳定Y轴(外面不要使用变量a哦)
         End If
     Wend
 End Sub
-Sub Move //精确的移动:V3.12 重构卡住的情况
+Sub Move //精确的移动:V3.4 加入大写弹出
     cX = -100
     cY = 0
     KeyAllup //施放所有按键防止卡住
     while  1 > 0
+        a = GetLED(1)
+        if a == 1 then //大写状态就弹出
+            break
+        End If
         Call GetXY()
         if tolerance > 2 Then
             tolLoc = tolerance
@@ -334,111 +338,80 @@ Sub Move //精确的移动:V3.12 重构卡住的情况
                 End If
             Else If intY > (tarY + yTolerance) Then //如果人在目标之下,就上瞬(Y轴是用相反比较符)
                 cY = intY
-                Call Attack()
-                DelayRandom 115,117
-                KeyDown Up
-                DelayRandom 53,54
-                KeyDown LShift
-                DelayRandom 86,87
-                KeyUp LShift
-                DelayRandom 22,23
-                KeyUp Up
-                DelayRandom 356,360
-                call GetXY()
-                if cY == intY Then //卡住了
+                if intY > (tarY+40) Then	//>=40以上要先跳再钩子
                     DelayRandom 12,13
-                    KeyDown Alt
-                    DelayRandom 328,430
-                    KeyUp Alt
-                    DelayRandom 32,33
-                    Call Stable() //稳定Y轴
+                    KeyDown Up
+                    Delay 63
+                    KeyDown Space
+                    Delay 81
+                    KeyUp Space
+                    Delay 41
+                    KeyDown Space
+                    Delay 96
+                    KeyUp Space
+                    Delay 261
+                    KeyUp Up
+                    Delay 41
+                    KeyDown LAlt
+                    Delay 154
+                    KeyUp LAlt
+                    Delay 1205
+                else
+                    Call Attack()
+                    DelayRandom 115,117
+                    KeyDown Up
+                    DelayRandom 53,54
+                    KeyDown LShift
+                    DelayRandom 86,87
+                    KeyUp LShift
+                    DelayRandom 22,23
+                    KeyUp Up
+                    DelayRandom 356,360
+                    call GetXY()
+                    if cY == intY Then //卡住了
+                        DelayRandom 12,13
+                        KeyDown Alt
+                        DelayRandom 328,430
+                        KeyUp Alt
+                        DelayRandom 32,33
+                    End If
                 End If
+                Call Stable() //稳定Y轴
             else //Y轴搞定了,到容忍度的X轴了,前提是不在空中
                 KeyAllup
                 yTolerance = 0
                 if tolerance == 0 then //传送门型
                     If intX < tarX Then //向右小碎步
-                        DelayRandom 45,52
-                        KeyDown Right
-                        DelayRandom 37,38
-                        KeyDown Up
-                        DelayRandom 70,71
-                        KeyUp Up
-                        DelayRandom 37,38
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 70,71
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 70,71
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 77,78
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 82,83
-                            KeyUp Up
-                            DelayRandom 38,39
-                        End if
-                        KeyUp Right
+                        KeyPress Right
+                        KeyPress Up
+                        for 5
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyPress Right
+                                KeyPress Up
+                            else
+                                break
+                            End If
+                        Next
                         DelayRandom 11,12
                     Else If intX > tarX Then //向左小碎步
-                        DelayRandom 45,52
-                        KeyDown Left
-                        DelayRandom 37,38
-                        KeyDown Up
-                        DelayRandom 70,71
-                        KeyUp Up
-                        DelayRandom 37,38
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 70,71
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 70,71
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 77,78
-                            KeyUp Up
-                            DelayRandom 37,38
-                        End if
-                        Call GetXY()
-                        if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                            KeyDown Up
-                            DelayRandom 82,83
-                            KeyUp Up
-                            DelayRandom 38,39
-                        End if
-                        KeyUp Left
+                        KeyPress Left
+                        KeyPress Up
+                        for 5
+                            Call GetXY()
+                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
+                                KeyPress Left
+                                KeyPress Up
+                            else
+                                break
+                            End If
+                        Next
                         DelayRandom 11,12
                     else //直接按上
-                        DelayRandom 45,52
-                        KeyDown Up
-                        DelayRandom 120,122
-                        KeyUp Up
-                        DelayRandom 231,234
+                        KeyPress Up
+                        alterX    = 0
+                        alterY    = 0
+                        Exit Sub
                     End If
                     Delay 125
                     Call GetXY()
@@ -729,16 +702,34 @@ Sub ReleaseRune //定期解轮 ver2.32 解地震轮(遍历BUFF)
     End If
 End Sub
 
-Sub Channel //有人就换频 ver2.2 加入了公会成员和好友的判断
+Sub ChannalS //无视是否有人换频
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Switch.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            KeyPress Right
+            DelayRandom 539,542
+            KeyPress Enter
+            DelayRandom 339,342
+
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+            if intX < 0 Then //没有OK就退出去
+                Call Loading() //等加载
+                DelayRandom 239,242
+                break
+            else
+                KeyPress Esc
+                DelayRandom 239,242
+            End If
+        else
+            KeyPress Insert
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
+Sub Channel //有人就换频 ver2.3 抽离了
     wJam = 0 //放在循环外面位置
     while 1>0
-        FindPic x1,y1,x2,y2,"E:\MHImg\Player.bmp",000000,1.00,0,intX,intY
-        if intX < 0 then //A图没找到就找B图
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Ally.bmp",000000,1.00,0,intX,intY
-        End If
-        if intX < 0 then //A图没找到就找B图
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Ally2.bmp",000000,1.00,0,intX,intY
-        End If
+        FindPic x1,y1,x2,y2,"E:\MHImg\Player.bmp|E:\MHImg\Ally.bmp|E:\MHImg\Ally2.bmp",000000,1.00,0,intX,intY
         if intX < 0 Then //地图没人(5次判断防人物重合)
             wJam = wJam + 1  //循环内部
             if wJam > 5 then //多次没找到人就确实没人
@@ -748,34 +739,62 @@ Sub Channel //有人就换频 ver2.2 加入了公会成员和好友的判断
             End If
         else //有找到人,直接换频
             wJam = 0 //放在成功的位置
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Switch.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then
-
-                KeyDown Right
-                DelayRandom 69,72
-                KeyUp Right
-                DelayRandom 539,542
-                KeyDown Enter
-                DelayRandom 69,72
-                KeyUp Enter
-                DelayRandom 339,342
-
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-                if intX < 0 Then //没有OK就退出去
-                    Call Loading() //等加载
-                    DelayRandom 239,242
+            Call ChannalS()
+        End If
+    Wend
+End Sub
+Sub CloseCaps //关闭Caps键
+    if GetLED(1) == 1 then //换地图
+        DelayRandom 39,42
+        KeyDown CapsLock
+        DelayRandom 69,72
+        KeyUp CapsLock
+        DelayRandom 39,42 //关闭找图
+    End If
+End Sub
+Sub Home //回城
+    while 1>0 //指导回城一波
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Cancel2.bmp",000000,1.00,0,intX,intY
+        if intX < 0 then //A图没找到就找B图
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Cancel.bmp",000000,1.00,0,intX,intY
+        End If
+        if intX >= 0 Then
+            MoveTo intX-90,intY
+            LeftClick
+            DelayRandom 139,142 //点击确认
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,logoX,logoY
+                if logoX >= 0 Then //正在本地图
+                    while 1>0
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+                        if intX < 0 Then //一直关闭F2页面
+                            break
+                        else
+                            DelayRandom 39,42
+                            KeyDown Esc
+                            DelayRandom 69,72
+                            KeyUp Esc
+                            DelayRandom 39,42
+                        End If
+                    Wend
+                    break
                 else
-                    DelayRandom 39,42
-                    KeyDown Esc
-                    DelayRandom 69,72
-                    KeyUp Esc
-                    DelayRandom 239,242
+                    Call Loading() //加载新地图
+                    break
                 End If
+            Wend
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                MoveTo intX-408,intY-100
+                LeftClick
+                DelayRandom 139,142
             else
                 DelayRandom 39,42
-                KeyDown Insert
+                KeyDown F2
                 DelayRandom 69,72
-                KeyUp Insert
+                KeyUp F2
                 DelayRandom 39,42
             End If
         End If
@@ -872,6 +891,24 @@ Sub on_timer4 //查红点 ver1.1 使用了tempX和Y防干扰
     Timer          4, 1, 1000              //检测地图红点
 EndSub
 
+Sub Menu //菜单(大写键开启)
+    a = GetLED(1)
+    if a == 0 then //大写状态就弹出
+        Exit Sub
+    End If
+    Beep 261,200
+    Beep 294,200
+    Beep 329,200
+    Beep 294,200
+    Beep 261,200
+    Beep 329,200
+    a=WaitKey()
+    if a== 49 then //按1键:回城再换频
+        Call Home() //回城
+        Call ChannalS() //换频
+    End If
+End Sub
+
 //Main函数
 GetScreenResolution intX, intY
 x1           = intX - 1440
@@ -885,19 +922,26 @@ yEnd         = intY
 InfiTime     = GetTimeStamp() - 110  //上次终极无限的时间
 SpellOK      = 1                     //技能冷却
 RuneCooldown = 0                     //解轮时间
-stoneTime    = 0                     //放轮时间
-currentState = 0                     //初始状态不要去放喷泉
 fountainTime = 0                     //喷泉时间
 AuraTime     = 0                     //领域时间
 DTime        = 0                     //末日冷却时间
 pick1        = GetTimeStamp()        //捡钱中间
 pick2        = GetTimeStamp()        //捡钱中间
 yTolerance   = 0                     //初始化
+Timer        1, 1, 1000              //无限循环
+Timer        4, 1, 1000              //无限循环
+Rem          Out                     //打开大写键就跳回这里
+Call Menu()
+stoneTime    = 0                     //放轮时间
 red          = 0                     //初始化
-Timer          1, 1, 1000              //无限循环
-Timer          4, 1, 1000              //无限循环
+currentState = 0                     //初始状态不要去放喷泉
+Call CloseCaps() //关闭大写键防止无限循环
 Call CheckMap() //核对一下地图是否正确,不对自动传送
 while 1 > 0
+    a = GetLED(1)
+    if a == 1 then //大写状态就弹出
+        Goto Out
+    End If
     a = GetTimeStamp() - stoneTime
     if a > 570 then //可以放轮了
         DelayRandom 356,358

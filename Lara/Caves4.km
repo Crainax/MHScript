@@ -687,16 +687,34 @@ Sub PreMove //提前移动到特定地点 Ver2.0 提前移动先judge,不然怕�
     End If
 End Sub
 
-Sub Channel //有人就换频 ver2.2 加入了公会成员和好友的判断
+Sub ChannalS //无视是否有人换频
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Switch.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            KeyPress Right
+            DelayRandom 539,542
+            KeyPress Enter
+            DelayRandom 339,342
+
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+            if intX < 0 Then //没有OK就退出去
+                Call Loading() //等加载
+                DelayRandom 239,242
+                break
+            else
+                KeyPress Esc
+                DelayRandom 239,242
+            End If
+        else
+            KeyPress Insert
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
+Sub Channel //有人就换频 ver2.3 抽离了
     wJam = 0 //放在循环外面位置
     while 1>0
-        FindPic x1,y1,x2,y2,"E:\MHImg\Player.bmp",000000,1.00,0,intX,intY
-        if intX < 0 then //A图没找到就找B图
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Ally.bmp",000000,1.00,0,intX,intY
-        End If
-        if intX < 0 then //A图没找到就找B图
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Ally2.bmp",000000,1.00,0,intX,intY
-        End If
+        FindPic x1,y1,x2,y2,"E:\MHImg\Player.bmp|E:\MHImg\Ally.bmp|E:\MHImg\Ally2.bmp",000000,1.00,0,intX,intY
         if intX < 0 Then //地图没人(5次判断防人物重合)
             wJam = wJam + 1  //循环内部
             if wJam > 5 then //多次没找到人就确实没人
@@ -706,36 +724,7 @@ Sub Channel //有人就换频 ver2.2 加入了公会成员和好友的判断
             End If
         else //有找到人,直接换频
             wJam = 0 //放在成功的位置
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Switch.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then
-
-                KeyDown Right
-                DelayRandom 69,72
-                KeyUp Right
-                DelayRandom 539,542
-                KeyDown Enter
-                DelayRandom 69,72
-                KeyUp Enter
-                DelayRandom 339,342
-
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-                if intX < 0 Then //没有OK就退出去
-                    Call Loading() //等加载
-                    DelayRandom 239,242
-                else
-                    DelayRandom 39,42
-                    KeyDown Esc
-                    DelayRandom 69,72
-                    KeyUp Esc
-                    DelayRandom 239,242
-                End If
-            else
-                DelayRandom 39,42
-                KeyDown Insert
-                DelayRandom 69,72
-                KeyUp Insert
-                DelayRandom 39,42
-            End If
+            Call ChannalS()
         End If
     Wend
 End Sub

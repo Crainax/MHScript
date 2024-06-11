@@ -1019,7 +1019,7 @@ Sub ChannalS //无视是否有人换频
         End If
     Wend
 End Sub
-Sub Channel //有人就换频 ver2.3
+Sub Channel //有人就换频 ver2.3 抽离了
     wJam = 0 //放在循环外面位置
     while 1>0
         FindPic x1,y1,x2,y2,"E:\MHImg\Player.bmp|E:\MHImg\Ally.bmp|E:\MHImg\Ally2.bmp",000000,1.00,0,intX,intY
