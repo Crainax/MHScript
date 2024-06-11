@@ -995,16 +995,34 @@ Sub SpellStand //右下放技能
     End If
 End Sub
 
-Sub Channel //有人就换频 ver2.2 加入了公会成员和好友的判断
+Sub ChannalS //无视是否有人换频
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Switch.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            KeyPress Right
+            DelayRandom 539,542
+            KeyPress Enter
+            DelayRandom 339,342
+
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+            if intX < 0 Then //没有OK就退出去
+                Call Loading() //等加载
+                DelayRandom 239,242
+                break
+            else
+                KeyPress Esc
+                DelayRandom 239,242
+            End If
+        else
+            KeyPress Insert
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
+Sub Channel //有人就换频 ver2.3
     wJam = 0 //放在循环外面位置
     while 1>0
-        FindPic x1,y1,x2,y2,"E:\MHImg\Player.bmp",000000,1.00,0,intX,intY
-        if intX < 0 then //A图没找到就找B图
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Ally.bmp",000000,1.00,0,intX,intY
-        End If
-        if intX < 0 then //A图没找到就找B图
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Ally2.bmp",000000,1.00,0,intX,intY
-        End If
+        FindPic x1,y1,x2,y2,"E:\MHImg\Player.bmp|E:\MHImg\Ally.bmp|E:\MHImg\Ally2.bmp",000000,1.00,0,intX,intY
         if intX < 0 Then //地图没人(5次判断防人物重合)
             wJam = wJam + 1  //循环内部
             if wJam > 5 then //多次没找到人就确实没人
@@ -1014,36 +1032,7 @@ Sub Channel //有人就换频 ver2.2 加入了公会成员和好友的判断
             End If
         else //有找到人,直接换频
             wJam = 0 //放在成功的位置
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Switch.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then
-
-                KeyDown Right
-                DelayRandom 69,72
-                KeyUp Right
-                DelayRandom 539,542
-                KeyDown Enter
-                DelayRandom 69,72
-                KeyUp Enter
-                DelayRandom 339,342
-
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-                if intX < 0 Then //没有OK就退出去
-                    Call Loading() //等加载
-                    DelayRandom 239,242
-                else
-                    DelayRandom 39,42
-                    KeyDown Esc
-                    DelayRandom 69,72
-                    KeyUp Esc
-                    DelayRandom 239,242
-                End If
-            else
-                DelayRandom 39,42
-                KeyDown Insert
-                DelayRandom 69,72
-                KeyUp Insert
-                DelayRandom 39,42
-            End If
+            Call ChannalS()
         End If
     Wend
 End Sub
@@ -1055,6 +1044,54 @@ Sub CloseCaps //关闭Caps键
         KeyUp CapsLock
         DelayRandom 39,42 //关闭找图
     End If
+End Sub
+Sub Home //回城
+    while 1>0 //指导回城一波
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Cancel2.bmp",000000,1.00,0,intX,intY
+        if intX < 0 then //A图没找到就找B图
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Cancel.bmp",000000,1.00,0,intX,intY
+        End If
+        if intX >= 0 Then
+            MoveTo intX-90,intY
+            LeftClick
+            DelayRandom 139,142 //点击确认
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,logoX,logoY
+                if logoX >= 0 Then //正在本地图
+                    while 1>0
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+                        if intX < 0 Then //一直关闭F2页面
+                            break
+                        else
+                            DelayRandom 39,42
+                            KeyDown Esc
+                            DelayRandom 69,72
+                            KeyUp Esc
+                            DelayRandom 39,42
+                        End If
+                    Wend
+                    break
+                else
+                    Call Loading() //加载新地图
+                    break
+                End If
+            Wend
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                MoveTo intX-408,intY-100
+                LeftClick
+                DelayRandom 139,142
+            else
+                DelayRandom 39,42
+                KeyDown F2
+                DelayRandom 69,72
+                KeyUp F2
+                DelayRandom 39,42
+            End If
+        End If
+    Wend
 End Sub
 Sub CheckMap //核对地图并传送(有人就换频)
     while 1>0 //传送地图
@@ -1158,15 +1195,10 @@ Sub Menu //菜单(大写键开启)
     Beep 294,200
     Beep 261,200
     Beep 329,200
-    Beep 392,200
-    Beep 349,200
-    Beep 329,200
-    Beep 294,200
     a=WaitKey()
-    if a== 49 then //按1键:换频
-        MsgBox "1"
-    else if a== 50 then //按1键:换频
-        MsgBox "2"
+    if a== 49 then //按1键:回城再换频
+        Call Home() //回城
+        Call ChannalS() //换频
     End If
 End Sub
 
@@ -1179,7 +1211,6 @@ x3             = intX - 640
 y3             = intY - 260
 xEnd           = intX
 yEnd           = intY
-stoneSteleTime = 0               //上次轮回的时间
 RuneCooldown   = 0               //解轮CD
 WGTime         = 0               //上次放武公的时间
 fireTime       = 0               //上次放熊屁的时间
@@ -1188,10 +1219,11 @@ pick2          = GetTimeStamp()  //捡钱
 SpellCool      = 0               //技能冷却
 fountainTime   = 0               //上次喷泉时间
 yTolerance     = 0               //初始化容忍
-red            = 0               //初始化red
 Timer          4, 1, 1000        //检测地图红点
 Rem Out //打开大写键就跳回这里
 Call Menu()
+red            = 0               //初始化red
+stoneSteleTime = 0               //上次轮回的时间
 Call CloseCaps() //关闭大写键防止无限循环
 Call CheckMap()
 while 1 > 0

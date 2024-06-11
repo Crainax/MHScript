@@ -1010,29 +1010,6 @@ Sub BeforeStart	//开刷前的参数初始化
     cycle1		= 0				//循环
 End Sub
 
-Sub Attack04 //实验室1的攻击
-
-End Sub
-Sub Attack05 //列车2的攻击
-
-End Sub
-Sub Attack06 //东墙3的攻击
-    if cycle1     == 0 then
-        tarX        = -11
-        tarY        = 98
-        tolerance   = 6
-    else if cycle1  == 1 then
-        tarX        = 18
-        tarY        = 98
-        tolerance   = 6
-    End If
-    Call Move()
-    cycle1 = cycle1 + 1
-    if cycle1 > 1 then
-        cycle1 = 0
-    End If
-End Sub
-
 Sub ClearQuest //清理任务 Ver1.11 全AUT和ARC
     SavedTorY = 360
     SavedTor  = 38
