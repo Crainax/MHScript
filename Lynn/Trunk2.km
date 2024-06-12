@@ -886,7 +886,7 @@ Sub Navigate //引導路線
     End If
 End Sub
 
-Sub ReleaseRune //定期解轮 ver2.32 解地震轮(遍历BUFF)
+Sub ReleaseRune //定期解轮 ver2.33 解地震轮(遍历BUFF)
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Liar.bmp",000000,1.00,0,intX,intY
     if intX < 0 then //A图没找到就找B图
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Liar2.bmp",000000,1.00,0,intX,intY
@@ -911,7 +911,7 @@ Sub ReleaseRune //定期解轮 ver2.32 解地震轮(遍历BUFF)
             tolerance  = 2
             yTolerance = 3
             KeyAllup //防错误
-            Call Navigate() //解轮也走捷径
+            Call Move() //解轮也走捷径
             //暂停脚本
             Beep 1000,200
             DelayRandom 100,120
@@ -926,11 +926,11 @@ Sub ReleaseRune //定期解轮 ver2.32 解地震轮(遍历BUFF)
             KeyPress F
             wJam = 0 //放在循环外面位置
             while 1 > 0
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\HP.bmp",000000,1.00,0,logoX,logoY
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Kanna\HP_Kanna.bmp",000000,1.00,0,logoX,logoY
                 if logoX >= 0 Then
                     a = 1
                     for 43
-                        MoveTo logoX-583+a*32,logoY-709
+                        MoveTo logoX-583+a*32,logoY-709+32
                         Delay 30
                         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\Rune.bmp",000000,1.00,0,intX,intY
                         if intX >= 0 Then //找到点击

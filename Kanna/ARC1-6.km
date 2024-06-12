@@ -521,7 +521,7 @@ Sub StandSpell //原地放技能 v1.1更新了一点东西
     End If
 End Sub
 
-Sub ReleaseRune //定期解轮 ver2.32 解地震轮(遍历BUFF)
+Sub ReleaseRune //定期解轮 ver2.33 解地震轮(遍历BUFF)
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Liar.bmp",000000,1.00,0,intX,intY
     if intX < 0 then //A图没找到就找B图
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Liar2.bmp",000000,1.00,0,intX,intY
@@ -565,7 +565,7 @@ Sub ReleaseRune //定期解轮 ver2.32 解地震轮(遍历BUFF)
                 if logoX >= 0 Then
                     a = 1
                     for 43
-                        MoveTo logoX-583+a*32,logoY-709
+                        MoveTo logoX-583+a*32,logoY-709+32
                         Delay 30
                         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\Rune.bmp",000000,1.00,0,intX,intY
                         if intX >= 0 Then //找到点击
@@ -711,8 +711,22 @@ Sub Menu //菜单(大写键开启)
         Call Home() //回城
         Call ChannalS() //换频
     else if a== 50 then //按2键:解剧情模式
-        Call Home() //回城
-        Call ChannalS() //换频
+        while 1>0
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\me.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                break
+            else
+                KeyPress PageDown
+            End If
+        Wend
+        for 3
+            Beep 100,200
+            Beep 200,200
+            Beep 300,200
+            Beep 400,200
+            Beep 500,200
+        Next
+        Pause
     End If
 End Sub
 
@@ -733,6 +747,7 @@ Sub ConfirmMap //确认当前地图 Ver1.1
         else
             map = 4 //深渊
         End If
+        // [charX-49,charY69][teleX-22,teleY94]
     End If
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC3.bmp",000000,1.00,0,intX,intY
     if intX >= 0  //三岛(不法2)
