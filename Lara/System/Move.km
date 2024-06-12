@@ -59,7 +59,7 @@ Sub AntiJam //一般跟随GetXY后用
         DelayRandom 44,45
         KeyUp Right
         DelayRandom 13,15
-        RestartScript //重启
+        // RestartScript //重启
     End If
 End Sub
 

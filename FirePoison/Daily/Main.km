@@ -2552,7 +2552,7 @@ Sub Boss6 //打黑龙 Ver1.1 切圖時的加个while
         End If
     Wend
 End Sub
-Sub Boss7 //打阿卡 Ver1.1 logoX和logoY修复
+Sub Boss7 //打阿卡 Ver1.2
     Call EnterPre() //第一部分成功后logoX就保存了
     while 1>0 //进入老麦
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\7\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
@@ -2655,14 +2655,21 @@ Sub Boss7 //打阿卡 Ver1.1 logoX和logoY修复
     Delay 2000
     KeyPress W
     Delay 1000
-    for 2 //平A4次就够了
-        Call RightF()
-        Call RightF()
-        Call LeftF()
-        Call LeftF()
-        Call LeftF()
-        Call RightF()
-    Next
+    Call RightF()
+    Call RightF()
+    Call LeftF()
+    Call LeftF()
+    Call LeftF()
+    Call LeftF()
+    Call LeftF()
+    Call LeftF()
+    Call LeftF()
+    Call LeftF()
+    Call RightF()
+    Call RightF()
+    Call RightF()
+    Call RightF()
+    Call RightF()
 
     Call NewTeam() //强制退图
     while 1>0 //到了地图

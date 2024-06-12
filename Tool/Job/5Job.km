@@ -56,21 +56,30 @@ Sub AntiJam //一般跟随GetXY后用
         DelayRandom 44,45
         KeyUp Right
         DelayRandom 13,15
-        RestartScript //重启
+        // RestartScript //重启
     End If
 End Sub
 
-Sub Move_A //全职业普通移动 Ver1.12 大写退出,上下跳
-    while  1 > 0
-        a = GetLED(1)
-        if a == 1 then //大写状态就弹出
+Sub Move_A //全职业普通移动 Ver1.15 多次跳出
+    while 1 > 0
+        if GetLED(1) == 1 then //大写状态就弹出
             break
         End If
-        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp|E:\MHImg\MapAnchor.bmp",000000,1.00,0,intX,intY
-        if intX <= 0 then
+        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+        if logoX <=0 then //黑屏找不到地图就润
+            if GetLED(1) == 0 then //换地图
+                KeyPress CapsLock
+            End If
             break
         End If
-        Call GetXY()
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp|E:\MHImg\UI\Dialog\Reject.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //对话框出来了
+            if GetLED(1) == 0 then //换地图
+                KeyPress CapsLock
+            End If
+            break
+        End If
+        call GetXY()
         if tolerance > 2 Then
             tolLoc = tolerance
         else  //速走的默认为4
@@ -115,48 +124,7 @@ Sub Move_A //全职业普通移动 Ver1.12 大写退出,上下跳
                 Delay 200
             else
                 yTolerance = 0
-                if tolerance == 0 then //传送门型
-                    If intX < tarX Then //向右小碎步
-                        KeyPress Right
-                        KeyPress Up
-                        for 5
-                            Call GetXY()
-                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                                KeyPress Right
-                                KeyPress Up
-                            else
-                                break
-                            End If
-                        Next
-                        DelayRandom 11,12
-                    Else If intX > tarX Then //向左小碎步
-                        KeyPress Left
-                        KeyPress Up
-                        for 5
-                            Call GetXY()
-                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                                KeyPress Left
-                                KeyPress Up
-                            else
-                                break
-                            End If
-                        Next
-                        DelayRandom 11,12
-                    else //直接按上
-                        KeyPress Up
-                        alterX    = 0
-                        alterY    = 0
-                        Exit Sub
-                    End If
-                    Delay 125
-                    Call GetXY()
-                    if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
-                        alterX    = 0
-                        alterY    = 0
-                        Exit Sub
-                    else
-                    End if
-                else if tolerance == -1 then //负1代表枚举走到目的地
+                if tolerance == -1 then //负1代表枚举走到目的地
                     if intX - tarX == 4 then
                         KeyDown Left
                         Delay 197
@@ -565,8 +533,8 @@ Sub 5JobRequest //接五转任务
         End If
     Wend
     Call Loading()
-End Sub
 
+    //射手村
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\ZoomInMap.bmp",000000,1.00,0,intX,intY
     If intX >= 0 Then //縮小一下地图
         MoveTo intX,intY
@@ -577,6 +545,9 @@ End Sub
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\5Job\Feature1.bmp|E:\MHImg\Common\5Job\Feature2.bmp|E:\MHImg\Common\5Job\Feature3.bmp|E:\MHImg\Common\5Job\Feature4.bmp",000000,1.00,0,intX,intY
         if intX >= 0 then //到了里面
+            if GetLED(1) == 1 then //换地图
+                KeyPress CapsLock
+            End If
             break
         else //还在外面
             tarX       = 78
@@ -587,6 +558,32 @@ End Sub
             KeyPress Up
         End If
     Wend
+End Sub
+
+while 1>0
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Archer.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then
+        tarX       = 21
+        tarY       = 84
+        yTolerance = 2
+        tolerance = 2
+        Call Move_A() //仅移动
+        tarX       = 21
+        tarY       = 71
+        yTolerance = 2
+        tolerance = 2
+        Call Move_A() //仅移动
+        tarX       = 45
+        tarY       = 71
+        yTolerance = 2
+        tolerance = 1
+        Call Move_A() //仅移动
+        KeyPress Up
+    else //进入了传送门,等NPC出来
+        break
+    End If
+Wend
+
 
 
 for 3

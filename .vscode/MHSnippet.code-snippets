@@ -235,4 +235,13 @@
 		],
 		"description": "蜂鳴"
 	},
+	"大写键": {
+		"prefix": "caps",
+		"body": [
+			"if GetLED(1) == 0 then",
+			"    KeyPress CapsLock",
+			"End If",
+		],
+		"description": "大写键"
+	},
 }

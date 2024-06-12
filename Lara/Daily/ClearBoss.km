@@ -1339,7 +1339,7 @@ Sub RepeatBoss4_2 //四傻的重复部分
     Next
     Call NewTeam() //强制退图
 End Sub
-Sub Boss4 //四傻
+Sub Boss4 //四傻 Ver1.1
     Call EnterPre() //第一部分成功后logoX就保存了
     while 1>0 //进入四傻
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\4\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
@@ -1509,9 +1509,7 @@ Sub Boss4 //四傻
     KeyUp '
     DelayRandom 39,42
     Call RightJumpF()
-    Delay 200
-    KeyPress V
-    for 3
+    for 2
         Call RightJumpF() //跳到右边墙角
     Next
     Delay 200
@@ -1880,7 +1878,7 @@ Sub Boss6 //打黑龙 Ver1.1 切圖時的加个while
         End If
     Wend
 End Sub
-Sub Boss7 //打阿卡
+Sub Boss7 //打阿卡 Ver1.1
     Call EnterPre() //第一部分成功后logoX就保存了
     while 1>0 //进入老麦
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\7\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
@@ -1983,12 +1981,16 @@ Sub Boss7 //打阿卡
     Delay 3000
     KeyPress B
     Delay 1200
-    for 2 //平A4次就够了
-        Call RightJumpF()
-        Call LeftJumpF()
-        Call LeftJumpF()
-        Call RightJumpF()
-    Next
+    Call RightJumpF()
+    Call LeftJumpF()
+    Call LeftJumpF()
+    Call LeftJumpF()
+    Call LeftJumpF()
+    Call LeftJumpF()
+    Call RightJumpF()
+    Call RightJumpF()
+    Call RightJumpF()
+    Call RightJumpF()
 
     Call NewTeam() //强制退图
     while 1>0 //到了地图

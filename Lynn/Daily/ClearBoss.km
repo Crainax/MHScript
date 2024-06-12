@@ -51,12 +51,6 @@ Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     intX = intX - logoX
     intY = intY - logoY
 End Sub
-Sub GetXYNega //获取角色的XY轴(支持负数找到)
-    FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-    FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
-    intX = intX - logoX
-    intY = intY - logoY
-End Sub
 
 Sub AntiJam //一般跟随GetXY后用
     if staticX ==  intX and staticY == intY then //如果相等就累加计数器
@@ -1722,7 +1716,7 @@ Sub RepeatBoss4_2 //四傻的重复部分
     Next
     Call NewTeam() //强制退图
 End Sub
-Sub Boss4 //四傻
+Sub Boss4 //四傻 Ver1.1
     Call EnterPre() //第一部分成功后logoX就保存了
     while 1>0 //进入四傻
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\4\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
@@ -2303,7 +2297,7 @@ Sub Boss6 //打黑龙 Ver1.1 切圖時的加个while
         End If
     Wend
 End Sub
-Sub Boss7 //打阿卡 Ver1.1 logoX和logoY修复
+Sub Boss7 //打阿卡 Ver1.2 要跳到最左边
     Call EnterPre() //第一部分成功后logoX就保存了
     while 1>0 //进入老麦
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\7\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
@@ -2404,12 +2398,16 @@ Sub Boss7 //打阿卡 Ver1.1 logoX和logoY修复
 
     //进到地图里了,接任务开打
     Delay 3000
-    for 3 //平A4次就够了
         Call RightJumpF()
         Call LeftJumpF()
         Call LeftJumpF()
+        Call LeftJumpF()
+        Call LeftJumpF()
+        Call LeftJumpF()
         Call RightJumpF()
-    Next
+        Call RightJumpF()
+        Call RightJumpF()
+        Call RightJumpF()
 
     Call NewTeam() //强制退图
     while 1>0 //到了地图

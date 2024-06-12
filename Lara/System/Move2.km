@@ -57,7 +57,7 @@ Sub AntiJam //一般跟随GetXY后用
         DelayRandom 44,45
         KeyUp Right
         DelayRandom 13,15
-        RestartScript //重启
+        // RestartScript //重启
     End If
 End Sub
 
@@ -497,22 +497,33 @@ Sub Move_2  //随机释放的移动 ( Ver3.2+3)
 End Sub
 
 
-//容忍度0和1的部分从B复制
-Sub Move_A //全职业普通移动 Ver1.11 大写退出,上下跳
-    for 10 //确定找到人或锚点再移动
-        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp|E:\MHImg\MapAnchor.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then //找到人
-            Delay 5
-        else
-            Exit Sub //找不到人  别移动
-        End If
-    Next
-    while  1 > 0
-        a = GetLED(1)
-        if a == 1 then //大写状态就弹出
+//容忍度-1的部分从B复制(删0容忍部位)
+//加入弹出条件
+//由于alterX用掉来计数了,所以这不能用来传送门
+Sub Move_A //全职业普通移动 Ver1.14 多次跳出
+    alterX = 0
+    while 1 > 0
+        if GetLED(1) == 1 then //大写状态就弹出
             break
         End If
-        Call GetXY()
+        alterX = alterX + 1
+        if alterX % 3 == 0 then
+            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+            if logoX <=0 then //黑屏找不到地图就润
+                if GetLED(1) == 0 then //换地图
+                    KeyPress CapsLock
+                End If
+                break
+            End If
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp|E:\MHImg\UI\Dialog\Reject.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 then //对话框出来了
+                if GetLED(1) == 0 then //换地图
+                    KeyPress CapsLock
+                End If
+                break
+            End If
+        End If
+        call GetXY()
         if tolerance > 2 Then
             tolLoc = tolerance
         else  //速走的默认为4
@@ -557,48 +568,7 @@ Sub Move_A //全职业普通移动 Ver1.11 大写退出,上下跳
                 Delay 200
             else
                 yTolerance = 0
-                if tolerance == 0 then //传送门型
-                    If intX < tarX Then //向右小碎步
-                        KeyPress Right
-                        KeyPress Up
-                        for 5
-                            Call GetXY()
-                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                                KeyPress Right
-                                KeyPress Up
-                            else
-                                break
-                            End If
-                        Next
-                        DelayRandom 11,12
-                    Else If intX > tarX Then //向左小碎步
-                        KeyPress Left
-                        KeyPress Up
-                        for 5
-                            Call GetXY()
-                            if intX < (alterX-12) or intX > (alterX+12) or intY < (alterY-3) or intY > (alterY+3) then //没到目标
-                                KeyPress Left
-                                KeyPress Up
-                            else
-                                break
-                            End If
-                        Next
-                        DelayRandom 11,12
-                    else //直接按上
-                        KeyPress Up
-                        alterX    = 0
-                        alterY    = 0
-                        Exit Sub
-                    End If
-                    Delay 125
-                    Call GetXY()
-                    if intX >= (alterX-12) and intX <= (alterX+12) and intY >= (alterY-3) and intY <= (alterY+3) then //到了传送后的地点
-                        alterX    = 0
-                        alterY    = 0
-                        Exit Sub
-                    else
-                    End if
-                else if tolerance == -1 then //负1代表枚举走到目的地
+                if tolerance == -1 then //负1代表枚举走到目的地
                     if intX - tarX == 4 then
                         KeyDown Left
                         Delay 197
