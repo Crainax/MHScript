@@ -437,14 +437,19 @@ Sub Bulb5Job //灯泡解对话
                 MoveTo intX,intY
                 LeftClick
                 DelayRandom 139,142
-            else //找不到灯泡(移走鼠标)
-                MoveTo 100,100
-                DelayRandom 139,142
+            else //先退出框
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    KeyPress Esc
+                else //找不到灯泡(移走鼠标)
+                    MoveR 100,0
+                    DelayRandom 139,142
+                End If
             End If
         End If
     Wend
 End Sub
-Sub QuestTalk //对话
+Sub QuestTalk //对话(寻找书本图案)
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
@@ -456,8 +461,34 @@ Sub QuestTalk //对话
                 MoveTo intX,intY
                 LeftClick
                 Delay 200
-                MoveTo intX+200,intY
+                MoveR 100,0
             else
+                Delay 200
+            End If
+        End If
+    Wend
+End Sub
+Sub QuestTalk2 //(寻找鼠标图案,多次找不到就退出)
+    wJam = 0 //放在循环外面位置
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Mouse_F1.bmp|E:\MHImg\UI\Mouse_F2.bmp|E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then
+            wJam = 0 //放在成功的位置
+
+            MoveTo logoX,logoY
+            LeftClick
+            DelayRandom 139,142
+
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                Call ClearDialog()
+            End If
+        else
+            wJam = wJam + 1  //循环内部
+            if wJam > 5 then //三次失败才真的退出去
+                break
+            else
+                MoveR 50,0
                 Delay 200
             End If
         End If
@@ -472,14 +503,30 @@ Sub CloseCaps //关闭Caps键
         DelayRandom 39,42 //关闭找图
     End If
 End Sub
-
+Sub ZoomInMap //缩小一下地图
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\ZoomInMap.bmp",000000,1.00,0,intX,intY
+    If intX >= 0 Then //縮小一下地图
+        MoveTo intX,intY
+        LeftClick
+        DelayRandom 139,142
+    End If
+End Sub
+Sub ZoomOutMap //放大一下地图
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\ZoomMap.bmp",000000,1.00,0,intX,intY
+    If intX >= 0 Then
+        MoveTo intX,intY
+        LeftClick
+        DelayRandom 139,142
+    End If
+End Sub
 
 Sub 5JobRequest //接五转任务
     Call Bulb5Job() //灯泡解对话
 
     Call ClearDialog()
+    Delay 500
     while 1>0
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\5Job.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then //等人物出来
             break
         else
@@ -514,8 +561,9 @@ Sub 5JobRequest //接五转任务
             End If
         End If
     Wend
-
+    Delay 1000
     Call QuestTalk() //第二次对话
+    Delay 1000
     Call Bulb5Job() //灯泡解对话
     Call ClearDialog()
 
@@ -535,12 +583,7 @@ Sub 5JobRequest //接五转任务
     Call Loading()
 
     //射手村
-    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\ZoomInMap.bmp",000000,1.00,0,intX,intY
-    If intX >= 0 Then //縮小一下地图
-        MoveTo intX,intY
-        LeftClick
-        DelayRandom 139,142
-    End If
+    Call ZoomInMap() //缩小一地图
 
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\5Job\Feature1.bmp|E:\MHImg\Common\5Job\Feature2.bmp|E:\MHImg\Common\5Job\Feature3.bmp|E:\MHImg\Common\5Job\Feature4.bmp",000000,1.00,0,intX,intY
@@ -582,27 +625,142 @@ Sub 5JobRequest //接五转任务
             break
         End If
     Wend
-End Sub
 
+    while 1>0 //确认进去了地图
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\MiniMark.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+            if intX <= 0 Then //确定进了图
+                break
+            End If
+        End If
+    Wend
+    Call QuestTalk2() //开始循环对话
+
+    a = 19 //出来
     while 1>0
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Mouse_F1.bmp|E:\MHImg\UI\Mouse_F2.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //这才是走出了地图
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\MiniMark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                break
+            End If
+        else
+            a = a + 1
+            if a >= 20 then
+                DelayRandom 39,42
+                KeyDown Left
+                Delay 3000
+                KeyUp Left
+                DelayRandom 39,42
+                a = 0
+            else
+                KeyPress Right
+                KeyPress Up
+            End If
+        End If
+    Wend
+
+    while 1>0 //打开指导,前往万神殿
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\MapGod.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
             MoveTo intX,intY
             LeftClick
             DelayRandom 139,142
-
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then
-                Call ClearDialog()
-                break
-            else
-                MoveR 100,0
-                Delay 100
-            End If
+            break
         else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                MoveTo intX-25,intY+86
+                LeftClick
+                DelayRandom 139,142
+            else
+                DelayRandom 39,42
+                KeyDown F2
+                DelayRandom 69,72
+                KeyUp F2
+                DelayRandom 39,42
+            End If
+        End If
+
+    Wend
+    Call Loading()
+
+    Call ZoomOutMap() //放大地图
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\5Job\B_Feature.bmp|E:\MHImg\Common\5Job\B_Feature2.bmp|E:\MHImg\Common\5Job\B_Feature3.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到了里面
+            if GetLED(1) == 1 then //换地图
+                KeyPress CapsLock
+            End If
+            break
+        else //还在外面
+            tarX       = -104
+            tarY       = 101
+            yTolerance = 2
+            tolerance = -1
+            Call Move_A() //仅移动
+            KeyPress Up
+        End If
+    Wend
+
+    while 1>0 //进第二个五转门
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\5Job\B_Feature.bmp|E:\MHImg\Common\5Job\B_Feature2.bmp|E:\MHImg\Common\5Job\B_Feature3.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            tarX       = 31
+            tarY       = 85
+            yTolerance = 2
+            tolerance = -1
+            Call Move_A() //仅移动
+            KeyPress Up
+        else //进入了传送门,等NPC出来
+            if GetLED(1) == 1 then //换地图
+                KeyPress CapsLock
+            End If
+            break
+        End If
+    Wend
+
+    while 1>0 //确认进去了地图
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\MiniMark.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+            if intX <= 0 Then //确定进了图
+                break
+            End If
+        End If
+    Wend
+    Call QuestTalk2() //开始循环对话
+
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            break
+        else //等待进入地图中
             Delay 200
         End If
     Wend
+End Sub
+
+
+    while 1>0 //进第二个五转门
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            if GetLED(1) == 1 then //换地图
+                KeyPress CapsLock
+            End If
+            Call ClearDialog()
+            break
+        else //进入了传送门,等NPC出来
+            tarX      = 15
+            tarY      = 79
+            yTolerance = 2
+            tolerance = -1
+            Call Move_A() //仅移动
+            KeyPress Up
+        End If
+    Wend
+
 
 for 3
     Beep 100,200
