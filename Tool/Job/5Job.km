@@ -558,33 +558,51 @@ Sub 5JobRequest //接五转任务
             KeyPress Up
         End If
     Wend
+
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Archer.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            tarX       = 21
+            tarY       = 84
+            yTolerance = 2
+            tolerance = 2
+            Call Move_A() //仅移动
+            tarX       = 21
+            tarY       = 71
+            yTolerance = 2
+            tolerance = 2
+            Call Move_A() //仅移动
+            tarX       = 45
+            tarY       = 71
+            yTolerance = 2
+            tolerance = 1
+            Call Move_A() //仅移动
+            KeyPress Up
+        else //进入了传送门,等NPC出来
+            break
+        End If
+    Wend
 End Sub
 
-while 1>0
-    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Archer.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then
-        tarX       = 21
-        tarY       = 84
-        yTolerance = 2
-        tolerance = 2
-        Call Move_A() //仅移动
-        tarX       = 21
-        tarY       = 71
-        yTolerance = 2
-        tolerance = 2
-        Call Move_A() //仅移动
-        tarX       = 45
-        tarY       = 71
-        yTolerance = 2
-        tolerance = 1
-        Call Move_A() //仅移动
-        KeyPress Up
-    else //进入了传送门,等NPC出来
-        break
-    End If
-Wend
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Mouse_F1.bmp|E:\MHImg\UI\Mouse_F2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            MoveTo intX,intY
+            LeftClick
+            DelayRandom 139,142
 
-
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                Call ClearDialog()
+                break
+            else
+                MoveR 100,0
+                Delay 100
+            End If
+        else
+            Delay 200
+        End If
+    Wend
 
 for 3
     Beep 100,200
