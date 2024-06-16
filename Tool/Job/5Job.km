@@ -425,9 +425,9 @@ Sub ClearDialogOnce //清除标准对话框(一次) Ver1.1
 End Sub
 Sub Bulb5Job //灯泡解对话
     while 1>0 //找菇菇标志
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\5Job\Mark1.bmp|E:\MHImg\Common\5Job\Mark3.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\5Job\Mark.bmp|E:\MHImg\Common\5Job\MarkA.bmp|E:\MHImg\Common\5Job\MarkB.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
-            MoveTo intX+100,intY+5
+            MoveTo intX-70,intY+5
             LeftClick
             DelayRandom 139,142
             break
@@ -771,7 +771,27 @@ Sub 5JobRequest //接五转任务
     Beep 500,200
     Pause
 
-    Call BlindOutMap() //走出地图
+    a = 19 //出来
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //这才是走出了地图
+            Call ClearDialog()
+            break
+        else
+            a = a + 1
+            if a >= 20 then
+                DelayRandom 39,42
+                KeyDown Left
+                Delay 3000
+                KeyUp Left
+                DelayRandom 39,42
+                a = 0
+            else
+                KeyPress Right
+                KeyPress Up
+            End If
+        End If
+    Wend
 
     while 1>0 //到了地图
         FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_2.bmp",000000,1.00,0,intX,intY
@@ -785,14 +805,14 @@ Sub 5JobRequest //接五转任务
                             KeyPress CapsLock
                         End If
                         break
+                    else
+                        tarX      = -46
+                        tarY      = 82
+                        yTolerance = 2
+                        tolerance = -1
+                        Call Move_A() //仅移动
+                        KeyPress Up
                     End If
-                else
-                    tarX      = -46
-                    tarY      = 82
-                    yTolerance = 2
-                    tolerance = -1
-                    Call Move_A() //仅移动
-                    KeyPress Up
                 End If
             Wend
             break
@@ -801,8 +821,8 @@ Sub 5JobRequest //接五转任务
         End If
     Wend
 
-Call QuestTalk2()
-Call BlindOutMap()
+    Call QuestTalk2()
+    Call BlindOutMap()
 
     while 1>0 //去第三个地图
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\5Job\Mark4.bmp",000000,1.00,0,logoX,logoY
@@ -845,11 +865,92 @@ Call BlindOutMap()
         End If
     Wend
 
+    while 1>0
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\5Job_3.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\5Job_3.bmp",000000,1.00,0,intX,intY
+                if intX <= 0 Then //离开了地图
+                    if GetLED(1) == 1 then
+                        KeyPress CapsLock
+                    End If
+                    break
+                else
+                    call GetXY()
+                    if intY >= 104 then //在左边就先往右边走
+                        tarX      = 51
+                        tarY      = 104
+                        tolerance = -1
+                        Call Move_A() //仅移动
+                        KeyPress Space
+                        Delay 100
+                        KeyDown Up
+                        Delay 2000
+                        KeyUp Up
+                        Delay 100
+                    else
+                        tarX       = 67
+                        tarY       = 91
+                        yTolerance = 2
+                        tolerance  = -1
+                        Call Move_A() //仅移动
+                        KeyPress Up
+                    End If
+                End If
+            Wend
+            break
+        else
+            Delay 200
+        End If
+    Wend
+
+    while 1>0
+        FindPic x1,y1,x2,y2,"E:\MHImg\UI\Map\MiniMark.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //真的到了
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+            if intX <= 0 Then //真的到了
+                break
+            End If
+        else
+            Delay 200
+        End If
+    Wend
+
+    Call QuestTalk2() //开始循环对话
+
+    Beep 100,200
+    Beep 200,200
+    Beep 300,200
+    Beep 400,200
+    Beep 500,200
+    Pause
+
+    while 1>0 //打完第三个任务了
+        FindPic x1,y1,x2,y2,"E:\MHImg\UI\Map\MiniMark.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //真的到了
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+            if intX <= 0 Then //真的到了
+                break
+            End If
+        else
+            Delay 200
+        End If
+    Wend
+    Call QuestTalk2() //开始循环对话
+    Call BlindOutMap()
 End Sub
 
-[charX51,charY104][teleX-120,teleY103]
-[charX51,charY97][teleX-120,teleY103]
-[charX67,charY91][teleX-120,teleY103]
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\5Job_3.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+    Call Bulb5Job()
+    Call ClearDialog()
+    Delay 1000
 
 Beep 100,200
 Beep 200,200

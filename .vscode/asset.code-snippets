@@ -20,4 +20,11 @@
 		],
 		"description": "素材-StopDialog"
 	},
+	"素材-Maps": {
+		"prefix": "assetMaps",
+		"body": [
+			"\"E:\\MHImg\\Maps\\1.bmp\""
+		],
+		"description": "素材-Maps"
+	},
 }
