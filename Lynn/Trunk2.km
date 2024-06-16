@@ -886,7 +886,7 @@ Sub Navigate //引導路線
     End If
 End Sub
 
-Sub ReleaseRune //定期解轮 ver2.4 解轮防公告
+Sub ReleaseRune //定期解轮 ver2.41 解轮防公告
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Liar.bmp",000000,1.00,0,intX,intY
     if intX < 0 then //A图没找到就找B图
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Liar2.bmp",000000,1.00,0,intX,intY
@@ -925,7 +925,7 @@ Sub ReleaseRune //定期解轮 ver2.4 解轮防公告
             //解轮后先A一下
             KeyPress F
             a = 1
-            GetFileLine tolLoc,"Map.conf",a		//文件查找
+            GetFileLine tolLoc,Map.conf,a		//文件查找
             wJam = 0 //放在循环外面位置
             while 1 > 0
                 FindPic x1,y1,xEnd,yEnd,"E:\MHImg\HP.bmp",000000,1.00,0,logoX,logoY
