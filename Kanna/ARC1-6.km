@@ -565,7 +565,7 @@ Sub ReleaseRune //定期解轮 ver2.33 解地震轮(遍历BUFF)
                 if logoX >= 0 Then
                     a = 1
                     for 43
-                        MoveTo logoX-583+a*32,logoY-709+32
+                        MoveTo logoX-583+a*32,logoY-709
                         Delay 30
                         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\Rune.bmp",000000,1.00,0,intX,intY
                         if intX >= 0 Then //找到点击
@@ -783,7 +783,7 @@ DTime        = 0            //上次放末日烈焰的时间
 QTime        = 0            //上次放末日烈焰的时间
 ATime        = 0            //上次放末日烈焰的时间
 WGTime       = 0            //上次放末日烈焰的时间
-Timer 1,1,3000
+Timer 1,1,5000
 Timer 4, 1, 1000 //检测地图红点
 Rem Out //打开大写键就跳回这里
 Call Menu()
@@ -892,6 +892,57 @@ while 1 > 0
                         Call Move()
                     End If
 
+                    Call StandSpell()
+                    Delay 120
+                End If
+            End If
+        End If
+    else if map == 6 then //蜘蛛3
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
+            tarX = -40
+            tarY = 98
+            tolerance = 4
+            Call Move()
+            DelayRandom 56,58
+            KeyDown Left
+            DelayRandom 62,68
+            KeyUp Left
+            DelayRandom 106,109
+            KeyDown 1
+            DelayRandom 194,196
+            KeyUp 1
+            DelayRandom 712,721
+            fountainTime = GetTimeStamp()
+        else //大鬼
+            if GetTimeStamp() - ATime > 35 then
+                tarX = -7
+                tarY = 88
+                tolerance = 2
+                Call Move()
+                Delay 200
+                KeyPress Right
+                KeyPress A
+                Delay 500
+                ATime = GetTimeStamp()
+            else //放小鬼
+                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Kanna\E.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 then
+                    tarX = 31
+                    tarY = 115
+                    tolerance = 2
+                    Call Move()
+                    KeyPress E
+                    Delay 200
+                else //原地放技能
+                    call GetXY()
+                    if intY != 104 or intX < (-7-4) or intX > (-7+4) then //
+                        tarX       = -7
+                        tarY       = 104
+                        tolerance  = 4
+                        yTolerance = 0
+                        Call Move()
+                    End If
                     Call StandSpell()
                     Delay 120
                 End If
