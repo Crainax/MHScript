@@ -519,6 +519,31 @@ Sub ZoomOutMap //放大一下地图
         DelayRandom 139,142
     End If
 End Sub
+Sub BlindOutMap //盲走出地图
+    a = 19 //出来
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //这才是走出了地图
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\MiniMark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                break
+            End If
+        else
+            a = a + 1
+            if a >= 20 then
+                DelayRandom 39,42
+                KeyDown Left
+                Delay 3000
+                KeyUp Left
+                DelayRandom 39,42
+                a = 0
+            else
+                KeyPress Right
+                KeyPress Up
+            End If
+        End If
+    Wend
+End Sub
 
 Sub 5JobRequest //接五转任务
     Call Bulb5Job() //灯泡解对话
@@ -636,30 +661,8 @@ Sub 5JobRequest //接五转任务
         End If
     Wend
     Call QuestTalk2() //开始循环对话
+    Call BlindOutMap() //走出地图
 
-    a = 19 //出来
-    while 1>0
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then //这才是走出了地图
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\MiniMark.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then
-                break
-            End If
-        else
-            a = a + 1
-            if a >= 20 then
-                DelayRandom 39,42
-                KeyDown Left
-                Delay 3000
-                KeyUp Left
-                DelayRandom 39,42
-                a = 0
-            else
-                KeyPress Right
-                KeyPress Up
-            End If
-        End If
-    Wend
 
     while 1>0 //打开指导,前往万神殿
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\MapGod.bmp",000000,1.00,0,intX,intY
@@ -713,6 +716,8 @@ Sub 5JobRequest //接五转任务
             tolerance = -1
             Call Move_A() //仅移动
             KeyPress Up
+            KeyPress Left
+            KeyPress Up
         else //进入了传送门,等NPC出来
             if GetLED(1) == 1 then //换地图
                 KeyPress CapsLock
@@ -740,8 +745,6 @@ Sub 5JobRequest //接五转任务
             Delay 200
         End If
     Wend
-End Sub
-
 
     while 1>0 //进第二个五转门
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
@@ -761,11 +764,95 @@ End Sub
         End If
     Wend
 
-
-for 3
     Beep 100,200
     Beep 200,200
     Beep 300,200
     Beep 400,200
     Beep 500,200
-Next
+    Pause
+
+    Call BlindOutMap() //走出地图
+
+    while 1>0 //到了地图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 then //到地图里了
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\MiniMark.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+                    if intX <= 0 Then //确定进了图
+                        if GetLED(1) == 1 then //换地图
+                            KeyPress CapsLock
+                        End If
+                        break
+                    End If
+                else
+                    tarX      = -46
+                    tarY      = 82
+                    yTolerance = 2
+                    tolerance = -1
+                    Call Move_A() //仅移动
+                    KeyPress Up
+                End If
+            Wend
+            break
+        else //等待进入地图中
+            Delay 200
+        End If
+    Wend
+
+Call QuestTalk2()
+Call BlindOutMap()
+
+    while 1>0 //去第三个地图
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\5Job\Mark4.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then
+            if GetLED(1) == 1 then //换地图
+                KeyPress CapsLock
+            End If
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\5Job\Part3.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    while 1>0
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+                        if intX <= 0 Then
+                            break
+                        else
+                            MoveTo logoX-42,logoY-105
+                            LeftClick
+                            DelayRandom 139,142
+                            MoveTo logoX-50,logoY+2
+                            LeftClick
+                            DelayRandom 139,142
+                        End If
+                    Wend
+                    break
+                else
+                    MoveTo logoX+98,logoY-87
+                    LeftClick
+                    DelayRandom 139,142
+                End If
+            Wend
+            break
+        else //进入了传送门,等NPC出来
+            tarX      = 76
+            tarY      = 85
+            yTolerance = 2
+            tolerance = 1
+            Call Move_A() //仅移动
+            KeyPress PageDown
+            Delay 1000
+        End If
+    Wend
+
+End Sub
+
+[charX51,charY104][teleX-120,teleY103]
+[charX51,charY97][teleX-120,teleY103]
+[charX67,charY91][teleX-120,teleY103]
+
+Beep 100,200
+Beep 200,200
+Beep 300,200
+Beep 400,200
+Beep 500,200
