@@ -513,15 +513,23 @@ Sub ClearItem //清理消耗品和装备栏 Ver1.5
 End Sub
 
 
-Sub ConfirmMap //确认当前地图
+Sub ConfirmMap //确认当前地图 Ver1.1
     map = 0
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC6.bmp",000000,1.00,0,intX,intY
-    if intX >= 0  //六岛(镜光大海3)
+    if intX >= 0  //六岛(镜光3)
         map = 6
     End If
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC4.bmp",000000,1.00,0,intX,intY
-    if intX >= 0  //四岛(深渊路)
-        map = 4
+    if intX >= 0  //四岛(深渊)
+        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Teleport.bmp",000000,1.00,0,alterX,alterY	//找图
+        alterX = alterX - logoX
+        alterY = alterY - logoY
+        if alterX == -22 and alterY == 94 then
+            map = 41 //间隔路
+        else
+            map = 4 //深渊
+        End If
     End If
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC3.bmp",000000,1.00,0,intX,intY
     if intX >= 0  //三岛(不法2)
@@ -534,6 +542,10 @@ Sub ConfirmMap //确认当前地图
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC1B.bmp",000000,1.00,0,intX,intY
     if intX >= 0  //一岛(反转列车)
         map = 1
+    End If
+    FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC1.bmp",000000,1.00,0,intX,intY
+    if intX >= 0  //一岛(三岔路1)
+        map = 11
     End If
 End Sub
 
@@ -551,8 +563,8 @@ cool     = 0
 pickTime =0
 sortTime =0
 Call ConfirmMap() //定位地图
-
 while 1>0 //无限循环
+
     if GetTimeStamp() - cool > 570 then //现在是否能放轮
         Delay 500
         KeyPress O
@@ -621,56 +633,63 @@ while 1>0 //无限循环
             tolerance = 4
             Call Move_B()
         else if map == 3 then
-
             tarX = -12
             tarY = 89
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
 
             tarX = -72
             tarY = 71
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
             Delay 1500
 
             tarX = -56
             tarY = 55
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
             Delay 1500
 
             tarX = -56
             tarY = 89
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
 
             tarX = 41
             tarY = 61
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
             Delay 1500
 
             tarX = 41
             tarY = 89
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
 
             tarX = -12
             tarY = 63
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
             Delay 1500
 
             tarX = -12
             tarY = 76
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
         else if map == 4 then
-            tarX = 16
+            tarX = 12
             tarY = 87
             tolerance = 4
             Call Move_B()
-            Delay 3000
+            Delay 1500
 
             tarX = 45
             tarY = 87
@@ -695,6 +714,37 @@ while 1>0 //无限循环
             tarY = 87
             tolerance = 4
             Call Move_B()
+        else if map == 41 then //间隔路
+            tarX = -82
+            tarY = 92
+            tolerance = 4
+            Call Move_B()
+            Delay 1500
+
+            tarX = -51
+            tarY = 92
+            tolerance = 4
+            Call Move_B()
+            Delay 1500
+
+            tarX = -19
+            tarY = 95
+            tolerance = 4
+            Call Move_B()
+            Delay 1500
+
+            tarX = 45
+            tarY = 95
+            tolerance = 4
+            Call Move_B()
+            Delay 1500
+
+            tarX = 12
+            tarY = 95
+            tolerance = 4
+            Call Move_B()
+            Delay 1500
+
         else if map == 6 then
 
             tarX = -7
