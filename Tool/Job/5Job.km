@@ -960,6 +960,7 @@ Sub 5JobRequest //接五转任务
     Delay 1000
 End Sub
 
+Call 5JobRequest()
 
 Beep 100,200
 Beep 200,200
