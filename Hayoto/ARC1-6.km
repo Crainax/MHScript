@@ -692,8 +692,7 @@ Sub StandSpell //原地放技能 v1.1更新了一点东西
     End If
 End Sub
 
-
-Sub ReleaseRune //定期解轮 ver2.3 解地震轮(遍历BUFF)
+Sub ReleaseRune //定期解轮 ver2.41 解轮防公告
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Liar.bmp",000000,1.00,0,intX,intY
     if intX < 0 then //A图没找到就找B图
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Liar2.bmp",000000,1.00,0,intX,intY
@@ -731,17 +730,21 @@ Sub ReleaseRune //定期解轮 ver2.3 解地震轮(遍历BUFF)
             RuneCooldown = GetTimeStamp()
             //解轮后先A一下
             KeyPress F
+            a = 1
+            GetFileLine tolLoc,Map.conf,a		//文件查找
             wJam = 0 //放在循环外面位置
             while 1 > 0
                 FindPic x1,y1,xEnd,yEnd,"E:\MHImg\HP.bmp",000000,1.00,0,logoX,logoY
                 if logoX >= 0 Then
                     a = 1
                     for 43
-                        MoveTo logoX-583+a*32,logoY-709
-                        Delay 10
+                        MoveTo logoX-583+a*32,logoY-709+tolLoc
+                        Delay 30
                         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\Rune.bmp",000000,1.00,0,intX,intY
                         if intX >= 0 Then //找到点击
-                            RightClick
+                            for 4
+                                RightClick
+                            Next
                             break
                         End If
                         a = a + 1
@@ -761,7 +764,6 @@ Sub ReleaseRune //定期解轮 ver2.3 解地震轮(遍历BUFF)
         End If
     End If
 End Sub
-
 Sub on_timer4 //查红点 ver1.1 使用了tempX和Y防干扰
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Player.bmp",000000,1.00,0,tempX,tempY
     if tempX >= 0 Then //地图里有其他玩家
@@ -784,8 +786,124 @@ Sub on_timer4 //查红点 ver1.1 使用了tempX和Y防干扰
     End If
     Timer          4, 1, 1000              //检测地图红点
 EndSub
+Sub ChannalS //无视是否有人换频
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Switch.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            KeyPress Right
+            DelayRandom 539,542
+            KeyPress Enter
+            DelayRandom 339,342
 
-Sub ConfirmMap //确认当前地图
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+            if intX < 0 Then //没有OK就退出去
+                Call Loading() //等加载
+                DelayRandom 239,242
+                break
+            else
+                KeyPress Esc
+                DelayRandom 239,242
+            End If
+        else
+            KeyPress Insert
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
+Sub CloseCaps //关闭Caps键
+    if GetLED(1) == 1 then //换地图
+        DelayRandom 39,42
+        KeyDown CapsLock
+        DelayRandom 69,72
+        KeyUp CapsLock
+        DelayRandom 39,42 //关闭找图
+    End If
+End Sub
+Sub Home //回城
+    while 1>0 //指导回城一波
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Cancel2.bmp",000000,1.00,0,intX,intY
+        if intX < 0 then //A图没找到就找B图
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Cancel.bmp",000000,1.00,0,intX,intY
+        End If
+        if intX >= 0 Then
+            MoveTo intX-90,intY
+            LeftClick
+            DelayRandom 139,142 //点击确认
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,logoX,logoY
+                if logoX >= 0 Then //正在本地图
+                    while 1>0
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+                        if intX < 0 Then //一直关闭F2页面
+                            break
+                        else
+                            DelayRandom 39,42
+                            KeyDown Esc
+                            DelayRandom 69,72
+                            KeyUp Esc
+                            DelayRandom 39,42
+                        End If
+                    Wend
+                    break
+                else
+                    Call Loading() //加载新地图
+                    break
+                End If
+            Wend
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                MoveTo intX-408,intY-100
+                LeftClick
+                DelayRandom 139,142
+            else
+                DelayRandom 39,42
+                KeyDown F2
+                DelayRandom 69,72
+                KeyUp F2
+                DelayRandom 39,42
+            End If
+        End If
+    Wend
+End Sub
+
+Sub Menu //菜单(大写键开启)
+    a = GetLED(1)
+    if a == 0 then //大写状态就弹出
+        Exit Sub
+    End If
+    Beep 261,200
+    Beep 294,200
+    Beep 329,200
+    Beep 294,200
+    Beep 261,200
+    Beep 329,200
+    a=WaitKey()
+    if a== 49 then //按1键:回城再换频
+        Call Home() //回城
+        Call ChannalS() //换频
+    else if a== 50 then //按2键:解剧情模式
+        while 1>0
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\me.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                break
+            else
+                KeyPress PageDown
+            End If
+        Wend
+        for 3
+            Beep 100,200
+            Beep 200,200
+            Beep 300,200
+            Beep 400,200
+            Beep 500,200
+        Next
+        Pause
+    End If
+End Sub
+
+Sub ConfirmMap //确认当前地图 Ver1.1
     map = 0
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC6.bmp",000000,1.00,0,intX,intY
     if intX >= 0  //六岛(镜光3)
@@ -793,7 +911,16 @@ Sub ConfirmMap //确认当前地图
     End If
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC4.bmp",000000,1.00,0,intX,intY
     if intX >= 0  //四岛(深渊)
-        map = 4
+        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Teleport.bmp",000000,1.00,0,alterX,alterY	//找图
+        alterX = alterX - logoX
+        alterY = alterY - logoY
+        if alterX == -22 and alterY == 94 then
+            map = 41 //间隔路
+        else
+            map = 4 //深渊
+        End If
+        // [charX-49,charY69][teleX-22,teleY94]
     End If
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC3.bmp",000000,1.00,0,intX,intY
     if intX >= 0  //三岛(不法2)
@@ -832,8 +959,16 @@ JAttackOK    = 0            //CD初始化
 WGTime       = 0            //CD初始化
 DTime       = 0            //CD初始化
 Timer        4, 1, 1000    //检测地图红点
-Call         ConfirmMap()  //确认一下当前地图
+Rem Out //打开大写键就跳回这里
+Call Menu()
+red  = 0           //初始化red
+Call CloseCaps()   //关闭大写键防止无限循环
+Call ConfirmMap()  //确认一下当前地图
 while 1 > 0
+    a = GetLED(1)
+    if a == 1 then //大写状态就弹出
+        Goto Out
+    End If
     if map == 1 then
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
         if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了

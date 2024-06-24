@@ -2297,7 +2297,7 @@ Sub Boss6 //打黑龙 Ver1.1 切圖時的加个while
         End If
     Wend
 End Sub
-Sub Boss7 //打阿卡 Ver1.2 要跳到最左边
+Sub Boss7 //打阿卡 Ver1.3 要跳到最左边
     Call EnterPre() //第一部分成功后logoX就保存了
     while 1>0 //进入老麦
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\7\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
@@ -2376,6 +2376,7 @@ Sub Boss7 //打阿卡 Ver1.2 要跳到最左边
     for 2
         Call RightJumpF() //右跳2下
     Next
+    Delay 1000
 
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,logoX,logoY
     //搜索20次是否可以点击

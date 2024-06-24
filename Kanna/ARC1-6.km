@@ -444,19 +444,19 @@ Sub StandSpell //原地放技能 v1.1更新了一点东西
         KeyPress Q
         QTime = GetTimeStamp()
     else
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Kanna\G.bmp",000000,1.00,0,intX,intY
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Kanna\W.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
-            KeyDown G
-            DelayRandom 633,635
-            KeyUp G
-            Delay 1000
+            KeyDown W
+            DelayRandom 153,155
+            KeyUp W
+            Delay 300
         else
-            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Kanna\W.bmp",000000,1.00,0,intX,intY
+            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Kanna\G.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then
-                KeyDown W
-                DelayRandom 153,155
-                KeyUp W
-                Delay 300
+                KeyDown G
+                DelayRandom 633,635
+                KeyUp G
+                Delay 1000
             else
                 FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\4LCD.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 and GetTimeStamp() - WGTime > 119 then
@@ -563,7 +563,7 @@ Sub ReleaseRune //定期解轮 ver2.41 解轮防公告
             GetFileLine tolLoc,Map.conf,a		//文件查找
             wJam = 0 //放在循环外面位置
             while 1 > 0
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\HP_Kanna.bmp",000000,1.00,0,logoX,logoY
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Kanna\HP_Kanna.bmp",000000,1.00,0,logoX,logoY
                 if logoX >= 0 Then
                     a = 1
                     for 43
@@ -951,7 +951,7 @@ while 1 > 0
             End If
         End If
     else
-        MsgBox "Dont Regonize the map" & map //不能用这个,V3干扰
+        //MsgBox "Dont Regonize the map" & map //不能用这个,V3干扰
         Delay 200
     End If
     Call ReleaseRune() //定期解轮
