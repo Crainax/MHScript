@@ -2023,4 +2023,5 @@ Sub ClearQuest //清理任务 Ver1.12 全AUT和ARC
     Call Home() //回城
 End Sub
 
+Call ClearQuest()
 Beep 200,500

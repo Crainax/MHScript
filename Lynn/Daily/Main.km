@@ -1811,25 +1811,6 @@ Sub NewTeam //新建一个组队
         End If
     Wend
 End Sub
-Sub DoubleJump //二段跳
-    //回到了地图原点
-    Delay 1000
-    for 2 //右跳2次,还不行就等向右自动走
-        DelayRandom 44,48
-        KeyDown Right
-        DelayRandom 96,97
-        KeyDown Space
-        DelayRandom 45,46
-        KeyUp Space
-        DelayRandom 79,80
-        KeyDown Space
-        DelayRandom 4,5
-        KeyUp Right
-        DelayRandom 77,78
-        KeyUp Space
-        DelayRandom 575,582
-    Next
-End Sub
 Sub Loading //加载地图
     while 1>0 //等进入加载
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -4311,318 +4292,6 @@ Sub ClearQuest //清理任务 Ver1.11 全AUT和ARC
     Wend
     Call Home() //回城
 End Sub
-Sub Before564 //开始前的准备
-
-    while 1>0 //打开装备栏的宠物界面
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,logoX,logoY
-        if logoX >= 0 Then //找到了标签
-            //移走药水
-            DelayRandom 39,42
-            MoveTo logoX+6,logoY+213
-            LeftClick
-            DelayRandom 339,342
-            MoveTo logoX+186,logoY+213
-            LeftClick
-            DelayRandom 339,342
-
-            Call CloseEquit()
-            break
-        else
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_Off.bmp",000000,1.00,0,intX,intY
-            if intX < 0 then //A图没找到就找B图
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_On.bmp",000000,1.00,0,intX,intY
-            End If
-            if intX >= 0 Then
-                DelayRandom 39,42
-                KeyDown tab
-                DelayRandom 69,72
-                KeyUp tab
-                DelayRandom 39,42
-            else
-                DelayRandom 39,42
-                KeyDown u
-                DelayRandom 69,72
-                KeyUp u
-                DelayRandom 39,42
-            End If
-        End If
-    Wend
-
-    Call NewTeam() //建个新组队
-
-    while 1>0 //进入564
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag2_1_On.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then
-            MoveTo intX+418,intY+488
-            LeftClick
-            DelayRandom 139,142
-            break
-        else
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag2_1_On.bmp",000000,1.00,0,intX,intY
-            if intX < 0 then //A图没找到就找B图
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag2_1_Off.bmp",000000,1.00,0,intX,intY
-            End If
-            if intX >= 0 Then
-                DelayRandom 39,42
-                KeyDown tab
-                DelayRandom 69,72
-                KeyUp tab
-                DelayRandom 39,42
-            else
-                DelayRandom 39,42
-                KeyDown [
-                DelayRandom 69,72
-                KeyUp [
-                DelayRandom 39,42
-            End If
-        End If
-    Wend
-End Sub
-Sub Start564 //开始刷
-
-
-    while 1>0 //该点击Ready了
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\564\Mark2A.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then
-            while 1>0
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\564\Mark2A.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then
-                    MoveTo intX-160,intY+315
-                    LeftClick
-                    DelayRandom 139,142
-                else
-                    break
-                End If
-            Wend
-            break
-        else
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
-            if intX >= 0 Then
-                MoveTo intX+45,intY-40
-                LeftClick
-                DelayRandom 139,142 //开始对话框
-
-                wJam = 0 //放在循环外面位置
-                while 1>0 //对话
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\EndChat.bmp",000000,1.00,0,intX,intY
-                    if intX >= 0 Then
-                        wJam = 0 //放在成功的位置
-                        DelayRandom 39,42
-                        KeyDown PageDown
-                        DelayRandom 69,72
-                        KeyUp PageDown
-                        DelayRandom 139,142
-                    else //累计5次没找到就是结束了
-                        wJam = wJam + 1  //循环内部
-                        if wJam > 4 then //结束
-                            break
-                        else
-                            Delay 200
-                            wJam = wJam + 1
-                        End If
-                        break
-                    End If
-                Wend
-
-            else
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\564\Mark1.bmp",000000,1.00,0,intX,intY
-                if intX > 0 Then //加载完成了
-                    MoveTo intX-326,intY+151
-                    LeftClick
-                    DelayRandom 139,142
-                else
-                    DelayRandom 39,42
-                    KeyDown Right
-                    DelayRandom 69,72
-                    KeyUp Right
-                    DelayRandom 39,42
-                End If
-            End If
-        End If
-    Wend
-
-    while 1>0 //点下确认
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\564\Confirm_On.bmp",000000,1.00,0,intX,intY
-        if intX < 0 then //A图没找到就找B图
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\564\Confirm_Off.bmp",000000,1.00,0,intX,intY
-        End If
-        if intX >= 0 Then
-            MoveTo intX-56,intY
-            LeftClick
-            DelayRandom 139,142
-            break
-        else
-            DelayRandom 100,150
-        End If
-    Wend
-
-    while 1>0 //等待加载
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\MiniMark.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then
-            break
-        else
-            DelayRandom 100,150
-        End If
-    Wend
-    Call DoubleJump()
-    while 1>0 //不断
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\MiniMark.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then
-            DelayRandom 39,42
-            KeyDown Left
-            DelayRandom 69,72
-            KeyUp Left
-            DelayRandom 39,42
-            KeyDown Up
-            DelayRandom 69,72
-            KeyUp Up
-            DelayRandom 39,42
-        else //成功进入下一个阶段的地图
-            break
-        End If
-    Wend
-
-    while 1>0 //回到首页
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\MiniMark.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then
-            DelayRandom 100,150
-        else
-            break
-        End If
-    Wend
-
-End Sub
-Sub After564 //结束回城
-
-    while 1>0 //回到老地图成功
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-        if intX >= 0 Then
-            break
-        else
-            DelayRandom 39,42
-            KeyDown Up
-            DelayRandom 69,72
-            KeyUp Up
-            DelayRandom 39,42
-        End If
-    Wend
-
-
-    Call CloseBag()//先关掉背包防止出现问题
-    while 1>0 //重新装上药水
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,logoX,logoY
-        if logoX >= 0 Then //找到了标签
-            wJam = 0
-            while 1>0 //宠物的喝药
-
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\Item\PotionD.bmp",000000,1.00,0,intX,intY
-                if intX < 0 then //A图没找到就找B图
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\Item\Potion2.bmp",000000,1.00,0,intX,intY
-                End If
-                if intX >= 0 Then //两种药水找到其中一种
-                    wJam = 0
-                    while 1>0
-                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Option_Cancel.bmp",000000,1.00,0,tarX,tarY
-                        if tarX >= 0 Then
-                            DelayRandom 39,42
-                            KeyDown Esc
-                            DelayRandom 69,72
-                            KeyUp Esc
-                            DelayRandom 339,342
-                            break
-                        else
-                            wJam = wJam + 1
-                            if wJam > 4 then //重复的动作太多就暂停提醒
-                                wJam = 0
-                                for 3
-                                    Beep 100,200
-                                    Beep 200,200
-                                    Beep 300,200
-                                    Beep 400,200
-                                    Beep 500,200
-                                Next
-                                Pause
-                            else
-                                DelayRandom 200,300
-                                MoveTo intX,intY
-                                DelayRandom 200,300
-                                LeftClick
-                                DelayRandom 339,342
-
-                                MoveTo logoX+6,logoY+213
-                                LeftClick
-                                DelayRandom 339,342
-                                wJam = wJam + 1
-                            End If
-                        End If
-                    Wend
-
-                    break
-                else //没找到药水,就打开背包
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Tag_Coms.bmp",000000,1.00,0,intX,intY
-                    if intX >= 0 Then //当前背包标签:消耗品
-                        wJam = wJam + 1
-                        if wJam > 5 then //重复的动作太多就暂停提醒
-                            wJam = 0
-                            for 3
-                                Beep 100,200
-                                Beep 200,200
-                                Beep 300,200
-                                Beep 400,200
-                                Beep 500,200
-                            Next
-                            Pause
-                        else
-                            break
-                            wJam = wJam + 1
-                        End If
-                    else
-                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Mark.bmp",000000,1.00,0,intX,intY
-                        if intX >= 0 Then //切标签页
-                            DelayRandom 39,42
-                            MoveTo intX+100,intY+50
-                            DelayRandom 39,42
-                            KeyDown tab
-                            DelayRandom 69,72
-                            KeyUp tab
-                            DelayRandom 339,342
-                        else //打开背包
-                            for 3
-                                DelayRandom 39,42
-                                KeyDown i
-                                DelayRandom 69,72
-                                KeyUp i
-                                DelayRandom 39,42
-                            Next
-                        End If
-                    End If
-                End If
-            Wend
-
-            Call CloseBag()
-            Call CloseEquit()
-            break
-        else
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_Off.bmp",000000,1.00,0,intX,intY
-            if intX < 0 then //A图没找到就找B图
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_On.bmp",000000,1.00,0,intX,intY
-            End If
-            if intX >= 0 Then
-                DelayRandom 39,42
-                KeyDown tab
-                DelayRandom 69,72
-                KeyUp tab
-                DelayRandom 39,42
-            else
-                DelayRandom 39,42
-                KeyDown u
-                DelayRandom 69,72
-                KeyUp u
-                DelayRandom 39,42
-            End If
-        End If
-    Wend
-End Sub
 Sub HDDaily //领HD的奖励  Ver1.3 最后一个奖励手动领
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\HD_Mark1.bmp|E:\MHImg\UI\Cash\HD_Mark2.bmp|E:\MHImg\UI\Cash\HD_Mark3.bmp",000000,1.00,0,logoX,logoY
@@ -4672,9 +4341,9 @@ Sub HDDaily //领HD的奖励  Ver1.3 最后一个奖励手动领
         End If
     Wend
 End Sub
-Sub LegionDaily //领联盟的奖励
+Sub LegionDaily //领联盟的奖励 ver1.1
     while 1>0
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Legion\Mark1_On.bmp",000000,1.00,0,logoX,logoY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Legion\Mark1_On.bmp|E:\MHImg\UI\Legion\Mark1_Off.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then //HD页面打开了
             while 1>0
                 FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\Confirm1.bmp",000000,1.00,0,intX,intY
@@ -4682,14 +4351,14 @@ Sub LegionDaily //领联盟的奖励
                     KeyPress Enter
                     break
                 else
-                    MoveTo logoX+414,logoY-108
+                    MoveTo logoX+299,logoY-47
                     LeftClick
                     DelayRandom 139,142
                 End If
             Wend
 
             while 1>0 //关闭联盟
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Legion\Mark1_On.bmp",000000,1.00,0,intX,intY
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Legion\Mark1_On.bmp|E:\MHImg\UI\Legion\Mark1_Off.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then
                     KeyPress Esc
                 else
@@ -5181,32 +4850,27 @@ Sub Park //开始怪公
 
 End Sub
 
-Call CloseCaps() //先关大小写
-Call Quest() //接任务
-Call ClearQuest() //清理任务
-Call Quest() //交任务
-//菇菇神社
-Call Gugu()
-//怪物公园
-Call Park()
-//打BOSS
-Call Boss1()
-Call Boss2()
-Call Boss3()
-Call Boss4()
-Call Boss5()
-Call Boss6()
-Call Boss7()
-Call Boss8()
-Call Boss9()
-//564
-Call Before564() //前置
-Call Start564() //前置
-Call DoubleJump() //二段跳
-Call Start564() //前置
-Call DoubleJump() //二段跳
-Call Start564() //前置
-Call After564() //前置
+Sub Main
+    Call CloseCaps() //先关大小写
+    //todo:接任务
+    Call ClearQuest() //清理任务
+    //todo:交任务
+    Pause
+    //菇菇神社
+    Call Gugu()
+    //怪物公园
+    Call Park()
+    //打BOSS
+    // Call Boss1()
+    // Call Boss2()
+    // Call Boss3()
+    // Call Boss4()
+    // Call Boss5()
+    // Call Boss6()
+    // Call Boss7()
+    // Call Boss8()
+    // Call Boss9()
+End Sub
 Call HDDaily()      //清每日
 Call LegionDaily()  //清每日
 Call MileageDaily()  //清每日

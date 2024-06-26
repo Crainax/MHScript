@@ -91,9 +91,9 @@ Sub HDDaily //领HD的奖励  Ver1.3 最后一个奖励手动领
         End If
     Wend
 End Sub
-Sub LegionDaily //领联盟的奖励
+Sub LegionDaily //领联盟的奖励 ver1.1
     while 1>0
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Legion\Mark1_On.bmp",000000,1.00,0,logoX,logoY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Legion\Mark1_On.bmp|E:\MHImg\UI\Legion\Mark1_Off.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then //HD页面打开了
             while 1>0
                 FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\Confirm1.bmp",000000,1.00,0,intX,intY
@@ -101,14 +101,14 @@ Sub LegionDaily //领联盟的奖励
                     KeyPress Enter
                     break
                 else
-                    MoveTo logoX+414,logoY-108
+                    MoveTo logoX+299,logoY-47
                     LeftClick
                     DelayRandom 139,142
                 End If
             Wend
 
             while 1>0 //关闭联盟
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Legion\Mark1_On.bmp",000000,1.00,0,intX,intY
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Legion\Mark1_On.bmp|E:\MHImg\UI\Legion\Mark1_Off.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then
                     KeyPress Esc
                 else
@@ -242,9 +242,9 @@ Sub MileageDaily //领取里程 ver1.2"下个"问题
     Wend
 End Sub
 
-Call HDDaily()
+//Call HDDaily()
 Call LegionDaily()
-Call MileageDaily()
+//Call MileageDaily()
 
 for 3
     Beep 100,200

@@ -1774,4 +1774,6 @@ Sub ClearQuest //清理任务 Ver1.11 全AUT和ARC
 End Sub
 
 
+Call ClearQuest()
+
 Beep 200,500

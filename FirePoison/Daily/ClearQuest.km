@@ -1531,5 +1531,6 @@ Sub ClearQuest //清理下任务 Ver 1.12 AUT6个岛与ARC6个岛
     Call Home() //回城
 End Sub
 
+Call ClearQuest()
 
 Beep 200,500

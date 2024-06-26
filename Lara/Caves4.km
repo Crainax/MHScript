@@ -466,7 +466,7 @@ Sub Move  //精确的移动:Ver3.3 大写弹出
     Wend
 End Sub
 
-Sub ReleaseRune //定期解轮 ver2.41 解轮防公告
+Sub ReleaseRune //定期解轮 ver2.5 回到了不用取消轮的年代
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Liar.bmp",000000,1.00,0,intX,intY
     if intX < 0 then //A图没找到就找B图
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Liar2.bmp",000000,1.00,0,intX,intY
@@ -502,39 +502,6 @@ Sub ReleaseRune //定期解轮 ver2.41 解轮防公告
             Beep 1000,200
             Pause
             RuneCooldown = GetTimeStamp()
-            //解轮后先A一下
-            KeyPress F
-            a = 1
-            GetFileLine tolLoc,Map.conf,a		//文件查找
-            wJam = 0 //放在循环外面位置
-            while 1 > 0
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\HP.bmp",000000,1.00,0,logoX,logoY
-                if logoX >= 0 Then
-                    a = 1
-                    for 43
-                        MoveTo logoX-583+a*32,logoY-709+tolLoc
-                        Delay 30
-                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\Rune.bmp",000000,1.00,0,intX,intY
-                        if intX >= 0 Then //找到点击
-                            for 4
-                                RightClick
-                            Next
-                            break
-                        End If
-                        a = a + 1
-                    Next
-                    break
-                else
-                    wJam = wJam + 1  //循环内部
-                    if wJam > 5 then //三次失败,
-                        break
-                    else
-                        Delay 200
-                        MoveTo x2,y2
-                        KeyPress F
-                    End If
-                End If
-            Wend
         End If
     End If
 End Sub
@@ -805,28 +772,7 @@ Sub CheckMap //核对地图
         End If
     Wend
 End Sub
-Sub on_timer4 //查红点 ver1.1 使用了tempX和Y防干扰
-    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Player.bmp",000000,1.00,0,tempX,tempY
-    if tempX >= 0 Then //地图里有其他玩家
-        red = red + 1
-    End If
-    if red > 0 then //红点存在过才会一直累计
-        if red % 10 == 0 then //其他玩家在地图逗留超过10秒就提醒
-            Beep 261,100
-            Beep 261,100
-            Beep 392,100
-            Beep 392,100
-            Beep 440,100
-            Beep 440,100
-            Beep 392,100
-        End If
-        red = red + 100
-    End If
-    if red >= 6000 then //每1分钟重置一次计数
-        red = 0
-    End If
-    Timer          4, 1, 1000              //检测地图红点
-EndSub
+
 
 Sub Menu //菜单(大写键开启)
     a = GetLED(1)
@@ -864,7 +810,7 @@ pick1        = GetTimeStamp()  //捡钱时间
 fountainTime = 0               //上次喷泉的时间
 RuneCooldown = 0               //解轮冷却
 yTolerance   = 0               //初始化
-Timer          4, 1, 1000        //检测地图红点
+// Timer          4, 1, 1000        //检测地图红点
 Rem Out //打开大写键就跳回这里
 Call Menu()
 stoneTime = 0          //上次轮回的时间
