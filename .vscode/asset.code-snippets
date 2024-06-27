@@ -13,6 +13,20 @@
 		],
 		"description": "素材-OK"
 	},
+	"素材-否": {
+		"prefix": "assetNo",
+		"body": [
+			"\"E:\\MHImg\\UI\\Dialog\\No2.bmp|E:\\MHImg\\UI\\Dialog\\No2B.bmp\""
+		],
+		"description": "素材-否"
+	},
+	"素材-拒绝": {
+		"prefix": "assetReject",
+		"body": [
+			"\"E:\\MHImg\\UI\\Dialog\\Reject.bmp\""
+		],
+		"description": "素材-拒绝"
+	},
 	"素材-StopDialog": {
 		"prefix": "assetStopDialog",
 		"body": [

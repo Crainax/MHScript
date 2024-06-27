@@ -937,12 +937,12 @@ Sub Home //回城
         End If
     Wend
 End Sub
-Sub ClearDialog //清除标准对话框 (无限循环清除所有) Ver1.1 拒绝
-    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp|E:\MHImg\UI\Dialog\Reject.bmp",000000,1.00,0,intX,intY
+Sub ClearDialog //清除标准对话框 (无限循环清除所有) Ver1.21 加了个否的判断处理
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp|E:\MHImg\UI\Dialog\Reject.bmp|E:\MHImg\UI\Dialog\No2.bmp|E:\MHImg\UI\Dialog\No2B.bmp",000000,1.00,0,intX,intY
     if intX >= 0 Then //有第一个StopChat才会按
         wJam = 0 //放在循环外面位置
         while 1>0
-            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp|E:\MHImg\UI\Dialog\Reject.bmp",000000,1.00,0,intX,intY
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp|E:\MHImg\UI\Dialog\Reject.bmp|E:\MHImg\UI\Dialog\No2.bmp|E:\MHImg\UI\Dialog\No2B.bmp",000000,1.00,0,intX,intY
             if intX < 0 Then //结束了(以几次判断来看)
                 wJam = wJam + 1  //循环内部
                 if wJam > 3 then //三次失败,
@@ -950,20 +950,13 @@ Sub ClearDialog //清除标准对话框 (无限循环清除所有) Ver1.1 拒绝
                 End If
             else
                 wJam = 0 //放在成功的位置
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp|E:\MHImg\UI\Dialog\No2B.bmp",000000,1.00,0,intX,intY
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp|E:\MHImg\UI\Dialog\No2B.bmp|E:\MHImg\UI\Dialog\Reject.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then //否-->是
                     MoveTo intX-50,intY
                     LeftClick
                     DelayRandom 139,142
                 else
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\Reject.bmp",000000,1.00,0,intX,intY
-                    if intX >= 0 Then //接受
-                        MoveTo intX-50,intY
-                        LeftClick
-                        DelayRandom 139,142
-                    else
-                        KeyPress PageDown
-                    End If
+                    KeyPress PageDown
                 End If
             End If
         Wend

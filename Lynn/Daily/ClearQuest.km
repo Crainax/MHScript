@@ -833,7 +833,51 @@ RuneCooldown = 0            //解轮冷却
 SpellOK      = 0            //间
 quickCD      = 0            //间
 
-
+Sub ClearDialog //清除标准对话框 (无限循环清除所有) Ver1.21 加了个否的判断处理
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp|E:\MHImg\UI\Dialog\Reject.bmp|E:\MHImg\UI\Dialog\No2.bmp|E:\MHImg\UI\Dialog\No2B.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then //有第一个StopChat才会按
+        wJam = 0 //放在循环外面位置
+        while 1>0
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp|E:\MHImg\UI\Dialog\Reject.bmp|E:\MHImg\UI\Dialog\No2.bmp|E:\MHImg\UI\Dialog\No2B.bmp",000000,1.00,0,intX,intY
+            if intX < 0 Then //结束了(以几次判断来看)
+                wJam = wJam + 1  //循环内部
+                if wJam > 3 then //三次失败,
+                    Exit Sub
+                End If
+            else
+                wJam = 0 //放在成功的位置
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp|E:\MHImg\UI\Dialog\No2B.bmp|E:\MHImg\UI\Dialog\Reject.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //否-->是
+                    MoveTo intX-50,intY
+                    LeftClick
+                    DelayRandom 139,142
+                else
+                    KeyPress PageDown
+                End If
+            End If
+        Wend
+    End If
+End Sub
+Sub ClearDialogOnce //清除标准对话框(一次) Ver1.1
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then //有第一个StopChat才会按
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp|E:\MHImg\UI\Dialog\No2B.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //否-->是
+            MoveTo intX-50,intY
+            LeftClick
+            DelayRandom 139,142
+        else
+            KeyPress PageDown
+        End If
+    else //Reject的处理
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\Reject.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then //点击接受
+            MoveTo intX-50,intY
+            LeftClick
+            DelayRandom 139,142
+        End If
+    End If
+End Sub
 Sub Loading //加载地图
     while 1>0 //等进入加载
         FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
@@ -998,6 +1042,86 @@ Sub BeforeStart	//开刷前的参数初始化
     fireTime	= 0				//上次放熊屁的时间
     cycle1		= 0				//循环
 End Sub
+
+Sub ReceiveQuest //领每日任务
+    while 1>0 //接ARC的
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Quest\Mark1.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            MoveTo intX+50,intY+5
+            LeftClick
+            Delay 300
+
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\No2.bmp|E:\MHImg\UI\Dialog\No2B.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    Call ClearDialog()
+                    break
+                else
+                    Delay 200
+                End If
+            Wend
+            break
+        else
+            KeyPress =
+            MoveR 50,50
+            Delay 200
+        End If
+    Wend
+    while 1>0 //接AUT的
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Quest\Mark2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            MoveTo intX+50,intY+5
+            LeftClick
+            Delay 300
+
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\No2.bmp|E:\MHImg\UI\Dialog\No2B.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    Call ClearDialog()
+                    break
+                else
+                    Delay 200
+                End If
+            Wend
+            break
+        else
+            KeyPress =
+            MoveR 50,50
+            Delay 200
+        End If
+    Wend
+    wJam = 0 //放在循环外面位置
+    while 1>0 //接其他的
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Quest\Mark3.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            wJam = 0 //放在成功的位置
+            MoveTo intX+50,intY+5
+            LeftClick
+            Delay 300
+
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    Call ClearDialog()
+                    break
+                else
+                    Delay 200
+                End If
+            Wend
+        else
+            wJam = wJam + 1  //循环内部
+            if wJam > 6 then //三次失败,
+                Call ClearDialog()
+                break
+            else
+                KeyPress =
+                MoveR 20,0
+                Delay 200
+            End If
+        End If
+    Wend
+End Sub
+
 
 Sub ClearQuest //清理任务 Ver1.11 全AUT和ARC
     SavedTorY = 360
@@ -1773,7 +1897,29 @@ Sub ClearQuest //清理任务 Ver1.11 全AUT和ARC
     Call Home() //回城
 End Sub
 
+Sub SubmitQuest //提交任务
+    wJam = 0 //放在循环外面位置
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Quest\MarkA.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            wJam = 0 //放在成功的位置
+            Call ClearDialog()
+        else
+            wJam = wJam + 1
+            if wJam > 5 then //多次失败代表任务接完了
+                Call ClearDialog()
+                break
+            else
+                KeyPress =
+                MoveR 50,50
+                Delay 200
+            End If
+        End If
+    Wend
+End Sub
 
-Call ClearQuest()
+// Call ReceiveQuest()
+// Call ClearQuest()
+Call SubmitQuest()
 
 Beep 200,500

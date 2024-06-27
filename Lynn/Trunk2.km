@@ -796,7 +796,7 @@ Sub Navigate //引導路線
 
             tarX      = -7
             tarY      = 139
-            tolerance = 0
+            tolerance = -1
             alterX    = 49  //传送位置
             alterY    = 109
             Call Move()
@@ -811,14 +811,14 @@ Sub Navigate //引導路線
 
             tarX      = -84
             tarY      = 128
-            tolerance = 0
+            tolerance = -1
             alterX    = -7  //传送位置
             alterY    = 139
             Call Move()
 
             tarX      = -7
             tarY      = 139
-            tolerance = 0
+            tolerance = -1
             alterX    = 49  //传送位置
             alterY    = 109
             Call Move()
