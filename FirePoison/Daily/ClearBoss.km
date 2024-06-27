@@ -1012,6 +1012,50 @@ Sub EnterPre //拆分进BOSS第一部分
         End If
     Wend
 End Sub
+Sub TeleportUI //传送门->无限出现BOSS的UI
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_UI.bmp|E:\MHImg\UI\Boss\Mark_UI2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            break
+        else
+            FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //首先需要确认人物在哦
+                FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+                intX = intX - logoX
+                intY = intY - logoY
+                if intY != tarX or intX != tarY then //
+                    tolerance = -1
+                    yTolerance = 2
+                    Call Move_B() //仅移动
+                End If
+                KeyPress Up
+                Delay 50
+            End if
+        End If
+    Wend
+End Sub
+Sub ChatBossUI //NPC->对话BOSSUI
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_UI.bmp|E:\MHImg\UI\Boss\Mark_UI2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            break
+        else
+            FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //首先需要确认人物在哦
+                FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
+                intX = intX - logoX
+                intY = intY - logoY
+                if intY != tarX or intX != tarY then //
+                    tolerance = -1
+                    yTolerance = 2
+                    Call Move_B() //仅移动
+                End If
+                KeyPress PageDown
+                Delay 50
+            End if
+        End If
+    Wend
+End Sub
 Sub TeleportChat //传送门->无限循环对话框 Ver1.1判断人物在再移动
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp",000000,1.00,0,intX,intY
@@ -1070,7 +1114,7 @@ Sub MoveTele //确认地图有人物坐标再移动
     End If
 End Sub
 
-Sub Boss1 //打扎昆 Ver1.1 修复出门的问题
+Sub Boss1 //打扎昆 Ver1.2 梦改新版+1
     Call EnterPre() //第一部分成功后logoX就保存了
     while 1>0 //进入扎昆
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\1\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
@@ -1092,40 +1136,37 @@ Sub Boss1 //打扎昆 Ver1.1 修复出门的问题
     while 1>0 //到了地图
         FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_1.bmp",000000,1.00,0,intX,intY
         if intX >= 0 then //到地图里了
-            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
-            FindPic x1,y1,x2,y2,"E:\MHImg\NPC.bmp",000000,1.00,0,intX,intY	//找图
-            intX = intX - logoX
-            intY = intY - logoY
-            if intX == 76 and intY == 70 then //NPC位置:图1
-                tarX      = 89
-                tarY      = 72
-                Call TeleportChat() //传送门->无限循环对话框
-                //对话框出来后
-                while 1>0
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\1\Mark1.bmp",000000,1.00,0,intX,intY
-                    if intX >= 0 Then //选择一般难度
-                        MoveTo intX+50,intY+5
-                        LeftClick
-                        DelayRandom 139,142
-                        Call ClearDialog() //清除标准对话框
-                        break
-                    End If
-                Wend
-            else //NPC位置:图2
-                tarX      = 50
-                tarY      = 77
-                Call NPCChat() //人->无限循环对话框
-                while 1>0 //确认到了地图里
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
-                    if intX >= 0 Then //确认进到了地图里
-                        break
-                    else
-                        Call ClearDialog() //清除标准对话框
-                        Delay 200
-                    End If
-                Wend
-                break
-            End If
+            tarX      = 89
+            tarY      = 72
+            Call TeleportUI() //传送门->无限循环BOSSUI
+            //对话框出来后
+            while 1>0
+                Call ClearDialog()
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //对话框全部点掉
+                    KeyPress Enter
+                    Delay 200
+                End If
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_UI.bmp|E:\MHImg\UI\Boss\Mark_UI2.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //选择一般难度
+                    MoveTo intX+50,intY-130
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo intX+50,intY
+                    LeftClick
+                    DelayRandom 139,142
+                    Delay 200
+                else //UI消失了
+                    break
+                End If
+            Wend
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //出现倒计时代表进来了
+                    break
+                End If
+            Wend
+            break
         else //等待进入地图中
             Delay 200
         End If
@@ -1201,37 +1242,26 @@ Sub Boss1 //打扎昆 Ver1.1 修复出门的问题
     while 1>0 //到了地图
         FindPic x1,y1,x2,y2,"E:\MHImg\Maps\Boss_1.bmp",000000,1.00,0,intX,intY
         if intX >= 0 then //到地图里了
-            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
-            FindPic x1,y1,x2,y2,"E:\MHImg\NPC.bmp",000000,1.00,0,intX,intY	//找图
-            intX = intX - logoX
-            intY = intY - logoY
-            if intX == 76 and intY == 70 then //NPC位置:图1
-                while 1>0
-                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Boss_1.bmp",000000,1.00,0,intX,intY
-                    if intX < 0 Then //这才是走出了地图
-                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
-                        if intX >= 0 Then
-                            break
-                        End If
-                    else
-                        tarX      = -52
-                        tarY      = 72
-                        Call MoveBTele()
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Boss_1.bmp",000000,1.00,0,intX,intY
+                if intX < 0 Then //这才是走出了地图
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        break
                     End If
-                Wend
-
-                break
-            else //NPC位置:图2
-                tarX      = 0
-                tarY      = 70
-                Call MoveBTele()
-            End If
+                else
+                    tarX      = -52
+                    tarY      = 72
+                    Call MoveBTele()
+                End If
+            Wend
+            break
         else //等待进入地图中
             Delay 200
         End If
     Wend
 End Sub
-Sub Boss2 //打老麦 Ver1.1
+Sub Boss2 //打老麦 Ver1.2 梦改新版
     Call EnterPre() //第一部分成功后logoX就保存了
     while 1>0 //进入老麦
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\2\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
@@ -1256,16 +1286,24 @@ Sub Boss2 //打老麦 Ver1.1
         if intX >= 0 then //到地图里了
             tarX      = 15
             tarY      = 79
-            Call TeleportChat() //传送门->无限循环对话框
+            Call TeleportUI() //传送门->无限循环BOSSUI
             //对话框出来后
             while 1>0
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\2\Mark1.bmp",000000,1.00,0,intX,intY
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //对话框全部点掉
+                    KeyPress Enter
+                    Delay 200
+                End If
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_UI.bmp|E:\MHImg\UI\Boss\Mark_UI2.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then //选择一般难度
-                    MoveTo intX+50,intY+5
+                    MoveTo intX+50,intY-130
                     LeftClick
                     DelayRandom 139,142
-                    Call ClearDialog() //清除标准对话框
-                    Delay 500
+                    MoveTo intX+50,intY
+                    LeftClick
+                    DelayRandom 139,142
+                    Delay 200
+                else //UI消失了
                     break
                 End If
             Wend
@@ -1312,7 +1350,7 @@ Sub Boss2 //打老麦 Ver1.1
         End If
     Wend
 End Sub
-Sub Boss3 //希拉 Ver1.1
+Sub Boss3 //希拉 Ver1.2 梦改新版
     Call EnterPre() //第一部分成功后logoX就保存了
     while 1>0 //进入希拉
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\3\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
@@ -1337,9 +1375,27 @@ Sub Boss3 //希拉 Ver1.1
         if intX >= 0 then //到地图里了
             tarX      = 67
             tarY      = 85
-            Call TeleportChat() //传送门->无限循环对话框
+            Call TeleportUI() //传送门->无限循环BOSSUI
             //对话框出来后
-            Call ClearDialog() //清除标准对话框 (默认难度就是普通了)
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //对话框全部点掉
+                    KeyPress Enter
+                    Delay 200
+                End If
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_UI.bmp|E:\MHImg\UI\Boss\Mark_UI2.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //选择一般难度
+                    MoveTo intX+50,intY-130
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo intX+50,intY
+                    LeftClick
+                    DelayRandom 139,142
+                    Delay 200
+                else //UI消失了
+                    break
+                End If
+            Wend
             break
         else //等待进入地图中
             Delay 200
@@ -1437,7 +1493,7 @@ Sub RepeatBoss4_2 //四傻的重复部分
     Next
     Call NewTeam() //强制退图
 End Sub
-Sub Boss4 //四傻
+Sub Boss4 //四傻 Ver1.1 梦改新版
     Call EnterPre() //第一部分成功后logoX就保存了
     while 1>0 //进入四傻
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\4\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
@@ -1462,9 +1518,27 @@ Sub Boss4 //四傻
         if intX >= 0 then //到地图里了
             tarX      = 56
             tarY      = 102
-            Call TeleportChat() //传送门->无限循环对话框
+            Call TeleportUI() //传送门->无限循环BOSSUI
             //对话框出来后
-            Call ClearDialog() //清除标准对话框 (默认难度就是普通了)
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //对话框全部点掉
+                    KeyPress Enter
+                    Delay 200
+                End If
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_UI.bmp|E:\MHImg\UI\Boss\Mark_UI2.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //选择一般难度
+                    MoveTo intX+50,intY-130
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo intX+50,intY
+                    LeftClick
+                    DelayRandom 139,142
+                    Delay 200
+                else //UI消失了
+                    break
+                End If
+            Wend
             break
         else //等待进入地图中
             Delay 200
@@ -1517,9 +1591,27 @@ Sub Boss4 //四傻
         if intX >= 0 then //到地图里了
             tarX      = 26
             tarY      = 102
-            Call TeleportChat() //传送门->无限循环对话框
+            Call TeleportUI() //传送门->无限循环BOSSUI
             //对话框出来后
-            Call ClearDialog() //清除标准对话框 (默认难度就是普通了)
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //对话框全部点掉
+                    KeyPress Enter
+                    Delay 200
+                End If
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_UI.bmp|E:\MHImg\UI\Boss\Mark_UI2.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //选择一般难度
+                    MoveTo intX+50,intY-130
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo intX+50,intY
+                    LeftClick
+                    DelayRandom 139,142
+                    Delay 200
+                else //UI消失了
+                    break
+                End If
+            Wend
             break
         else //等待进入地图中
             Delay 200
@@ -1574,9 +1666,27 @@ Sub Boss4 //四傻
         if intX >= 0 then //到地图里了
             tarX      = -7
             tarY      = 102
-            Call TeleportChat() //传送门->无限循环对话框
+            Call TeleportUI() //传送门->无限循环BOSSUI
             //对话框出来后
-            Call ClearDialog() //清除标准对话框 (默认难度就是普通了)
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //对话框全部点掉
+                    KeyPress Enter
+                    Delay 200
+                End If
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_UI.bmp|E:\MHImg\UI\Boss\Mark_UI2.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //选择一般难度
+                    MoveTo intX+50,intY-130
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo intX+50,intY
+                    LeftClick
+                    DelayRandom 139,142
+                    Delay 200
+                else //UI消失了
+                    break
+                End If
+            Wend
             break
         else //等待进入地图中
             Delay 200
@@ -1632,9 +1742,27 @@ Sub Boss4 //四傻
         if intX >= 0 then //到地图里了
             tarX      = -38
             tarY      = 102
-            Call TeleportChat() //传送门->无限循环对话框
+            Call TeleportUI() //传送门->无限循环BOSSUI
             //对话框出来后
-            Call ClearDialog() //清除标准对话框 (默认难度就是普通了)
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //对话框全部点掉
+                    KeyPress Enter
+                    Delay 200
+                End If
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_UI.bmp|E:\MHImg\UI\Boss\Mark_UI2.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //选择一般难度
+                    MoveTo intX+50,intY-130
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo intX+50,intY
+                    LeftClick
+                    DelayRandom 139,142
+                    Delay 200
+                else //UI消失了
+                    break
+                End If
+            Wend
             break
         else //等待进入地图中
             Delay 200
@@ -1726,7 +1854,7 @@ Sub Boss4 //四傻
         End If
     Wend
 End Sub
-Sub Boss5 //打狮子王 Ver1.1加长了一点时间
+Sub Boss5 //打狮子王 Ver1.2 梦改新版
     Call EnterPre() //第一部分成功后logoX就保存了
     while 1>0 //进入老麦
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\5\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
@@ -1751,19 +1879,25 @@ Sub Boss5 //打狮子王 Ver1.1加长了一点时间
         if intX >= 0 then //到地图里了
             tarX      = 76
             tarY      = 97
-            Call TeleportChat() //传送门->无限循环对话框
+            Call TeleportUI() //传送门->无限循环BOSSUI
             //对话框出来后
             while 1>0
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\5\Mark1.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //选择困难难度
-                    MoveTo intX+50,intY+5
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //对话框全部点掉
+                    KeyPress Enter
+                    Delay 200
+                End If
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_UI.bmp|E:\MHImg\UI\Boss\Mark_UI2.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //选择一般难度
+                    MoveTo intX+50,intY-87
                     LeftClick
                     DelayRandom 139,142
-                    Delay 500
+                    MoveTo intX+50,intY
+                    LeftClick
+                    DelayRandom 139,142
+                    Delay 200
+                else //UI消失了
                     break
-                else
-                    Call ClearDialogOnce() //清除标准对话框(一次)
-                    Delay 50
                 End If
             Wend
             while 1>0
@@ -1820,10 +1954,7 @@ Sub Boss5 //打狮子王 Ver1.1加长了一点时间
         End If
     Wend
 End Sub
-Sub Boss6 //打黑龙 Ver1.1 切圖時的加个while
-    // [charX40,charY84][teleX-71,teleY-1751] npc位置
-    // [charX-25,charY84][teleX-71,teleY-1751] 离开NPC位置
-    // [charX55,charY80][teleX-71,teleY-1751] //平A点
+Sub Boss6 //打黑龙 Ver1.2 梦改新版
     Call EnterPre() //第一部分成功后logoX就保存了
     while 1>0 //进入老麦
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\6\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
@@ -1848,19 +1979,25 @@ Sub Boss6 //打黑龙 Ver1.1 切圖時的加个while
         if intX >= 0 then //到地图里了
             tarX      = 40
             tarY      = 84
-            Call NPCChat() //传送门->无限循环对话框
+            Call ChatBossUI() //人物对话BossUI
             //对话框出来后
             while 1>0
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\6\Mark1.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //选择困难难度
-                    MoveTo intX+50,intY+5
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //对话框全部点掉
+                    KeyPress Enter
+                    Delay 200
+                End If
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_UI.bmp|E:\MHImg\UI\Boss\Mark_UI2.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //选择一般难度
+                    MoveTo intX+50,intY-130
                     LeftClick
                     DelayRandom 139,142
-                    Delay 500
+                    MoveTo intX+50,intY
+                    LeftClick
+                    DelayRandom 139,142
+                    Delay 200
+                else //UI消失了
                     break
-                else
-                    Call ClearDialogOnce() //清除标准对话框(一次)
-                    Delay 50
                 End If
             Wend
             while 1>0
@@ -2009,7 +2146,7 @@ Sub Boss6 //打黑龙 Ver1.1 切圖時的加个while
         End If
     Wend
 End Sub
-Sub Boss7 //打阿卡 Ver1.2
+Sub Boss7 //打阿卡 Ver1.2 梦改新版
     Call EnterPre() //第一部分成功后logoX就保存了
     while 1>0 //进入老麦
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\7\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
@@ -2039,12 +2176,12 @@ Sub Boss7 //打阿卡 Ver1.2
         FindPic x1,y1,x2,y2,"E:\MHImg\UI\Boss\7\Feat1.bmp|E:\MHImg\UI\Boss\7\Feat2.bmp|E:\MHImg\UI\Boss\7\Feat3.bmp|E:\MHImg\UI\Boss\7\Feat4.bmp",000000,1.00,0,intX,intY
         if intX >= 0 then //到地图里了
             Delay 500
-            for 5
+            for 3
                 Call RightF() //右跳4下
             Next
             a = 0
             while 1>0 //左移法
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_UI.bmp|E:\MHImg\UI\Boss\Mark_UI2.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then
                     break
                 else
@@ -2060,16 +2197,22 @@ Sub Boss7 //打阿卡 Ver1.2
             Wend
             //对话框出来后
             while 1>0
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\7\Mark1.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //选择困难难度
-                    MoveTo intX+50,intY+5
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //对话框全部点掉
+                    KeyPress Enter
+                    Delay 200
+                End If
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_UI.bmp|E:\MHImg\UI\Boss\Mark_UI2.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //选择一般难度
+                    MoveTo intX+50,intY-87
                     LeftClick
                     DelayRandom 139,142
-                    Delay 500
+                    MoveTo intX+50,intY
+                    LeftClick
+                    DelayRandom 139,142
+                    Delay 200
+                else //UI消失了
                     break
-                else
-                    Call ClearDialogOnce() //清除标准对话框(一次)
-                    Delay 50
                 End If
             Wend
             while 1>0
@@ -2276,7 +2419,7 @@ Sub Boss8 //打顶培
     Wend
     Call Home()
 End Sub
-Sub Boss9 //打PKB
+Sub Boss9 //打PKB Ver1.1 梦改新版
     Call EnterPre() //第一部分成功后logoX就保存了
     while 1>0 //进入老麦
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\9\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
@@ -2307,12 +2450,24 @@ Sub Boss9 //打PKB
         if intX >= 0 then //到地图里了
             tarX      = 35
             tarY      = 84
-            Call NPCChat() //传送门->无限循环对话框
+            Call ChatBossUI() //传送门->无限循环BOSSUI
             //对话框出来后
-            Call ClearDialog() //清除标准对话框
             while 1>0
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_Inside.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //出现倒计时代表进来了
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //对话框全部点掉
+                    KeyPress Enter
+                    Delay 200
+                End If
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Mark_UI.bmp|E:\MHImg\UI\Boss\Mark_UI2.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //选择一般难度
+                    MoveTo intX+50,intY-130
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo intX+50,intY
+                    LeftClick
+                    DelayRandom 139,142
+                    Delay 200
+                else //UI消失了
                     break
                 End If
             Wend

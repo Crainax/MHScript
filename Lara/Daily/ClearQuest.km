@@ -921,7 +921,6 @@ Sub ReceiveQuest //领每日任务
         End If
     Wend
 End Sub
-
 Sub ClearQuest //清理任务 Ver1.12 全AUT和ARC
     SavedTorY = 360
     SavedTor  = 38
@@ -2145,14 +2144,27 @@ Sub ClearQuest //清理任务 Ver1.12 全AUT和ARC
     Wend
     Call Home() //回城
 End Sub
-
-Sub SubmitQuest //提交任务
+Sub SubmitQuest //提交任务 Ver1.1 周小核任务
     wJam = 0 //放在循环外面位置
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Quest\MarkA.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
             wJam = 0 //放在成功的位置
-            Call ClearDialog()
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Quest\MarkWeek.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //周小核任务
+                KeyPress PageDown
+                for 3
+                    Beep 100,200
+                    Beep 200,200
+                    Beep 300,200
+                    Beep 400,200
+                    Beep 500,200
+                Next
+                Pause
+                Call ClearDialog()
+            else
+                Call ClearDialog()
+            End If
         else
             wJam = wJam + 1
             if wJam > 5 then //多次失败代表任务接完了

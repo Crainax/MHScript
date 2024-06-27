@@ -20,7 +20,7 @@ xEnd           = intX
 yEnd           = intY
 
 while 1 > 0
-    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\HP.bmp",000000,1.00,0,intX,intY
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Quest\MarkWeek.bmp",000000,1.00,0,intX,intY
     If intX >= 0 Then
         MsgBox find & intX & , & intY & ]
     else
