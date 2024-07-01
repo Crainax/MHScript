@@ -658,10 +658,10 @@ Sub PreMoveBF //提前移动到特定地点 Ver2.0 提前移动先judge,不然�
     End If
 End Sub
 
-Sub Accept //同意加入组队
+Sub Accept //同意加入组队 Ver1.1
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\plus.bmp",000000,1.00,0,intX,intY	//找图
     If intX >= 0 Then
-        MoveTo intX+138,intY-17
+        MoveTo intX+164,intY-17
         LeftClick
         DelayRandom 39,42
     End If

@@ -2638,7 +2638,7 @@ Sub Boss6 //打黑龙 Ver1.2 梦改新版
         End If
     Wend
 End Sub
-Sub Boss7 //打阿卡 Ver1.2 梦改新版
+Sub Boss7 //打阿卡 Ver1.21 梦改新版+1
     Call EnterPre() //第一部分成功后logoX就保存了
     while 1>0 //进入老麦
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\7\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
@@ -2668,7 +2668,7 @@ Sub Boss7 //打阿卡 Ver1.2 梦改新版
         FindPic x1,y1,x2,y2,"E:\MHImg\UI\Boss\7\Feat1.bmp|E:\MHImg\UI\Boss\7\Feat2.bmp|E:\MHImg\UI\Boss\7\Feat3.bmp|E:\MHImg\UI\Boss\7\Feat4.bmp",000000,1.00,0,intX,intY
         if intX >= 0 then //到地图里了
             Delay 500
-            for 3
+            for 5
                 Call RightF() //右跳4下
             Next
             a = 0
@@ -2679,6 +2679,7 @@ Sub Boss7 //打阿卡 Ver1.2 梦改新版
                 else
                     a = a + 1
                     if a >= 20 then
+                        Call RightF()
                         Call RightF()
                         a = 0
                     else
@@ -3133,7 +3134,7 @@ Sub Gugu //菇菇神社
     Wend
 
 End Sub
-Sub ReceiveQuest //领每日任务
+Sub ReceiveQuest //领每日任务 Ver1.1 加多一個
     while 1>0 //接ARC的
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Quest\Mark1.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
@@ -3182,7 +3183,7 @@ Sub ReceiveQuest //领每日任务
     Wend
     wJam = 0 //放在循环外面位置
     while 1>0 //接其他的
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Quest\Mark3.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Quest\Mark3.bmp|E:\MHImg\UI\Daily\Quest\Mark4.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
             wJam = 0 //放在成功的位置
             MoveTo intX+50,intY+5
@@ -4547,15 +4548,15 @@ Call Gugu()
 //怪物公园
 Call Park()
 //打BOSS
-// Call Boss1()
-// Call Boss2()
-// Call Boss3()
-// Call Boss4()
-// Call Boss5()
-// Call Boss6()
-// Call Boss7()
-// Call Boss8()
-// Call Boss9()
+Call Boss1()
+Call Boss2()
+Call Boss3()
+Call Boss4()
+Call Boss5()
+Call Boss6()
+Call Boss7()
+Call Boss8()
+Call Boss9()
 //564
 Call HDDaily()      //清每日
 Call LegionDaily()  //清每日

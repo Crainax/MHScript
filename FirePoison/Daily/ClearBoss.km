@@ -2146,7 +2146,7 @@ Sub Boss6 //打黑龙 Ver1.2 梦改新版
         End If
     Wend
 End Sub
-Sub Boss7 //打阿卡 Ver1.2 梦改新版
+Sub Boss7 //打阿卡 Ver1.21 梦改新版+1
     Call EnterPre() //第一部分成功后logoX就保存了
     while 1>0 //进入老麦
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\7\Mark_Select.bmp",000000,1.00,0,intX,intY //当前是否选中了
@@ -2176,7 +2176,7 @@ Sub Boss7 //打阿卡 Ver1.2 梦改新版
         FindPic x1,y1,x2,y2,"E:\MHImg\UI\Boss\7\Feat1.bmp|E:\MHImg\UI\Boss\7\Feat2.bmp|E:\MHImg\UI\Boss\7\Feat3.bmp|E:\MHImg\UI\Boss\7\Feat4.bmp",000000,1.00,0,intX,intY
         if intX >= 0 then //到地图里了
             Delay 500
-            for 3
+            for 5
                 Call RightF() //右跳4下
             Next
             a = 0
@@ -2187,6 +2187,7 @@ Sub Boss7 //打阿卡 Ver1.2 梦改新版
                 else
                     a = a + 1
                     if a >= 20 then
+                        Call RightF()
                         Call RightF()
                         a = 0
                     else

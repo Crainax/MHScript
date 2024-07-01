@@ -1043,7 +1043,7 @@ Sub BeforeStart	//开刷前的参数初始化
     cycle1		= 0				//循环
 End Sub
 
-Sub ReceiveQuest //领每日任务
+Sub ReceiveQuest //领每日任务 Ver1.1 加多一個
     while 1>0 //接ARC的
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Quest\Mark1.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
@@ -1092,7 +1092,7 @@ Sub ReceiveQuest //领每日任务
     Wend
     wJam = 0 //放在循环外面位置
     while 1>0 //接其他的
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Quest\Mark3.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Quest\Mark3.bmp|E:\MHImg\UI\Daily\Quest\Mark4.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
             wJam = 0 //放在成功的位置
             MoveTo intX+50,intY+5

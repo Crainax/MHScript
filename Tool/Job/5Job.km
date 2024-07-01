@@ -189,11 +189,11 @@ Sub Move_A //全职业普通移动 Ver1.15 多次跳出
     Wend
 End Sub
 
-//分辨率初始化
+//分辨率初始化(B版)-(较长
 GetScreenResolution intX, intY
 x1     = intX - 1440
 y1     = intY - 950
-x2     = intX - 1140
+x2     = intX - 960
 y2     = intY - 600
 x3     = intX - 640
 y3     = intY - 260
@@ -416,6 +416,16 @@ Sub ClearDialogOnce //清除标准对话框(一次) Ver1.1
         End If
     End If
 End Sub
+Sub ClearDialog2 //清除大屏对话框
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\EndChat2.bmp|E:\MHImg\UI\Dialog\EndChat2B.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then //有第一个StopChat才会按
+        MoveTo intX,intY
+        LeftClick
+        DelayRandom 139,142
+        MoveR 50,0
+        DelayRandom 139,142
+    End If
+End Sub
 Sub Bulb5Job //灯泡解对话
     while 1>0 //找菇菇标志
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\5Job\Mark.bmp|E:\MHImg\Common\5Job\MarkA.bmp|E:\MHImg\Common\5Job\MarkB.bmp",000000,1.00,0,intX,intY
@@ -464,7 +474,7 @@ End Sub
 Sub QuestTalk2 //(寻找鼠标图案,多次找不到就退出)
     wJam = 0 //放在循环外面位置
     while 1>0
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Mouse_F1.bmp|E:\MHImg\UI\Mouse_F2.bmp|E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,logoX,logoY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\ChatFeat.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then
             wJam = 0 //放在成功的位置
 
@@ -472,6 +482,7 @@ Sub QuestTalk2 //(寻找鼠标图案,多次找不到就退出)
             LeftClick
             DelayRandom 139,142
 
+            Call ClearDialog2()
             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
             if intX >= 0 Then
                 Call ClearDialog()
@@ -486,6 +497,7 @@ Sub QuestTalk2 //(寻找鼠标图案,多次找不到就退出)
             End If
         End If
     Wend
+    Call ClearDialog2()
 End Sub
 Sub CloseCaps //关闭Caps键
     if GetLED(1) == 1 then //换地图
@@ -538,7 +550,7 @@ Sub BlindOutMap //盲走出地图
     Wend
 End Sub
 
-Sub 5JobRequest //接五转任务
+Sub 5JobRequest1 //第一部分
     Call Bulb5Job() //灯泡解对话
 
     Call ClearDialog()
@@ -598,8 +610,14 @@ Sub 5JobRequest //接五转任务
             DelayRandom 39,42
         End If
     Wend
-    Call Loading()
-
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Archer.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            break
+        else
+            Delay 200
+        End If
+    Wend
     //射手村
     Call ZoomInMap() //缩小一地图
 
@@ -612,8 +630,8 @@ Sub 5JobRequest //接五转任务
             break
         else //还在外面
             tarX       = 78
-            tarY       = 111
-            yTolerance = 2
+            tarY       = 106
+            yTolerance = 4
             tolerance = -1
             Call Move_A() //仅移动
             KeyPress Up
@@ -680,8 +698,16 @@ Sub 5JobRequest //接五转任务
         End If
 
     Wend
-    Call Loading()
-
+End Sub
+Sub 5JobRequest2 //接五转任务
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\WSD.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            break
+        else
+            Delay 200
+        End If
+    Wend
     Call ZoomOutMap() //放大地图
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\5Job\B_Feature.bmp|E:\MHImg\Common\5Job\B_Feature2.bmp|E:\MHImg\Common\5Job\B_Feature3.bmp",000000,1.00,0,intX,intY
@@ -697,6 +723,7 @@ Sub 5JobRequest //接五转任务
             tolerance = -1
             Call Move_A() //仅移动
             KeyPress Up
+            Delay 500
         End If
     Wend
 
@@ -857,6 +884,8 @@ Sub 5JobRequest //接五转任务
             Delay 1000
         End If
     Wend
+End Sub
+Sub 5JobRequest3 //接五转任务3
     while 1>0
         FindPic x1,y1,x2,y2,"E:\MHImg\Maps\5Job_3.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
@@ -953,7 +982,10 @@ Sub 5JobRequest //接五转任务
     Delay 1000
 End Sub
 
-Call 5JobRequest()
+
+Call 5JobRequest1()
+Call 5JobRequest2()
+Call 5JobRequest3()
 
 Beep 100,200
 Beep 200,200
