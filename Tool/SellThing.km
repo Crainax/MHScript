@@ -127,36 +127,60 @@ Sub BossLoot //星火,勋章东西
                 FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\Item\StarFire1.bmp",000000,1.00,0,intX,intY
                 if intX >= 0 Then //找到红火
                     Call SellExtract1()
-                    SayString "9000"
-                    KeyPress tab
-                    SayString "2198" //卖的价钱
+                    MoveTo logoX-92,logoY+239
+                    LeftDoubleClick
+                    DelayRandom 139,142
+                    SayString "99"
+                    DelayRandom 139,142
+                    MoveTo logoX+60,logoY+239
+                    LeftDoubleClick
+                    DelayRandom 139,142
+                    SayString "1255555" //卖的价钱
                     KeyPress Enter
                     Call SellExtract2()
                 else
                     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\Item\StarFire2.bmp",000000,1.00,0,intX,intY
-                    if intX >= 0 Then //找到红火
+                    if intX >= 0 Then //找到花火
                         Call SellExtract1()
-                        SayString "9000"
-                        KeyPress tab
-                        SayString "2198" //卖的价钱
+                        MoveTo logoX-92,logoY+239
+                        LeftDoubleClick
+                        DelayRandom 139,142
+                        SayString "99"
+                        DelayRandom 139,142
+                        MoveTo logoX+60,logoY+239
+                        LeftDoubleClick
+                        DelayRandom 139,142
+                        SayString "1633333" //卖的价钱
                         KeyPress Enter
                         Call SellExtract2()
                     else
                         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\Item\StarFire3.bmp",000000,1.00,0,intX,intY
-                        if intX >= 0 Then //找到红火
+                        if intX >= 0 Then //找到黑火
                             Call SellExtract1()
-                            SayString "9000"
-                            KeyPress tab
-                            SayString "2198" //卖的价钱
+                            MoveTo logoX-92,logoY+239
+                            LeftDoubleClick
+                            DelayRandom 139,142
+                            SayString "99"
+                            DelayRandom 139,142
+                            MoveTo logoX+60,logoY+239
+                            LeftDoubleClick
+                            DelayRandom 139,142
+                            SayString "4455555" //卖的价钱
                             KeyPress Enter
                             Call SellExtract2()
                         else
                             FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Common\Item\Prize.bmp",000000,1.00,0,intX,intY
-                            if intX >= 0 Then //找到红火
+                            if intX >= 0 Then //找到勋章
                                 Call SellExtract1()
-                                SayString "9000"
-                                KeyPress tab
-                                SayString "2198" //卖的价钱
+                                MoveTo logoX-92,logoY+239
+                                LeftDoubleClick
+                                DelayRandom 139,142
+                                SayString "99"
+                                DelayRandom 139,142
+                                MoveTo logoX+60,logoY+239
+                                LeftDoubleClick
+                                DelayRandom 139,142
+                                SayString "5555555" //卖的价钱
                                 KeyPress Enter
                                 Call SellExtract2()
                             End If
@@ -174,10 +198,6 @@ End Sub
 
 
 Sub Menu //菜单(大写键开启)
-    a = GetLED(1)
-    if a == 0 then //大写状态就弹出
-        Exit Sub
-    End If
     Beep 261,100
     Beep 294,100
     Beep 329,100

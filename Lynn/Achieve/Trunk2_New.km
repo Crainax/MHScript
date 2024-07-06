@@ -1028,6 +1028,7 @@ Sub CheckMap //核对地图并传送(有人就换频)
                 LeftClick
                 DelayRandom 139,142
                 MoveTo logoX+165,logoY+323 //选择地图树2
+                DelayRandom 139,142
                 LeftDoubleClick
                 DelayRandom 139,142
                 MoveTo logoX-50,logoY-50

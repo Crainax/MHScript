@@ -21,8 +21,123 @@ y3   = intY - 260
 xEnd = intX
 yEnd = intY
 
+Sub ClearDialog //清除标准对话框 (无限循环清除所有) Ver1.21 加了个否的判断处理
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp|E:\MHImg\UI\Dialog\Reject.bmp|E:\MHImg\UI\Dialog\No2.bmp|E:\MHImg\UI\Dialog\No2B.bmp",000000,1.00,0,intX,intY
+    if intX >= 0 Then //有第一个StopChat才会按
+        wJam = 0 //放在循环外面位置
+        while 1>0
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp|E:\MHImg\UI\Dialog\Next.bmp|E:\MHImg\UI\Dialog\Next_On.bmp|E:\MHImg\UI\Dialog\Reject.bmp|E:\MHImg\UI\Dialog\No2.bmp|E:\MHImg\UI\Dialog\No2B.bmp",000000,1.00,0,intX,intY
+            if intX < 0 Then //结束了(以几次判断来看)
+                wJam = wJam + 1  //循环内部
+                if wJam > 3 then //三次失败,
+                    Exit Sub
+                End If
+            else
+                wJam = 0 //放在成功的位置
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\No2.bmp|E:\MHImg\UI\Dialog\No2B.bmp|E:\MHImg\UI\Dialog\Reject.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //否-->是
+                    MoveTo intX-50,intY
+                    LeftClick
+                    DelayRandom 139,142
+                else
+                    KeyPress PageDown
+                End If
+            End If
+        Wend
+    End If
+End Sub
 
-while 1 > 0
-    LeftDoubleClick
-    //KeyPress Esc
-Wend
+Sub DreamerDaily //梦改的每日签到
+    while 1>0 //每日签到
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Event\Bulb.bmp",000000,1.00,0,logoX,logoY //找灯泡
+        if logoX >= 0 Then //
+            a = 0
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Event\202406\Mark2.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //打开了UI
+                    logoX = intX
+                    logoY = intY
+                    wJam = 0 //放在循环外面位置
+                    while 1>0 //每日签到
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then
+                            wJam = 0 //放在成功的位置
+                            Call ClearDialog()
+                            break
+                        else
+                            wJam = wJam + 1  //循环内部
+                            if wJam > 3 then //三次失败,
+                                break
+                            else
+                                MoveTo logoX+115,logoY+235
+                                LeftClick
+                                DelayRandom 139,142
+                            End If
+                        End If
+                    Wend
+                    while 1>0 //切到每周任务
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Event\202406\Mark3.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then
+                            break
+                        else
+                            MoveTo logoX-165,logoY+29
+                            LeftClick
+                            DelayRandom 139,142
+                        End If
+                    Wend
+                    wJam = 0 //放在循环外面位置
+                    while 1>0 //每周签到
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Dialog\StopChat.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then
+                            wJam = 0 //放在成功的位置
+                            Call ClearDialog()
+                            break
+                        else
+                            wJam = wJam + 1  //循环内部
+                            if wJam > 3 then //三次失败,
+                                break
+                            else
+                                MoveTo logoX+115,logoY+235
+                                LeftClick
+                                DelayRandom 139,142
+                            End If
+                        End If
+                    Wend
+                    while 1>0 //切到每周任务
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Event\202406\Mark3.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then
+                            KeyPress Esc
+                            Delay 200
+                        else
+                            break
+                        End If
+                    Wend
+                    break
+                else
+                    KeyPress Esc
+                    Delay 100
+                    MoveTo logoX+50*a,logoY+45
+                    Delay 100
+                    LeftClick
+                    Delay 600
+                    a = a + 1
+                    if a >= 6 then
+                        a = 0
+                    End If
+                End If
+            Wend
+            break
+        else
+            MoveR 50,0 //找图标
+            DelayRandom 139,142
+        End If
+    Wend
+End Sub
+
+for 3
+    Beep 100,200
+    Beep 200,200
+    Beep 300,200
+    Beep 400,200
+    Beep 500,200
+Next

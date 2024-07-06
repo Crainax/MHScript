@@ -95,6 +95,7 @@ Sub AfterMap //夹在中间的抽离后 v1.3 世界也能选,抽离2个Loading
                 LeftClick
                 DelayRandom 139,142
                 MoveTo logoX+SavedX,logoY+SavedY
+                DelayRandom 139,142
                 LeftDoubleClick
                 DelayRandom 139,142
                 MoveTo logoX-50,logoY-50

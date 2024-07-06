@@ -748,6 +748,7 @@ Sub CheckMap //核对地图
                 LeftClick
                 DelayRandom 139,142
                 MoveTo logoX+147,logoY+55 //选择地图洞4
+                DelayRandom 139,142
                 LeftDoubleClick
                 DelayRandom 139,142
                 MoveTo logoX-50,logoY-50
