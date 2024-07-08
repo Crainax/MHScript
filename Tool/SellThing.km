@@ -1,9 +1,3 @@
-[General]
-ScreenX=1440
-ScreenY=2560
-Times=1
-
-[Script]
 Dim x1,          x2,      y1,    y2     // 矩形区域:小地图采样点
 Dim x3,          y3,      xEnd,  yEnd   // 2个顶点:技能区/屏幕右下角顶点
 Dim logoX,       logoY,   intX,  intY   //算目的地差值
@@ -31,12 +25,13 @@ Sub SellExtract1 //抽离
     LeftClick
     DelayRandom 139,142
     MoveTo logoX-26,logoY+225
+    DelayRandom 139,142
     LeftClick
     DelayRandom 139,142
 End Sub
 Sub SellExtract2 //抽离
-while 1>0
-    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Auction\Confirm.bmp",000000,1.00,0,intX,intY
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Auction\Confirm.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then //确认
             KeyPress Enter
             MoveTo logoX,logoY+245
@@ -135,7 +130,9 @@ Sub BossLoot //星火,勋章东西
                     MoveTo logoX+60,logoY+239
                     LeftDoubleClick
                     DelayRandom 139,142
-                    SayString "1255555" //卖的价钱
+                    loopA = 1744444
+                    SayString loopA //卖的价钱
+                    Delay 140
                     KeyPress Enter
                     Call SellExtract2()
                 else
@@ -150,7 +147,9 @@ Sub BossLoot //星火,勋章东西
                         MoveTo logoX+60,logoY+239
                         LeftDoubleClick
                         DelayRandom 139,142
-                        SayString "1633333" //卖的价钱
+                        loopA = 2133333
+                        SayString loopA //卖的价钱
+                        Delay 140
                         KeyPress Enter
                         Call SellExtract2()
                     else
@@ -163,9 +162,12 @@ Sub BossLoot //星火,勋章东西
                             SayString "99"
                             DelayRandom 139,142
                             MoveTo logoX+60,logoY+239
+                            DelayRandom 139,142
                             LeftDoubleClick
                             DelayRandom 139,142
-                            SayString "4455555" //卖的价钱
+                            loopA = 3911111
+                            SayString loopA //卖的价钱
+                            Delay 140
                             KeyPress Enter
                             Call SellExtract2()
                         else
@@ -180,7 +182,9 @@ Sub BossLoot //星火,勋章东西
                                 MoveTo logoX+60,logoY+239
                                 LeftDoubleClick
                                 DelayRandom 139,142
-                                SayString "5555555" //卖的价钱
+                                loopA = 4444444
+                                SayString loopA //卖的价钱
+                                Delay 140
                                 KeyPress Enter
                                 Call SellExtract2()
                             End If
@@ -212,8 +216,8 @@ Sub Menu //菜单(大写键开启)
     End If
 End Sub
 
-Call Menu()
-
+//Call Menu()
+        Call BossLoot()
 
 for 3
     Beep 100,200

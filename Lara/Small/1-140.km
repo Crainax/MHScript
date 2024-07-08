@@ -1320,12 +1320,13 @@ Sub ReleaseRune //定期解轮 ver2.1
     End If
 End Sub
 
-Sub Accept //同意加入组队 Ver1.1
+Sub Accept //同意加入组队 Ver1.2
     FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\plus.bmp",000000,1.00,0,intX,intY	//找图
     If intX >= 0 Then
         MoveTo intX+164,intY-17
+        Delay 120
         LeftClick
-        DelayRandom 39,42
+        Delay 120
     End If
 End Sub
 Sub Drop //扔掉道具抽离
