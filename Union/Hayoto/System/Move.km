@@ -132,70 +132,23 @@ Sub Move  //精确的移动 ver1.0
             KeyUp F
             Delay 592
         Else If intX > (tarX+16) Then //向左二段跳
-            a = 0
-            if intY > tarY +6 and intY <= tarY + 18 and intX >= (tarX-tolerance+18) and intX >= (tarX+tolerance) and intX <=(tarX+tolerance+18) then //左斜上飞
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\D2.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //左一闪(斜)
-                    DelayRandom 15,25
-                    KeyDown Left
-                    Delay 96
-                    KeyUp Left
-                    Delay 265
-                    KeyDown D
-                    Delay 103
-                    KeyUp D
-                    Delay 304
-                    a = 1
-                End If
-            else if intY <= tarY - 13 and intX >= (tarX-tolerance+18) and intX >= (tarX+tolerance) and intX <=(tarX+tolerance+18) then //左斜下飞
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\D2.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //左一闪(斜)
-                    DelayRandom 15,25
-                    KeyPress Left
-                    KeyPress Space
-                    KeyDown Down
-                    DelayRandom 69,72
-                    Delay 265
-                    KeyDown D
-                    Delay 103
-                    KeyUp D
-                    Delay 304
-                    KeyUp Down
-                    a = 1
-                End If
-            else if intX > (tarX+28) then
-                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Hayato\D.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then //左一闪
-                    Call Stable()
-                    if intY == cY then
-                        DelayRandom 15,25
-                        KeyPress Left
-                        KeyPress D
-                        DelayRandom 1888,1907
-                        a = 1
-                    End If
-                End If
-            End If
-            if a == 0 then
-                DelayRandom 15,25
-                KeyDown Left
-                DelayRandom 74,75
-                KeyDown Space
-                DelayRandom 67,68
-                KeyUp Space
-                DelayRandom 36,37
-                KeyUp Left
-                DelayRandom 13,14
-                KeyDown Space
-                DelayRandom 78,79
-                KeyUp Space
-                DelayRandom 125,127
-                KeyDown F
-                DelayRandom 105,107
-                KeyUp F
-                DelayRandom 326,330
-                Call SpellJump()
-            End If
+            Delay 15
+            KeyDown Left
+            Delay 114
+            KeyDown Space
+            Delay 85
+            KeyUp Space
+            Delay 97
+            KeyDown Space
+            Delay 83
+            KeyUp Space
+            Delay 54
+            KeyUp Left
+            Delay 38
+            KeyDown F
+            Delay 116
+            KeyUp F
+            Delay 592
         Else If intX < (tarX-tolLoc) Then //向右走
             KeyDown Right
             a = (tarX - tolLoc - intX) * 52
