@@ -1,0 +1,8 @@
+Delay 226
+KeyDown B
+Delay 1292
+KeyUp B
+Delay 369
+KeyDown Left
+Delay 71
+KeyUp Left

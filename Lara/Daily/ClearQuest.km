@@ -1,9 +1,3 @@
-[General]
-ScreenX=1440
-ScreenY=2560
-Times=1
-
-[Script]
 Dim x1,           x2,           y1,       y2         // 矩形区域:小地图采样点
 Dim x3,           y3,           xEnd,     yEnd       // 2个顶点:技能区/屏幕右下角顶点
 Dim tarX,         tarY,         a,        cY         //目标
@@ -2181,8 +2175,8 @@ Sub SubmitQuest //提交任务 Ver1.1 周小核任务
 End Sub
 
 
-// Call ReceiveQuest()
-// Call ClearQuest()
+Call ReceiveQuest()
+Call ClearQuest()
 Call SubmitQuest()
 
 Beep 200,500

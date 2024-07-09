@@ -1,0 +1,17 @@
+Delay 15
+KeyDown Up
+Delay 72
+KeyDown Space
+Delay 100
+KeyUp Space
+Delay 25
+KeyDown Space
+Delay 59
+KeyUp Up
+Delay 31
+KeyUp Space
+Delay 262
+KeyDown F
+Delay 113
+KeyUp F
+Delay 629

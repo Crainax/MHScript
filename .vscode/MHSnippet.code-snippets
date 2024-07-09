@@ -264,4 +264,15 @@
 		],
 		"description": "菜单"
 	},
+	"时间戳求余": {
+		"prefix": "Stamp1",
+		"body": [
+			"if GetTimeStamp() % 120 < 90 then",
+			"    //todo1",
+			"else",
+			"    //todo2",
+			"End If",
+		],
+		"description": "根据时间戳求余数"
+	},
 }

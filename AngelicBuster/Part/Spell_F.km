@@ -1,0 +1,9 @@
+Delay 15
+KeyDown Right
+Delay 69
+KeyUp Right
+Delay 199
+KeyDown F
+Delay 71
+KeyUp F
+Delay 518
