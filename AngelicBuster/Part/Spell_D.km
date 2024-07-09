@@ -1,8 +1,0 @@
-Delay 193
-KeyDown D
-Delay 95
-KeyUp D
-Delay 650
-KeyDown Left
-Delay 94
-KeyUp Left
