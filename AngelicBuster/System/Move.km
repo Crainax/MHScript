@@ -70,7 +70,7 @@ Sub Stable //稳定(前面自行getXY) ver1.1 改成大判断只影响下跳
         End If
     Next
 End Sub
-Sub Move  //精确的移动 ver1.1
+Sub Move  //精确的移动 ver1.2
     while  1 > 0
         Call GetXY()
         Call AntiJam() //防卡
@@ -159,7 +159,7 @@ Sub Move  //精确的移动 ver1.1
                     DelayRandom 69,70
                     KeyUp LAlt
                     DelayRandom 921,931
-                else if intY > (tarY+18) Then	//>=26上跳就够不到了
+                else if intY > (tarY+17) Then	//>=26上跳就够不到了
                     Delay 228 //停一下再上跳
                     KeyDown Up
                     Delay 72
@@ -178,18 +178,23 @@ Sub Move  //精确的移动 ver1.1
                     KeyUp F
                     Delay 629
                 else
-                    KeyDown Up
-                    Delay 104
-                    KeyDown Space
-                    Delay 54
-                    KeyUp Space
-                    Delay 441
+                    Delay 254
                     KeyDown Space
                     Delay 71
                     KeyUp Space
-                    Delay 62
+                    Delay 227
+                    KeyDown Up
+                    Delay 135
+                    KeyDown Space
+                    Delay 70
+                    KeyUp Space
+                    Delay 78
                     KeyUp Up
-                    Delay 689
+                    Delay 213
+                    KeyDown F
+                    Delay 82
+                    KeyUp F
+                    Delay 503
                 End If
             else
                 yTolerance = 0
@@ -407,15 +412,15 @@ Sub Move  //精确的移动 ver1.1
     Wend
 End Sub
 
-Sub StandSpell //原地放技能 ver1.12
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Union\AngelicBuster\G.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then
-        Delay 15
-        KeyDown G
-        Delay 87
-        KeyUp G
-        Delay 749
-    else
+Sub StandSpell //原地放技能 ver1.14
+    // FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Union\AngelicBuster\G.bmp",000000,1.00,0,intX,intY
+    // if intX >= 0 Then
+        // Delay 15
+        // KeyDown G
+        // Delay 87
+        // KeyUp G
+        // Delay 749
+    // else
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\4LCD.bmp",000000,1.00,0,intX,intY
         if intX >= 0 and GetTimeStamp() - WGTime > 119 then
             KeyDown 4
@@ -500,16 +505,18 @@ Sub StandSpell //原地放技能 ver1.12
                                                     KeyUp Q
                                                     Delay 223
                                                 else
-                                                    if GetTimeStamp() % 7 == 1 then
-                                                        KeyPress Left
-                                                    else
-                                                        KeyPress Right
-                                                    End If
                                                     Delay 15
                                                     KeyDown D
                                                     Delay 5200
                                                     KeyUp D
                                                     Delay 300
+                                                    if GetTimeStamp() % 2 == 1 then
+                                                        KeyPress Left
+                                                        KeyPress Left
+                                                    else
+                                                        KeyPress Right
+                                                        KeyPress Right
+                                                    End If
                                                 End If
                                             End If
                                         End If
@@ -521,7 +528,7 @@ Sub StandSpell //原地放技能 ver1.12
                 End If
             End If
         End If
-    End If
+    //End If
 End Sub
 
 //分辨率初始化

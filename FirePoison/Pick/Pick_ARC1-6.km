@@ -53,7 +53,6 @@ Sub AntiJam //一般跟随GetXY后用,  Ver2.0 延长了一点时间防误判断
         staticCount = 0
     End If
     if staticCount >= 5 Then //
-        Beep 500,500
         KeyAllup //施放所有按键并重启
         // 模拟从绳子跳走
         DelayRandom 13,15
@@ -518,15 +517,24 @@ Sub ClearItem //清理消耗品和装备栏 Ver1.5
 End Sub
 
 
-Sub ConfirmMap //确认当前地图
+Sub ConfirmMap //确认当前地图 Ver1.2
     map = 0
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC6.bmp",000000,1.00,0,intX,intY
-    if intX >= 0  //六岛(镜光大海3)
+    if intX >= 0  //六岛(镜光3)
         map = 6
     End If
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC4.bmp",000000,1.00,0,intX,intY
-    if intX >= 0  //四岛(深渊路)
-        map = 4
+    if intX >= 0  //四岛(深渊)
+        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Teleport.bmp",000000,1.00,0,alterX,alterY	//找图
+        alterX = alterX - logoX
+        alterY = alterY - logoY
+        if alterX == -22 and alterY == 94 then
+            map = 41 //间隔路
+        else
+            map = 4 //深渊
+        End If
+        // [charX-49,charY69][teleX-22,teleY94]
     End If
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC3.bmp",000000,1.00,0,intX,intY
     if intX >= 0  //三岛(不法2)
@@ -534,11 +542,24 @@ Sub ConfirmMap //确认当前地图
     End If
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC2B.bmp|E:\MHImg\Maps\ARC2B_2.bmp",000000,1.00,0,intX,intY
     if intX >= 0  //二岛(香菇森林)
-        map = 2
+        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Teleport.bmp",000000,1.00,0,alterX,alterY	//找图
+        alterX = alterX - logoX
+        alterY = alterY - logoY
+        if alterX == -87 and alterY == 101 then
+            map = 21 //香菇5
+        else
+            map = 2 //隐藏香菇
+        End If
+        //[charX-70,charY87][teleX-87,teleY101] 香菇5
     End If
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC1B.bmp",000000,1.00,0,intX,intY
     if intX >= 0  //一岛(反转列车)
         map = 1
+    End If
+    FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC1.bmp",000000,1.00,0,intX,intY
+    if intX >= 0  //一岛(三岔路1)
+        map = 11
     End If
 End Sub
 
@@ -622,6 +643,37 @@ while 1>0 //无限循环
             Call Move_B()
 
             tarX = -46
+            tarY = 103
+            tolerance = 4
+            Call Move_B()
+        else if map == 21 then //香菇5
+            tarX = 26
+            tarY = 103
+            tolerance = 4
+            Call Move_B()
+            tarX = 26
+            tarY = 88
+            tolerance = 4
+            Call Move_B()
+            tarX = -17
+            tarY = 88
+            tolerance = 4
+            Call Move_B()
+            tarX = -17
+            tarY = 73
+            tolerance = 4
+            Call Move_B()
+            Delay 1500
+
+            tarX = -55
+            tarY = 73
+            tolerance = 4
+            Call Move_B()
+            tarX = -70
+            tarY = 103
+            tolerance = 2
+            Call Move_B()
+            tarX = -16
             tarY = 103
             tolerance = 4
             Call Move_B()

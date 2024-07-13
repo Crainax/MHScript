@@ -96,7 +96,7 @@ Sub Stable //稳定(前面自行getXY) ver1.1 改成大判断只影响下跳
         End If
     Next
 End Sub
-Sub Move  //精确的移动 ver1.1
+Sub Move  //精确的移动 ver1.2
     while  1 > 0
         Call GetXY()
         Call AntiJam() //防卡
@@ -185,7 +185,7 @@ Sub Move  //精确的移动 ver1.1
                     DelayRandom 69,70
                     KeyUp LAlt
                     DelayRandom 921,931
-                else if intY > (tarY+18) Then	//>=26上跳就够不到了
+                else if intY > (tarY+17) Then	//>=26上跳就够不到了
                     Delay 228 //停一下再上跳
                     KeyDown Up
                     Delay 72
@@ -204,18 +204,23 @@ Sub Move  //精确的移动 ver1.1
                     KeyUp F
                     Delay 629
                 else
-                    KeyDown Up
-                    Delay 104
-                    KeyDown Space
-                    Delay 54
-                    KeyUp Space
-                    Delay 441
+                    Delay 254
                     KeyDown Space
                     Delay 71
                     KeyUp Space
-                    Delay 62
+                    Delay 227
+                    KeyDown Up
+                    Delay 135
+                    KeyDown Space
+                    Delay 70
+                    KeyUp Space
+                    Delay 78
                     KeyUp Up
-                    Delay 689
+                    Delay 213
+                    KeyDown F
+                    Delay 82
+                    KeyUp F
+                    Delay 503
                 End If
             else
                 yTolerance = 0
@@ -433,15 +438,15 @@ Sub Move  //精确的移动 ver1.1
     Wend
 End Sub
 
-Sub StandSpell //原地放技能 ver1.12
-    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Union\AngelicBuster\G.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then
-        Delay 15
-        KeyDown G
-        Delay 87
-        KeyUp G
-        Delay 749
-    else
+Sub StandSpell //原地放技能 ver1.14
+    // FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Union\AngelicBuster\G.bmp",000000,1.00,0,intX,intY
+    // if intX >= 0 Then
+        // Delay 15
+        // KeyDown G
+        // Delay 87
+        // KeyUp G
+        // Delay 749
+    // else
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\4LCD.bmp",000000,1.00,0,intX,intY
         if intX >= 0 and GetTimeStamp() - WGTime > 119 then
             KeyDown 4
@@ -468,74 +473,73 @@ Sub StandSpell //原地放技能 ver1.12
                         KeyPress W
                         WTime = GetTimeStamp()
                     else
-                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Union\AngelicBuster\E.bmp",000000,1.00,0,intX,intY
-                        if intX >= 0 Then //到特定地点放吧
+                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Union\AngelicBuster\A.bmp",000000,1.00,0,intX,intY
+                        if intX >= 0 Then
                             Delay 15
-                            KeyDown E
-                            Delay 136
-                            KeyUp E
-                            Delay 793
+                            KeyDown A
+                            Delay 97
+                            KeyUp A
+                            Delay 1037
                         else
-                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Union\AngelicBuster\A.bmp",000000,1.00,0,intX,intY
+                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Union\AngelicBuster\Z.bmp",000000,1.00,0,intX,intY
                             if intX >= 0 Then
                                 Delay 15
-                                KeyDown A
-                                Delay 97
-                                KeyUp A
-                                Delay 1037
+                                KeyDown Z
+                                Delay 96
+                                KeyUp Z
+                                Delay 987
                             else
-                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Union\AngelicBuster\Z.bmp",000000,1.00,0,intX,intY
+                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Union\AngelicBuster\X.bmp",000000,1.00,0,intX,intY
                                 if intX >= 0 Then
-                                    Delay 15
-                                    KeyDown Z
-                                    Delay 96
-                                    KeyUp Z
-                                    Delay 987
+                                    KeyPress X
                                 else
-                                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Union\AngelicBuster\X.bmp",000000,1.00,0,intX,intY
+                                    FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Union\AngelicBuster\V.bmp",000000,1.00,0,intX,intY
                                     if intX >= 0 Then
-                                        KeyPress X
+                                        Delay 15
+                                        KeyDown V
+                                        Delay 103
+                                        KeyUp V
+                                        Delay 865
                                     else
-                                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Union\AngelicBuster\V.bmp",000000,1.00,0,intX,intY
+                                        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Union\AngelicBuster\B.bmp",000000,1.00,0,intX,intY
                                         if intX >= 0 Then
                                             Delay 15
-                                            KeyDown V
-                                            Delay 103
-                                            KeyUp V
-                                            Delay 865
+                                            KeyDown B
+                                            Delay 1292
+                                            KeyUp B
+                                            Delay 369
                                         else
-                                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Union\AngelicBuster\B.bmp",000000,1.00,0,intX,intY
+                                            FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Union\AngelicBuster\Q.bmp",000000,1.00,0,intX,intY
                                             if intX >= 0 Then
+                                                if map == 1 then
+                                                    tarX = 22
+                                                    tarY = 90
+                                                    tolerance = 4
+                                                    Call Move()
+                                                else if map == 3 then
+                                                    //[charX6,charY89][teleX-91,teleY88]
+                                                    tarX = 6
+                                                    tarY = 89
+                                                    tolerance = 4
+                                                    Call Move()
+                                                End If
                                                 Delay 15
-                                                KeyDown B
-                                                Delay 1292
-                                                KeyUp B
-                                                Delay 369
+                                                KeyDown Q
+                                                Delay 7960
+                                                KeyUp Q
+                                                Delay 223
                                             else
-                                                FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Union\AngelicBuster\Q.bmp",000000,1.00,0,intX,intY
-                                                if intX >= 0 Then
-                                                    if map == 1 then
-                                                        tarX = 22
-                                                        tarY = 90
-                                                        tolerance = 4
-                                                        Call Move()
-                                                    End If
-                                                    Delay 15
-                                                    KeyDown Q
-                                                    Delay 7960
-                                                    KeyUp Q
-                                                    Delay 223
+                                                Delay 15
+                                                KeyDown D
+                                                Delay 5200
+                                                KeyUp D
+                                                Delay 300
+                                                if GetTimeStamp() % 2 == 1 then
+                                                    KeyPress Left
+                                                    KeyPress Left
                                                 else
-                                                    if GetTimeStamp() % 7 == 1 then
-                                                        KeyPress Left
-                                                    else
-                                                        KeyPress Right
-                                                    End If
-                                                    Delay 15
-                                                    KeyDown D
-                                                    Delay 5200
-                                                    KeyUp D
-                                                    Delay 300
+                                                    KeyPress Right
+                                                    KeyPress Right
                                                 End If
                                             End If
                                         End If
@@ -547,7 +551,22 @@ Sub StandSpell //原地放技能 ver1.12
                 End If
             End If
         End If
+    //End If
+End Sub
+
+Sub BeforeFountain //去喷泉前干的事
+    if map == 3 then
+        //[charX33,charY89][teleX-91,teleY88]
+        tarX = 33
+        tarY = 89
+        tolerance = 4
+        Call Move()
     End If
+    Delay 15
+    KeyDown E
+    Delay 136
+    KeyUp E
+    Delay 793
 End Sub
 
 Sub ReleaseRune //定期解轮 ver2.5 回到了不用取消轮的年代
@@ -728,7 +747,7 @@ Sub Menu //菜单(大写键开启)
     End If
 End Sub
 
-Sub ConfirmMap //确认当前地图 Ver1.1
+Sub ConfirmMap //确认当前地图 Ver1.2
     map = 0
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC6.bmp",000000,1.00,0,intX,intY
     if intX >= 0  //六岛(镜光3)
@@ -753,7 +772,16 @@ Sub ConfirmMap //确认当前地图 Ver1.1
     End If
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC2B.bmp|E:\MHImg\Maps\ARC2B_2.bmp",000000,1.00,0,intX,intY
     if intX >= 0  //二岛(香菇森林)
-        map = 2
+        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Teleport.bmp",000000,1.00,0,alterX,alterY	//找图
+        alterX = alterX - logoX
+        alterY = alterY - logoY
+        if alterX == -87 and alterY == 101 then
+            map = 21 //香菇5
+        else
+            map = 2 //隐藏香菇
+        End If
+        //[charX-70,charY87][teleX-87,teleY101] 香菇5
     End If
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC1B.bmp",000000,1.00,0,intX,intY
     if intX >= 0  //一岛(反转列车)
@@ -794,6 +822,7 @@ while 1 > 0
     if map == 1 then
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
         if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
+            Call BeforeFountain() //喷泉前干的事
             tarX = -44
             tarY = 78
             tolerance = 2
@@ -821,12 +850,14 @@ while 1 > 0
             Call StandSpell()
             Delay 300
         End If
-    else if map == 11 then
+    else if map == 21 then
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
         if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
-            tarX = 47
-            tarY = 81
-            tolerance = 2
+            //[charX16,charY103][teleX-87,teleY101]
+            Call BeforeFountain() //喷泉前干的事
+            tarX = 16
+            tarY = 103
+            tolerance = 4
             Call Move()
             DelayRandom 56,58
             KeyDown Right
@@ -840,117 +871,83 @@ while 1 > 0
             fountainTime = GetTimeStamp()
         else //左右跳A
             call GetXY()
-            if intY != 94 or intX < (-31-4) or intX > (-31+4) then //
-                tarX       = -31
-                tarY       = 94
+            if intY != 88 or intX < (-39-4) or intX > (-39+4) then //
+                tarX       = -39
+                tarY       = 88
                 tolerance  = 4
                 yTolerance = 0
                 Call Move()
             End If
-
+            //[charX-39,charY88][teleX-87,teleY101]
             Call StandSpell()
             Delay 300
         End If
-    else if map == 2 then
+    else if map == 3 then //
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
         if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
-            tarX = -45
-            tarY = 103
+            // [charX-51,charY71][teleX-91,teleY88]
+            Call BeforeFountain() //喷泉前干的事
+            tarX = -51
+            tarY = 71
             tolerance = 4
             Call Move()
             DelayRandom 56,58
-            KeyPress Left
-            KeyPress 1
+            KeyDown Left
+            DelayRandom 62,68
+            KeyUp Left
+            DelayRandom 106,109
+            KeyDown 1
+            DelayRandom 194,196
+            KeyUp 1
             DelayRandom 712,721
             fountainTime = GetTimeStamp()
         else //左右跳A
             call GetXY()
-            if intY != 90 or intX < (-7-4) or intX > (-7+4) then //
-                tarX       = -7
-                tarY       = 90
-                tolerance  = 6
-                yTolerance = 0
-                Call Move()
-            End If
-
-            Call StandSpell()
-            Delay 300
-        End If
-    else if map == 3 then
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
-        if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
-            tarX = 46
-            tarY = 74
-            tolerance = 4
-            Call Move()
-            DelayRandom 56,58
-            KeyPress Left
-            KeyPress 1
-            DelayRandom 712,721
-            fountainTime = GetTimeStamp()
-        else //左右跳A
-            call GetXY()
-            if intY != 76 or intX < (-12-6) or intX > (-12+6) then //
-                tarX       = -12
-                tarY       = 76
-                tolerance  = 6
-                yTolerance = 0
-                Call Move()
-            End If
-
-            Call StandSpell()
-            Delay 300
-        End If
-    else if map == 4 then
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
-        if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
-            tarX = 29
-            tarY = 68
-            tolerance = 4
-            Call Move()
-            DelayRandom 56,58
-            KeyPress Right
-            KeyPress 1
-            DelayRandom 712,721
-            fountainTime = GetTimeStamp()
-        else //左右跳A
-            call GetXY()
-            if intY != 68 or intX < (-21-6) or intX > (-21+6) then //
-                tarX       = -21
-                tarY       = 68
-                tolerance  = 6
-                yTolerance = 0
-                Call Move()
-            End If
-            Call StandSpell()
-            Delay 300
-        End If
-    else if map == 6 then
-        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
-        if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
-            tarX = -34
-            tarY = 98
-            tolerance = 3
-            Call Move()
-            DelayRandom 56,58
-            KeyPress Left
-            KeyPress 1
-            DelayRandom 712,721
-            fountainTime = GetTimeStamp()
-        else //左右跳A
-            call GetXY()
-            if intY != 104 or intX < (4-6) or intX > (4+6) then //
-                tarX       = 4
-                tarY       = 104
+            if intY != 89 or intX < (-11-4) or intX > (-11+4) then //
+                tarX       = -11
+                tarY       = 89
                 tolerance  = 4
                 yTolerance = 0
                 Call Move()
             End If
+            // [charX-11,charY89][teleX-91,teleY88]
+            Call StandSpell()
+            Delay 300
+        End If
+    else if map == 41 then //间隔路
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
+            // [charX19,charY95][teleX-22,teleY94]
+            Call BeforeFountain() //喷泉前干的事
+            tarX = 19
+            tarY = 95
+            tolerance = 4
+            Call Move()
+            DelayRandom 56,58
+            KeyDown Left
+            DelayRandom 62,68
+            KeyUp Left
+            DelayRandom 106,109
+            KeyDown 1
+            DelayRandom 194,196
+            KeyUp 1
+            DelayRandom 712,721
+            fountainTime = GetTimeStamp()
+        else //左右跳A
+            call GetXY()
+            if intY != 92 or intX < (-50-4) or intX > (-50+4) then //
+                tarX       = -50
+                tarY       = 92
+                tolerance  = 4
+                yTolerance = 0
+                Call Move()
+            End If
+            // [charX-50,charY92][teleX-22,teleY94]
             Call StandSpell()
             Delay 300
         End If
     else
-        //MsgBox "Dont Regonize the map" //不能用这个,V3干扰
+        MsgBox "Dont Regonize the map" & map //不能用这个,V3干扰
         Delay 200
     End If
     Call ReleaseRune() //定期解轮

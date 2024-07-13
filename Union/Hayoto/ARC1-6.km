@@ -870,7 +870,7 @@ Sub Menu //菜单(大写键开启)
     End If
 End Sub
 
-Sub ConfirmMap //确认当前地图 Ver1.1
+Sub ConfirmMap //确认当前地图 Ver1.2
     map = 0
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC6.bmp",000000,1.00,0,intX,intY
     if intX >= 0  //六岛(镜光3)
@@ -895,7 +895,16 @@ Sub ConfirmMap //确认当前地图 Ver1.1
     End If
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC2B.bmp|E:\MHImg\Maps\ARC2B_2.bmp",000000,1.00,0,intX,intY
     if intX >= 0  //二岛(香菇森林)
-        map = 2
+        FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
+        FindPic x1,y1,x2,y2,"E:\MHImg\Teleport.bmp",000000,1.00,0,alterX,alterY	//找图
+        alterX = alterX - logoX
+        alterY = alterY - logoY
+        if alterX == -87 and alterY == 101 then
+            map = 21 //香菇5
+        else
+            map = 2 //隐藏香菇
+        End If
+        //[charX-70,charY87][teleX-87,teleY101] 香菇5
     End If
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC1B.bmp",000000,1.00,0,intX,intY
     if intX >= 0  //一岛(反转列车)
