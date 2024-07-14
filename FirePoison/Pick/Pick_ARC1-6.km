@@ -752,6 +752,37 @@ while 1>0 //无限循环
             tarY = 87
             tolerance = 4
             Call Move_B()
+        else if map == 41 then //间隔路
+            tarX = -82
+            tarY = 92
+            tolerance = 4
+            Call Move_B()
+            Delay 1500
+
+            tarX = -51
+            tarY = 92
+            tolerance = 4
+            Call Move_B()
+            Delay 1500
+
+            tarX = -19
+            tarY = 95
+            tolerance = 4
+            Call Move_B()
+            Delay 1500
+
+            tarX = 45
+            tarY = 95
+            tolerance = 4
+            Call Move_B()
+            Delay 1500
+
+            tarX = 12
+            tarY = 95
+            tolerance = 4
+            Call Move_B()
+            Delay 1500
+
         else if map == 6 then
 
             tarX = -7

@@ -919,14 +919,14 @@ while 1 > 0
         if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
             // [charX19,charY95][teleX-22,teleY94]
             Call BeforeFountain() //喷泉前干的事
-            tarX = 19
+            tarX = 29
             tarY = 95
             tolerance = 4
             Call Move()
             DelayRandom 56,58
-            KeyDown Left
+            KeyDown Right
             DelayRandom 62,68
-            KeyUp Left
+            KeyUp Right
             DelayRandom 106,109
             KeyDown 1
             DelayRandom 194,196
@@ -935,10 +935,10 @@ while 1 > 0
             fountainTime = GetTimeStamp()
         else //左右跳A
             call GetXY()
-            if intY != 92 or intX < (-50-4) or intX > (-50+4) then //
-                tarX       = -50
+            if intY != 92 or intX < (-53-2) or intX > (-53+2) then //
+                tarX       = -53
                 tarY       = 92
-                tolerance  = 4
+                tolerance  = 2
                 yTolerance = 0
                 Call Move()
             End If
