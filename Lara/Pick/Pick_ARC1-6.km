@@ -782,6 +782,38 @@ while 1>0 //无限循环
             tarY = 103
             tolerance = 4
             Call Move_B()
+        else if map == 21 then //香菇5
+            tarX = 26
+            tarY = 103
+            tolerance = 4
+            Call Move_B()
+            Delay 1500
+            tarX = 26
+            tarY = 88
+            tolerance = 4
+            Call Move_B()
+            tarX = -17
+            tarY = 88
+            tolerance = 4
+            Call Move_B()
+            tarX = -17
+            tarY = 73
+            tolerance = 4
+            Call Move_B()
+            Delay 1500
+
+            tarX = -55
+            tarY = 73
+            tolerance = 4
+            Call Move_B()
+            tarX = -70
+            tarY = 103
+            tolerance = 2
+            Call Move_B()
+            tarX = -16
+            tarY = 103
+            tolerance = 4
+            Call Move_B()
         else if map == 3 then
 
             tarX = -12

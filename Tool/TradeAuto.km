@@ -1,9 +1,3 @@
-[General]
-ScreenX=1440
-ScreenY=2560
-Times=1
-
-[Script]
 Dim x1,        x2,               y1,   y2        // 矩形区域:小地图采样点
 Dim x3,        y3,               xEnd, yEnd      // 2个顶点:技能区/屏幕右下角顶点
 Dim logoX,logoY,intX,intY
@@ -19,6 +13,24 @@ y3   = intY - 260
 xEnd = intX
 yEnd = intY
 
+Sub Loading //加载地图
+    while 1>0 //等进入加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+    while 1>0 //等加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX > 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+End Sub
 Sub EnterOK //清除一下OK对话框 Ver1.1
     while 1>0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
@@ -32,43 +44,74 @@ Sub EnterOK //清除一下OK对话框 Ver1.1
 End Sub
 
 //自动交易东西-接收方(169,67)  Trade右偏38
-Sub TradeReceive //自动交易-接受东西-只执行一次
-    a = 0
-    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\HP.bmp",000000,1.00,0,intX,intY
-    if intX >= 0 Then
-        MoveTo intX+169,intY-67
-        LeftClick
-        Delay 500
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\TradeMark2.bmp|E:\MHImg\UI\Bag\TradeMark1.bmp",000000,1.00,0,logoX,logoY
-        if logoX >= 0 Then //进入了交易界面
-            while 1>0 //点击
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then
-                    Call EnterOK()
-                    Delay 2000
-                    break
-                else
-                    MoveTo logoX+38,logoY
-                    LeftClick
-                End If
-            Wend
-            while 1>0 //等正式结束
-                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
-                if intX >= 0 Then
-                    Call EnterOK()
-                    Delay 2000
-                    break
-                End If
-            Wend
-            a = 1
+//自动交易-接受东西,按大写键退出循环
+Sub TradeReceive //Ver1.1
+    while 1>0
+        if GetLED(1) == 1  //退出循环
+            Goto Out
         End If
-    End If
+
+        a = 0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\EntryCash.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            MoveTo intX-37,intY-70
+            Delay 100
+            LeftClick
+            Delay 500
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\TradeMark3.bmp",000000,1.00,0,logoX,logoY
+            if logoX >= 0 Then //进入了交易界面
+                while 1>0 //点击
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        Call EnterOK()
+                        Delay 2000
+                        break
+                    else
+                        MoveTo logoX-367,logoY-206
+                        LeftClick
+                    End If
+                Wend
+                while 1>0 //等正式结束
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        Call EnterOK()
+                        Delay 2000
+                        break
+                    End If
+                Wend
+                a = 1
+            End If
+        else //没找到按钮
+            KeyPress ]
+            DelayRandom 439,442
+        End If
+    Wend
+
 End Sub
 
-while 1>0
-    Call TradeReceive() //只执行一次
-Wend
+Sub MoveVDLY
+    while 1>0 //打开指导去维多利亚岛
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            MoveTo intX-210,intY+86
+            LeftClick
+            DelayRandom 139,142
+            break
+        else
+            DelayRandom 39,42
+            KeyDown F2
+            DelayRandom 69,72
+            KeyUp F2
+            DelayRandom 39,42
+        End If
+    Wend
+    Call Loading()
+End Sub
 
+Call MoveVDLY()
+Call TradeReceive() //只执行一次
+
+Rem Out //模拟跳出环境
 for 3
     Beep 100,200
     Beep 200,200

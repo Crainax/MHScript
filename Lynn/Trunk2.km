@@ -1147,6 +1147,7 @@ Sub Menu //菜单(大写键开启)
     if a== 49 then //按1键:回城再换频
         Call Home() //回城
         Call ChannalS() //换频
+    else if a== 50 then //按2键:前往维多利亚港交易(接收端)
     End If
 End Sub
 
