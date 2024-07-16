@@ -1,0 +1,143 @@
+Dim x1,        x2,               y1,   y2        // 矩形区域:小地图采样点
+Dim x3,        y3,               xEnd, yEnd      // 2个顶点:技能区/屏幕右下角顶点
+Dim logoX,logoY,intX,intY
+Dim x,y,a
+
+GetScreenResolution intX, intY
+x1   = intX - 1440
+y1   = intY - 950
+x2   = intX - 1140
+y2   = intY - 600
+x3   = intX - 640
+y3   = intY - 260
+xEnd = intX
+yEnd = intY
+
+Sub Loading //加载地图
+    while 1>0 //等进入加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+    while 1>0 //等加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX > 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+End Sub
+Sub EnterOK //清除一下OK对话框 Ver1.1
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            KeyPress Enter
+            DelayRandom 239,242
+        End If
+    Wend
+End Sub
+
+//自动交易东西-发送方(169,67)  Trade右偏38
+Sub TradeSender
+    while 1>0
+        if GetLED(1) == 1  //退出循环
+            Goto Out
+        End If
+
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\TradeMark3.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //进入了交易界面
+            Beep 100,100
+            Beep 200,100
+            Beep 300,100
+            Beep 400,100
+            Beep 500,100
+            Beep 600,100
+            Beep 700,100
+            Beep 800,100
+            Beep 900,100
+            Beep 1000,100
+            Pause
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Trade\MenuMark2.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //有右键菜单了
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Trade\MenuMark1.bmp|E:\MHImg\UI\Bag\Trade\MenuMark1A.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //有交易选项了
+                    MoveTo intX,intY+2
+                    Delay 100
+                    LeftClick
+                    DelayRandom 139,142
+                else
+                    MoveR  5,0
+                    Delay 80
+                End If
+            else //没右键菜单
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\EntryCash.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //标准位置点右键
+                    MoveTo intX-118,intY-202
+                    Delay 100
+                    RightClick
+                    DelayRandom 139,142
+                else //没找到按钮
+                    KeyPress ]
+                    DelayRandom 439,442
+                    MoveR 10,-10
+                End If
+
+            End If
+        End If
+
+
+
+    Wend
+
+End Sub
+
+Sub MoveVDLY //前往维多利亚 Ver1.1
+    while 1>0 //打开指导去维多利亚岛
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\VDLY.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    MoveTo intX-210,intY+86
+                    Delay 100
+                    LeftClick
+                    DelayRandom 139,142
+                    break
+                else
+                    KeyPress F2
+                    Delay 200
+                End If
+            End If
+        End If
+    Wend
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            KeyPress Esc
+        else
+            break
+        End If
+    Wend
+End Sub
+
+Call MoveVDLY()
+Call TradeSender() //只执行一次
+
+Rem Out //模拟跳出环境
+for 3
+    Beep 100,200
+    Beep 200,200
+    Beep 300,200
+    Beep 400,200
+    Beep 500,200
+Next

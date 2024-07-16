@@ -68,6 +68,7 @@ Sub TradeReceive //Ver1.1
                         break
                     else
                         MoveTo logoX-367,logoY-206
+                        Delay 100
                         LeftClick
                     End If
                 Wend
@@ -89,23 +90,36 @@ Sub TradeReceive //Ver1.1
 
 End Sub
 
-Sub MoveVDLY
+Sub MoveVDLY //前往维多利亚 Ver1.1
     while 1>0 //打开指导去维多利亚岛
-        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\VDLY.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
-            MoveTo intX-210,intY+86
-            LeftClick
-            DelayRandom 139,142
             break
         else
-            DelayRandom 39,42
-            KeyDown F2
-            DelayRandom 69,72
-            KeyUp F2
-            DelayRandom 39,42
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    MoveTo intX-210,intY+86
+                    Delay 100
+                    LeftClick
+                    DelayRandom 139,142
+                    break
+                else
+                    KeyPress F2
+                    Delay 200
+                End If
+            End If
         End If
     Wend
-    Call Loading()
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            KeyPress Esc
+        else
+            break
+        End If
+    Wend
 End Sub
 
 Call MoveVDLY()
