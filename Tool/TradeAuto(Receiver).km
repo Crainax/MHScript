@@ -45,7 +45,7 @@ End Sub
 
 //自动交易东西-接收方(169,67)  Trade右偏38
 //自动交易-接受东西,按大写键退出循环
-Sub TradeReceive //Ver1.1
+Sub TradeReceive //Ver1.2
     while 1>0
         if GetLED(1) == 1  //退出循环
             Goto Out
@@ -54,7 +54,7 @@ Sub TradeReceive //Ver1.1
         a = 0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\EntryCash.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
-            MoveTo intX-37,intY-70
+            MoveTo intX-37,intY-80
             Delay 100
             LeftClick
             Delay 500

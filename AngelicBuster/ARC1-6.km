@@ -17,6 +17,7 @@ Dim SavedX,       SavedY, SavedTor, SavedTorY  //保存一下临时处理的XY
 Dim RuneCooldown, wJam,   map                  //找轮间隔
 Dim red,          tempX,  tempY                //红点侦测
 
+//Ver1.1 加了脱装备
 
 Sub Loading //加载地图
     while 1>0 //等进入加载
@@ -68,18 +69,17 @@ Sub AntiJam //一般跟随GetXY后用
     End If
     if staticCount >= 5 Then //
 
-        Beep 500,500
         KeyAllup //施放所有按键并重启
         // RestartScript //重启 和上面二选一即可
         // 模拟从绳子跳走
         DelayRandom 13,15
-        KeyDown Right
+        KeyDown Left
         DelayRandom 21,22
         KeyDown Space
         DelayRandom 76,77
         KeyUp Space
         DelayRandom 44,45
-        KeyUp Right
+        KeyUp Left
         DelayRandom 13,15
 
     End If
@@ -711,7 +711,7 @@ Sub Home //回城
         End If
     Wend
 End Sub
-Sub TradeReceive //Ver1.1
+Sub TradeReceive //Ver1.2
     while 1>0
         if GetLED(1) == 1  //退出循环
             Goto Out
@@ -720,7 +720,7 @@ Sub TradeReceive //Ver1.1
         a = 0
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\EntryCash.bmp",000000,1.00,0,intX,intY
         if intX >= 0 Then
-            MoveTo intX-37,intY-70
+            MoveTo intX-37,intY-80
             Delay 100
             LeftClick
             Delay 500
@@ -850,7 +850,44 @@ Sub MoveVDLY //前往维多利亚 Ver1.1
         End If
     Wend
 End Sub
+Sub DressOff //脱下所有可转移装备
+    while 1>0 //打开装备栏的装备界面
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_On.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //找到了标签
 
+            a = 1 //5*6的格子,限定取哪些就行 5是行
+            while 1 > 0
+                if a >= 31 then
+                    break
+                End If
+                MoveTo logoX+15+(a-1)%5*42,logoY+42+(a-1)/5*42
+                Delay 60
+                if a != 2 and a != 4 and a != 9 and a != 26 and a != 27 then //这是固定的空位跳过
+                    if a != 7 and a != 10 and a != 11 and a != 15 and a != 16 and a != 17 and a != 19 and a != 21 and a != 22 and a != 29 then //灵活修改
+                        LeftDoubleClick
+                        Delay 100
+                        LeftDoubleClick
+                    End If
+                End If
+
+                a = a + 1
+            Wend
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_Off.bmp",000000,1.00,0,intX,intY
+            if intX < 0 then //A图没找到就找B图
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_On.bmp",000000,1.00,0,intX,intY
+            End If
+            if intX >= 0 Then
+                KeyPress tab
+                Delay 100
+            else
+                KeyPress u
+                Delay 100
+            End If
+        End If
+    Wend
+End Sub
 
 Sub Menu //菜单(大写键开启) Ver1.1
     a = GetLED(1)
@@ -896,6 +933,8 @@ Sub Menu //菜单(大写键开启) Ver1.1
         End If
         Call MoveVDLY()
         Call TradeSender()
+    else if a== 114 then //按F3键:脱下装备
+        Call DressOff()
     End If
 End Sub
 
