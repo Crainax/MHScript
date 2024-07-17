@@ -1,9 +1,3 @@
-[General]
-ScreenX=2560
-ScreenY=1440
-Times=1
-
-[Script]
 Dim x1,        x2,               y1,   y2
 Dim x3,        y3,               xEnd, yEnd
 Dim logoX,logoY,intX,intY
@@ -20,7 +14,7 @@ xEnd           = intX
 yEnd           = intY
 
 while 1 > 0
-    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Daily\Quest\MarkWeek.bmp",000000,1.00,0,intX,intY
+    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Trade\SendMark2.bmp",000000,1.00,0,intX,intY
     If intX >= 0 Then
         MsgBox find & intX & , & intY & ]
     else

@@ -775,17 +775,17 @@ Sub CheckMap //核对地图
 End Sub
 
 
-Sub Menu //菜单(大写键开启)
+Sub Menu //菜单(大写键开启) Ver1.2
     a = GetLED(1)
     if a == 0 then //大写状态就弹出
         Exit Sub
     End If
-    Beep 261,200
-    Beep 294,200
-    Beep 329,200
-    Beep 294,200
-    Beep 261,200
-    Beep 329,200
+    Beep 261,100
+    Beep 294,100
+    Beep 329,100
+    Beep 294,100
+    Beep 261,100
+    Beep 329,100
     a=WaitKey()
     if a== 49 then //按1键:回城再换频
         Call Home() //回城
