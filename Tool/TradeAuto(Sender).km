@@ -44,12 +44,8 @@ Sub EnterOK //清除一下OK对话框 Ver1.1
 End Sub
 
 //自动交易东西-发送方(169,67)  Trade右偏38
-Sub TradeSender
+Sub TradeSender //Ver1.1
     while 1>0
-        if GetLED(1) == 1  //退出循环
-            Goto Out
-        End If
-
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\TradeMark3.bmp",000000,1.00,0,logoX,logoY
         if logoX >= 0 Then //进入了交易界面
             Beep 100,100
@@ -91,9 +87,6 @@ Sub TradeSender
 
             End If
         End If
-
-
-
     Wend
 
 End Sub

@@ -45,12 +45,8 @@ End Sub
 
 //自动交易东西-接收方(169,67)  Trade右偏38
 //自动交易-接受东西,按大写键退出循环
-Sub TradeReceive //Ver1.3
+Sub TradeReceive //Ver1.31
     while 1>0
-        if GetLED(1) == 1  //退出循环
-            Goto Out
-        End If
-
         a = 0
         //FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\EntryCash.bmp",000000,1.00,0,intX,intY
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Trade\SendMark2.bmp",000000,1.00,0,intX,intY
@@ -83,9 +79,6 @@ Sub TradeReceive //Ver1.3
                 Wend
                 a = 1
             End If
-        // else //没找到按钮
-            // KeyPress ]
-            // DelayRandom 439,442
         End If
     Wend
 
