@@ -17,7 +17,7 @@ Dim SavedX,       SavedY, SavedTor, SavedTorY  //保存一下临时处理的XY
 Dim RuneCooldown, wJam,   map                  //找轮间隔
 Dim red,          tempX,  tempY                //红点侦测
 
-//Ver1.21 优化键位
+//Ver1.23 处理了一下按S不能脱装备的问题
 
 Sub Loading //加载地图
     while 1>0 //等进入加载
@@ -663,6 +663,20 @@ Sub CloseCaps //关闭Caps键
         DelayRandom 39,42 //关闭找图
     End If
 End Sub
+Sub CloseEquit //关闭装备栏
+    while 1>0 //关闭装备栏
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown u
+            DelayRandom 69,72
+            KeyUp u
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
 Sub Home //回城
     while 1>0 //指导回城一波
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Cancel2.bmp",000000,1.00,0,intX,intY
@@ -876,7 +890,7 @@ Sub DressOff //脱下所有可转移装备
     Wend
 End Sub
 
-Sub Menu //菜单(大写键开启) Ver1.2
+Sub Menu //菜单(大写键开启) Ver1.21
     a = GetLED(1)
     if a == 0 then //大写状态就弹出
         Exit Sub
@@ -912,7 +926,13 @@ Sub Menu //菜单(大写键开启) Ver1.2
         Call MoveVDLY()
         Call TradeReceive() //这里按大写键就是退出循环 但是感觉没必要,直接暂停就行了
     else if a== 83 then //按S键:脱下装备+发送交易
+        Beep 400,100
+        Beep 500,100
+        Beep 400,100
+        Beep 500,100
+        Delay 5000
         Call DressOff()
+        Call CloseEquit() //关闭装备栏
         Call MoveVDLY()
         Call TradeSender() //这里按大写键就是退出循环 但是感觉没必要,直接暂停就行了
     End If
@@ -1114,6 +1134,31 @@ while 1 > 0
                 Call Move()
             End If
             // [charX-50,charY92][teleX-22,teleY94]
+            Call StandSpell()
+            Delay 300
+        End If
+    else if map == 6 then //蜘蛛3
+        FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
+        if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
+            Call BeforeFountain() //喷泉前干的事
+            tarX = -34
+            tarY = 98
+            tolerance = 3
+            Call Move()
+            DelayRandom 56,58
+            KeyPress Left
+            KeyPress 1
+            DelayRandom 712,721
+            fountainTime = GetTimeStamp()
+        else //左右跳A
+            call GetXY()
+            if intY != 104 or intX < (4-6) or intX > (4+6) then //
+                tarX       = 4
+                tarY       = 104
+                tolerance  = 4
+                yTolerance = 0
+                Call Move()
+            End If
             Call StandSpell()
             Delay 300
         End If
