@@ -1,9 +1,3 @@
-[General]
-ScreenX=1440
-ScreenY=2560
-Times=0
-
-[Script]
 Dim x1,             x2,           y1,        y2          // 矩形区域:小地图采样点
 Dim x3,             y3,           xEnd,      yEnd        // 2个顶点:技能区/屏幕右下角顶点
 Dim tarX,           tarY,         a,         cY          //目标
@@ -1131,8 +1125,51 @@ Sub CheckMap //核对地图并传送(有人就换频)
         End If
     Wend
 End Sub
+Sub TestMode //Move那边的测试模式(没法退出)
+    while 1 > 0
+        LEDState = GetLED(1)
+        if LEDState == 0 then //
+            tolLoc = 1
+            GetFileLine tarX,Map.Conf,tolLoc		//文件查找
+            tolLoc = 2
+            GetFileLine tarY,Map.Conf,tolLoc		//文件查找
+            tolLoc = 3
+            GetFileLine tolerance,Map.Conf,tolLoc	//文件查找
+            tolLoc = 4
+            GetFileLine alterX,Map.Conf,tolLoc	//文件查找
+            tolLoc = 5
+            GetFileLine alterY,Map.Conf,tolLoc	//文件查找
+            tolLoc = 6
+            GetFileLine facing,Map.Conf,tolLoc	//文件查找
+            TracePrint goto[ & tarX & , & tarY & ],tole & tolerance & ,[ & alterX & , & alterY & ]
+            //tolerance = 4 //容忍度,4为推荐值
+            Call Move()
+            Beep 100,200
+            Beep 200,200
+            Beep 300,200
+            Beep 400,200
+            Beep 500,200
+            MsgBox "Done"
+        else //大写键亮的话就获取点
+            FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,0.9,0,logoX,logoY	//找图
+            FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY	//找图
+            FindPic x1,y1,x2,y2,"E:\MHImg\NPC.bmp",000000,1.00,0,alterX,alterY	//找图
+            //FindPic x1,y1,x2,y2,"E:\MHImg\Teleport.bmp",000000,1.00,0,alterX,alterY	//找图
+            If intX >= 0 Then
+                intX = intX - logoX
+                intY = intY - logoY
+                alterX = alterX - logoX
+                alterY = alterY - logoY
+                TracePrint [charX & intX & ,charY & intY & ][NPC & intX & ,teleY & intY & ]
+                MsgBox [charX & intX & ,charY & intY & ][NPC & alterX & ,teleY & alterY & ]
+            else
+                MsgBox "DontFind"	 //弹窗
+            End If
+        End If
+    Wend
+End Sub
 
-Sub Menu //菜单(大写键开启) Ver1.2
+Sub Menu //菜单(大写键开启) Ver1.21 更新了Test
     a = GetLED(1)
     if a == 0 then //大写状态就弹出
         Exit Sub
@@ -1147,7 +1184,11 @@ Sub Menu //菜单(大写键开启) Ver1.2
     if a== 49 then //按1键:回城再换频
         Call Home() //回城
         Call ChannalS() //换频
-    else if a== 50 then //按2键:前往维多利亚港交易(接收端)
+    else if a == 9 then //按tab键:切换成Move测试模式
+        Beep 400,100
+        Beep 629,100
+        Beep 232,100
+        Call TestMode() //进入无限循环的测试模式
     End If
 End Sub
 

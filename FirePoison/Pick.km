@@ -1,9 +1,3 @@
-[General]
-ScreenX=1440
-ScreenY=2560
-Times=1
-
-[Script]
 Dim x1,          x2,       y1,       y2         // 矩形区域:小地图采样点
 Dim x3,          y3,       xEnd,     yEnd       // 2个顶点:技能区/屏幕右下角顶点
 Dim tarX,        tarY,     cX,       cY         //目标
@@ -15,8 +9,51 @@ Dim staticCount, staticX,  staticY              //防卡计数器
 Dim SavedX,      SavedY,   SavedTor, SavedTorY  //保存一下临时处理的XY
 Dim cool,        pickTime, sortTime, map        //挂轮冷却,邀请进组
 
-//隐藏列车的捡钱(火毒)
-
+//隐藏列车的捡钱(琳恩)
+Sub Loading //加载地图
+    while 1>0 //等进入加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+    while 1>0 //等加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX > 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+End Sub
+Sub Loading2 //(鸟2垃圾地图)
+    while 1>0 //等进入加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+    while 1>0 //等加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX > 0 Then //加载完成了
+            break
+        else
+            DelayRandom 39,42
+            KeyDown Down
+            DelayRandom 39,42
+            KeyDown Space
+            DelayRandom 69,72
+            KeyUp Space
+            DelayRandom 39,42
+            KeyUp Down
+            DelayRandom 139,142
+        End If
+    Wend
+End Sub
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
@@ -380,6 +417,20 @@ Sub CloseBag //关闭装备栏
         End If
     Wend
 End Sub
+Sub CloseEquit //关闭装备栏
+    while 1>0 //关闭装备栏
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown u
+            DelayRandom 69,72
+            KeyUp u
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
 Sub Drop //扔掉道具抽离 ver1.1数量也加进去
     If intX >= 0 Then
         MoveTo intX,intY
@@ -404,7 +455,95 @@ Sub Drop //扔掉道具抽离 ver1.1数量也加进去
         Wend
     End If
 End Sub
+Sub Home //回城
+    while 1>0 //指导回城一波
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Cancel2.bmp",000000,1.00,0,intX,intY
+        if intX < 0 then //A图没找到就找B图
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Cancel.bmp",000000,1.00,0,intX,intY
+        End If
+        if intX >= 0 Then
+            MoveTo intX-90,intY
+            LeftClick
+            DelayRandom 139,142 //点击确认
+            while 1>0
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,logoX,logoY
+                if logoX >= 0 Then //正在本地图
+                    while 1>0
+                        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+                        if intX < 0 Then //一直关闭F2页面
+                            break
+                        else
+                            DelayRandom 39,42
+                            KeyDown Esc
+                            DelayRandom 69,72
+                            KeyUp Esc
+                            DelayRandom 39,42
+                        End If
+                    Wend
+                    break
+                else
+                    Call Loading() //加载新地图
+                    break
+                End If
+            Wend
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                MoveTo intX-408,intY-100
+                LeftClick
+                DelayRandom 139,142
+            else
+                DelayRandom 39,42
+                KeyDown F2
+                DelayRandom 69,72
+                KeyUp F2
+                DelayRandom 39,42
+            End If
+        End If
+    Wend
+End Sub
+Sub ChannalS //无视是否有人换频
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Switch.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            KeyPress Right
+            DelayRandom 539,542
+            KeyPress Enter
+            DelayRandom 339,342
 
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+            if intX < 0 Then //没有OK就退出去
+                Call Loading() //等加载
+                DelayRandom 239,242
+                break
+            else
+                KeyPress Esc
+                DelayRandom 239,242
+            End If
+        else
+            KeyPress Insert
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
+Sub Channel //有人就换频 ver2.3 抽离了
+    wJam = 0 //放在循环外面位置
+    while 1>0
+        FindPic x1,y1,x2,y2,"E:\MHImg\Player.bmp|E:\MHImg\Ally.bmp|E:\MHImg\Ally2.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then //地图没人(5次判断防人物重合)
+            wJam = wJam + 1  //循环内部
+            if wJam > 5 then //多次没找到人就确实没人
+                break
+            else
+                Delay 200
+            End If
+        else //有找到人,直接换频
+            wJam = 0 //放在成功的位置
+            Call ChannalS()
+        End If
+    Wend
+End Sub
 Sub ClearItem //清理消耗品和装备栏 Ver1.6
     //扔身上的垃圾
     while 1>0 //切到装备栏
@@ -518,8 +657,184 @@ Sub ClearItem //清理消耗品和装备栏 Ver1.6
     Wend
 
 End Sub
+Sub CloseCaps //关闭Caps键
+    if GetLED(1) == 1 then //换地图
+        DelayRandom 39,42
+        KeyDown CapsLock
+        DelayRandom 69,72
+        KeyUp CapsLock
+        DelayRandom 39,42 //关闭找图
+    End If
+End Sub
+Sub AfterMap //夹在中间的抽离后 v1.3 世界也能选,抽离2个Loading
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            DelayRandom 39,42
+            KeyDown Enter
+            DelayRandom 69,72
+            KeyUp Enter
+            DelayRandom 39,42
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\Mark.bmp",000000,1.00,0,logoX,logoY
+            if logoX >= 0 Then //瞬移到
+                MoveTo logoX-284,logoY+1
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX-354,logoY+SavedTor //选择世界 38格兰  20世界  46奥术之河
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX-142,logoY+1
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX-225,logoY+SavedTorY //选择卡尔西温
+                LeftClick
+                DelayRandom 139,142
+                MoveTo logoX+SavedX,logoY+SavedY
+                DelayRandom 139,142
+                LeftDoubleClick
+                DelayRandom 139,142
+                MoveTo logoX-50,logoY-50
+                DelayRandom 239,242
+            else
+                DelayRandom 39,42
+                KeyDown m
+                DelayRandom 69,72
+                KeyUp m
+                DelayRandom 239,242
+            End If
 
+        End If
+    Wend
 
+End Sub
+Sub TradeReceive //Ver1.31
+    while 1>0
+        a = 0
+        //FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\EntryCash.bmp",000000,1.00,0,intX,intY
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Trade\SendMark2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            MoveTo intX+132,intY-2
+            Delay 100
+            LeftClick
+            Delay 500
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\TradeMark3.bmp",000000,1.00,0,logoX,logoY
+            if logoX >= 0 Then //进入了交易界面
+                while 1>0 //点击
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        Call EnterOK()
+                        Delay 2000
+                        break
+                    else
+                        MoveTo logoX-367,logoY-206
+                        Delay 100
+                        LeftClick
+                    End If
+                Wend
+                while 1>0 //等正式结束
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        Call EnterOK()
+                        Delay 2000
+                        break
+                    End If
+                Wend
+                a = 1
+            End If
+        End If
+    Wend
+
+End Sub
+Sub TradeSender //Ver1.1
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\TradeMark3.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //进入了交易界面
+            Beep 100,100
+            Beep 200,100
+            Beep 300,100
+            Beep 400,100
+            Beep 500,100
+            Beep 600,100
+            Beep 700,100
+            Beep 800,100
+            Beep 900,100
+            Beep 1000,100
+            Pause
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Trade\MenuMark2.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //有右键菜单了
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Trade\MenuMark1.bmp|E:\MHImg\UI\Bag\Trade\MenuMark1A.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //有交易选项了
+                    MoveTo intX,intY+2
+                    Delay 100
+                    LeftClick
+                    DelayRandom 139,142
+                else
+                    MoveR  5,0
+                    Delay 80
+                End If
+            else //没右键菜单
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Cash\EntryCash.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //标准位置点右键
+                    MoveTo intX-118,intY-202
+                    Delay 100
+                    RightClick
+                    DelayRandom 139,142
+                else //没找到按钮
+                    KeyPress ]
+                    DelayRandom 439,442
+                    MoveR 10,-10
+                End If
+
+            End If
+        End If
+    Wend
+
+End Sub
+Sub EnterOK //清除一下OK对话框 Ver1.1
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            KeyPress Enter
+            DelayRandom 239,242
+        End If
+    Wend
+End Sub
+Sub MoveVDLY //前往维多利亚 Ver1.1
+    while 1>0 //打开指导去维多利亚岛
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\VDLY.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then
+                    MoveTo intX-210,intY+86
+                    Delay 100
+                    LeftClick
+                    DelayRandom 139,142
+                    break
+                else
+                    KeyPress F2
+                    Delay 200
+                End If
+            End If
+        End If
+    Wend
+    while 1>0
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\F2\Mark.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            KeyPress Esc
+        else
+            break
+        End If
+    Wend
+End Sub
 Sub ConfirmMap //确认当前地图 Ver1.3
     map = 0
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC6.bmp",000000,1.00,0,intX,intY
@@ -599,6 +914,316 @@ Sub ConfirmMap //确认当前地图 Ver1.3
         End If
     End If
 End Sub
+Sub TeleportSmallMap //练小号用的传送
+    if map == -1 then //火毒眼兽->小青蛇
+        SavedTor = 20
+        SavedTorY = 38
+        SavedX = -240
+        SavedY = 175
+        Call AfterMap() //到达
+        Call Loading() //加载中
+        Call Channel() //换频
+        Call CloseCaps() //关闭Caps键
+    else if map == -2 then //小青蛇->土龙
+        SavedTor = 20
+        SavedTorY  = 105
+        SavedX    = -286
+        SavedY    = 160
+        Call AfterMap() //到达
+        Call Loading() //加载中
+        Call Channel() //换频
+        Call CloseCaps() //关闭Caps键
+    else if map == -3 then //土龙->沙漠
+        SavedTor = 20
+        SavedTorY  = 359
+        SavedX    = -147
+        SavedY    = 188
+        Call AfterMap() //到达
+        Call Loading() //加载中
+        Call Channel() //换频
+        Call CloseCaps() //关闭Caps键
+    else if map == -4 then //沙漠->鸟2
+        SavedTor = 20
+        SavedTorY  = 313
+        SavedX    = 148
+        SavedY    = 388
+        Call AfterMap() //到达
+        Call Loading2() //加载中(鸟专属)
+        Call CloseCaps() //关闭Caps键
+    else if map == -5 then //鸟2->狗1
+        SavedTor = 20
+        SavedTorY  = 200
+        SavedX    = 85
+        SavedY    = 285
+        Call AfterMap() //到达
+        Call Loading() //加载中
+        Call Channel() //换频
+        Call CloseCaps() //关闭Caps键
+    else if map == -6 then //狗1->咖啡机 or 狗1->火毒眼兽
+        Beep 261,100
+        Beep 294,100
+        Beep 329,100
+        Beep 294,100
+        Beep 261,100
+        Beep 329,100
+        Beep 392,100
+        Beep 349,100
+        Beep 329,100
+        Beep 294,100
+        a=WaitKey()
+        if a== 49 then //按1键就是咖啡
+            SavedTor  = 20
+            SavedTorY = 120
+            SavedX    = 103
+            SavedY    = 279
+            Call AfterMap() //到达
+            Call Loading()
+            Call Channel() //换频
+            Call CloseCaps() //关闭Caps键
+        else //其他键回火独眼兽
+            SavedTor = 20
+            SavedTorY  = 38
+            SavedX    = 23
+            SavedY    = 197
+            Call AfterMap() //到达
+            Call Loading() //加载中
+            Call Channel() //换频
+            Call CloseCaps() //关闭Caps键
+        End If
+    else if map == -7 then //咖啡机->外星人
+        SavedTor  = 20
+        SavedTorY = 247
+        SavedX    = -98
+        SavedY    = 216
+        while 1>0 //魔改后(先进入大世界)
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                DelayRandom 39,42
+                KeyPress Enter
+                DelayRandom 39,42
+                break
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\Mark.bmp",000000,1.00,0,logoX,logoY
+                if logoX >= 0 Then //瞬移到
+                    MoveTo logoX-284,logoY+1
+                    Delay 100
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo logoX-354,logoY+SavedTor //选择世界 38格兰  20世界  46奥术之河
+                    Delay 100
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo logoX-142,logoY+1
+                    Delay 100
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo logoX-225,logoY+SavedTorY //选择地方
+                    Delay 100
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo logoX-215,logoY+369 //选择基地
+                    Delay 100
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo logoX+SavedX,logoY+SavedY
+                    LeftDoubleClick
+                    DelayRandom 139,142
+                    MoveTo logoX-50,logoY-50
+                    DelayRandom 239,242
+                else
+                    DelayRandom 39,42
+                    KeyDown m
+                    DelayRandom 69,72
+                    KeyUp m
+                    DelayRandom 239,242
+                End If
+
+            End If
+        Wend
+        Call Loading()
+        Call Channel() //换频
+        Call CloseCaps() //关闭Caps键
+    else if map == -8 then //外星人->石头人
+        SavedTor  = 20
+        SavedTorY = 423
+        SavedX    = 121
+        SavedY    = 120
+        Call AfterMap() //到达
+        Call Loading()
+        Call Channel() //换频
+        Call CloseCaps() //关闭Caps键
+    else //其他地图,默认去火毒眼兽
+        SavedTor  = 20
+        SavedTorY = 38
+        SavedX    = 23
+        SavedY    = 197
+        Call AfterMap() //到达
+        Call Loading() //加载中
+        Call Channel() //换频
+        Call CloseCaps() //关闭Caps键
+    End If
+End Sub
+Sub InviteTeam //邀请玩家进组 ver1.1加了冷却
+    for 5
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,logoX,logoY
+        if logoX >  = 0 Then  //邀请成功
+           inviteOK = 1
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Team\Invite.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //猛点
+                MoveTo intX,intY
+                LeftClick
+                DelayRandom 139,142
+                MoveTo 50,50
+                DelayRandom 139,142
+            Else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //先点一下"邀请队伍"
+                    MoveTo intX+134,intY+311
+                    LeftClick
+                    DelayRandom 139,142
+                else
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp|E:\MHImg\UI\Boss\Tag_2_Off.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        KeyPress Tab
+                        Delay 100
+                    else
+                        KeyPress F1
+                        Delay 100
+                    End If
+                End If
+            End If
+        End If
+    Next
+
+    while 1>0 //关闭窗口
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp|E:\MHImg\UI\Boss\Tag_2_Off.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            KeyPress Esc
+        else //退成功
+            Delay 300
+            break
+        End If
+    Wend
+
+End Sub
+Sub OpenEquitPet //打开装备栏(宠物)
+    while 1>0 //打开装备栏的宠物界面
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //找到了标签
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_Off.bmp",000000,1.00,0,intX,intY
+            if intX < 0 then //A图没找到就找B图
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_On.bmp",000000,1.00,0,intX,intY
+            End If
+            if intX >= 0 Then
+                KeyPress tab
+                Delay 100
+            else
+                KeyPress u
+                Delay 100
+            End If
+        End If
+    Wend
+End Sub
+
+Sub Menu //菜单(大写键开启) Ver1.21
+    a = GetLED(1)
+    if a == 0 then //大写状态就弹出
+        Exit Sub
+    End If
+    Beep 261,100
+    Beep 294,100
+    Beep 329,100
+    Beep 294,100
+    Beep 261,100
+    Beep 329,100
+    a=WaitKey()
+    if a== 9 then //按Tab键:开始循环练0-200的图传送
+        Call ConfirmMap() //定位地图
+        Call TeleportSmallMap() //传送低级地图并开始低级图挂机
+        Call CloseCaps() //关闭Caps键(开始挂轮)
+    else if a== 49 then //按1键:回城再换频
+        Call Home() //回城
+        Call ChannalS() //换频
+    else if a== 77 then //按M键:(按2或3可能会按到公会技能) 开始传送地图,需要输入第二次键
+        Beep 261,100
+        Beep 294,100
+        Beep 329,100
+        Beep 294,100
+        Beep 261,100
+        Beep 329,100
+        a=WaitKey()
+        if a == 49 then //再按1:前往隐藏列车
+            SavedTor  = 56
+            SavedTorY = 62
+            SavedX    = 198
+            SavedY    = 115
+            Call AfterMap() //
+            Call Loading() //加载中
+            Call CloseCaps() //关闭Caps键
+        else if a == 50 then //再按2:前往隐藏香菇森林
+            SavedTor  = 56
+            SavedTorY = 88
+            SavedX    = 190
+            SavedY    = 70
+            Call AfterMap() //
+            Call Loading() //加载中
+            Call CloseCaps() //关闭Caps键
+        else if a == 87 then //再按W:前往香菇5
+            SavedTor  = 56
+            SavedTorY = 88
+            SavedX    = 31
+            SavedY    = 87
+            Call AfterMap() //
+            Call Loading() //加载中
+            Call CloseCaps() //关闭Caps键
+        else if a == 51 then //再按3:前往不法2
+            SavedTor  = 56
+            SavedTorY = 105
+            SavedX    = -137
+            SavedY    = 213
+            Call AfterMap() //
+            Call Loading() //加载中
+            Call CloseCaps() //关闭Caps键
+        else if a == 82 then //再按4:前往下路深渊
+            SavedTor  = 56
+            SavedTorY = 121
+            SavedX    = 171
+            SavedY    = 442
+            Call AfterMap() //
+            Call Loading() //加载中
+            Call CloseCaps() //关闭Caps键
+        else if a == 52 then //再按R:前往间隔路
+            SavedTor  = 56
+            SavedTorY = 121
+            SavedX    = -63
+            SavedY    = 458
+            Call AfterMap() //
+            Call Loading() //加载中
+            Call CloseCaps() //关闭Caps键
+        else if a == 53 then //再按5:前往镜海3
+            SavedTor  = 56
+            SavedTorY = 153
+            SavedX    = 95
+            SavedY    = 423
+            Call AfterMap() //
+            Call Loading() //加载中
+            Call CloseCaps() //关闭Caps键
+        End If
+    else if a== 82 then //按R键:接收交易
+        Call MoveVDLY()
+        Call TradeReceive() //这里按大写键就是退出循环 但是感觉没必要,直接暂停就行了
+    else if a== 83 then //按S键:脱下装备+发送交易
+        Call MoveVDLY()
+        Call TradeSender() //这里按大写键就是退出循环 但是感觉没必要,直接暂停就行了
+    else if a== 84 then //按T键:邀请进组
+        Call InviteTeam()
+        Call CloseCaps() //关闭Caps键
+    End If
+End Sub
 
 //分辨率初始化
 GetScreenResolution intX, intY
@@ -610,12 +1235,17 @@ x3       = intX - 640
 y3       = intY - 260
 xEnd     = intX
 yEnd     = intY
-cool     = 0
-pickTime =0
-sortTime =0
+pickTime = 0
+sortTime = 0
+Rem  Out         //打开大写键就跳回这里
+Call Menu()
+cool     = 0 //重置挂轮时间
 Call ConfirmMap() //定位地图
-
 while 1>0 //无限循环
+    a = GetLED(1)
+    if a == 1 then //大写状态就弹出
+        Goto Out
+    End If
     if GetTimeStamp() - cool > 570 then //现在是否能放轮
         Delay 500
         KeyPress O
@@ -630,31 +1260,37 @@ while 1>0 //无限循环
             tarX = 49
             tarY = 78
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
 
             tarX = 49
             tarY = 90
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
 
             tarX = -45
             tarY = 90
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
 
             tarX = -45
             tarY = 63
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
 
             tarX = -45
             tarY = 90
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
 
             tarX = -14
             tarY = 90
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
 
             pickTime = GetTimeStamp()
@@ -662,113 +1298,134 @@ while 1>0 //无限循环
             tarX = -4
             tarY = 76
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
 
             tarX = 30
             tarY = 103
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
 
             tarX = 54
             tarY = 103
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
 
             tarX = -7
             tarY = 76
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
 
             tarX = -46
             tarY = 103
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
         else if map == 21 then //香菇5
             tarX = 26
             tarY = 103
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
             tarX = 26
             tarY = 88
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
             tarX = -17
             tarY = 88
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
             tarX = -17
             tarY = 73
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
             Delay 1500
 
             tarX = -55
             tarY = 73
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
             tarX = -70
             tarY = 103
             tolerance = 2
+            yTolerance = 2
             Call Move_B()
             tarX = -16
             tarY = 103
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
         else if map == 3 then
-
             tarX = -12
             tarY = 89
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
 
             tarX = -72
             tarY = 71
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
             Delay 1500
 
             tarX = -56
             tarY = 55
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
             Delay 1500
 
             tarX = -56
             tarY = 89
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
 
             tarX = 41
             tarY = 61
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
             Delay 1500
 
             tarX = 41
             tarY = 89
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
 
             tarX = -12
             tarY = 63
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
             Delay 1500
 
             tarX = -12
             tarY = 76
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
         else if map == 4 then
-            tarX = 16
+            tarX = 12
             tarY = 87
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
-            Delay 3000
+            Delay 1500
 
             tarX = 45
             tarY = 87
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
             Delay 3000
 
@@ -782,41 +1439,48 @@ while 1>0 //无限循环
             tarX = -66
             tarY = 87
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
             Delay 1500
 
             tarX = -33
             tarY = 87
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
         else if map == 41 then //间隔路
             tarX = -82
             tarY = 92
             tolerance = 4
+            yTolerance = 3
             Call Move_B()
             Delay 1500
 
             tarX = -51
             tarY = 92
             tolerance = 4
+            yTolerance = 3
             Call Move_B()
             Delay 1500
 
             tarX = -19
             tarY = 95
             tolerance = 4
+            yTolerance = 3
             Call Move_B()
             Delay 1500
 
             tarX = 45
             tarY = 95
             tolerance = 4
+            yTolerance = 3
             Call Move_B()
             Delay 1500
 
             tarX = 12
             tarY = 95
             tolerance = 4
+            yTolerance = 3
             Call Move_B()
             Delay 1500
 
@@ -825,6 +1489,7 @@ while 1>0 //无限循环
             tarX = -7
             tarY = 115
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
 
             tarX = -41
@@ -847,24 +1512,39 @@ while 1>0 //无限循环
             tarX = 40
             tarY = 115
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
             Delay 3000
 
             tarX = 40
             tarY = 73
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
             Delay 1500
 
             tarX = -1
             tarY = 104
             tolerance = 4
+            yTolerance = 2
             Call Move_B()
         End If
         pickTime = GetTimeStamp()
     End If
 
-    if GetTimeStamp() - sortTime > 750 then
+    if GetTimeStamp() - sortTime > 750 then //整理物品
+        Call OpenEquitPet() //打开装备里的宠物界面(并返回logoX和logoY)
+        if map > 0 then //ARC地图开启捡东西
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_Autopick_Off.bmp",000000,1.00,0,intX,intY
+        else //200级以下地图关闭捡东西
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_Autopick_On.bmp",000000,1.00,0,intX,intY
+        End If
+        If intX >= 0 Then //自动拾取开关
+            MoveTo intX+2,intY+2
+            LeftClick
+            DelayRandom 139,142
+        End If
+        Call CloseEquit()
         Call ClearItem()
         sortTime = GetTimeStamp()
     End If
