@@ -413,6 +413,20 @@ Sub CloseBag //关闭装备栏
         End If
     Wend
 End Sub
+Sub CloseEquit //关闭装备栏
+    while 1>0 //关闭装备栏
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then
+            break
+        else
+            DelayRandom 39,42
+            KeyDown u
+            DelayRandom 69,72
+            KeyUp u
+            DelayRandom 39,42
+        End If
+    Wend
+End Sub
 Sub Drop //扔掉道具抽离 ver1.1数量也加进去
     If intX >= 0 Then
         MoveTo intX,intY
@@ -1042,6 +1056,71 @@ Sub TeleportSmallMap //练小号用的传送
         Call CloseCaps() //关闭Caps键
     End If
 End Sub
+Sub InviteTeam //邀请玩家进组 ver1.1加了冷却
+    for 5
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,logoX,logoY
+        if logoX >  = 0 Then  //邀请成功
+           inviteOK = 1
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Team\Invite.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then //猛点
+                MoveTo intX,intY
+                LeftClick
+                DelayRandom 139,142
+                MoveTo 50,50
+                DelayRandom 139,142
+            Else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp",000000,1.00,0,intX,intY
+                if intX >= 0 Then //先点一下"邀请队伍"
+                    MoveTo intX+134,intY+311
+                    LeftClick
+                    DelayRandom 139,142
+                else
+                    FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp|E:\MHImg\UI\Boss\Tag_2_Off.bmp",000000,1.00,0,intX,intY
+                    if intX >= 0 Then
+                        KeyPress Tab
+                        Delay 100
+                    else
+                        KeyPress F1
+                        Delay 100
+                    End If
+                End If
+            End If
+        End If
+    Next
+
+    while 1>0 //关闭窗口
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Boss\Tag_2_On.bmp|E:\MHImg\UI\Boss\Tag_2_Off.bmp",000000,1.00,0,intX,intY
+        if intX >= 0 Then
+            KeyPress Esc
+        else //退成功
+            Delay 300
+            break
+        End If
+    Wend
+
+End Sub
+Sub OpenEquitPet //打开装备栏(宠物)
+    while 1>0 //打开装备栏的宠物界面
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_On.bmp",000000,1.00,0,logoX,logoY
+        if logoX >= 0 Then //找到了标签
+            break
+        else
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_Off.bmp",000000,1.00,0,intX,intY
+            if intX < 0 then //A图没找到就找B图
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_1_On.bmp",000000,1.00,0,intX,intY
+            End If
+            if intX >= 0 Then
+                KeyPress tab
+                Delay 100
+            else
+                KeyPress u
+                Delay 100
+            End If
+        End If
+    Wend
+End Sub
 
 Sub Menu //菜单(大写键开启) Ver1.21
     a = GetLED(1)
@@ -1133,6 +1212,9 @@ Sub Menu //菜单(大写键开启) Ver1.21
     else if a== 83 then //按S键:脱下装备+发送交易
         Call MoveVDLY()
         Call TradeSender() //这里按大写键就是退出循环 但是感觉没必要,直接暂停就行了
+    else if a== 84 then //按T键:邀请进组
+        Call InviteTeam()
+        Call CloseCaps() //关闭Caps键
     End If
 End Sub
 
@@ -1443,7 +1525,19 @@ while 1>0 //无限循环
         pickTime = GetTimeStamp()
     End If
 
-    if GetTimeStamp() - sortTime > 750 then
+    if GetTimeStamp() - sortTime > 750 then //整理物品
+        Call OpenEquitPet() //打开装备里的宠物界面(并返回logoX和logoY)
+        if map > 0 then //ARC地图开启捡东西
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_Autopick_Off.bmp",000000,1.00,0,intX,intY
+        else //200级以下地图关闭捡东西
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Equit\Tag_3_Autopick_On.bmp",000000,1.00,0,intX,intY
+        End If
+        If intX >= 0 Then //自动拾取开关
+            MoveTo intX+2,intY+2
+            LeftClick
+            DelayRandom 139,142
+        End If
+        Call CloseEquit()
         Call ClearItem()
         sortTime = GetTimeStamp()
     End If
