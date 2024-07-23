@@ -28,6 +28,32 @@ Sub Loading //加载地图
         End If
     Wend
 End Sub
+Sub Loading2 //(鸟2垃圾地图)
+    while 1>0 //等进入加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX <= 0 Then //加载完成了
+            break
+        else
+            DelayRandom 100,150
+        End If
+    Wend
+    while 1>0 //等加载
+        FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
+        if intX > 0 Then //加载完成了
+            break
+        else
+            DelayRandom 39,42
+            KeyDown Down
+            DelayRandom 39,42
+            KeyDown Space
+            DelayRandom 69,72
+            KeyUp Space
+            DelayRandom 39,42
+            KeyUp Down
+            DelayRandom 139,142
+        End If
+    Wend
+End Sub
 Sub GetXY //获取角色的XY轴(如果找不到会左右移动)
     FindPic x1,y1,x2,y2,"E:\MHImg\Me.bmp",000000,1.00,0,intX,intY
     FindPic x1,y1,x2,y2,"E:\MHImg\MapAnchor.bmp",000000,1.00,0,logoX,logoY
@@ -483,6 +509,23 @@ Sub ChannalS //无视是否有人换频
         End If
     Wend
 End Sub
+Sub Channel //有人就换频 ver2.3 抽离了
+    wJam = 0 //放在循环外面位置
+    while 1>0
+        FindPic x1,y1,x2,y2,"E:\MHImg\Player.bmp|E:\MHImg\Ally.bmp|E:\MHImg\Ally2.bmp",000000,1.00,0,intX,intY
+        if intX < 0 Then //地图没人(5次判断防人物重合)
+            wJam = wJam + 1  //循环内部
+            if wJam > 5 then //多次没找到人就确实没人
+                break
+            else
+                Delay 200
+            End If
+        else //有找到人,直接换频
+            wJam = 0 //放在成功的位置
+            Call ChannalS()
+        End If
+    Wend
+End Sub
 Sub ClearItem //清理消耗品和装备栏 Ver1.5
     //扔身上的垃圾
     while 1>0 //切到装备栏
@@ -771,7 +814,7 @@ Sub MoveVDLY //前往维多利亚 Ver1.1
         End If
     Wend
 End Sub
-Sub ConfirmMap //确认当前地图 Ver1.2
+Sub ConfirmMap //确认当前地图 Ver1.3
     map = 0
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC6.bmp",000000,1.00,0,intX,intY
     if intX >= 0  //六岛(镜光3)
@@ -815,6 +858,189 @@ Sub ConfirmMap //确认当前地图 Ver1.2
     if intX >= 0  //一岛(三岔路1)
         map = 11
     End If
+    if map <= 0 then //上面找到了就不要找下面的了
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\HuoDYS.bmp",000000,1.00,0,intX,intY
+        if intX >= 0  //火毒眼兽
+            map = -1
+        End If
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Snake2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0  //青蛇
+            map = -2
+        End If
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Tulong.bmp",000000,1.00,0,intX,intY
+        if intX >= 0  //土龙
+            map = -3
+        End If
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\RedSand.bmp",000000,1.00,0,intX,intY
+        if intX >= 0  //沙漠
+            map = -4
+        End If
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Bird2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0  //鸟2
+            map = -5
+        End If
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Dog1.bmp",000000,1.00,0,intX,intY
+        if intX >= 0  //狗1
+            map = -6
+        End If
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\StarTower.bmp",000000,1.00,0,intX,intY
+        if intX >= 0  //咖啡机
+            map = -7
+        End If
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\H101.bmp",000000,1.00,0,intX,intY
+        if intX >= 0  //外星人
+            map = -8
+        End If
+    End If
+End Sub
+Sub TeleportSmallMap //练小号用的传送
+    if map == -1 then //火毒眼兽->小青蛇
+        SavedTor = 20
+        SavedTorY = 38
+        SavedX = -240
+        SavedY = 175
+        Call AfterMap() //到达
+        Call Loading() //加载中
+        Call Channel() //换频
+        Call CloseCaps() //关闭Caps键
+    else if map == -2 then //小青蛇->土龙
+        SavedTor = 20
+        SavedTorY  = 105
+        SavedX    = -286
+        SavedY    = 160
+        Call AfterMap() //到达
+        Call Loading() //加载中
+        Call Channel() //换频
+        Call CloseCaps() //关闭Caps键
+    else if map == -3 then //土龙->沙漠
+        SavedTor = 20
+        SavedTorY  = 359
+        SavedX    = -147
+        SavedY    = 188
+        Call AfterMap() //到达
+        Call Loading() //加载中
+        Call Channel() //换频
+        Call CloseCaps() //关闭Caps键
+    else if map == -4 then //沙漠->鸟2
+        SavedTor = 20
+        SavedTorY  = 313
+        SavedX    = 148
+        SavedY    = 388
+        Call AfterMap() //到达
+        Call Loading2() //加载中(鸟专属)
+        Call CloseCaps() //关闭Caps键
+    else if map == -5 then //鸟2->狗1
+        SavedTor = 20
+        SavedTorY  = 200
+        SavedX    = 85
+        SavedY    = 285
+        Call AfterMap() //到达
+        Call Loading() //加载中
+        Call Channel() //换频
+        Call CloseCaps() //关闭Caps键
+    else if map == -6 then //狗1->咖啡机 or 狗1->火毒眼兽
+        Beep 261,100
+        Beep 294,100
+        Beep 329,100
+        Beep 294,100
+        Beep 261,100
+        Beep 329,100
+        Beep 392,100
+        Beep 349,100
+        Beep 329,100
+        Beep 294,100
+        a=WaitKey()
+        if a== 49 then //按1键就是咖啡
+            SavedTor  = 20
+            SavedTorY = 120
+            SavedX    = 103
+            SavedY    = 279
+            Call AfterMap() //到达
+            Call Loading()
+            Call Channel() //换频
+            Call CloseCaps() //关闭Caps键
+        else //其他键回火独眼兽
+            SavedTor = 20
+            SavedTorY  = 38
+            SavedX    = 23
+            SavedY    = 197
+            Call AfterMap() //到达
+            Call Loading() //加载中
+            Call Channel() //换频
+            Call CloseCaps() //关闭Caps键
+        End If
+    else if map == -7 then //咖啡机->外星人
+        SavedTor  = 20
+        SavedTorY = 247
+        SavedX    = -98
+        SavedY    = 216
+        while 1>0 //魔改后(先进入大世界)
+            FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\OK.bmp",000000,1.00,0,intX,intY
+            if intX >= 0 Then
+                DelayRandom 39,42
+                KeyPress Enter
+                DelayRandom 39,42
+                break
+            else
+                FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Map\Mark.bmp",000000,1.00,0,logoX,logoY
+                if logoX >= 0 Then //瞬移到
+                    MoveTo logoX-284,logoY+1
+                    Delay 100
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo logoX-354,logoY+SavedTor //选择世界 38格兰  20世界  46奥术之河
+                    Delay 100
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo logoX-142,logoY+1
+                    Delay 100
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo logoX-225,logoY+SavedTorY //选择地方
+                    Delay 100
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo logoX-215,logoY+369 //选择基地
+                    Delay 100
+                    LeftClick
+                    DelayRandom 139,142
+                    MoveTo logoX+SavedX,logoY+SavedY
+                    LeftDoubleClick
+                    DelayRandom 139,142
+                    MoveTo logoX-50,logoY-50
+                    DelayRandom 239,242
+                else
+                    DelayRandom 39,42
+                    KeyDown m
+                    DelayRandom 69,72
+                    KeyUp m
+                    DelayRandom 239,242
+                End If
+
+            End If
+        Wend
+        Call Loading()
+        Call Channel() //换频
+        Call CloseCaps() //关闭Caps键
+    else if map == -8 then //外星人->石头人
+        SavedTor  = 20
+        SavedTorY = 423
+        SavedX    = 121
+        SavedY    = 120
+        Call AfterMap() //到达
+        Call Loading()
+        Call Channel() //换频
+        Call CloseCaps() //关闭Caps键
+    else //其他地图,默认去火毒眼兽
+        SavedTor  = 20
+        SavedTorY = 38
+        SavedX    = 23
+        SavedY    = 197
+        Call AfterMap() //到达
+        Call Loading() //加载中
+        Call Channel() //换频
+        Call CloseCaps() //关闭Caps键
+    End If
 End Sub
 
 Sub Menu //菜单(大写键开启) Ver1.21
@@ -829,7 +1055,11 @@ Sub Menu //菜单(大写键开启) Ver1.21
     Beep 261,100
     Beep 329,100
     a=WaitKey()
-    if a== 49 then //按1键:回城再换频
+    if a== 9 then //按Tab键:开始循环练0-200的图传送
+        Call ConfirmMap() //定位地图
+        Call TeleportSmallMap() //传送低级地图并开始低级图挂机
+        Call CloseCaps() //关闭Caps键(开始挂轮)
+    else if a== 49 then //按1键:回城再换频
         Call Home() //回城
         Call ChannalS() //换频
     else if a== 77 then //按M键:(按2或3可能会按到公会技能) 开始传送地图,需要输入第二次键
@@ -916,11 +1146,11 @@ x3       = intX - 640
 y3       = intY - 260
 xEnd     = intX
 yEnd     = intY
-cool     = 0
 pickTime = 0
 sortTime = 0
 Rem  Out         //打开大写键就跳回这里
 Call Menu()
+cool     = 0 //重置挂轮时间
 Call ConfirmMap() //定位地图
 while 1>0 //无限循环
     a = GetLED(1)

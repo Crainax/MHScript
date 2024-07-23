@@ -870,7 +870,7 @@ Sub Menu //菜单(大写键开启) Ver1.2
     End If
 End Sub
 
-Sub ConfirmMap //确认当前地图 Ver1.2
+Sub ConfirmMap //确认当前地图 Ver1.3
     map = 0
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC6.bmp",000000,1.00,0,intX,intY
     if intX >= 0  //六岛(镜光3)
@@ -913,6 +913,40 @@ Sub ConfirmMap //确认当前地图 Ver1.2
     FindPic x1,y1,x2,y2,"E:\MHImg\Maps\ARC1.bmp",000000,1.00,0,intX,intY
     if intX >= 0  //一岛(三岔路1)
         map = 11
+    End If
+    if map <= 0 then //上面找到了就不要找下面的了
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\HuoDYS.bmp",000000,1.00,0,intX,intY
+        if intX >= 0  //火毒眼兽
+            map = -1
+        End If
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Snake2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0  //青蛇
+            map = -2
+        End If
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Tulong.bmp",000000,1.00,0,intX,intY
+        if intX >= 0  //土龙
+            map = -3
+        End If
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\RedSand.bmp",000000,1.00,0,intX,intY
+        if intX >= 0  //沙漠
+            map = -4
+        End If
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Bird2.bmp",000000,1.00,0,intX,intY
+        if intX >= 0  //鸟2
+            map = -5
+        End If
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\Dog1.bmp",000000,1.00,0,intX,intY
+        if intX >= 0  //狗1
+            map = -6
+        End If
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\StarTower.bmp",000000,1.00,0,intX,intY
+        if intX >= 0  //咖啡机
+            map = -7
+        End If
+        FindPic x1,y1,xEnd,yEnd,"E:\MHImg\Maps\H101.bmp",000000,1.00,0,intX,intY
+        if intX >= 0  //外星人
+            map = -8
+        End If
     End If
 End Sub
 
