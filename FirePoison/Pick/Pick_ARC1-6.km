@@ -405,7 +405,7 @@ Sub Drop //扔掉道具抽离 ver1.1数量也加进去
     End If
 End Sub
 
-Sub ClearItem //清理消耗品和装备栏 Ver1.5
+Sub ClearItem //清理消耗品和装备栏 Ver1.6
     //扔身上的垃圾
     while 1>0 //切到装备栏
         FindPic x1,y1,xEnd,yEnd,"E:\MHImg\UI\Bag\Tag_Equit.bmp",000000,1.00,0,logoX,logoY
@@ -426,6 +426,9 @@ Sub ClearItem //清理消耗品和装备栏 Ver1.5
                 End If
                 if intX <= 0 then //第三批图像
                     FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\TrushE\W19.bmp|E:\MHImg\Common\TrushE\W20.bmp|E:\MHImg\Common\TrushE\W21.bmp|E:\MHImg\Common\TrushE\W22.bmp|E:\MHImg\Common\TrushE\W23.bmp|E:\MHImg\Common\TrushE\W24.bmp|E:\MHImg\Common\TrushE\W25.bmp|E:\MHImg\Common\TrushE\W26.bmp|E:\MHImg\Common\TrushE\W27.bmp",000000,1.00,0,intX,intY
+                End If
+                if intX <= 0 then //第四批图像
+                    FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\TrushE\W28.bmp|E:\MHImg\Common\TrushE\W29.bmp|E:\MHImg\Common\TrushE\W30.bmp",000000,1.00,0,intX,intY
                 End If
                 if intX >= 0 Then
                     wJam = 0 //放在成功的位置
