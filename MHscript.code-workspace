@@ -2,6 +2,9 @@
 	"folders": [
 		{
 			"path": "."
+		},
+		{
+			"path": "J:/配置工具V43.1/ConfigTool-win"
 		}
 	],
 	"settings": {}
