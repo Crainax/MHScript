@@ -4685,7 +4685,7 @@ Sub MileageDaily //领取里程 ver1.2"下个"问题
         End If
     Wend
 End Sub
-Sub SortItem //整理一下身上的垃圾东西
+Sub SortItem //整理一下身上的垃圾东西 Ver1.1大核先不要动了
 
     //打开卖结晶的商店
     while 1>0 //
@@ -4752,7 +4752,7 @@ Sub SortItem //整理一下身上的垃圾东西
             while 1>0
                 FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\Trush\Cons3.bmp|E:\MHImg\Common\Trush\Cons4.bmp|E:\MHImg\Common\Trush\Cons2.bmp|E:\MHImg\Common\Trush\Cons1.bmp|E:\MHImg\Common\Trush\Cons5.bmp|E:\MHImg\Common\Trush\Cons6.bmp|E:\MHImg\Common\Trush\Cons7.bmp|E:\MHImg\Common\Trush\Cons8.bmp|E:\MHImg\Common\Trush\Cons9.bmp",000000,1.00,0,intX,intY
                 if intX <= 0 then //第二批图像
-                    FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\Trush\Cons10.bmp|E:\MHImg\Common\Trush\Cons11.bmp|E:\MHImg\Common\Trush\Cons12.bmp|E:\MHImg\Common\Trush\Cons13.bmp|E:\MHImg\Common\Trush\Cons14.bmp|E:\MHImg\Common\Trush\Cons15.bmp|E:\MHImg\Common\Trush\Cons16.bmp|E:\MHImg\Common\Trush\Cons17.bmp",000000,1.00,0,intX,intY
+                    FindPic logoX-36,logoY,logoX+640,logoY+370,"E:\MHImg\Common\Trush\Cons10.bmp|E:\MHImg\Common\Trush\Cons11.bmp|E:\MHImg\Common\Trush\Cons12.bmp|E:\MHImg\Common\Trush\Cons13.bmp|E:\MHImg\Common\Trush\Cons14.bmp|E:\MHImg\Common\Trush\Cons16.bmp|E:\MHImg\Common\Trush\Cons17.bmp",000000,1.00,0,intX,intY
                 End If
                 if intX >= 0 Then
                     wJam = 0 //放在成功的位置

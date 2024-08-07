@@ -1175,6 +1175,11 @@ while 1 > 0
         FindPic x3,y3,xEnd,yEnd,"E:\MHImg\Common\1C.bmp",000000,1.00,0,intX,intY
         if GetTimeStamp() - fountainTime > 55 or intX >= 0 then //可以喷泉了
             Call BeforeFountain() //喷泉前干的事
+            tarX       = -8 //左走一点再跳不然出问题
+            tarY       = 104
+            tolerance  = 4
+            yTolerance = 0
+            Call Move()
             tarX = -34
             tarY = 98
             tolerance = 3
